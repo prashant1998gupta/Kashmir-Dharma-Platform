@@ -36,7 +36,7 @@ const CityDatabase = [
     { name: "Ramban, J&K, India", lat: 33.2427, lon: 75.2413, tz: 5.5 },
     { name: "Banihal, J&K, India", lat: 33.4371, lon: 75.1979, tz: 5.5 },
     
-    // Major Indian Cities
+    // Major Indian Cities (Comprehensive)
     { name: "Delhi / New Delhi, India", lat: 28.6139, lon: 77.2090, tz: 5.5 },
     { name: "Mumbai, Maharashtra, India", lat: 19.0760, lon: 72.8777, tz: 5.5 },
     { name: "Pune, Maharashtra, India", lat: 18.5204, lon: 73.8567, tz: 5.5 },
@@ -47,7 +47,100 @@ const CityDatabase = [
     { name: "Ahmedabad, Gujarat, India", lat: 23.0225, lon: 72.5714, tz: 5.5 },
     { name: "Chandigarh, India", lat: 30.7333, lon: 76.7794, tz: 5.5 },
     { name: "Lucknow, UP, India", lat: 26.8467, lon: 80.9462, tz: 5.5 },
-    { name: "Jaipur, Rajasthan, India", lat: 26.9124, lon: 75.7873, tz: 5.5 }
+    { name: "Jaipur, Rajasthan, India", lat: 26.9124, lon: 75.7873, tz: 5.5 },
+    
+    // North India (Punjab, Haryana, HP, UK)
+    { name: "Shimla, HP, India", lat: 31.1048, lon: 77.1734, tz: 5.5 },
+    { name: "Manali, HP, India", lat: 32.2396, lon: 77.1887, tz: 5.5 },
+    { name: "Dharamshala, HP, India", lat: 32.2190, lon: 76.3234, tz: 5.5 },
+    { name: "Amritsar, Punjab, India", lat: 31.6340, lon: 74.8723, tz: 5.5 },
+    { name: "Jalandhar, Punjab, India", lat: 31.3260, lon: 75.5762, tz: 5.5 },
+    { name: "Ludhiana, Punjab, India", lat: 30.9010, lon: 75.8573, tz: 5.5 },
+    { name: "Patiala, Punjab, India", lat: 30.3398, lon: 76.3869, tz: 5.5 },
+    { name: "Dehradun, UK, India", lat: 30.3165, lon: 78.0322, tz: 5.5 },
+    { name: "Haridwar, UK, India", lat: 29.9457, lon: 78.1642, tz: 5.5 },
+    { name: "Rishikesh, UK, India", lat: 30.0869, lon: 78.2676, tz: 5.5 },
+    { name: "Roorkee, UK, India", lat: 29.8543, lon: 77.8880, tz: 5.5 },
+    { name: "Gurugram, Haryana, India", lat: 28.4595, lon: 77.0266, tz: 5.5 },
+    { name: "Faridabad, Haryana, India", lat: 28.4089, lon: 77.3178, tz: 5.5 },
+    { name: "Panipat, Haryana, India", lat: 29.3909, lon: 76.9635, tz: 5.5 },
+    { name: "Ambala, Haryana, India", lat: 30.3752, lon: 76.7821, tz: 5.5 },
+    { name: "Karnal, Haryana, India", lat: 29.6857, lon: 76.9905, tz: 5.5 },
+    { name: "Rohtak, Haryana, India", lat: 28.8955, lon: 76.5816, tz: 5.5 },
+    
+    // Central & North-Central India (UP, MP, Bihar)
+    { name: "Agra, UP, India", lat: 27.1767, lon: 78.0081, tz: 5.5 },
+    { name: "Prayagraj, UP, India", lat: 25.4358, lon: 81.8463, tz: 5.5 },
+    { name: "Kanpur, UP, India", lat: 26.4499, lon: 80.3319, tz: 5.5 },
+    { name: "Varanasi, UP, India", lat: 25.3176, lon: 82.9739, tz: 5.5 },
+    { name: "Meerut, UP, India", lat: 28.9845, lon: 77.7064, tz: 5.5 },
+    { name: "Bareilly, UP, India", lat: 28.3670, lon: 79.4304, tz: 5.5 },
+    { name: "Aligarh, UP, India", lat: 27.8974, lon: 78.0880, tz: 5.5 },
+    { name: "Moradabad, UP, India", lat: 28.8386, lon: 78.7733, tz: 5.5 },
+    { name: "Saharanpur, UP, India", lat: 29.9640, lon: 77.5460, tz: 5.5 },
+    { name: "Gorakhpur, UP, India", lat: 26.7606, lon: 83.3732, tz: 5.5 },
+    { name: "Noida, UP, India", lat: 28.5355, lon: 77.3910, tz: 5.5 },
+    { name: "Ghaziabad, UP, India", lat: 28.6692, lon: 77.4538, tz: 5.5 },
+    { name: "Mathura, UP, India", lat: 27.4924, lon: 77.6737, tz: 5.5 },
+    { name: "Patna, Bihar, India", lat: 25.5941, lon: 85.1376, tz: 5.5 },
+    { name: "Gaya, Bihar, India", lat: 24.7914, lon: 85.0002, tz: 5.5 },
+    { name: "Indore, MP, India", lat: 22.7196, lon: 75.8577, tz: 5.5 },
+    { name: "Bhopal, MP, India", lat: 23.2599, lon: 77.4126, tz: 5.5 },
+    { name: "Jabalpur, MP, India", lat: 23.1815, lon: 79.9864, tz: 5.5 },
+    { name: "Gwalior, MP, India", lat: 26.2183, lon: 78.1828, tz: 5.5 },
+    { name: "Ujjain, MP, India", lat: 23.1765, lon: 75.9221, tz: 5.5 },
+    { name: "Raipur, Chhattisgarh, India", lat: 21.2514, lon: 81.6296, tz: 5.5 },
+    
+    // West India (Rajasthan, Gujarat, Maharashtra, Goa)
+    { name: "Jodhpur, Rajasthan, India", lat: 26.2389, lon: 73.0243, tz: 5.5 },
+    { name: "Udaipur, Rajasthan, India", lat: 24.5854, lon: 73.7125, tz: 5.5 },
+    { name: "Kota, Rajasthan, India", lat: 25.2138, lon: 75.8648, tz: 5.5 },
+    { name: "Bikaner, Rajasthan, India", lat: 28.0229, lon: 73.3119, tz: 5.5 },
+    { name: "Ajmer, Rajasthan, India", lat: 26.4499, lon: 74.6399, tz: 5.5 },
+    { name: "Surat, Gujarat, India", lat: 21.1702, lon: 72.8311, tz: 5.5 },
+    { name: "Vadodara, Gujarat, India", lat: 22.3072, lon: 73.1812, tz: 5.5 },
+    { name: "Rajkot, Gujarat, India", lat: 22.3039, lon: 70.8022, tz: 5.5 },
+    { name: "Bhavnagar, Gujarat, India", lat: 21.7645, lon: 72.1519, tz: 5.5 },
+    { name: "Gandhinagar, Gujarat, India", lat: 23.2156, lon: 72.6369, tz: 5.5 },
+    { name: "Nagpur, Maharashtra, India", lat: 21.1458, lon: 79.0882, tz: 5.5 },
+    { name: "Nashik, Maharashtra, India", lat: 19.9975, lon: 73.7898, tz: 5.5 },
+    { name: "Aurangabad, Maharashtra, India", lat: 19.8762, lon: 75.3433, tz: 5.5 },
+    { name: "Solapur, Maharashtra, India", lat: 17.6599, lon: 75.9064, tz: 5.5 },
+    { name: "Kolhapur, Maharashtra, India", lat: 16.7050, lon: 74.2433, tz: 5.5 },
+    { name: "Panaji, Goa, India", lat: 15.4909, lon: 73.8278, tz: 5.5 },
+    
+    // South India
+    { name: "Mysuru, Karnataka, India", lat: 12.2958, lon: 76.6394, tz: 5.5 },
+    { name: "Mangaluru, Karnataka, India", lat: 12.9141, lon: 74.8560, tz: 5.5 },
+    { name: "Hubballi, Karnataka, India", lat: 15.3647, lon: 75.1240, tz: 5.5 },
+    { name: "Coimbatore, Tamil Nadu, India", lat: 11.0168, lon: 76.9558, tz: 5.5 },
+    { name: "Madurai, Tamil Nadu, India", lat: 9.9252, lon: 78.1198, tz: 5.5 },
+    { name: "Tiruchirappalli, Tamil Nadu, India", lat: 10.7905, lon: 78.7047, tz: 5.5 },
+    { name: "Salem, Tamil Nadu, India", lat: 11.6643, lon: 78.1460, tz: 5.5 },
+    { name: "Kochi, Kerala, India", lat: 9.9312, lon: 76.2673, tz: 5.5 },
+    { name: "Thiruvananthapuram, Kerala, India", lat: 8.5241, lon: 76.9366, tz: 5.5 },
+    { name: "Kozhikode, Kerala, India", lat: 11.2588, lon: 75.7804, tz: 5.5 },
+    { name: "Visakhapatnam, Andhra Pradesh, India", lat: 17.6868, lon: 83.2185, tz: 5.5 },
+    { name: "Vijayawada, Andhra Pradesh, India", lat: 16.5062, lon: 80.6480, tz: 5.5 },
+    { name: "Guntur, Andhra Pradesh, India", lat: 16.3067, lon: 80.4365, tz: 5.5 },
+    { name: "Warangal, Telangana, India", lat: 17.9689, lon: 79.5941, tz: 5.5 },
+    
+    // East & North East India
+    { name: "Bhubaneswar, Odisha, India", lat: 20.2961, lon: 85.8245, tz: 5.5 },
+    { name: "Cuttack, Odisha, India", lat: 20.4625, lon: 85.8830, tz: 5.5 },
+    { name: "Rourkela, Odisha, India", lat: 22.2604, lon: 84.8536, tz: 5.5 },
+    { name: "Guwahati, Assam, India", lat: 26.1445, lon: 91.7362, tz: 5.5 },
+    { name: "Shillong, Meghalaya, India", lat: 25.5788, lon: 91.8933, tz: 5.5 },
+    { name: "Agartala, Tripura, India", lat: 23.8315, lon: 91.2868, tz: 5.5 },
+    { name: "Imphal, Manipur, India", lat: 24.8170, lon: 93.9368, tz: 5.5 },
+    { name: "Aizawl, Mizoram, India", lat: 23.7271, lon: 92.7176, tz: 5.5 },
+    { name: "Gangtok, Sikkim, India", lat: 27.3389, lon: 88.6065, tz: 5.5 },
+    { name: "Itanagar, Arunachal Pradesh, India", lat: 27.0844, lon: 93.6053, tz: 5.5 },
+    { name: "Kohima, Nagaland, India", lat: 25.6751, lon: 94.1086, tz: 5.5 },
+    
+    // Ladakh
+    { name: "Leh, Ladakh, India", lat: 34.1526, lon: 77.5771, tz: 5.5 },
+    { name: "Kargil, Ladakh, India", lat: 34.5539, lon: 76.1349, tz: 5.5 }
 ];
 
 // Sort alphabetically for dropdown
