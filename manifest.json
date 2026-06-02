@@ -1,0 +1,18 @@
+{
+    "name": "Kashmir Dharma Platform",
+    "short_name": "Kashmir Dharma",
+    "description": "A digital companion for the Kashmiri Pandit community — bridging generations with authentic knowledge of festivals, rituals, traditions, and spiritual practices.",
+    "start_url": "./",
+    "display": "standalone",
+    "background_color": "#030306",
+    "theme_color": "#A32626",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "assets/icons/icon.svg",
+            "sizes": "192x192 512x512",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ]
+}

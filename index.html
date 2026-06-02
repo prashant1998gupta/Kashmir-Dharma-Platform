@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="manifest" href="manifest.json">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kashmiri Pandit Digital Companion — Cultural Preservation & Religious Guidance</title>
     <meta name="description" content="A digital platform preserving Kashmiri Pandit traditions, rituals, festivals, and cultural heritage. Your trusted companion for religious guidance and cultural education.">
@@ -151,5 +152,16 @@
     <script src="js/pages/guide.js"></script>
     <script src="js/router.js"></script>
     <script src="js/app.js"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('Service Worker registered!', reg))
+                    .catch(err => console.error('Service Worker registration failed:', err));
+            });
+        }
+    </script>
 </body>
 </html>
