@@ -59,6 +59,8 @@ const HomePage = (() => {
                             'Articles, history, cultural essays, temple information, and religious teachings.', '#archive')}
                         ${Components.featureCard('🔮', 'Knowledge Guide', 
                             'Ask questions about Kashmiri Pandit traditions and get answers from our knowledge base.', '#guide')}
+                        ${Components.featureCard('📜', 'Learn Sharada', 
+                            'Explore and learn the ancient sacred Sharada script used for religious texts.', '#sharada')}
                     </div>
                 </section>
 

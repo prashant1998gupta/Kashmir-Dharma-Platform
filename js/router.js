@@ -12,7 +12,8 @@ const Router = (() => {
         'muhurat': { page: MuhuratPage, title: 'Muhurat Finder' },
         'heritage': { page: HeritagePage, title: 'Family Heritage' },
         'archive': { page: ArchivePage, title: 'Knowledge Archive' },
-        'guide': { page: GuidePage, title: 'Knowledge Guide' }
+        'guide': { page: GuidePage, title: 'Knowledge Guide' },
+        'sharada': { page: SharadaPage, title: 'Learn Sharada Script' }
     };
 
     let currentPage = null;

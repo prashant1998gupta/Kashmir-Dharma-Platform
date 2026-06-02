@@ -22,6 +22,25 @@ const Components = (() => {
     }
 
     /**
+     * Render an audio player
+     */
+    function audioPlayer(url, title, subtitle) {
+        return `
+            <div class="audio-player card-glass" style="padding: var(--space-4); border-radius: var(--radius-lg); margin-bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-4);">
+                <button class="btn-icon" style="background: var(--color-primary); color: white; border-radius: 50%; width: 48px; height: 48px; flex-shrink: 0; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px var(--color-primary-glow);" onclick="this.nextElementSibling.paused ? this.nextElementSibling.play() : this.nextElementSibling.pause(); this.innerHTML = this.nextElementSibling.paused ? '▶' : '⏸';">
+                    ▶
+                </button>
+                <audio src="${url}" onplay="this.previousElementSibling.innerHTML='⏸'" onpause="this.previousElementSibling.innerHTML='▶'"></audio>
+                <div style="flex: 1;">
+                    <div style="font-size: var(--text-base); font-weight: 500; color: var(--text-primary); margin-bottom: 2px;">${title}</div>
+                    ${subtitle ? `<div style="font-size: var(--text-xs); color: var(--color-secondary);">${subtitle}</div>` : ''}
+                </div>
+                <div style="font-size: 1.5rem; opacity: 0.5;">🎵</div>
+            </div>
+        `;
+    }
+
+    /**
      * Render a section header with ornamental divider
      */
     function sectionHeader(title, description, options = {}) {
@@ -385,6 +404,7 @@ const Components = (() => {
         openModal,
         closeModal,
         calendarMonth,
-        initScrollReveal
+        initScrollReveal,
+        audioPlayer
     };
 })();

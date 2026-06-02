@@ -20,11 +20,13 @@ const ASSETS_TO_CACHE = [
     './js/pages/heritage.js',
     './js/pages/archive.js',
     './js/pages/guide.js',
+    './js/pages/sharada.js',
     './data/festivals.json',
     './data/rituals.json',
     './data/wedding.json',
     './data/archive.json',
     './data/muhurat-data.json',
+    './data/sharada.json',
     './assets/icons/icon.svg'
 ];
 

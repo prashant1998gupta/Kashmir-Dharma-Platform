@@ -106,6 +106,8 @@ const WeddingPage = (() => {
                 <h2 style="margin-bottom: var(--space-2)">${ceremony.name}</h2>
                 ${ceremony.day ? `<span class="badge badge-secondary mb-4" style="display:inline-block">${ceremony.day}</span>` : ''}
                 
+                ${ceremony.audioUrl ? Components.audioPlayer(ceremony.audioUrl, 'Listen to Vanvun / Chant', ceremony.audioSubtitle || 'Traditional Kashmiri Wedding Song') : ''}
+
                 <p style="margin: var(--space-4) 0">${ceremony.description}</p>
 
                 ${ceremony.significance ? `

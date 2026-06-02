@@ -1,0 +1,83 @@
+{
+    "title": "Learn Sharada Script",
+    "description": "Sharada is the native script of Kashmir, historically used to write Sanskrit and Kashmiri. It is considered a sacred script and is still used by Kashmiri Pandit priests for writing horoscopes (Tekni) and religious texts.",
+    "categories": [
+        {
+            "id": "vowels",
+            "name": "Vowels (Svara)",
+            "characters": [
+                { "char": "𑆃", "transliteration": "a", "devanagari": "अ" },
+                { "char": "𑆄", "transliteration": "ā", "devanagari": "आ" },
+                { "char": "𑆅", "transliteration": "i", "devanagari": "इ" },
+                { "char": "𑆆", "transliteration": "ī", "devanagari": "ई" },
+                { "char": "𑆇", "transliteration": "u", "devanagari": "उ" },
+                { "char": "𑆈", "transliteration": "ū", "devanagari": "ऊ" },
+                { "char": "𑆉", "transliteration": "ṛ", "devanagari": "ऋ" },
+                { "char": "𑆍", "transliteration": "e", "devanagari": "ए" },
+                { "char": "𑆎", "transliteration": "ai", "devanagari": "ऐ" },
+                { "char": "𑆏", "transliteration": "o", "devanagari": "ओ" },
+                { "char": "𑆐", "transliteration": "au", "devanagari": "औ" }
+            ]
+        },
+        {
+            "id": "consonants",
+            "name": "Consonants (Vyanjana)",
+            "characters": [
+                { "char": "𑆑", "transliteration": "ka", "devanagari": "क" },
+                { "char": "𑆒", "transliteration": "kha", "devanagari": "ख" },
+                { "char": "𑆓", "transliteration": "ga", "devanagari": "ग" },
+                { "char": "𑆔", "transliteration": "gha", "devanagari": "घ" },
+                { "char": "𑆕", "transliteration": "ṅa", "devanagari": "ङ" },
+                { "char": "𑆖", "transliteration": "ca", "devanagari": "च" },
+                { "char": "𑆗", "transliteration": "cha", "devanagari": "छ" },
+                { "char": "𑆘", "transliteration": "ja", "devanagari": "ज" },
+                { "char": "𑆙", "transliteration": "jha", "devanagari": "झ" },
+                { "char": "𑆚", "transliteration": "ña", "devanagari": "ञ" },
+                { "char": "𑆛", "transliteration": "ṭa", "devanagari": "ट" },
+                { "char": "𑆜", "transliteration": "ṭha", "devanagari": "ठ" },
+                { "char": "𑆝", "transliteration": "ḍa", "devanagari": "ड" },
+                { "char": "𑆞", "transliteration": "ḍha", "devanagari": "ढ" },
+                { "char": "𑆟", "transliteration": "ṇa", "devanagari": "ण" },
+                { "char": "𑆠", "transliteration": "ta", "devanagari": "त" },
+                { "char": "𑆡", "transliteration": "tha", "devanagari": "थ" },
+                { "char": "𑆢", "transliteration": "da", "devanagari": "द" },
+                { "char": "𑆣", "transliteration": "dha", "devanagari": "ध" },
+                { "char": "𑆤", "transliteration": "na", "devanagari": "न" },
+                { "char": "𑆥", "transliteration": "pa", "devanagari": "प" },
+                { "char": "𑆦", "transliteration": "pha", "devanagari": "फ" },
+                { "char": "𑆧", "transliteration": "ba", "devanagari": "ब" },
+                { "char": "𑆨", "transliteration": "bha", "devanagari": "भ" },
+                { "char": "𑆩", "transliteration": "ma", "devanagari": "म" },
+                { "char": "𑆪", "transliteration": "ya", "devanagari": "य" },
+                { "char": "𑆫", "transliteration": "ra", "devanagari": "र" },
+                { "char": "𑆬", "transliteration": "la", "devanagari": "ल" },
+                { "char": "𑆮", "transliteration": "va", "devanagari": "व" },
+                { "char": "𑆯", "transliteration": "śa", "devanagari": "श" },
+                { "char": "𑆰", "transliteration": "ṣa", "devanagari": "ष" },
+                { "char": "𑆱", "transliteration": "sa", "devanagari": "स" },
+                { "char": "𑆲", "transliteration": "ha", "devanagari": "ह" }
+            ]
+        },
+        {
+            "id": "numerals",
+            "name": "Numerals",
+            "characters": [
+                { "char": "𑇐", "transliteration": "0", "devanagari": "०" },
+                { "char": "𑇑", "transliteration": "1", "devanagari": "१" },
+                { "char": "𑇒", "transliteration": "2", "devanagari": "२" },
+                { "char": "𑇓", "transliteration": "3", "devanagari": "३" },
+                { "char": "𑇔", "transliteration": "4", "devanagari": "४" },
+                { "char": "𑇕", "transliteration": "5", "devanagari": "५" },
+                { "char": "𑇖", "transliteration": "6", "devanagari": "६" },
+                { "char": "𑇗", "transliteration": "7", "devanagari": "७" },
+                { "char": "𑇘", "transliteration": "8", "devanagari": "८" },
+                { "char": "𑇙", "transliteration": "9", "devanagari": "९" }
+            ]
+        }
+    ],
+    "resources": [
+        "Sharada script originated in the 8th century CE.",
+        "It is named after goddess Saraswati (Sharada), the patron deity of Kashmir.",
+        "The script is written from left to right."
+    ]
+}

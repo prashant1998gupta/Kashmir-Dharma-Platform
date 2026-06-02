@@ -111,6 +111,8 @@ const RitualsPage = (() => {
                     </div>
                 </div>
 
+                ${ritual.audioUrl ? Components.audioPlayer(ritual.audioUrl, 'Listen to Mantra/Chant', ritual.audioSubtitle || 'Authentic pronunciation and recitation') : ''}
+
                 <p style="margin-bottom: var(--space-6)">${ritual.purpose || ritual.description}</p>
 
                 ${ritual.history ? `
