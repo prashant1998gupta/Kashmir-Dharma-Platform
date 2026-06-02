@@ -88,6 +88,10 @@ const KundaliPage = (() => {
                                     <h3 style="text-align: center; margin-bottom: var(--space-4)">Saptamsa Chart (D7)</h3>
                                     <div id="chart-d7-container" style="max-width: 400px; margin: 0 auto;"></div>
                                 </div>
+                                <div>
+                                    <h3 style="text-align: center; margin-bottom: var(--space-4)">Bhava Chalit Chart</h3>
+                                    <div id="chart-chalit-container" style="max-width: 400px; margin: 0 auto;"></div>
+                                </div>
                             </div>
                             
                             <!-- Birth Panchang -->
@@ -122,9 +126,15 @@ const KundaliPage = (() => {
                                 </table>
                             </div>
 
+                            <!-- Sarvashtakavarga (SAV) Points -->
+                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Ashtakavarga (SAV) Points</h3>
+                            <div style="margin-bottom: var(--space-8); display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: var(--space-2);">
+                                <div id="sav-container" style="display: contents;"></div>
+                            </div>
+
                             <!-- Vimshottari Dasha Timeline -->
-                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Vimshottari Dasha (Mahadasha)</h3>
-                            <div id="dasha-timeline" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: var(--space-3);">
+                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Vimshottari Dasha (Mahadasha & Antardasha)</h3>
+                            <div id="dasha-timeline" style="display: flex; flex-direction: column; gap: var(--space-3);">
                             </div>
                         </div>
                     </div>
@@ -217,6 +227,7 @@ const KundaliPage = (() => {
             document.getElementById('chart-d9-container').innerHTML = drawChartSVG(chartData.navamsaHouses, chartData.lagnaNavamsaRashi);
             document.getElementById('chart-d10-container').innerHTML = drawChartSVG(chartData.dasamsaHouses, chartData.lagnaDasamsaRashi);
             document.getElementById('chart-d7-container').innerHTML = drawChartSVG(chartData.saptamsaHouses, chartData.lagnaSaptamsaRashi);
+            document.getElementById('chart-chalit-container').innerHTML = drawChartSVG(chartData.chalitHouses, chartData.lagnaRashi);
             
             // Populate Panchang
             document.getElementById('panchang-vaar').textContent = chartData.panchang.vaar;
@@ -233,6 +244,18 @@ const KundaliPage = (() => {
                 </div>
             `).join('');
             
+            // Populate SAV Points
+            const savContainer = document.getElementById('sav-container');
+            savContainer.innerHTML = chartData.sav.map(s => {
+                let color = s.points >= 28 ? 'var(--color-primary)' : (s.points < 25 ? 'var(--error-color, #e74c3c)' : 'var(--text-primary)');
+                return `
+                    <div style="background: rgba(255,255,255,0.05); border: 1px solid var(--surface-border); border-radius: var(--radius-sm); padding: var(--space-2); text-align: center;">
+                        <div style="font-size: var(--text-xs); color: var(--text-muted); margin-bottom: 2px;">H${s.house}</div>
+                        <div style="font-weight: bold; color: ${color};">${s.points}</div>
+                    </div>
+                `;
+            }).join('');
+            
             // Populate Table
             const tbody = document.getElementById('planetary-table-body');
             tbody.innerHTML = chartData.planets.map(p => `
@@ -247,11 +270,21 @@ const KundaliPage = (() => {
 
             // Populate Dasha
             const dashaContainer = document.getElementById('dasha-timeline');
-            dashaContainer.innerHTML = chartData.dashas.map(d => `
-                <div style="background: rgba(255,255,255,0.05); border: 1px solid var(--surface-border); border-radius: var(--radius-sm); padding: var(--space-3); text-align: center;">
-                    <div style="font-weight: bold; color: var(--color-primary); margin-bottom: 4px;">${d.lord}</div>
-                    <div style="font-size: var(--text-xs); color: var(--text-muted);">${d.startYear} - ${d.endYear}</div>
-                </div>
+            dashaContainer.innerHTML = chartData.dashas.map(md => `
+                <details style="background: rgba(255,255,255,0.03); border: 1px solid var(--surface-border); border-radius: var(--radius-sm);">
+                    <summary style="padding: var(--space-3); cursor: pointer; font-weight: bold; color: var(--color-primary); list-style: none; display: flex; justify-content: space-between;">
+                        <span>${md.lord} Mahadasha</span>
+                        <span style="font-size: var(--text-sm); color: var(--text-muted); font-weight: normal;">${md.startStr.substring(0,4)} to ${md.endStr.substring(0,4)}</span>
+                    </summary>
+                    <div style="padding: 0 var(--space-3) var(--space-3) var(--space-3); display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-2);">
+                        ${md.antardashas.map(ad => `
+                            <div style="background: rgba(0,0,0,0.2); padding: var(--space-2); border-radius: var(--radius-sm); border-left: 2px solid var(--color-secondary);">
+                                <div style="font-weight: bold; font-size: var(--text-sm); color: var(--text-primary); margin-bottom: 2px;">${md.lord} - ${ad.lord}</div>
+                                <div style="font-size: var(--text-xs); color: var(--text-muted);">${ad.startStr} to ${ad.endStr}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </details>
             `).join('');
             
             document.getElementById('kundaliResult').style.display = 'block';

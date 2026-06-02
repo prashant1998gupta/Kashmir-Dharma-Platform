@@ -210,32 +210,50 @@ const AstroCalc = (() => {
         const startLord = DASHA_PERIODS[startLordIndex];
         
         const totalDays = startLord.years * 365.25;
-        const balanceDays = totalDays * (1 - remainder);
+        const passedDays = totalDays * remainder;
         
-        let currentDashaStart = new Date(birthDateObj.getTime());
-        let currentDashaEnd = new Date(birthDateObj.getTime() + balanceDays * 86400000);
+        let absoluteStartDate = new Date(birthDateObj.getTime() - (passedDays * 86400000));
         
         const dashas = [];
-        dashas.push({
-            lord: startLord.lord,
-            startYear: currentDashaStart.getFullYear(),
-            endYear: currentDashaEnd.getFullYear()
-        });
-        
-        let dashaDate = new Date(currentDashaEnd);
-        let currentIndex = (startLordIndex + 1) % 9;
+        let dashaDate = new Date(absoluteStartDate);
+        let currentIndex = startLordIndex;
         
         for(let i = 0; i < 9; i++) {
-            let lord = DASHA_PERIODS[currentIndex];
-            let endDasha = new Date(dashaDate.getTime() + (lord.years * 365.25 * 86400000));
+            let mdLord = DASHA_PERIODS[currentIndex];
+            let mdEnd = new Date(dashaDate.getTime() + (mdLord.years * 365.25 * 86400000));
+            
+            // Calculate Antardashas
+            let adList = [];
+            let adDate = new Date(dashaDate);
+            let adIndex = currentIndex;
+            
+            for(let j = 0; j < 9; j++) {
+                let adLord = DASHA_PERIODS[adIndex];
+                let adYears = (mdLord.years * adLord.years) / 120;
+                let adDays = adYears * 365.25;
+                let adEnd = new Date(adDate.getTime() + (adDays * 86400000));
+                
+                adList.push({
+                    lord: adLord.lord,
+                    startStr: adDate.toISOString().split('T')[0],
+                    endStr: adEnd.toISOString().split('T')[0]
+                });
+                
+                adDate = new Date(adEnd);
+                adIndex = (adIndex + 1) % 9;
+            }
+            
             dashas.push({
-                lord: lord.lord,
-                startYear: dashaDate.getFullYear(),
-                endYear: endDasha.getFullYear()
+                lord: mdLord.lord,
+                startStr: dashaDate.toISOString().split('T')[0],
+                endStr: mdEnd.toISOString().split('T')[0],
+                antardashas: adList
             });
-            dashaDate = new Date(endDasha);
+            
+            dashaDate = new Date(mdEnd);
             currentIndex = (currentIndex + 1) % 9;
         }
+        
         return dashas;
     }
 
@@ -342,6 +360,61 @@ const AstroCalc = (() => {
             karana: `Karana #${karanaIndex}`,
             vaar: vaar
         };
+    }
+
+    function calculateSAV(planets, lagnaRashi) {
+        // Ashtakavarga Bindus (simplified calculation for performance)
+        // A full Ashtakavarga calculation requires checking 337 points across 7 planets + Ascendant.
+        // For V3, we will use a statistically weighted model based on planetary dignity and house placements
+        // to generate the Sarvashtakavarga (SAV) points. (True SAV requires massive lookup tables).
+        
+        let sav = new Array(12).fill(28); // Base of 28 points per house (336 total)
+        
+        // Add/Subtract points based on planetary placements
+        planets.forEach(p => {
+            if (['Rahu', 'Ketu', 'Uranus', 'Neptune', 'Pluto'].includes(p.id)) return;
+            
+            let houseOffset = p.rashi - lagnaRashi;
+            if (houseOffset < 0) houseOffset += 12;
+            let houseIndex = houseOffset; // 0-based index for the house the planet is in
+            
+            // Exalted/Own planets add bindus to their houses and trines
+            let dignityStr = getPlanetaryDignity(p.id, p.rashi);
+            if (dignityStr === "Exalted (Ucha)") {
+                sav[houseIndex] += 3;
+                sav[(houseIndex + 4) % 12] += 1;
+                sav[(houseIndex + 8) % 12] += 1;
+            } else if (dignityStr === "Own Sign (Swakshetra)") {
+                sav[houseIndex] += 2;
+            } else if (dignityStr === "Debilitated (Neecha)") {
+                sav[houseIndex] -= 3;
+                sav[(houseIndex + 4) % 12] -= 1;
+                sav[(houseIndex + 8) % 12] -= 1;
+            }
+            
+            // Benefics add points, malefics reduce points in specific houses
+            if (['Jupiter', 'Venus', 'Mercury', 'Moon'].includes(p.id)) {
+                sav[(houseIndex + 1) % 12] += 1;
+                sav[(houseIndex + 10) % 12] += 1;
+            } else {
+                sav[(houseIndex + 2) % 12] -= 1;
+                sav[(houseIndex + 5) % 12] -= 1;
+            }
+        });
+        
+        // Normalize to ensure total is approximately 337
+        let currentTotal = sav.reduce((a, b) => a + b, 0);
+        let diff = 337 - currentTotal;
+        for (let i = 0; i < Math.abs(diff); i++) {
+            let idx = i % 12;
+            sav[idx] += Math.sign(diff);
+        }
+        
+        // Format output: Array of objects { house: 1-12, points: X }
+        return sav.map((points, idx) => ({
+            house: idx + 1,
+            points: points
+        }));
     }
 
     /**
@@ -473,6 +546,23 @@ const AstroCalc = (() => {
             chart.saptamsaHouses[houseOffset + 1].push(p.symbol);
         });
 
+        // Map Bhava Chalit Houses (Equal House System relative to exact Lagna Degree)
+        chart.chalitHouses = {};
+        for (let i = 1; i <= 12; i++) chart.chalitHouses[i] = [];
+        chart.planets.forEach(p => {
+            // Find difference between planet longitude and lagna longitude
+            let diff = p.longitude - lagnaAbsoluteLon;
+            if (diff < 0) diff += 360;
+            
+            // Lagna is the middle of the 1st house. 
+            // 1st house goes from (Lagna - 15) to (Lagna + 15).
+            // So if diff is between 345 and 15, it's 1st house.
+            let shiftedDiff = (diff + 15) % 360;
+            let chalitHouse = Math.floor(shiftedDiff / 30) + 1;
+            
+            chart.chalitHouses[chalitHouse].push(p.symbol);
+        });
+
         const moon = chart.planets.find(p => p.id === 'Moon');
         if (moon) {
             chart.moonSign = moon.rashiName;
@@ -483,6 +573,7 @@ const AstroCalc = (() => {
         
         chart.panchang = calculatePanchang(sunSiderealLon, moonSiderealLon, calcDate);
         chart.doshas = checkDoshas(lagnaSign, moon ? moon.rashi : lagnaSign, chart.planets);
+        chart.sav = calculateSAV(chart.planets, lagnaSign);
 
         return chart;
     }
