@@ -11,6 +11,15 @@ const CityDatabase = [
     { name: "Kulgam, J&K, India", lat: 33.6450, lon: 75.0166, tz: 5.5 },
     { name: "Ganderbal, J&K, India", lat: 34.2163, lon: 74.7735, tz: 5.5 },
     { name: "Budgam, J&K, India", lat: 34.0151, lon: 74.7176, tz: 5.5 },
+    { name: "Pahalgam, J&K, India", lat: 34.0142, lon: 75.3216, tz: 5.5 },
+    { name: "Gulmarg, J&K, India", lat: 34.0484, lon: 74.3805, tz: 5.5 },
+    { name: "Tral, J&K, India", lat: 33.9317, lon: 75.1097, tz: 5.5 },
+    { name: "Pampore, J&K, India", lat: 34.0156, lon: 74.9333, tz: 5.5 },
+    { name: "Bijbehara, J&K, India", lat: 33.7942, lon: 75.1017, tz: 5.5 },
+    { name: "Awantipora, J&K, India", lat: 33.9234, lon: 75.0140, tz: 5.5 },
+    { name: "Handwara, J&K, India", lat: 34.4011, lon: 74.2828, tz: 5.5 },
+    { name: "Pattan, J&K, India", lat: 34.1611, lon: 74.5620, tz: 5.5 },
+    { name: "Uri, J&K, India", lat: 34.0850, lon: 74.0401, tz: 5.5 },
     
     // Jammu & Kashmir - Jammu Region
     { name: "Jammu, J&K, India", lat: 32.7266, lon: 74.8570, tz: 5.5 },
@@ -19,6 +28,13 @@ const CityDatabase = [
     { name: "Reasi, J&K, India", lat: 33.0805, lon: 74.8340, tz: 5.5 },
     { name: "Poonch, J&K, India", lat: 33.7681, lon: 74.0934, tz: 5.5 },
     { name: "Rajouri, J&K, India", lat: 33.3789, lon: 74.3013, tz: 5.5 },
+    { name: "Samba, J&K, India", lat: 32.5539, lon: 75.1123, tz: 5.5 },
+    { name: "Akhnoor, J&K, India", lat: 32.8712, lon: 74.7391, tz: 5.5 },
+    { name: "Bhaderwah, J&K, India", lat: 32.9817, lon: 75.7139, tz: 5.5 },
+    { name: "Doda, J&K, India", lat: 33.1465, lon: 75.5460, tz: 5.5 },
+    { name: "Kishtwar, J&K, India", lat: 33.3129, lon: 75.7663, tz: 5.5 },
+    { name: "Ramban, J&K, India", lat: 33.2427, lon: 75.2413, tz: 5.5 },
+    { name: "Banihal, J&K, India", lat: 33.4371, lon: 75.1979, tz: 5.5 },
     
     // Major Indian Cities
     { name: "Delhi / New Delhi, India", lat: 28.6139, lon: 77.2090, tz: 5.5 },
