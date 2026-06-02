@@ -32,13 +32,14 @@ const AstroCalc = (() => {
     }
 
     /**
-     * Get exact tropical longitude of a planet using Astronomy Engine
+     * Get exact tropical longitude of a planet using Astronomy Engine (Geocentric)
      */
     function getPlanetLongitude(body, date) {
         if (typeof Astronomy === 'undefined') return 0;
-        // Get the ecliptic coordinates
-        const ecliptic = Astronomy.EclipticLongitude(body, date);
-        return ecliptic;
+        // Get the geocentric vector, then convert to ecliptic longitude
+        const geoVec = Astronomy.GeoVector(body, date, true);
+        const ecliptic = Astronomy.Ecliptic(geoVec);
+        return ecliptic.elon;
     }
 
     /**

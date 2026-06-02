@@ -45,7 +45,7 @@ const KundaliPage = (() => {
                         
                         <div class="form-group" style="margin-bottom: var(--space-6)">
                             <label style="display: block; margin-bottom: var(--space-2)">City of Birth</label>
-                            <select id="k-city" style="width: 100%; padding: var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--surface-border); background: var(--bg-card); color: var(--text-primary);">
+                            <select id="k-city" style="width: 100%; padding: var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--surface-border); background: var(--bg-card); color: var(--text-primary); color-scheme: dark;">
                                 <option value="">Select a city...</option>
                                 ${cityOptions}
                             </select>
