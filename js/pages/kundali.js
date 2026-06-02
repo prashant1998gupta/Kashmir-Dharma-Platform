@@ -44,11 +44,11 @@ const KundaliPage = (() => {
                         </div>
                         
                         <div class="form-group" style="margin-bottom: var(--space-6)">
-                            <label class="form-label" style="display: block; margin-bottom: var(--space-2)">City of Birth</label>
-                            <select id="k-city" class="form-select" style="width: 100%; color-scheme: dark;">
-                                <option value="" disabled selected>Select a city...</option>
+                            <label class="form-label" style="display: block; margin-bottom: var(--space-2)">City of Birth (Searchable)</label>
+                            <input list="k-city-list" id="k-city" class="form-input" placeholder="Type to search city..." style="width: 100%; color-scheme: dark;">
+                            <datalist id="k-city-list">
                                 ${cityOptions}
-                            </select>
+                            </datalist>
                         </div>
                         
                         <button class="btn btn-primary" style="width: 100%; padding: var(--space-3); font-size: var(--text-lg)" onclick="KundaliPage.generateChart()">
