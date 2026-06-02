@@ -51,6 +51,8 @@ const HomePage = (() => {
                             'Your digital companion for Kashmiri Pandit weddings — timeline, rituals, checklists, and more.', '#wedding')}
                         ${Components.featureCard('🎂', 'Janma Tithi Finder', 
                             'Find your Hindu birthday based on the lunar calendar. Enter your birth details to discover your Tithi.', '#birthday')}
+                        ${Components.featureCard('🌌', 'Kundali Generator', 
+                            'Generate your complete Vedic Birth Chart instantly, privately, and offline.', '#kundali')}
                         ${Components.featureCard('🌟', 'Muhurat Finder', 
                             'Identify auspicious dates and timings for important life events based on traditional Panchang.', '#muhurat')}
                         ${Components.featureCard('👪', 'Family Heritage', 
