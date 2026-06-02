@@ -80,28 +80,38 @@ const CalendarPage = (() => {
     }
 
     function getCalendarEvents() {
-        // Map festivals to approximate Gregorian dates for display
-        const festivalDates = {
-            'navreh': { month: 2, day: 22 },       // March
-            'herath': { month: 1, day: 26 },        // February
-            'zyeth-atham': { month: 7, day: 22 },   // August
-            'khetsrimavas': { month: 5, day: 6 },   // June
-            'pan-festival': { month: 7, day: 15 },  // August
-            'janmashtami': { month: 7, day: 26 },   // August
-            'ram-navami': { month: 3, day: 6 },     // April
-            'sharika-jayanti': { month: 9, day: 2 }  // October
+        // Calculate exact Gregorian dates for the currentYear using the math engine
+        const festivalRules = {
+            'navreh': { month: 'Chaitra', paksha: 0, tithi: 'Pratipada' },
+            'herath': { month: 'Phalguna', paksha: 1, tithi: 'Trayodashi' },
+            'zyeth-atham': { month: 'Bhadrapada', paksha: 0, tithi: 'Ashtami' },
+            'khetsrimavas': { month: 'Jyeshtha', paksha: 1, tithi: 'Amavasya' },
+            'pan-festival': { month: 'Bhadrapada', paksha: 0, tithi: 'Chaturthi' },
+            'janmashtami': { month: 'Bhadrapada', paksha: 1, tithi: 'Ashtami' },
+            'ram-navami': { month: 'Chaitra', paksha: 0, tithi: 'Navami' },
+            'sharika-jayanti': { month: 'Ashvina', paksha: 0, tithi: 'Ashtami' }
         };
 
         const events = [];
         festivals.forEach(f => {
-            const dateInfo = festivalDates[f.id];
-            if (dateInfo && dateInfo.month === currentMonth) {
-                const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(dateInfo.day).padStart(2, '0')}`;
-                events.push({
-                    name: f.name,
-                    dateStr: dateStr,
-                    type: f.type === 'Major Festival' ? 'festival' : 'observance'
-                });
+            const rule = festivalRules[f.id];
+            if (rule) {
+                // Calculate exact date for currentYear
+                const exactDate = CalendarCalc.findFestivalDate(currentYear, rule.month, rule.paksha, rule.tithi);
+                
+                if (exactDate) {
+                    // Also update the festival object so the popup shows the exact date!
+                    f.calculatedDate = exactDate.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+                    
+                    if (exactDate.getMonth() === currentMonth) {
+                        const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(exactDate.getDate()).padStart(2, '0')}`;
+                        events.push({
+                            name: f.name,
+                            dateStr: dateStr,
+                            type: f.type === 'Major Festival' ? 'festival' : 'observance'
+                        });
+                    }
+                }
             }
         });
 
@@ -142,13 +152,17 @@ const CalendarPage = (() => {
         const festival = festivals.find(f => f.id === id);
         if (!festival) return;
 
+        const dateDisplay = festival.calculatedDate ? 
+            `<strong style="color: var(--color-primary)">${festival.calculatedDate}</strong> <br/><span style="font-size: var(--text-xs)">${festival.date}</span>` : 
+            festival.date || '';
+
         const content = `
             <div style="padding: var(--space-8)">
                 <div class="flex items-center gap-4 mb-6">
                     <span style="font-size: 3rem">${festival.icon || '🪔'}</span>
                     <div>
                         <h2 style="margin: 0">${festival.name}</h2>
-                        <p class="text-muted" style="margin: var(--space-1) 0 0">${festival.date || ''}</p>
+                        <p class="text-muted" style="margin: var(--space-1) 0 0">${dateDisplay}</p>
                     </div>
                 </div>
 

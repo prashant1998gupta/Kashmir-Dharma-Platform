@@ -325,12 +325,48 @@ const CalendarCalc = (() => {
         return results.sort((a, b) => b.score - a.score);
     }
 
+    /**
+     * Find the Gregorian date for a specific Hindu festival in a given year
+     * @param {number} targetYear 
+     * @param {string} hinduMonthName (e.g., 'Chaitra')
+     * @param {number} pakshaIndex 0 for Shukla, 1 for Krishna
+     * @param {string} tithiName (e.g., 'Pratipada')
+     */
+    function findFestivalDate(targetYear, hinduMonthName, pakshaIndex, tithiName) {
+        // Approximate month mapping to limit search scope
+        const monthIndex = HINDU_MONTHS.findIndex(m => m.toLowerCase().includes(hinduMonthName.toLowerCase()) || hinduMonthName.toLowerCase().includes(m.toLowerCase()));
+        
+        for (let m = 1; m <= 12; m++) {
+            const daysInMonth = new Date(targetYear, m, 0).getDate();
+            for (let d = 1; d <= daysInMonth; d++) {
+                const jd = gregorianToJD(targetYear, m, d) + 0.5;
+                const tithi = calculateTithi(jd);
+                const hinduMonth = calculateHinduMonth(jd);
+                
+                // Match month (allowing 1 index drift due to solar/lunar approximations)
+                let isMonthMatch = false;
+                if (monthIndex !== -1) {
+                    const diff = Math.abs(hinduMonth.index - monthIndex);
+                    isMonthMatch = (diff <= 1 || diff >= 11);
+                } else {
+                    isMonthMatch = true; // If month not found, ignore month check
+                }
+
+                if (isMonthMatch && tithi.pakshaIndex === pakshaIndex && tithi.name.toLowerCase() === tithiName.toLowerCase()) {
+                    return new Date(targetYear, m - 1, d);
+                }
+            }
+        }
+        return null;
+    }
+
     // Public API
     return {
         getHinduDate,
         findJanmaTithiDates,
         isAuspicious,
         findAuspiciousDates,
+        findFestivalDate,
         HINDU_MONTHS,
         TITHIS,
         NAKSHATRAS,
