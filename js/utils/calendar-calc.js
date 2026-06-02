@@ -192,7 +192,7 @@ const CalendarCalc = (() => {
      * (for Hindu birthday calculation)
      */
     function findJanmaTithiDates(birthYear, birthMonth, birthDay, targetYear) {
-        const birthJD = gregorianToJD(birthYear, birthMonth, birthDay) + 0.5;
+        const birthJD = gregorianToJD(birthYear, birthMonth, birthDay);
         const birthTithi = calculateTithi(birthJD);
         const birthHinduMonth = calculateHinduMonth(birthJD);
         
@@ -201,7 +201,7 @@ const CalendarCalc = (() => {
         for (let m = 1; m <= 12; m++) {
             const daysInMonth = new Date(targetYear, m, 0).getDate();
             for (let d = 1; d <= daysInMonth; d++) {
-                const jd = gregorianToJD(targetYear, m, d) + 0.5;
+                const jd = gregorianToJD(targetYear, m, d);
                 const tithi = calculateTithi(jd);
                 const hinduMonth = calculateHinduMonth(jd);
                 
@@ -220,7 +220,7 @@ const CalendarCalc = (() => {
             for (let m = 1; m <= 12; m++) {
                 const daysInMonth = new Date(targetYear, m, 0).getDate();
                 for (let d = 1; d <= daysInMonth; d++) {
-                    const jd = gregorianToJD(targetYear, m, d) + 0.5;
+                    const jd = gregorianToJD(targetYear, m, d);
                     const tithi = calculateTithi(jd);
                     if (tithi.index === birthTithi.index) {
                         const hinduMonth = calculateHinduMonth(jd);
@@ -245,7 +245,7 @@ const CalendarCalc = (() => {
      * Determine if a date is auspicious based on event-specific Panchang rules
      */
     function isAuspicious(year, month, day, eventRecs) {
-        const jd = gregorianToJD(year, month, day) + 0.5;
+        const jd = gregorianToJD(year, month, day);
         const tithi = calculateTithi(jd);
         const nakshatra = calculateNakshatra(jd);
         const dayOfWeek = new Date(year, month - 1, day).getDay();
@@ -339,7 +339,9 @@ const CalendarCalc = (() => {
         for (let m = 1; m <= 12; m++) {
             const daysInMonth = new Date(targetYear, m, 0).getDate();
             for (let d = 1; d <= daysInMonth; d++) {
-                const jd = gregorianToJD(targetYear, m, d) + 0.5;
+                // gregorianToJD returns the Julian Day at 00:00 UTC (which is exactly 5:30 AM IST - Sunrise)
+                // We do NOT add 0.5 here, because that would shift it to 5:30 PM IST!
+                const jd = gregorianToJD(targetYear, m, d);
                 const tithi = calculateTithi(jd);
                 const hinduMonth = calculateHinduMonth(jd);
                 
