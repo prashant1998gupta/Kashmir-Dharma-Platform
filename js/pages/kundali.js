@@ -29,24 +29,24 @@ const KundaliPage = (() => {
                         <h3 style="margin-bottom: var(--space-4)">Enter Birth Details</h3>
                         
                         <div class="form-group" style="margin-bottom: var(--space-4)">
-                            <label style="display: block; margin-bottom: var(--space-2)">Name</label>
-                            <input type="text" id="k-name" placeholder="E.g., Rahul Koul" style="width: 100%; padding: var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--surface-border); background: var(--bg-card); color: var(--text-primary);">
+                            <label class="form-label" style="display: block; margin-bottom: var(--space-2)">Name</label>
+                            <input type="text" id="k-name" class="form-input" placeholder="E.g., Rahul Koul" style="width: 100%;">
                         </div>
                         
                         <div class="form-group" style="margin-bottom: var(--space-4)">
-                            <label style="display: block; margin-bottom: var(--space-2)">Date of Birth</label>
-                            <input type="date" id="k-date" style="width: 100%; padding: var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--surface-border); background: var(--bg-card); color: var(--text-primary); color-scheme: dark;">
+                            <label class="form-label" style="display: block; margin-bottom: var(--space-2)">Date of Birth</label>
+                            <input type="date" id="k-date" class="form-input" style="width: 100%; color-scheme: dark;">
                         </div>
                         
                         <div class="form-group" style="margin-bottom: var(--space-4)">
-                            <label style="display: block; margin-bottom: var(--space-2)">Time of Birth</label>
-                            <input type="time" id="k-time" style="width: 100%; padding: var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--surface-border); background: var(--bg-card); color: var(--text-primary); color-scheme: dark;">
+                            <label class="form-label" style="display: block; margin-bottom: var(--space-2)">Time of Birth</label>
+                            <input type="time" id="k-time" class="form-input" style="width: 100%; color-scheme: dark;">
                         </div>
                         
                         <div class="form-group" style="margin-bottom: var(--space-6)">
-                            <label style="display: block; margin-bottom: var(--space-2)">City of Birth</label>
-                            <select id="k-city" style="width: 100%; padding: var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--surface-border); background: var(--bg-card); color: var(--text-primary); color-scheme: dark;">
-                                <option value="">Select a city...</option>
+                            <label class="form-label" style="display: block; margin-bottom: var(--space-2)">City of Birth</label>
+                            <select id="k-city" class="form-select" style="width: 100%; color-scheme: dark;">
+                                <option value="" disabled selected>Select a city...</option>
                                 ${cityOptions}
                             </select>
                         </div>
