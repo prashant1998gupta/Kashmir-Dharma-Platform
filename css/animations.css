@@ -446,3 +446,19 @@
         transform: none;
     }
 }
+
+/* --- Premium Animations --- */
+@keyframes auroraDrift {
+    0% {
+        background-position: 0% 0%;
+        background-size: 150% 150%;
+    }
+    50% {
+        background-position: 100% 100%;
+        background-size: 100% 100%;
+    }
+    100% {
+        background-position: 0% 100%;
+        background-size: 150% 150%;
+    }
+}

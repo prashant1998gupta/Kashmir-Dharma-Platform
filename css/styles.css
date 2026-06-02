@@ -5,86 +5,90 @@
 
 /* --- CSS Custom Properties (Design Tokens) --- */
 :root {
-    /* Primary Palette - Inspired by Kashmiri heritage */
-    --color-primary: #8B1A1A;
-    --color-primary-light: #B8342E;
-    --color-primary-dark: #5C1010;
-    --color-primary-glow: rgba(139, 26, 26, 0.4);
+    /* Primary Palette - Heritage Saffron */
+    --color-primary: #A32626;
+    --color-primary-light: #D64545;
+    --color-primary-dark: #661212;
+    --color-primary-glow: rgba(163, 38, 38, 0.4);
 
-    /* Secondary - Antique Gold (temple architecture) */
-    --color-secondary: #C9A959;
-    --color-secondary-light: #E0C97A;
-    --color-secondary-dark: #A68A3E;
-    --color-secondary-glow: rgba(201, 169, 89, 0.3);
+    /* Secondary - Antique Temple Gold */
+    --color-secondary: #D4AF37;
+    --color-secondary-light: #F3E5AB;
+    --color-secondary-dark: #997A00;
+    --color-secondary-glow: rgba(212, 175, 55, 0.3);
 
-    /* Accent - Forest Green (Kashmir Valley) */
-    --color-accent: #2D6B3F;
-    --color-accent-light: #3D8B54;
-    --color-accent-dark: #1E4A2B;
+    /* Accent - Valley Forest Green */
+    --color-accent: #2E5C3A;
+    --color-accent-light: #4A8C5C;
+    --color-accent-dark: #1A3822;
 
-    /* Background - Deep dark with navy undertones */
-    --bg-primary: #0A0A12;
-    --bg-secondary: #10101C;
-    --bg-tertiary: #161625;
-    --bg-card: rgba(255, 255, 255, 0.03);
-    --bg-card-hover: rgba(255, 255, 255, 0.06);
-    --bg-glass: rgba(22, 22, 37, 0.7);
-    --bg-glass-strong: rgba(22, 22, 37, 0.9);
+    /* Background - Midnight Ethereal Navy */
+    --bg-primary: #030306;
+    --bg-secondary: #08080C;
+    --bg-tertiary: #0D0D14;
+    
+    /* Premium Glassmorphism */
+    --bg-card: rgba(255, 255, 255, 0.015);
+    --bg-card-hover: rgba(255, 255, 255, 0.035);
+    --bg-glass: rgba(8, 8, 12, 0.5);
+    --bg-glass-strong: rgba(3, 3, 6, 0.85);
 
-    /* Surface - Glassmorphism */
-    --surface-border: rgba(201, 169, 89, 0.15);
-    --surface-border-hover: rgba(201, 169, 89, 0.3);
-    --surface-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-    --surface-shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.5);
+    /* Surface & Borders */
+    --surface-border: rgba(212, 175, 55, 0.12);
+    --surface-border-hover: rgba(212, 175, 55, 0.3);
+    --surface-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    --surface-shadow-lg: 0 24px 80px rgba(0, 0, 0, 0.8);
+    --inner-glow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    --inner-glow-hover: inset 0 0 0 1px rgba(212, 175, 55, 0.15);
 
-    /* Text - Warm tones */
-    --text-primary: #F5E6D3;
-    --text-secondary: #A89B8C;
-    --text-muted: #6B6260;
-    --text-accent: #C9A959;
-    --text-heading: #F5E6D3;
+    /* Text - Luxurious High Contrast */
+    --text-primary: #F9F6F0;
+    --text-secondary: #B5AFA4;
+    --text-muted: #736E65;
+    --text-accent: #D4AF37;
+    --text-heading: #FFFFFF;
 
-    /* Typography */
-    --font-heading: 'Cinzel Decorative', 'Cinzel', serif;
-    --font-subheading: 'Cinzel', serif;
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Typography - Premium Pairings */
+    --font-heading: 'Playfair Display', 'Cinzel', serif;
+    --font-subheading: 'Playfair Display', serif;
+    --font-body: 'Outfit', 'Inter', sans-serif;
 
     /* Font Sizes */
-    --text-xs: 0.75rem;
-    --text-sm: 0.875rem;
-    --text-base: 1rem;
-    --text-lg: 1.125rem;
-    --text-xl: 1.25rem;
-    --text-2xl: 1.5rem;
-    --text-3xl: 1.875rem;
-    --text-4xl: 2.25rem;
-    --text-5xl: 3rem;
+    --text-xs: 0.8rem;
+    --text-sm: 0.9rem;
+    --text-base: 1.05rem;
+    --text-lg: 1.2rem;
+    --text-xl: 1.4rem;
+    --text-2xl: 1.75rem;
+    --text-3xl: 2.25rem;
+    --text-4xl: 3rem;
+    --text-5xl: 4rem;
 
-    /* Spacing */
+    /* Spacing - Airy & Elegant */
     --space-1: 0.25rem;
     --space-2: 0.5rem;
     --space-3: 0.75rem;
-    --space-4: 1rem;
-    --space-5: 1.25rem;
-    --space-6: 1.5rem;
-    --space-8: 2rem;
-    --space-10: 2.5rem;
-    --space-12: 3rem;
-    --space-16: 4rem;
-    --space-20: 5rem;
+    --space-4: 1.25rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-8: 3rem;
+    --space-10: 4rem;
+    --space-12: 5rem;
+    --space-16: 6rem;
+    --space-20: 8rem;
 
-    /* Border Radius */
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 16px;
-    --radius-xl: 24px;
+    /* Border Radius - Modern Soft Curves */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --radius-xl: 32px;
     --radius-full: 9999px;
 
-    /* Transitions */
-    --transition-fast: 150ms ease;
-    --transition-base: 250ms ease;
-    --transition-slow: 400ms ease;
-    --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Transitions - Buttery Smooth */
+    --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
 
     /* Sidebar */
     --sidebar-width: 260px;
@@ -114,6 +118,7 @@ html {
     font-size: 16px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 body {
@@ -122,10 +127,10 @@ body {
     color: var(--text-primary);
     min-height: 100vh;
     overflow-x: hidden;
-    line-height: 1.7;
+    line-height: 1.8;
 }
 
-/* --- Background Pattern & Effects --- */
+/* --- Premium Background Effects --- */
 .bg-pattern {
     position: fixed;
     top: 0;
@@ -133,15 +138,10 @@ body {
     width: 100%;
     height: 100%;
     z-index: var(--z-bg);
-    opacity: 0.03;
+    opacity: 0.15;
     pointer-events: none;
-    background-image: 
-        /* Paisley/mandala-inspired repeating pattern */
-        radial-gradient(ellipse 60px 80px at 50% 50%, var(--color-secondary) 0%, transparent 70%),
-        radial-gradient(circle 4px at 30% 30%, var(--color-secondary) 0%, transparent 100%),
-        radial-gradient(circle 4px at 70% 70%, var(--color-secondary) 0%, transparent 100%);
-    background-size: 120px 160px, 120px 160px, 120px 160px;
-    background-position: 0 0, 0 0, 0 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
 }
 
 .bg-gradient-overlay {
@@ -153,9 +153,10 @@ body {
     z-index: var(--z-bg);
     pointer-events: none;
     background: 
-        radial-gradient(ellipse at 20% 0%, rgba(139, 26, 26, 0.15) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 100%, rgba(45, 107, 63, 0.08) 0%, transparent 60%),
-        radial-gradient(ellipse at 50% 50%, rgba(201, 169, 89, 0.05) 0%, transparent 70%);
+        radial-gradient(circle at 15% 10%, rgba(163, 38, 38, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(212, 175, 55, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(46, 92, 58, 0.05) 0%, transparent 60%);
+    animation: auroraDrift 20s infinite alternate ease-in-out;
 }
 
 /* --- Scrollbar --- */
@@ -1512,4 +1513,13 @@ a:hover {
     h1 { font-size: var(--text-2xl); }
     h2 { font-size: var(--text-xl); }
     h3 { font-size: var(--text-lg); }
+}
+
+/* --- Ornamental Divider --- */
+.ornamental-divider {
+    text-align: center;
+    margin: var(--space-8) 0;
+    color: var(--color-secondary);
+    font-size: var(--text-2xl);
+    opacity: 0.8;
 }
