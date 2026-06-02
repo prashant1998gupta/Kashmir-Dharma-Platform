@@ -1,0 +1,312 @@
+[
+    {
+        "id": "navreh",
+        "name": "Navreh",
+        "icon": "🌸",
+        "type": "Major Festival",
+        "month": "Chaitra",
+        "date": "Chaitra Shukla Pratipada (March/April)",
+        "dateStr": "",
+        "description": "Navreh marks the Kashmiri Pandit New Year, celebrated on the first day of the Hindu lunar month of Chaitra. It is one of the most important festivals for the community, symbolizing new beginnings and prosperity.",
+        "historicalSignificance": "Navreh has been celebrated by Kashmiri Pandits for centuries as the beginning of the Saptarishi Era calendar. The word 'Navreh' is derived from 'Nav-Varsha' meaning 'New Year'. It marks the commencement of the Kashmiri Hindu calendar and has deep roots in the astronomical and cultural traditions of Kashmir.",
+        "spiritualSignificance": "Navreh is dedicated to Goddess Sharika (a form of Durga), the presiding deity of Srinagar. It represents the triumph of light over darkness and the renewal of cosmic order. Looking at the Navreh Thaal (plate) with specific auspicious items is believed to ensure prosperity throughout the year.",
+        "ritualProcedure": "The night before Navreh, a special plate (Thaal) is prepared and placed at the bedside. The Thaal contains raw rice filled to the brim, a Panchang (almanac), a pen/pencil, a gold or silver ornament, flowers, a mirror, cooked rice, bread, salt, walnuts, and currency notes. Upon waking, one looks at the Thaal first before anything else. The family then visits temples and exchanges greetings.",
+        "preparations": [
+            "Clean and decorate the house thoroughly",
+            "Prepare the Navreh Thaal with all required items",
+            "Cook special festive meals",
+            "Arrange fresh flowers",
+            "Keep new Panchang (almanac) ready",
+            "Prepare traditional sweets"
+        ],
+        "traditionalFoods": [
+            "Taher (plain yellow rice)",
+            "Dum Aloo (Kashmiri style potatoes)",
+            "Nadru Yakhni (lotus stem in yogurt)",
+            "Tsok Wangun (sour brinjal)",
+            "Phirni (rice pudding)",
+            "Kulcha (traditional bread)"
+        ],
+        "prayers": [
+            "Prayers to Goddess Sharika",
+            "Recitation from Panchang",
+            "Navagraha prayers for the new year",
+            "Family prayers for prosperity"
+        ],
+        "faqs": [
+            {
+                "question": "What is the significance of the Navreh Thaal?",
+                "answer": "The Navreh Thaal represents abundance and auspiciousness. Each item on the plate has symbolic meaning — rice represents food security, the mirror represents self-reflection, gold represents wealth, the Panchang represents knowledge, and flowers represent beauty and nature's blessings."
+            },
+            {
+                "question": "Why do we look at the Thaal first thing in the morning?",
+                "answer": "According to tradition, the first thing one sees on the new year sets the tone for the entire year. By looking at the Thaal filled with auspicious items, one begins the year with the vision of prosperity, knowledge, and beauty."
+            },
+            {
+                "question": "Is Navreh the same as Gudi Padwa or Ugadi?",
+                "answer": "While Navreh falls on the same day as Gudi Padwa (Maharashtra) and Ugadi (Karnataka/Andhra Pradesh) — all marking Chaitra Shukla Pratipada — the rituals and cultural expressions are distinctly Kashmiri Pandit in nature."
+            }
+        ]
+    },
+    {
+        "id": "herath",
+        "name": "Herath (Maha Shivaratri)",
+        "icon": "🔱",
+        "type": "Major Festival",
+        "month": "Phalguna",
+        "date": "Phalguna Krishna Trayodashi (February/March)",
+        "description": "Herath is the most important festival for Kashmiri Pandits, their version of Maha Shivaratri. It is celebrated over several days with elaborate rituals dedicated to Lord Shiva and Goddess Parvati, commemorating their divine marriage.",
+        "historicalSignificance": "Herath has been the cornerstone of Kashmiri Pandit religious life for millennia. The celebration is deeply connected to Kashmir Shaivism, one of the most profound philosophical traditions of Hinduism. The elaborate multi-day celebration distinguishes the Kashmiri Pandit observance from Shivaratri celebrations elsewhere in India.",
+        "spiritualSignificance": "Herath celebrates the cosmic marriage of Lord Shiva and Goddess Parvati. For Kashmiri Pandits, it represents the union of consciousness (Shiva) with energy (Shakti). The rituals emphasize devotion, purification, and the awakening of spiritual consciousness.",
+        "ritualProcedure": "Celebrations begin days in advance. The main puja involves placing watuk (earthen pot representing Shiva) and watuk nout (representing Parvati) at the prayer place. On the night of Herath, elaborate puja is performed with chanting of mantras, offerings of milk, water, and walnut paste to the watuk. The entire family stays awake through the night. The following days involve distribution of prasad and visiting relatives.",
+        "preparations": [
+            "Thorough house cleaning (several days before)",
+            "Preparing the watuk (sacred earthen pot)",
+            "Arranging all puja materials",
+            "Preparing special walnuts for offering",
+            "Cooking festive meals for multiple days",
+            "Decorating the puja room"
+        ],
+        "traditionalFoods": [
+            "Tcharvani (lamb dish for Herath)",
+            "Dum Aloo",
+            "Haakh (collard greens)",
+            "Taher (yellow rice)",
+            "Girda and Tsot (traditional breads)",
+            "Kehwa (Kashmiri saffron tea)",
+            "Walnuts (prasad)"
+        ],
+        "prayers": [
+            "Shiva Panchakshari Mantra (Om Namah Shivaya)",
+            "Rudra Abhishek",
+            "Shiva Tandav Stotram",
+            "Kashmiri Bhajans dedicated to Lord Shiva",
+            "Special Herath mantras passed through tradition"
+        ],
+        "faqs": [
+            {
+                "question": "How is Kashmiri Herath different from mainstream Shivaratri?",
+                "answer": "While the essence is the same — worship of Lord Shiva — Kashmiri Pandits celebrate Herath on Phalguna Krishna Trayodashi (a day before the mainstream Shivaratri date). The rituals involve unique elements like the watuk, specific food offerings, and multi-day celebrations with distinct Kashmiri cultural expressions."
+            },
+            {
+                "question": "What is the Watuk?",
+                "answer": "The Watuk is a sacred earthen pot that symbolically represents Lord Shiva. It is filled with water and walnuts, decorated with a sacred thread, and placed at the center of the puja. Throughout the night, prayers and offerings are made to the Watuk as a representation of the divine."
+            },
+            {
+                "question": "Why are walnuts significant in Herath?",
+                "answer": "Walnuts (doon) hold special significance as offerings to Lord Shiva in Kashmiri tradition. They are considered sacred and are distributed as prasad. The walnut's hard exterior and nourishing interior symbolize the journey from the material to the spiritual."
+            }
+        ]
+    },
+    {
+        "id": "zyeth-atham",
+        "name": "Zyeth Atham",
+        "icon": "🌊",
+        "type": "Major Festival",
+        "month": "Bhadrapada",
+        "date": "Bhadrapada Shukla Ashtami (August/September)",
+        "description": "Zyeth Atham, also known as Zetha Ashtami, is a significant festival celebrated by Kashmiri Pandits in honor of Goddess Raginya (a form of Goddess Ganga). The festival involves special rituals near water bodies.",
+        "historicalSignificance": "This festival has ancient origins connected to the reverence of river deities in Kashmir. The Vitasta (Jhelum) river is considered sacred by Kashmiri Pandits, and this festival celebrates the divine feminine energy manifested through water.",
+        "spiritualSignificance": "The festival symbolizes the purifying and life-giving power of water as a manifestation of the divine feminine. It represents gratitude toward the rivers and water bodies that sustain life in the Kashmir Valley.",
+        "ritualProcedure": "Early morning bath in a river or water body is considered essential. Special puja is performed at home. Families prepare traditional meals and visit temples. The day involves fasting followed by a special meal.",
+        "preparations": [
+            "Prepare items for water puja",
+            "Arrange flowers and offerings",
+            "Prepare traditional meal items",
+            "Clean and decorate puja area"
+        ],
+        "traditionalFoods": [
+            "Special rice preparations",
+            "Vegetarian feast",
+            "Traditional Kashmiri sweets"
+        ],
+        "prayers": [
+            "Prayers to Goddess Raginya",
+            "River worship mantras",
+            "Purity and gratitude prayers"
+        ],
+        "faqs": [
+            {
+                "question": "What is the connection between Zyeth Atham and water?",
+                "answer": "Zyeth Atham celebrates the divine feminine energy present in water. Rivers, especially the Vitasta (Jhelum), are considered sacred in Kashmiri Pandit tradition. The festival reinforces the community's deep spiritual connection with water."
+            }
+        ]
+    },
+    {
+        "id": "khetsrimavas",
+        "name": "Khetsrimavas",
+        "icon": "🌑",
+        "type": "Festival",
+        "month": "Jyeshtha",
+        "date": "Jyeshtha Amavasya (May/June)",
+        "description": "Khetsrimavas is observed on the Amavasya (new moon day) of Jyeshtha month. It is a day dedicated to remembering ancestors and performing rituals for their peace and spiritual progress.",
+        "historicalSignificance": "This observance connects Kashmiri Pandits with their ancestral heritage. It reinforces the importance of lineage and family bonds that transcend physical existence.",
+        "spiritualSignificance": "The day emphasizes the spiritual connection between the living and their departed ancestors. It is believed that performing rituals on this day brings peace to departed souls and blessings to the family.",
+        "ritualProcedure": "Families perform tarpan (water offerings) and special prayers for departed ancestors. Traditional meals are prepared and offered. Some families visit pilgrimage sites.",
+        "preparations": [
+            "Prepare items for tarpan",
+            "Cook traditional offerings",
+            "Arrange puja materials"
+        ],
+        "traditionalFoods": [
+            "Taher",
+            "Vegetarian meal offerings",
+            "Traditional bread"
+        ],
+        "prayers": [
+            "Ancestral prayers (Pitru prayers)",
+            "Tarpan mantras",
+            "Peace prayers for departed souls"
+        ],
+        "faqs": [
+            {
+                "question": "Is Khetsrimavas similar to Pitru Paksha?",
+                "answer": "While both involve ancestral remembrance, Khetsrimavas is a specific Kashmiri Pandit observance on Jyeshtha Amavasya. The rituals and customs are distinctly Kashmiri in nature."
+            }
+        ]
+    },
+    {
+        "id": "pan-festival",
+        "name": "Pan (Pann)",
+        "icon": "🍃",
+        "type": "Festival",
+        "month": "Bhadrapada",
+        "date": "Bhadrapada (August/September)",
+        "description": "Pan, also known as Pann, is a unique Kashmiri Pandit festival associated with offering and distributing special foods. It involves community gathering and sharing of traditional prepared dishes.",
+        "historicalSignificance": "Pan is a tradition that strengthens community bonds through shared meals and rituals. It reflects the communal nature of Kashmiri Pandit society.",
+        "spiritualSignificance": "The act of sharing food is considered deeply spiritual, representing the sharing of divine blessings. Community meals reinforce unity and collective worship.",
+        "ritualProcedure": "Families prepare special dishes and share them with neighbors and relatives. Community gatherings are organized. Special prayers are offered before the community meal.",
+        "preparations": [
+            "Prepare traditional dishes for sharing",
+            "Organize community gathering",
+            "Arrange for distribution of food"
+        ],
+        "traditionalFoods": [
+            "Special rice dishes",
+            "Traditional meat preparations",
+            "Kashmiri breads",
+            "Seasonal fruits"
+        ],
+        "prayers": [
+            "Community prayers",
+            "Prayers before meal sharing"
+        ],
+        "faqs": [
+            {
+                "question": "What makes Pan unique among Kashmiri Pandit festivals?",
+                "answer": "Pan emphasizes community bonding through the sharing of food. It is less about individual ritual and more about collective celebration and strengthening of community ties."
+            }
+        ]
+    },
+    {
+        "id": "janmashtami",
+        "name": "Janmashtami",
+        "icon": "🦚",
+        "type": "Major Festival",
+        "month": "Bhadrapada",
+        "date": "Bhadrapada Krishna Ashtami (August/September)",
+        "description": "Janmashtami celebrates the birth of Lord Krishna. Kashmiri Pandits observe this festival with distinctive rituals that blend the pan-Indian celebration with uniquely Kashmiri customs.",
+        "historicalSignificance": "The worship of Lord Krishna has been integral to Kashmiri Pandit religious life, with temples dedicated to various forms of Vishnu/Krishna found throughout the Kashmir Valley historically.",
+        "spiritualSignificance": "Lord Krishna's birth symbolizes the divine descending to earth to restore dharma. For Kashmiri Pandits, it represents the power of devotion and the triumph of righteousness.",
+        "ritualProcedure": "Fasting through the day until midnight, the traditional birth time of Krishna. Elaborate puja at midnight with singing of bhajans. Breaking of fast with special foods. Temple visits and community celebrations.",
+        "preparations": [
+            "Decorate the puja room and Krishna idol",
+            "Prepare items for midnight puja",
+            "Arrange flowers and offerings",
+            "Prepare special sweets and prasad"
+        ],
+        "traditionalFoods": [
+            "Kheer (rice pudding)",
+            "Makhan (butter) offerings",
+            "Fruits and dry fruits",
+            "Traditional sweets"
+        ],
+        "prayers": [
+            "Krishna Ashtakam",
+            "Bhagavad Gita recitation",
+            "Kashmiri Krishna bhajans",
+            "Midnight birth celebration prayers"
+        ],
+        "faqs": [
+            {
+                "question": "How do Kashmiri Pandits celebrate Janmashtami differently?",
+                "answer": "While the core celebration is similar to other Hindu communities, Kashmiri Pandits incorporate their unique culinary traditions, specific bhajans in Kashmiri language, and local customs that reflect the community's distinct cultural identity."
+            }
+        ]
+    },
+    {
+        "id": "ram-navami",
+        "name": "Ram Navami",
+        "icon": "🏹",
+        "type": "Festival",
+        "month": "Chaitra",
+        "date": "Chaitra Shukla Navami (March/April)",
+        "description": "Ram Navami celebrates the birth of Lord Rama, the seventh avatar of Vishnu. Kashmiri Pandits observe this day with prayers, readings from the Ramayana, and community worship.",
+        "historicalSignificance": "The worship of Lord Rama is deeply embedded in Kashmiri Pandit tradition. Historical temples and sacred sites in Kashmir are associated with the Ramayana narrative.",
+        "spiritualSignificance": "Lord Rama represents the ideal of dharma, righteous conduct, and duty. His life story teaches values of honor, sacrifice, and devotion that are central to Kashmiri Pandit philosophy.",
+        "ritualProcedure": "Morning prayers and puja. Reading of selected chapters from Ramayana. Community gatherings at temples. Distribution of prasad.",
+        "preparations": [
+            "Prepare puja materials",
+            "Keep Ramayana text ready for reading",
+            "Prepare prasad",
+            "Decorate home and puja area"
+        ],
+        "traditionalFoods": [
+            "Taher (yellow rice)",
+            "Vegetarian feast",
+            "Prasad sweets"
+        ],
+        "prayers": [
+            "Ram Raksha Stotra",
+            "Hanuman Chalisa",
+            "Ramayana path (reading)",
+            "Ram dhun"
+        ],
+        "faqs": [
+            {
+                "question": "What is the Kashmiri Pandit connection with Lord Rama?",
+                "answer": "Kashmir has ancient connections with the Ramayana tradition. Several places in Kashmir are believed to have associations with the epic. The worship of Lord Rama is an integral part of Kashmiri Pandit religious practice."
+            }
+        ]
+    },
+    {
+        "id": "sharika-jayanti",
+        "name": "Sharika Jayanti",
+        "icon": "🔥",
+        "type": "Major Festival",
+        "month": "Ashvin",
+        "date": "Ashvin Shukla Ashtami (September/October)",
+        "description": "Sharika Jayanti is the birthday celebration of Goddess Sharika, the presiding deity of Srinagar and one of the most important deities for Kashmiri Pandits. The Hari Parbat hill (Sharika Peeth) in Srinagar is dedicated to her.",
+        "historicalSignificance": "Goddess Sharika has been the central deity of Srinagar for centuries. The Chakreshwari temple atop Hari Parbat is one of the most sacred sites for Kashmiri Pandits. The legend of Goddess Sharika dropping a pebble (now Hari Parbat) to crush a demon is central to Srinagar's mythological history.",
+        "spiritualSignificance": "Goddess Sharika represents the protective divine feminine energy that guards the land and people of Kashmir. She is worshipped as Jagadamba (mother of the universe) by Kashmiri Pandits.",
+        "ritualProcedure": "Special puja and prayers to Goddess Sharika. Visits to Chakreshwari temple (when possible). Community gatherings and bhajan sessions. Fasting and feasting.",
+        "preparations": [
+            "Prepare special puja for Goddess Sharika",
+            "Arrange flowers and offerings",
+            "Prepare community gathering",
+            "Cook festive meals"
+        ],
+        "traditionalFoods": [
+            "Taher",
+            "Dum Aloo",
+            "Traditional Kashmiri vegetarian feast",
+            "Prasad sweets"
+        ],
+        "prayers": [
+            "Sharika Stotram",
+            "Durga Saptashati (selected portions)",
+            "Kashmiri devotional songs for Sharika",
+            "Community prayer sessions"
+        ],
+        "faqs": [
+            {
+                "question": "Who is Goddess Sharika?",
+                "answer": "Goddess Sharika is considered a manifestation of Goddess Durga/Parvati and is the presiding deity (Isht Devi) of Srinagar, Kashmir. She is worshipped at the Chakreshwari temple on Hari Parbat. She is one of the most revered deities for Kashmiri Pandits."
+            },
+            {
+                "question": "What is the Hari Parbat legend?",
+                "answer": "According to mythology, when a demon was terrorizing the area, Goddess Sharika assumed the form of a Hari (myna bird) and dropped a pebble on the demon, which grew into the hill now known as Hari Parbat. This hill and its temple remain among the most sacred sites for Kashmiri Pandits."
+            }
+        ]
+    }
+]

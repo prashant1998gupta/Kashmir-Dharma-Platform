@@ -1,0 +1,241 @@
+{
+    "title": "Kashmiri Pandit Wedding Guide",
+    "description": "A comprehensive guide to the traditional Kashmiri Pandit marriage ceremonies, from engagement to post-wedding rituals.",
+    "overview": "A Kashmiri Pandit wedding (Vyah) is a multi-day celebration rich in tradition, spirituality, and cultural expression. Each ceremony has deep symbolic and spiritual meaning, connecting the couple and their families with centuries of heritage.",
+    "ceremonies": [
+        {
+            "id": "kasamdry",
+            "name": "Kasamdry (Match Fixing)",
+            "day": "Pre-Wedding",
+            "description": "The initial stage where families explore the match. Horoscopes are matched, backgrounds are discussed, and families meet to evaluate compatibility.",
+            "significance": "Ensures spiritual and practical compatibility between the couple and their families.",
+            "steps": [
+                "Horoscope matching through a priest or astrologer",
+                "Family background inquiry",
+                "Initial meeting between families",
+                "Mutual agreement to proceed"
+            ],
+            "materials": [],
+            "responsibilities": {
+                "bride_family": "Host the initial meeting, provide horoscope details",
+                "groom_family": "Visit the bride's family, provide horoscope details"
+            }
+        },
+        {
+            "id": "livun",
+            "name": "Livun (Ceremonial Cleansing)",
+            "day": "Day 1",
+            "description": "The wedding celebrations begin with Livun — a ceremonial cleansing of the house. The home is thoroughly cleaned and prepared for the wedding. Traditional songs (vanvun) are sung by women of the family.",
+            "significance": "Purification of the physical space mirrors the spiritual preparation for the sacred ceremonies. It symbolizes removing negativity and inviting auspiciousness.",
+            "steps": [
+                "Thorough cleaning of the entire house",
+                "Women sing traditional Vanvun (wedding songs)",
+                "Decoration of the home with flowers and traditional items",
+                "Preparation of the wedding venue within the home"
+            ],
+            "materials": [
+                "Cleaning materials",
+                "Flowers and decorations",
+                "Traditional items for decoration",
+                "Incense"
+            ],
+            "responsibilities": {
+                "bride_family": "Perform Livun at bride's home",
+                "groom_family": "Perform Livun at groom's home"
+            }
+        },
+        {
+            "id": "maenziraat",
+            "name": "Maenziraat (Mehendi Ceremony)",
+            "day": "Day 2",
+            "description": "The Maenziraat ceremony involves the application of henna (mehendi) on the bride and groom in their respective homes. This is accompanied by singing, music, and celebration.",
+            "significance": "Henna represents beauty, joy, and auspiciousness. The deeper the color of the mehendi, the more love is believed to exist in the marriage.",
+            "steps": [
+                "Application of mehendi to the bride/groom",
+                "Singing of traditional vanvun",
+                "Dancing and celebration",
+                "Serving of refreshments and sweets"
+            ],
+            "materials": [
+                "Henna paste",
+                "Decorative accessories",
+                "Sweets and snacks",
+                "Musical instruments (traditional)"
+            ],
+            "responsibilities": {
+                "bride_family": "Arrange mehendi artist, host celebration at bride's home",
+                "groom_family": "Host celebration at groom's home"
+            }
+        },
+        {
+            "id": "devgon-wedding",
+            "name": "Devgon (Pre-Wedding Puja)",
+            "day": "Day 3",
+            "description": "An elaborate puja performed at both the bride's and groom's homes, invoking divine blessings for the marriage. This is one of the most sacred pre-wedding ceremonies.",
+            "significance": "Seeks the blessings of the family deity (Kuldevta) and all gods for the success and harmony of the marriage.",
+            "steps": [
+                "Setting up the puja area with all sacred items",
+                "Priest performs elaborate puja with mantras",
+                "Offerings of flowers, rice, and ghee",
+                "Havan (fire ceremony) as part of the puja",
+                "Family prayers and blessings"
+            ],
+            "materials": [
+                "Complete puja kit",
+                "Havan materials",
+                "Flowers and rice",
+                "Ghee and incense",
+                "Sacred thread",
+                "Prasad items"
+            ],
+            "responsibilities": {
+                "bride_family": "Arrange priest and puja materials",
+                "groom_family": "Arrange priest and puja materials"
+            }
+        },
+        {
+            "id": "divo-lagaun",
+            "name": "Divo Lagaun (Lamp Lighting)",
+            "day": "Day 4",
+            "description": "The ceremonial lighting of lamps marks the official beginning of the main wedding ceremonies. Sacred lamps are lit with specific mantras.",
+            "significance": "Light symbolizes knowledge, truth, and the divine. The lighting of lamps marks the transition from preparation to the sacred wedding ceremonies.",
+            "steps": [
+                "Preparation of sacred lamps with ghee",
+                "Chanting of specific mantras",
+                "Lighting of the main ceremonial lamp",
+                "Placing lamps in designated areas of the home"
+            ],
+            "materials": [
+                "Ghee lamps (multiple)",
+                "Cotton wicks",
+                "Ghee",
+                "Flowers",
+                "Rice"
+            ],
+            "responsibilities": {
+                "bride_family": "Perform at bride's home",
+                "groom_family": "Perform at groom's home"
+            }
+        },
+        {
+            "id": "lagan-ceremony",
+            "name": "Lagan (Main Wedding Ceremony)",
+            "day": "Day 5 (Wedding Day)",
+            "description": "The main wedding ceremony — the heart of the Kashmiri Pandit marriage. The groom arrives at the bride's home (or venue), and the sacred rituals unite the couple. This involves mantras, fire rituals, exchange of garlands, and the sacred vows.",
+            "significance": "The Lagan ceremony creates an eternal spiritual bond between the couple. The fire serves as the divine witness, and the mantras seal the commitment for seven lifetimes.",
+            "steps": [
+                "Baraat (groom's procession) arrives at the venue",
+                "Welcome ceremony (Dwaar Puja) at the entrance",
+                "Exchange of garlands (Jai Mala)",
+                "Sacred fire ceremony (Havan)",
+                "Exchange of vows around the sacred fire",
+                "Kanyadaan — father gives away the bride",
+                "Sindoor ceremony and Mangalsutra",
+                "Blessings from elders of both families"
+            ],
+            "materials": [
+                "Wedding mandap setup",
+                "Havan kund and materials",
+                "Flower garlands",
+                "Sindoor and Mangalsutra",
+                "Sacred thread",
+                "Rice for the ceremony",
+                "Traditional wedding attire for bride and groom",
+                "Dejhoor (sacred ear ornament for bride)"
+            ],
+            "responsibilities": {
+                "bride_family": "Host the ceremony, arrange venue and decorations",
+                "groom_family": "Arrange baraat, bring required gifts and items"
+            }
+        },
+        {
+            "id": "posh-puja",
+            "name": "Posh Puja (Flower Worship)",
+            "day": "Day 5 (Wedding Day)",
+            "description": "A unique and beautiful Kashmiri ritual where flowers play the central role. The couple is showered with flowers and specific puja is performed with elaborate floral arrangements.",
+            "significance": "Flowers symbolize the beauty, fragility, and preciousness of the new relationship. The ritual invokes blessings of nature and fertility.",
+            "steps": [
+                "Arrangement of specific flowers",
+                "Flower-based puja with mantras",
+                "Showering of flowers on the couple",
+                "Blessings and prayers"
+            ],
+            "materials": [
+                "Various fresh flowers",
+                "Rose petals",
+                "Flower garlands",
+                "Puja items"
+            ],
+            "responsibilities": {
+                "both": "Both families participate in this ceremony"
+            }
+        },
+        {
+            "id": "roth-khabar",
+            "name": "Roth Khabar (Wedding Feast)",
+            "day": "Day 6",
+            "description": "The grand wedding feast where families and guests come together for an elaborate Kashmiri meal. This is a celebration of the new union with traditional Wazwan-inspired cuisine.",
+            "significance": "The shared meal symbolizes the merging of two families. Food is considered sacred, and sharing a meal together creates lasting bonds.",
+            "steps": [
+                "Preparation of elaborate traditional meal",
+                "Serving guests in traditional style",
+                "Special seating for the newlywed couple",
+                "Music and celebration during the feast"
+            ],
+            "materials": [
+                "Complete Wazwan/traditional meal setup",
+                "Traditional serving vessels",
+                "Decorations for the dining area",
+                "Seating arrangements"
+            ],
+            "responsibilities": {
+                "bride_family": "Traditionally hosts the Roth Khabar",
+                "groom_family": "May also host a separate feast at their home"
+            }
+        },
+        {
+            "id": "satrandir",
+            "name": "Satrandir (Post-Wedding)",
+            "day": "Day 7",
+            "description": "Post-wedding rituals where the bride visits her new home with the groom. The groom's family welcomes the bride with specific rituals and celebrations.",
+            "significance": "Marks the bride's formal entry into her new home and family. The welcoming rituals ensure she feels accepted and blessed in her new life.",
+            "steps": [
+                "Bride and groom travel to the groom's home",
+                "Welcome ceremony at the door",
+                "Bride enters stepping over a vessel of rice",
+                "Greeting and blessing by all family members",
+                "Special meal at the groom's home"
+            ],
+            "materials": [
+                "Rice vessel for the doorstep",
+                "Welcome items (flowers, lamp, kalash)",
+                "Gifts for the bride",
+                "Festive meal preparations"
+            ],
+            "responsibilities": {
+                "groom_family": "Arrange welcome ceremony and celebrations"
+            }
+        }
+    ],
+    "traditional_songs": [
+        {
+            "name": "Vanvun",
+            "description": "Traditional wedding songs sung by women at various stages of the wedding. These songs describe the emotions of the bride, blessings for the couple, and the joy of the celebration.",
+            "when": "Throughout the wedding ceremonies"
+        },
+        {
+            "name": "Rouf",
+            "description": "A traditional Kashmiri group dance performed by women during wedding celebrations, characterized by coordinated movements and singing.",
+            "when": "During celebrations and festive gatherings"
+        }
+    ],
+    "tips_for_diaspora": [
+        "Consult with elderly family members to understand specific family variations",
+        "Hire a priest who is well-versed in Kashmiri Pandit wedding rituals",
+        "Start preparations well in advance to source specific ritual materials",
+        "Record the ceremonies for future generations to learn from",
+        "Consider combining days if a shorter celebration is necessary",
+        "Connect with the Kashmiri Pandit community in your area for support and resources",
+        "Don't hesitate to ask scholars for guidance on adaptations for your specific situation"
+    ]
+}

@@ -1,0 +1,86 @@
+{
+    "eventTypes": [
+        { "id": "vehicle", "name": "Vehicle Purchase", "icon": "🚗", "description": "Buying a new car, bike, or vehicle" },
+        { "id": "gold", "name": "Gold Purchase", "icon": "✨", "description": "Purchasing gold jewelry or ornaments" },
+        { "id": "business", "name": "Starting Business", "icon": "💼", "description": "Launching a new business venture" },
+        { "id": "job", "name": "New Job", "icon": "🏢", "description": "Starting a new job or career" },
+        { "id": "housewarming", "name": "Housewarming", "icon": "🏡", "description": "Entering a new home" },
+        { "id": "travel", "name": "Travel", "icon": "✈️", "description": "Important journeys and travel" },
+        { "id": "property", "name": "Property Purchase", "icon": "🏗️", "description": "Buying land or property" },
+        { "id": "education", "name": "Education", "icon": "📚", "description": "Starting school, college, or courses" },
+        { "id": "marriage", "name": "Marriage Activities", "icon": "💒", "description": "Wedding-related events and ceremonies" }
+    ],
+    "generalGuidelines": [
+        "Always consult a knowledgeable scholar or priest for important life decisions",
+        "These are general guidelines based on traditional Panchang principles",
+        "Individual horoscopes may affect suitability of specific dates",
+        "Shukla Paksha (waxing moon phase) is generally preferred for new beginnings",
+        "Avoid Amavasya (new moon) and specific inauspicious days for major activities"
+    ],
+    "dayRecommendations": {
+        "vehicle": {
+            "goodDays": ["Monday", "Wednesday", "Thursday", "Friday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi", "Trayodashi"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Navami", "Chaturdashi", "Amavasya"],
+            "notes": "Thursday (Guruvar) and Friday (Shukravar) are considered especially favorable for vehicle purchases."
+        },
+        "gold": {
+            "goodDays": ["Monday", "Wednesday", "Thursday", "Friday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi", "Purnima"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Chaturdashi", "Amavasya"],
+            "notes": "Akshaya Tritiya is considered the most auspicious day for gold purchase. Dhanteras is also highly favored."
+        },
+        "business": {
+            "goodDays": ["Monday", "Wednesday", "Thursday", "Friday"],
+            "avoidDays": ["Tuesday", "Saturday", "Sunday"],
+            "preferredTithis": ["Pratipada", "Dwitiya", "Tritiya", "Panchami", "Dashami", "Ekadashi", "Purnima"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Navami", "Chaturdashi", "Amavasya"],
+            "notes": "Thursday is considered especially auspicious for business ventures as it is governed by Jupiter, the planet of wealth and wisdom."
+        },
+        "job": {
+            "goodDays": ["Monday", "Wednesday", "Thursday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Chaturdashi", "Amavasya"],
+            "notes": "Starting a new job on a Thursday or Monday is traditionally considered auspicious."
+        },
+        "housewarming": {
+            "goodDays": ["Monday", "Wednesday", "Thursday", "Friday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi", "Purnima"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Chaturdashi", "Amavasya"],
+            "notes": "For housewarming, the nakshatra is also very important. Rohini, Mrigashira, Uttara Phalguni, Hasta, and Uttara Ashadha are considered auspicious."
+        },
+        "travel": {
+            "goodDays": ["Monday", "Wednesday", "Thursday", "Friday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Navami", "Chaturdashi", "Amavasya"],
+            "notes": "The direction of travel also matters in traditional guidance. Consult with a scholar for specific travel muhurat."
+        },
+        "property": {
+            "goodDays": ["Monday", "Wednesday", "Thursday", "Friday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi", "Purnima"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Chaturdashi", "Amavasya"],
+            "notes": "Property dealings should ideally be done during Shukla Paksha. Rohini, Uttara Phalguni, and Uttara Ashadha nakshatras are favorable."
+        },
+        "education": {
+            "goodDays": ["Monday", "Wednesday", "Thursday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Pratipada", "Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Chaturdashi", "Amavasya"],
+            "notes": "Thursday (day of Jupiter/Brihaspati — the guru of the gods) is considered most auspicious for educational beginnings. Vasant Panchami is traditionally the most auspicious day to begin learning."
+        },
+        "marriage": {
+            "goodDays": ["Monday", "Wednesday", "Thursday", "Friday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi", "Trayodashi"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Navami", "Chaturdashi", "Amavasya", "Purnima"],
+            "notes": "Marriage muhurat requires detailed analysis of both horoscopes. Specific months and nakshatras are preferred. Always consult with a qualified Jyotish scholar for marriage dates."
+        }
+    },
+    "disclaimer": "This information is based on general traditional Panchang guidelines. For important life decisions, please consult with a qualified Kashmiri Pandit scholar or priest who can provide personalized guidance based on your specific circumstances and horoscope. This platform does not replace expert consultation."
+}

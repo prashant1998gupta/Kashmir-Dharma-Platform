@@ -1,0 +1,440 @@
+[
+    {
+        "id": "devgon",
+        "name": "Devgon",
+        "icon": "🕉️",
+        "category": "Life Events",
+        "purpose": "Devgon is a sacred ritual performed by Kashmiri Pandits to honor and invoke the family deity (Kuldevta). It involves elaborate prayers and offerings to strengthen the spiritual bond between the family and their ancestral deity.",
+        "description": "Devgon is one of the most significant household rituals for Kashmiri Pandits. It is a comprehensive puja performed to honor the family's Kuldevta and seek divine blessings for the family's well-being and prosperity.",
+        "history": "The Devgon ritual has been passed down through generations of Kashmiri Pandit families. Each family may have slight variations in their Devgon procedure, reflecting the rich diversity within the community's unified spiritual framework.",
+        "significance": "Devgon reinforces the family's spiritual identity and connection with their ancestral deity. It is considered essential for maintaining the spiritual well-being of the family and is typically performed during important occasions.",
+        "materials": [
+            "Sacred thread (Nara)",
+            "Rice (Taher)",
+            "Flowers (fresh)",
+            "Incense sticks and camphor",
+            "Ghee lamp (diya)",
+            "Fruits and dry fruits",
+            "Milk and yogurt",
+            "Honey",
+            "Sandalwood paste",
+            "Sacred water (Gangajal)",
+            "Coconut",
+            "Betel leaves and nuts"
+        ],
+        "steps": [
+            {
+                "title": "Preparation & Purification",
+                "description": "Clean the puja area thoroughly. Take a bath and wear clean clothes. Arrange all puja materials systematically."
+            },
+            {
+                "title": "Sankalp (Sacred Intent)",
+                "description": "Declare the purpose of the puja, stating your name, gotra, and the intention of performing Devgon for family welfare."
+            },
+            {
+                "title": "Invocation of Ganesh",
+                "description": "Begin with prayers to Lord Ganesh, the remover of obstacles, seeking his blessings for the successful completion of the ritual."
+            },
+            {
+                "title": "Kalash Sthapana",
+                "description": "Set up the sacred pot (Kalash) filled with water, adorned with mango leaves and coconut. This represents the divine presence."
+            },
+            {
+                "title": "Main Puja",
+                "description": "Perform the detailed puja to the Kuldevta with offerings of flowers, rice, incense, and lamps. Recite the appropriate mantras as guided by tradition."
+            },
+            {
+                "title": "Havan (Fire Offering)",
+                "description": "If performing havan as part of Devgon, light the sacred fire and make offerings of ghee, grains, and herbs while chanting mantras."
+            },
+            {
+                "title": "Aarti & Prasad",
+                "description": "Conclude with aarti (lamp worship) and distribute prasad to all family members and guests."
+            }
+        ],
+        "variations": [
+            "Some families perform Devgon annually, while others do it during specific occasions",
+            "The specific mantras may vary based on the family's Kuldevta",
+            "Families from different regions of Kashmir may have slightly different procedures"
+        ],
+        "misconceptions": [
+            "Devgon is not limited to specific castes — it is performed by all Kashmiri Pandit families",
+            "The ritual does not require an elaborate setup; sincere devotion is most important",
+            "While a priest is helpful, family elders who know the procedure can also guide the ritual"
+        ],
+        "faqs": [
+            {
+                "question": "When should Devgon be performed?",
+                "answer": "Devgon can be performed during auspicious occasions, festivals, or whenever the family feels a need to reconnect with their Kuldevta. Many families have specific traditional dates."
+            },
+            {
+                "question": "Can Devgon be performed without a priest?",
+                "answer": "While having a knowledgeable priest (Guru Ji) is recommended, if the family elders are familiar with the rituals, they can guide the procedure. The sincerity of devotion matters most."
+            }
+        ]
+    },
+    {
+        "id": "lagan",
+        "name": "Lagan (Engagement)",
+        "icon": "💍",
+        "category": "Marriage",
+        "purpose": "Lagan is the formal engagement ceremony in Kashmiri Pandit tradition, marking the official agreement between two families for the marriage of their children.",
+        "description": "The Lagan ceremony is the formal engagement in Kashmiri Pandit marriages. It involves an exchange of gifts, sweets, and formal commitments between the families, setting the stage for the wedding ceremonies.",
+        "history": "Lagan has been an essential part of Kashmiri Pandit marriages for centuries. It serves as the formal bond between two families and is accompanied by traditional songs and rituals.",
+        "significance": "The Lagan ceremony formalizes the relationship between two families and marks the beginning of the wedding preparations. It establishes the commitment and mutual respect between the families.",
+        "materials": [
+            "Ring or ornament for exchange",
+            "Sweets (traditional)",
+            "Dry fruits",
+            "Fresh fruits",
+            "Traditional clothing for the couple",
+            "Flowers",
+            "Sacred items for blessing"
+        ],
+        "steps": [
+            {
+                "title": "Family Meeting",
+                "description": "Both families meet formally, typically at the bride's home. Elders from both sides are present."
+            },
+            {
+                "title": "Puja and Blessings",
+                "description": "A brief puja is performed seeking divine blessings for the union. Priests from both families may participate."
+            },
+            {
+                "title": "Exchange of Gifts",
+                "description": "The groom's family presents gifts, sweets, and dry fruits to the bride's family. An engagement ring or ornament is exchanged."
+            },
+            {
+                "title": "Date Fixing",
+                "description": "The wedding date is discussed and finalized based on the Panchang and mutual convenience of both families."
+            },
+            {
+                "title": "Celebratory Meal",
+                "description": "Both families share a meal together, symbolizing the new bond. Traditional Kashmiri dishes are served."
+            }
+        ],
+        "faqs": [
+            {
+                "question": "How far in advance is Lagan performed before the wedding?",
+                "answer": "Traditionally, Lagan can be performed weeks to months before the wedding. The timing depends on family convenience and auspicious dates."
+            }
+        ]
+    },
+    {
+        "id": "vyah",
+        "name": "Vyah (Marriage)",
+        "icon": "🎊",
+        "category": "Marriage",
+        "purpose": "Vyah is the complete Kashmiri Pandit marriage ceremony, a multi-day celebration with elaborate rituals that unite two individuals and their families in a sacred bond.",
+        "description": "The Kashmiri Pandit wedding (Vyah) is a rich, multi-day celebration filled with unique rituals, traditional songs, and elaborate ceremonies that distinguish it from wedding traditions elsewhere in India.",
+        "history": "Kashmiri Pandit weddings have preserved ancient Vedic rituals adapted with uniquely Kashmiri elements over thousands of years. The ceremonies reflect the community's deep connection with Kashmir Shaivism and local traditions.",
+        "significance": "Marriage in Kashmiri Pandit tradition is not just the union of two individuals but the merger of two families, their lineages, and spiritual traditions. Each ritual has deep symbolic and spiritual meaning.",
+        "materials": [
+            "Sacred thread",
+            "Sindoor and kumkum",
+            "Dejhoor (sacred ear ornament)",
+            "Rice and turmeric",
+            "Havan materials",
+            "Traditional wedding attire",
+            "Flowers and garlands",
+            "Coconut and betel",
+            "Walnuts",
+            "Traditional jewelry"
+        ],
+        "steps": [
+            {
+                "title": "Livun (Cleansing Ceremony)",
+                "description": "The house is ceremonially cleaned and prepared for the wedding. Traditional songs are sung and the home is decorated."
+            },
+            {
+                "title": "Maenziraat (Mehendi)",
+                "description": "Henna is applied to the bride and groom in separate ceremonies. This is accompanied by traditional Kashmiri wedding songs (vanvun)."
+            },
+            {
+                "title": "Devgon (Pre-Wedding Puja)",
+                "description": "A detailed puja is performed at both the bride's and groom's homes, seeking divine blessings for the marriage."
+            },
+            {
+                "title": "Divo Lagaun (Lamp Lighting)",
+                "description": "Sacred lamps are lit, signifying the beginning of the main wedding ceremonies. This is a deeply symbolic moment."
+            },
+            {
+                "title": "Lagan (Main Ceremony)",
+                "description": "The main wedding ritual where the sacred vows are taken. The ceremony involves mantras, fire rituals, and the tying of the sacred bond."
+            },
+            {
+                "title": "Posh Puja (Flower Worship)",
+                "description": "A unique Kashmiri ritual involving the worship with flowers, symbolizing the beauty and fragility of the new relationship."
+            },
+            {
+                "title": "Roth Khabar",
+                "description": "Post-wedding feast and celebration. The families come together for a grand meal featuring traditional Kashmiri Wazwan."
+            }
+        ],
+        "variations": [
+            "Some families include additional day-specific rituals",
+            "The number of days can vary from 3 to 7 depending on family tradition",
+            "Families living outside Kashmir may adapt some rituals for practical reasons"
+        ],
+        "faqs": [
+            {
+                "question": "What is the significance of Dejhoor?",
+                "answer": "Dejhoor is a sacred ear ornament (typically gold) that is placed on the bride during the wedding ceremony. It signifies her transition into married life and is considered extremely auspicious."
+            },
+            {
+                "question": "What are Vanvun?",
+                "answer": "Vanvun are traditional Kashmiri wedding songs sung by women during various ceremonies. These songs have been passed down through generations and describe the emotions, blessings, and customs of the wedding."
+            }
+        ]
+    },
+    {
+        "id": "yagnopavit",
+        "name": "Yagnopavit (Sacred Thread Ceremony)",
+        "icon": "📿",
+        "category": "Life Events",
+        "purpose": "Yagnopavit, also known as Mekhal, is the sacred thread ceremony marking the spiritual initiation of a Kashmiri Pandit boy. It is one of the most important sanskaras (sacraments).",
+        "description": "The Yagnopavit ceremony is a pivotal rite of passage for Kashmiri Pandit boys. During this ceremony, the boy receives the sacred thread (Janeu/Yagnopavit) and is initiated into the Gayatri Mantra, marking his entry into spiritual life.",
+        "history": "The Yagnopavit ceremony has Vedic origins and has been performed by Kashmiri Pandits with their unique cultural variations for millennia. It is called 'Mekhal' in Kashmiri.",
+        "significance": "This ceremony symbolizes the boy's spiritual rebirth and his readiness to pursue knowledge. The sacred thread represents the commitment to dharma, knowledge, and spiritual practice.",
+        "materials": [
+            "Sacred thread (Janeu/Yagnopavit)",
+            "Deer skin or mat",
+            "Staff (danda)",
+            "Havan materials",
+            "New clothes for the boy",
+            "Rice and flowers",
+            "Ghee and honey"
+        ],
+        "steps": [
+            {
+                "title": "Preparation",
+                "description": "The boy is bathed and dressed in new clothes. The puja area is prepared with all materials."
+            },
+            {
+                "title": "Puja and Havan",
+                "description": "Elaborate puja followed by a havan (fire ceremony) is performed by the priest with the family."
+            },
+            {
+                "title": "Initiation",
+                "description": "The sacred thread is ceremonially placed on the boy's left shoulder. He is initiated into the Gayatri Mantra by the priest or a guru."
+            },
+            {
+                "title": "Teachings",
+                "description": "The boy receives instructions about his duties and responsibilities. He is taught the significance of the sacred thread."
+            },
+            {
+                "title": "Bhiksha (Symbolic Alms)",
+                "description": "The boy symbolically asks for alms from family members, representing the beginning of his life as a student."
+            },
+            {
+                "title": "Celebrations",
+                "description": "Family and community celebrate with a feast. Blessings and gifts are given to the boy."
+            }
+        ],
+        "faqs": [
+            {
+                "question": "At what age is Yagnopavit performed?",
+                "answer": "Traditionally, it is performed between ages 7-12, though the specific age can vary by family tradition. It is ideally performed before the boy reaches puberty."
+            },
+            {
+                "question": "What is the Gayatri Mantra?",
+                "answer": "The Gayatri Mantra is one of the most sacred mantras in Hinduism, addressed to the Sun God (Savitri). It is considered the essence of the Vedas and is taught to the boy during the Yagnopavit ceremony as part of his spiritual initiation."
+            }
+        ]
+    },
+    {
+        "id": "mundan",
+        "name": "Mundan (First Haircut Ceremony)",
+        "icon": "✂️",
+        "category": "Life Events",
+        "purpose": "Mundan, also called Choodakarana, is the first haircut ceremony of a child, considered one of the important sanskaras in Kashmiri Pandit tradition.",
+        "description": "The Mundan ceremony involves the ritual shaving of a child's head for the first time. It is performed with prayers and celebrations, marking an important milestone in the child's early life.",
+        "significance": "The Mundan ceremony symbolizes purification and the shedding of past-life connections. It is believed to promote healthy hair growth and overall well-being of the child.",
+        "materials": [
+            "New razor or scissors",
+            "Turmeric paste",
+            "Sacred water",
+            "New clothes for the child",
+            "Flowers and rice",
+            "Prasad items"
+        ],
+        "steps": [
+            {
+                "title": "Puja",
+                "description": "A brief puja is performed seeking divine blessings for the child's health and well-being."
+            },
+            {
+                "title": "Ritual Haircut",
+                "description": "The child's head is shaved ceremonially, often by a family barber. The hair is collected respectfully."
+            },
+            {
+                "title": "Purification",
+                "description": "The child's head is washed with sacred water and turmeric paste is applied for healing."
+            },
+            {
+                "title": "Blessings & Celebration",
+                "description": "Family and guests bless the child. A celebratory meal is shared."
+            }
+        ],
+        "faqs": [
+            {
+                "question": "At what age should Mundan be performed?",
+                "answer": "Typically performed between 1-3 years of age. The exact timing is often determined by consulting the Panchang for an auspicious date."
+            }
+        ]
+    },
+    {
+        "id": "housewarming",
+        "name": "Greh Pravesh (Housewarming)",
+        "icon": "🏡",
+        "category": "Life Events",
+        "purpose": "Greh Pravesh is the auspicious ceremony performed when entering a new home for the first time, seeking divine blessings for peace and prosperity in the new dwelling.",
+        "description": "The Kashmiri Pandit housewarming ceremony involves specific rituals to purify and bless the new home, inviting positive energies and divine protection for the family.",
+        "significance": "Moving into a new home is considered a significant life event. The Greh Pravesh ceremony ensures the home is spiritually cleansed and blessed, creating a positive environment for the family.",
+        "materials": [
+            "Kalash (sacred pot)",
+            "Milk",
+            "Rice and turmeric",
+            "Incense and camphor",
+            "Ghee lamp",
+            "Flowers",
+            "Coconut",
+            "Sacred water"
+        ],
+        "steps": [
+            {
+                "title": "Choosing Auspicious Time",
+                "description": "Select a muhurat (auspicious time) for entering the new home. Consult the Panchang or a scholar."
+            },
+            {
+                "title": "Purification",
+                "description": "The home is cleansed with sacred water and Gangajal. Incense is burnt in every room."
+            },
+            {
+                "title": "Kalash Sthapana",
+                "description": "A sacred Kalash is placed at the entrance and the family enters the home following specific rituals."
+            },
+            {
+                "title": "Havan",
+                "description": "A havan (fire ceremony) is performed to purify the atmosphere and invite divine blessings."
+            },
+            {
+                "title": "Boiling of Milk",
+                "description": "Milk is boiled in the new kitchen until it overflows, symbolizing abundance and prosperity."
+            },
+            {
+                "title": "Community Meal",
+                "description": "Relatives and friends are invited for a meal to bless the new home."
+            }
+        ],
+        "faqs": [
+            {
+                "question": "Why is boiling milk important in Greh Pravesh?",
+                "answer": "The overflowing of milk symbolizes that the home will always have abundance and prosperity. It represents the wish that the family's fortune and happiness will 'overflow' in their new home."
+            }
+        ]
+    },
+    {
+        "id": "shraddha",
+        "name": "Shraddha (Ancestral Rites)",
+        "icon": "🙏",
+        "category": "Seasonal",
+        "purpose": "Shraddha rituals are performed to honor departed ancestors, offering prayers and food for their spiritual journey and seeking their blessings for the living family.",
+        "description": "Shraddha is a deeply important practice in Kashmiri Pandit tradition, where families perform specific rituals to remember, honor, and pray for their departed ancestors. It reinforces the spiritual bond between generations.",
+        "significance": "Shraddha reflects the belief in the continuity of the soul and the importance of ancestral blessings. It maintains the spiritual connection between the living and departed, ensuring peace for departed souls.",
+        "materials": [
+            "Cooked rice (Bhaat)",
+            "Black sesame seeds",
+            "Barley",
+            "Sacred water",
+            "Kusha grass",
+            "Flowers",
+            "Incense"
+        ],
+        "steps": [
+            {
+                "title": "Preparation",
+                "description": "Prepare specific food items. Take a bath and wear clean clothes. Set up the ritual area facing south."
+            },
+            {
+                "title": "Tarpan (Water Offering)",
+                "description": "Offer water mixed with sesame seeds to ancestors while reciting their names and gotras."
+            },
+            {
+                "title": "Pinda Daan",
+                "description": "Offer pinda (balls of cooked rice) to the departed ancestors as symbolic nourishment for their souls."
+            },
+            {
+                "title": "Brahmin Bhojan",
+                "description": "Feed Brahmins as a meritorious act. The food offered to Brahmins is believed to reach the ancestors."
+            },
+            {
+                "title": "Prayers",
+                "description": "Recite prayers for peace and liberation of ancestral souls. Seek their blessings for the family."
+            }
+        ],
+        "faqs": [
+            {
+                "question": "When should Shraddha be performed?",
+                "answer": "Shraddha is typically performed on the anniversary of the ancestor's death (tithi), during Pitru Paksha (the fortnight dedicated to ancestors), and on specific tithis associated with ancestral rites."
+            }
+        ]
+    },
+    {
+        "id": "havan",
+        "name": "Havan (Fire Ceremony)",
+        "icon": "🔥",
+        "category": "Regular Practice",
+        "purpose": "Havan is a sacred fire ritual where offerings are made into a consecrated fire while chanting Vedic mantras. It is performed for purification, blessings, and spiritual elevation.",
+        "description": "The Havan ceremony is a central practice in Kashmiri Pandit worship. A sacred fire is kindled and various offerings (ahuti) of ghee, grains, and herbs are made while reciting specific mantras. It purifies the environment and creates a spiritual atmosphere.",
+        "significance": "Fire (Agni) is considered the messenger between humans and the divine. The offerings made in the havan fire are believed to reach the gods. The ritual purifies the atmosphere, the participants, and their surroundings.",
+        "materials": [
+            "Havan Kund (fire pit)",
+            "Mango wood sticks",
+            "Ghee (clarified butter)",
+            "Samagri (herbal mix for havan)",
+            "Rice grains",
+            "Camphor",
+            "Sandalwood powder",
+            "Fresh flowers",
+            "Coconut",
+            "Incense materials"
+        ],
+        "steps": [
+            {
+                "title": "Setting up the Havan Kund",
+                "description": "Place the havan kund in a clean area. Arrange the wood sticks in a specific pattern."
+            },
+            {
+                "title": "Lighting the Sacred Fire",
+                "description": "Light the fire using camphor or ghee-soaked cotton. The fire should be steady before beginning offerings."
+            },
+            {
+                "title": "Sankalp",
+                "description": "State the purpose and intention of the havan, mentioning the date, participants, and the deities being invoked."
+            },
+            {
+                "title": "Ahuti (Offerings)",
+                "description": "Make offerings of ghee, samagri, and grains into the fire with each 'Swaha' chant. Each offering is accompanied by a specific mantra."
+            },
+            {
+                "title": "Purnahuti (Final Offering)",
+                "description": "The final and most significant offering, typically a coconut with ghee, marking the completion of the fire ceremony."
+            },
+            {
+                "title": "Shanti Path",
+                "description": "Conclude with peace prayers (Shanti Path) and distribution of prasad."
+            }
+        ],
+        "faqs": [
+            {
+                "question": "Can havan be performed at home?",
+                "answer": "Yes, havan can be performed at home with proper arrangements. Ensure good ventilation and follow fire safety precautions. A smaller havan kund is suitable for home use."
+            },
+            {
+                "question": "What are the benefits of performing havan?",
+                "answer": "Havan purifies the air and environment with medicinal herbs, creates a spiritually charged atmosphere, brings mental peace, and is believed to invoke divine blessings. Modern research also shows that the smoke from specific havan materials has antimicrobial properties."
+            }
+        ]
+    }
+]

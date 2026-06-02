@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kashmiri Pandit Digital Companion — Cultural Preservation & Religious Guidance</title>
+    <meta name="description" content="A digital platform preserving Kashmiri Pandit traditions, rituals, festivals, and cultural heritage. Your trusted companion for religious guidance and cultural education.">
+    <meta name="keywords" content="Kashmiri Pandit, Kashmir, Hindu rituals, festivals, Navreh, Herath, cultural preservation, Panchang, Muhurat">
+    <meta property="og:title" content="Kashmiri Pandit Digital Companion">
+    <meta property="og:description" content="Preserving Kashmiri Pandit heritage through technology. Explore festivals, rituals, wedding guides, and more.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <!-- Decorative Background Pattern -->
+    <div class="bg-pattern" aria-hidden="true"></div>
+    <div class="bg-gradient-overlay" aria-hidden="true"></div>
+
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="sidebar" aria-label="Main Navigation">
+        <div class="sidebar-header">
+            <div class="logo-container">
+                <div class="logo-icon">🔱</div>
+                <div class="logo-text">
+                    <span class="logo-title">Kashmir</span>
+                    <span class="logo-subtitle">Dharma Companion</span>
+                </div>
+            </div>
+        </div>
+
+        <ul class="nav-links" id="navLinks">
+            <li>
+                <a href="#home" class="nav-link active" data-page="home" id="nav-home">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-text">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="#calendar" class="nav-link" data-page="calendar" id="nav-calendar">
+                    <span class="nav-icon">📅</span>
+                    <span class="nav-text">Festival Calendar</span>
+                </a>
+            </li>
+            <li>
+                <a href="#rituals" class="nav-link" data-page="rituals" id="nav-rituals">
+                    <span class="nav-icon">📖</span>
+                    <span class="nav-text">Ritual Library</span>
+                </a>
+            </li>
+            <li>
+                <a href="#wedding" class="nav-link" data-page="wedding" id="nav-wedding">
+                    <span class="nav-icon">💒</span>
+                    <span class="nav-text">Wedding Guide</span>
+                </a>
+            </li>
+            <li>
+                <a href="#birthday" class="nav-link" data-page="birthday" id="nav-birthday">
+                    <span class="nav-icon">🎂</span>
+                    <span class="nav-text">Janma Tithi</span>
+                </a>
+            </li>
+            <li>
+                <a href="#muhurat" class="nav-link" data-page="muhurat" id="nav-muhurat">
+                    <span class="nav-icon">🌟</span>
+                    <span class="nav-text">Muhurat Finder</span>
+                </a>
+            </li>
+            <li>
+                <a href="#heritage" class="nav-link" data-page="heritage" id="nav-heritage">
+                    <span class="nav-icon">👪</span>
+                    <span class="nav-text">Family Heritage</span>
+                </a>
+            </li>
+            <li>
+                <a href="#archive" class="nav-link" data-page="archive" id="nav-archive">
+                    <span class="nav-icon">📚</span>
+                    <span class="nav-text">Knowledge Archive</span>
+                </a>
+            </li>
+            <li>
+                <a href="#guide" class="nav-link" data-page="guide" id="nav-guide">
+                    <span class="nav-icon">🔮</span>
+                    <span class="nav-text">Knowledge Guide</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <div class="scholar-badge">
+                <span class="badge-icon">✅</span>
+                <span class="badge-text">Scholar Validated</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Header -->
+    <header id="mobileHeader" class="mobile-header">
+        <button id="menuToggle" class="menu-toggle" aria-label="Toggle navigation menu">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+        <div class="mobile-logo">
+            <span class="logo-icon">🔱</span>
+            <span class="logo-title">Kashmir Dharma</span>
+        </div>
+    </header>
+
+    <!-- Mobile Overlay -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <!-- Main Content Area -->
+    <main id="mainContent" class="main-content">
+        <div id="pageContainer" class="page-container">
+            <!-- Page content will be dynamically injected here -->
+            <div class="page-loading">
+                <div class="loading-spinner"></div>
+                <p>Loading sacred knowledge...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Modal Container -->
+    <div id="modalOverlay" class="modal-overlay" aria-hidden="true">
+        <div class="modal-content" id="modalContent">
+            <button class="modal-close" id="modalClose" aria-label="Close modal">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils/calendar-calc.js"></script>
+    <script src="js/utils/storage.js"></script>
+    <script src="js/utils/search.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/pages/home.js"></script>
+    <script src="js/pages/calendar.js"></script>
+    <script src="js/pages/rituals.js"></script>
+    <script src="js/pages/wedding.js"></script>
+    <script src="js/pages/birthday.js"></script>
+    <script src="js/pages/muhurat.js"></script>
+    <script src="js/pages/heritage.js"></script>
+    <script src="js/pages/archive.js"></script>
+    <script src="js/pages/guide.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
