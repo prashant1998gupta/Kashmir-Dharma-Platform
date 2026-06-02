@@ -94,22 +94,119 @@ const AstroCalc = (() => {
         return lagnaSign;
     }
 
+    const NAKSHATRAS = [
+        "Ashwini", "Bharani", "Krittika", "Rohini", "Mrigashira", "Ardra",
+        "Punarvasu", "Pushya", "Ashlesha", "Magha", "Purva Phalguni", "Uttara Phalguni",
+        "Hasta", "Chitra", "Swati", "Vishakha", "Anuradha", "Jyeshtha",
+        "Mula", "Purva Ashadha", "Uttara Ashadha", "Shravana", "Dhanishta", "Shatabhisha",
+        "Purva Bhadrapada", "Uttara Bhadrapada", "Revati"
+    ];
+
+    const DASHA_PERIODS = [
+        { lord: "Ketu", years: 7 },
+        { lord: "Venus", years: 20 },
+        { lord: "Sun", years: 6 },
+        { lord: "Moon", years: 10 },
+        { lord: "Mars", years: 7 },
+        { lord: "Rahu", years: 18 },
+        { lord: "Jupiter", years: 16 },
+        { lord: "Saturn", years: 19 },
+        { lord: "Mercury", years: 17 }
+    ];
+
+    function getNakshatraData(siderealLon) {
+        let normalized = siderealLon % 360;
+        if (normalized < 0) normalized += 360;
+        const nakshatraSize = 13 + (20/60);
+        const totalIndex = normalized / nakshatraSize;
+        const index = Math.floor(totalIndex);
+        const remainder = totalIndex - index;
+        const pada = Math.floor(remainder * 4) + 1;
+        const lordIndex = index % 9;
+        
+        return {
+            name: NAKSHATRAS[index],
+            pada: pada,
+            lord: DASHA_PERIODS[lordIndex].lord,
+            percentRemaining: 1 - remainder
+        };
+    }
+
+    function getNavamsa(siderealLon) {
+        let normalized = siderealLon % 360;
+        if (normalized < 0) normalized += 360;
+        const rashi = Math.floor(normalized / 30) + 1;
+        const rashiDeg = normalized % 30;
+        const navamsaSize = 3 + (20/60);
+        const navamsaIndex = Math.floor(rashiDeg / navamsaSize);
+        
+        let startRashi = 1;
+        if (rashi % 4 === 1) startRashi = 1;
+        else if (rashi % 4 === 2) startRashi = 10;
+        else if (rashi % 4 === 3) startRashi = 7;
+        else if (rashi % 4 === 0) startRashi = 4;
+        
+        let navamsaRashi = startRashi + navamsaIndex;
+        if (navamsaRashi > 12) navamsaRashi = navamsaRashi % 12;
+        if (navamsaRashi === 0) navamsaRashi = 12;
+        return navamsaRashi;
+    }
+
+    function formatDegree(lon) {
+        const degInRashi = lon % 30;
+        const d = Math.floor(degInRashi);
+        const m = Math.floor((degInRashi - d) * 60);
+        return `${d}° ${m}'`;
+    }
+
+    function calculateDasha(moonSiderealLon, birthDateObj) {
+        let normalized = moonSiderealLon % 360;
+        if (normalized < 0) normalized += 360;
+        const nakshatraSize = 13 + (20/60);
+        const totalIndex = normalized / nakshatraSize;
+        const index = Math.floor(totalIndex);
+        const remainder = totalIndex - index;
+        const startLordIndex = index % 9;
+        const startLord = DASHA_PERIODS[startLordIndex];
+        
+        const totalDays = startLord.years * 365.25;
+        const balanceDays = totalDays * (1 - remainder);
+        
+        let currentDashaStart = new Date(birthDateObj.getTime());
+        let currentDashaEnd = new Date(birthDateObj.getTime() + balanceDays * 86400000);
+        
+        const dashas = [];
+        dashas.push({
+            lord: startLord.lord,
+            startYear: currentDashaStart.getFullYear(),
+            endYear: currentDashaEnd.getFullYear()
+        });
+        
+        let dashaDate = new Date(currentDashaEnd);
+        let currentIndex = (startLordIndex + 1) % 9;
+        
+        for(let i = 0; i < 9; i++) {
+            let lord = DASHA_PERIODS[currentIndex];
+            let endDasha = new Date(dashaDate.getTime() + (lord.years * 365.25 * 86400000));
+            dashas.push({
+                lord: lord.lord,
+                startYear: dashaDate.getFullYear(),
+                endYear: endDasha.getFullYear()
+            });
+            dashaDate = new Date(endDasha);
+            currentIndex = (currentIndex + 1) % 9;
+        }
+        return dashas;
+    }
+
     /**
      * Generate the complete Kundali chart data
      */
     function generateKundali(birthDate, birthTime, cityObj) {
-        // 1. Create a UTC date object for calculations
-        // Parse time: "HH:MM"
         const [hh, mm] = birthTime.split(':').map(Number);
-        
-        // Construct local date and convert to UTC taking the city's timezone into account
-        // Note: JS Date assumes the browser's local timezone if we don't force UTC.
         const [year, month, day] = birthDate.split('-').map(Number);
-        
-        // This is the absolute time at the location
         const utcMs = Date.UTC(year, month - 1, day, hh, mm) - (cityObj.tz * 3600000);
         const calcDate = new Date(utcMs);
-        
         const ayanamsa = getAyanamsa(year);
 
         const chart = {
@@ -120,14 +217,18 @@ const AstroCalc = (() => {
                 ayanamsa: ayanamsa.toFixed(4)
             },
             planets: [],
-            houses: {} // 1 to 12 mapping to arrays of planets
+            houses: {}, // D1
+            navamsaHouses: {}, // D9
+            dashas: []
         };
 
-        // Initialize empty houses
-        for (let i = 1; i <= 12; i++) chart.houses[i] = [];
+        for (let i = 1; i <= 12; i++) {
+            chart.houses[i] = [];
+            chart.navamsaHouses[i] = [];
+        }
 
-        // 2. Calculate Planets
         let sunSiderealLon = 0;
+        let moonSiderealLon = 0;
 
         PLANETS.forEach(p => {
             let tropLon = getPlanetLongitude(p.id, calcDate);
@@ -135,51 +236,73 @@ const AstroCalc = (() => {
             if (siderealLon < 0) siderealLon += 360;
             
             if (p.id === 'Sun') sunSiderealLon = siderealLon;
+            if (p.id === 'Moon') moonSiderealLon = siderealLon;
 
             let rashi = getRashiFromLongitude(siderealLon);
+            let navamsaRashi = getNavamsa(siderealLon);
+            let nakData = getNakshatraData(siderealLon);
             
             chart.planets.push({
                 ...p,
                 longitude: siderealLon,
+                degreeStr: formatDegree(siderealLon),
                 rashi: rashi,
-                rashiName: RASHIS[rashi - 1]
+                rashiName: RASHIS[rashi - 1],
+                navamsaRashi: navamsaRashi,
+                nakshatra: nakData.name,
+                pada: nakData.pada
             });
         });
 
-        // 3. Add Rahu and Ketu
         let rahuLon = getRahuLongitude(calcDate) - ayanamsa;
         if (rahuLon < 0) rahuLon += 360;
         let ketuLon = (rahuLon + 180) % 360;
 
-        let rahuRashi = getRashiFromLongitude(rahuLon);
-        let ketuRashi = getRashiFromLongitude(ketuLon);
+        [ {id:'Rahu', name:'Rahu', symbol:'Ra', lon:rahuLon}, 
+          {id:'Ketu', name:'Ketu', symbol:'Ke', lon:ketuLon} ].forEach(node => {
+            let r = getRashiFromLongitude(node.lon);
+            let nr = getNavamsa(node.lon);
+            let nd = getNakshatraData(node.lon);
+            chart.planets.push({
+                ...node, longitude: node.lon, degreeStr: formatDegree(node.lon),
+                rashi: r, rashiName: RASHIS[r - 1], navamsaRashi: nr,
+                nakshatra: nd.name, pada: nd.pada
+            });
+        });
 
-        chart.planets.push({ id: 'Rahu', name: 'Rahu', symbol: 'Ra', longitude: rahuLon, rashi: rahuRashi, rashiName: RASHIS[rahuRashi - 1] });
-        chart.planets.push({ id: 'Ketu', name: 'Ketu', symbol: 'Ke', longitude: ketuLon, rashi: ketuRashi, rashiName: RASHIS[ketuRashi - 1] });
-
-        // 4. Calculate Lagna (Ascendant)
         const lagnaSign = calculateLagna(calcDate, sunSiderealLon, cityObj.lat, cityObj.lon);
         chart.lagnaRashi = lagnaSign;
         chart.lagnaName = RASHIS[lagnaSign - 1];
         
-        // 5. Map Planets to Houses based on Lagna
-        // In North Indian Kundali, House 1 is always the Lagna Rashi.
-        // House N corresponds to (Lagna Rashi + N - 1) % 12
-        
+        // Approximate Lagna degree based on time since sunrise (very simplified)
+        // 1 sign = 30 degrees = 2 hours. So 1 hour = 15 degrees.
+        const hoursSinceSunrise = (calcDate.getHours() + (calcDate.getMinutes()/60)) - 6.0;
+        const lagnaDegreeWithinRashi = ((hoursSinceSunrise % 2) / 2) * 30;
+        const lagnaAbsoluteLon = ((lagnaSign - 1) * 30) + lagnaDegreeWithinRashi;
+        const lagnaNavamsaRashi = getNavamsa(lagnaAbsoluteLon);
+        chart.lagnaNavamsaRashi = lagnaNavamsaRashi;
+
+        // Map D1 Houses
         chart.planets.forEach(p => {
-            // How many signs away from Lagna is this planet?
             let houseOffset = p.rashi - lagnaSign;
             if (houseOffset < 0) houseOffset += 12;
-            
-            let houseNumber = houseOffset + 1; // 1-indexed
-            chart.houses[houseNumber].push(p.symbol);
+            chart.houses[houseOffset + 1].push(p.symbol);
         });
 
-        // Find Moon Sign (Rashi) for user display
+        // Map D9 Houses
+        chart.planets.forEach(p => {
+            let houseOffset = p.navamsaRashi - lagnaNavamsaRashi;
+            if (houseOffset < 0) houseOffset += 12;
+            chart.navamsaHouses[houseOffset + 1].push(p.symbol);
+        });
+
         const moon = chart.planets.find(p => p.id === 'Moon');
         if (moon) {
             chart.moonSign = moon.rashiName;
+            chart.moonNakshatra = `${moon.nakshatra} (Pada ${moon.pada})`;
         }
+
+        chart.dashas = calculateDasha(moonSiderealLon, calcDate);
 
         return chart;
     }

@@ -57,25 +57,51 @@ const KundaliPage = (() => {
                     </div>
 
                     <!-- Result Section -->
-                    <div id="kundaliResult" style="display: none;">
-                        <div class="card card-glass" style="padding: var(--space-6); text-align: center; height: 100%;">
-                            <h3 id="res-name" style="margin-bottom: var(--space-2); color: var(--color-secondary)"></h3>
-                            <p id="res-details" style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-6)"></p>
-                            
-                            <!-- North Indian Chart SVG Container -->
-                            <div id="chart-container" style="max-width: 400px; margin: 0 auto; position: relative;">
-                                <!-- SVG will be injected here -->
+                    <div id="kundaliResult" style="display: none; grid-column: 1 / -1;">
+                        <div class="card card-glass" style="padding: var(--space-6);">
+                            <div style="text-align: center; margin-bottom: var(--space-6)">
+                                <h2 id="res-name" style="margin-bottom: var(--space-2); color: var(--color-secondary)"></h2>
+                                <p id="res-details" style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-4)"></p>
+                                
+                                <div style="display: flex; justify-content: center; gap: var(--space-4); flex-wrap: wrap;">
+                                    <div class="badge badge-primary">Lagna: <span id="res-lagna"></span></div>
+                                    <div class="badge badge-secondary">Rashi: <span id="res-rashi"></span></div>
+                                    <div class="badge" style="background: var(--bg-tertiary)">Nakshatra: <span id="res-nakshatra"></span></div>
+                                </div>
                             </div>
                             
-                            <div style="margin-top: var(--space-6); display: flex; justify-content: center; gap: var(--space-4)">
-                                <div style="background: rgba(255,255,255,0.05); padding: var(--space-3) var(--space-5); border-radius: var(--radius-lg)">
-                                    <div style="font-size: var(--text-xs); color: var(--text-muted)">Lagna (Ascendant)</div>
-                                    <div id="res-lagna" style="font-weight: bold; color: var(--text-primary)"></div>
+                            <!-- Charts Container -->
+                            <div class="grid-2" style="margin-bottom: var(--space-8); gap: var(--space-6)">
+                                <div>
+                                    <h3 style="text-align: center; margin-bottom: var(--space-4)">Lagna Chart (D1)</h3>
+                                    <div id="chart-d1-container" style="max-width: 400px; margin: 0 auto;"></div>
                                 </div>
-                                <div style="background: rgba(255,255,255,0.05); padding: var(--space-3) var(--space-5); border-radius: var(--radius-lg)">
-                                    <div style="font-size: var(--text-xs); color: var(--text-muted)">Rashi (Moon Sign)</div>
-                                    <div id="res-rashi" style="font-weight: bold; color: var(--text-primary)"></div>
+                                <div>
+                                    <h3 style="text-align: center; margin-bottom: var(--space-4)">Navamsa Chart (D9)</h3>
+                                    <div id="chart-d9-container" style="max-width: 400px; margin: 0 auto;"></div>
                                 </div>
+                            </div>
+                            
+                            <!-- Planetary Details Table -->
+                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Planetary Positions</h3>
+                            <div style="overflow-x: auto; margin-bottom: var(--space-8);">
+                                <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                                    <thead>
+                                        <tr style="border-bottom: 1px solid var(--color-secondary);">
+                                            <th style="padding: var(--space-2);">Planet</th>
+                                            <th style="padding: var(--space-2);">Sign (Rashi)</th>
+                                            <th style="padding: var(--space-2);">Degree</th>
+                                            <th style="padding: var(--space-2);">Nakshatra</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="planetary-table-body">
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Vimshottari Dasha Timeline -->
+                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Vimshottari Dasha (Mahadasha)</h3>
+                            <div id="dasha-timeline" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: var(--space-3);">
                             </div>
                         </div>
                     </div>
@@ -86,71 +112,58 @@ const KundaliPage = (() => {
 
     function afterRender() {
         setTimeout(() => Components.initScrollReveal(), 100);
-        
-        // Error handling if library failed to load
         if (typeof Astronomy === 'undefined') {
             Components.showToast('Astronomy Engine library failed to load. Please check your internet connection.', 'error');
         }
     }
 
-    function drawChartSVG(houses) {
-        // Draw a North Indian Chart (Diamond)
-        // House 1 is top diamond, numbers go counter-clockwise
-        
-        // Helper to format planets in a house
+    function drawChartSVG(houses, lagnaSign) {
         const p = (h) => (houses[h] && houses[h].length > 0) ? houses[h].join(' ') : '';
+        const rashiNum = (h) => ((lagnaSign - 1 + h - 1) % 12) + 1;
         
-        // Coordinates for the 12 houses (approximate center points for text)
-        // Size: 400x400 viewBox
         return `
             <svg viewBox="0 0 400 400" width="100%" height="100%" style="background: var(--bg-tertiary); border: 2px solid var(--color-secondary); border-radius: var(--radius-sm);">
-                <!-- Outer Square -->
                 <rect x="0" y="0" width="400" height="400" fill="none" stroke="var(--color-secondary)" stroke-width="4"/>
-                
-                <!-- Diagonals -->
                 <line x1="0" y1="0" x2="400" y2="400" stroke="var(--color-secondary)" stroke-width="2"/>
                 <line x1="0" y1="400" x2="400" y2="0" stroke="var(--color-secondary)" stroke-width="2"/>
-                
-                <!-- Inner Diamond -->
                 <line x1="200" y1="0" x2="400" y2="200" stroke="var(--color-secondary)" stroke-width="2"/>
                 <line x1="400" y1="200" x2="200" y2="400" stroke="var(--color-secondary)" stroke-width="2"/>
                 <line x1="200" y1="400" x2="0" y2="200" stroke="var(--color-secondary)" stroke-width="2"/>
                 <line x1="0" y1="200" x2="200" y2="0" stroke="var(--color-secondary)" stroke-width="2"/>
                 
-                <!-- Text / Planets (Centers of each house) -->
-                <!-- H1 --> <text x="200" y="100" fill="var(--text-primary)" font-size="14" text-anchor="middle" font-weight="bold">${p(1)}</text>
-                <!-- H2 --> <text x="100" y="50" fill="var(--text-primary)" font-size="14" text-anchor="middle" font-weight="bold">${p(2)}</text>
-                <!-- H3 --> <text x="50" y="100" fill="var(--text-primary)" font-size="14" text-anchor="middle" font-weight="bold">${p(3)}</text>
-                <!-- H4 --> <text x="100" y="200" fill="var(--text-primary)" font-size="14" text-anchor="middle" font-weight="bold">${p(4)}</text>
-                <!-- H5 --> <text x="50" y="300" fill="var(--text-primary)" font-size="14" text-anchor="middle" font-weight="bold">${p(5)}</text>
-                <!-- H6 --> <text x="100" y="350" fill="var(--text-primary)" font-size="14" text-anchor="middle" font-weight="bold">${p(6)}</text>
-                <!-- H7 --> <text x="200" y="300" fill="var(--text-primary)" font-size="14" text-anchor="middle" font-weight="bold">${p(7)}</text>
-                <!-- H8 --> <text x="300" y="350" fill="var(--text-primary)" font-size="14" text-anchor="middle" font-weight="bold">${p(8)}</text>
-                <!-- H9 --> <text x="350" y="300" fill="var(--text-primary)" font-size="14" text-anchor="middle" font-weight="bold">${p(9)}</text>
-                <!-- H10 --> <text x="300" y="200" fill="var(--text-primary)" font-size="14" text-anchor="middle" font-weight="bold">${p(10)}</text>
-                <!-- H11 --> <text x="350" y="100" fill="var(--text-primary)" font-size="14" text-anchor="middle" font-weight="bold">${p(11)}</text>
-                <!-- H12 --> <text x="300" y="50" fill="var(--text-primary)" font-size="14" text-anchor="middle" font-weight="bold">${p(12)}</text>
+                <text x="200" y="100" fill="var(--text-primary)" font-size="16" text-anchor="middle" font-weight="bold">${p(1)}</text>
+                <text x="100" y="50" fill="var(--text-primary)" font-size="16" text-anchor="middle" font-weight="bold">${p(2)}</text>
+                <text x="50" y="100" fill="var(--text-primary)" font-size="16" text-anchor="middle" font-weight="bold">${p(3)}</text>
+                <text x="100" y="200" fill="var(--text-primary)" font-size="16" text-anchor="middle" font-weight="bold">${p(4)}</text>
+                <text x="50" y="300" fill="var(--text-primary)" font-size="16" text-anchor="middle" font-weight="bold">${p(5)}</text>
+                <text x="100" y="350" fill="var(--text-primary)" font-size="16" text-anchor="middle" font-weight="bold">${p(6)}</text>
+                <text x="200" y="300" fill="var(--text-primary)" font-size="16" text-anchor="middle" font-weight="bold">${p(7)}</text>
+                <text x="300" y="350" fill="var(--text-primary)" font-size="16" text-anchor="middle" font-weight="bold">${p(8)}</text>
+                <text x="350" y="300" fill="var(--text-primary)" font-size="16" text-anchor="middle" font-weight="bold">${p(9)}</text>
+                <text x="300" y="200" fill="var(--text-primary)" font-size="16" text-anchor="middle" font-weight="bold">${p(10)}</text>
+                <text x="350" y="100" fill="var(--text-primary)" font-size="16" text-anchor="middle" font-weight="bold">${p(11)}</text>
+                <text x="300" y="50" fill="var(--text-primary)" font-size="16" text-anchor="middle" font-weight="bold">${p(12)}</text>
                 
-                <!-- House Numbers (Small text in corners of each section) -->
-                <text x="200" y="20" fill="var(--color-secondary)" font-size="10" text-anchor="middle">1</text>
-                <text x="100" y="15" fill="var(--color-secondary)" font-size="10" text-anchor="middle">2</text>
-                <text x="15" y="100" fill="var(--color-secondary)" font-size="10" text-anchor="middle">3</text>
-                <text x="50" y="200" fill="var(--color-secondary)" font-size="10" text-anchor="middle">4</text>
-                <text x="15" y="300" fill="var(--color-secondary)" font-size="10" text-anchor="middle">5</text>
-                <text x="100" y="385" fill="var(--color-secondary)" font-size="10" text-anchor="middle">6</text>
-                <text x="200" y="385" fill="var(--color-secondary)" font-size="10" text-anchor="middle">7</text>
-                <text x="300" y="385" fill="var(--color-secondary)" font-size="10" text-anchor="middle">8</text>
-                <text x="385" y="300" fill="var(--color-secondary)" font-size="10" text-anchor="middle">9</text>
-                <text x="350" y="200" fill="var(--color-secondary)" font-size="10" text-anchor="middle">10</text>
-                <text x="385" y="100" fill="var(--color-secondary)" font-size="10" text-anchor="middle">11</text>
-                <text x="300" y="15" fill="var(--color-secondary)" font-size="10" text-anchor="middle">12</text>
+                <!-- Rashi Numbers -->
+                <text x="200" y="20" fill="var(--color-secondary)" font-size="12" text-anchor="middle">${rashiNum(1)}</text>
+                <text x="100" y="15" fill="var(--color-secondary)" font-size="12" text-anchor="middle">${rashiNum(2)}</text>
+                <text x="15" y="100" fill="var(--color-secondary)" font-size="12" text-anchor="middle">${rashiNum(3)}</text>
+                <text x="50" y="200" fill="var(--color-secondary)" font-size="12" text-anchor="middle">${rashiNum(4)}</text>
+                <text x="15" y="300" fill="var(--color-secondary)" font-size="12" text-anchor="middle">${rashiNum(5)}</text>
+                <text x="100" y="385" fill="var(--color-secondary)" font-size="12" text-anchor="middle">${rashiNum(6)}</text>
+                <text x="200" y="385" fill="var(--color-secondary)" font-size="12" text-anchor="middle">${rashiNum(7)}</text>
+                <text x="300" y="385" fill="var(--color-secondary)" font-size="12" text-anchor="middle">${rashiNum(8)}</text>
+                <text x="385" y="300" fill="var(--color-secondary)" font-size="12" text-anchor="middle">${rashiNum(9)}</text>
+                <text x="350" y="200" fill="var(--color-secondary)" font-size="12" text-anchor="middle">${rashiNum(10)}</text>
+                <text x="385" y="100" fill="var(--color-secondary)" font-size="12" text-anchor="middle">${rashiNum(11)}</text>
+                <text x="300" y="15" fill="var(--color-secondary)" font-size="12" text-anchor="middle">${rashiNum(12)}</text>
             </svg>
         `;
     }
 
     function generateChart() {
         if (typeof Astronomy === 'undefined') {
-            Components.showToast('Please wait for the astronomy engine to load, or check your internet.', 'error');
+            Components.showToast('Please wait for the astronomy engine to load.', 'error');
             return;
         }
 
@@ -168,27 +181,45 @@ const KundaliPage = (() => {
         if (!cityObj) return;
 
         try {
-            // Calculate Kundali
             const chartData = AstroCalc.generateKundali(date, time, cityObj);
             
-            // Populate UI
             document.getElementById('res-name').textContent = `${name}'s Kundali`;
             document.getElementById('res-details').textContent = `${date} at ${time} | ${cityName}`;
             
             document.getElementById('res-lagna').textContent = chartData.lagnaName || 'Unknown';
             document.getElementById('res-rashi').textContent = chartData.moonSign || 'Unknown';
+            document.getElementById('res-nakshatra').textContent = chartData.moonNakshatra || 'Unknown';
             
-            document.getElementById('chart-container').innerHTML = drawChartSVG(chartData.houses);
+            document.getElementById('chart-d1-container').innerHTML = drawChartSVG(chartData.houses, chartData.lagnaRashi);
+            document.getElementById('chart-d9-container').innerHTML = drawChartSVG(chartData.navamsaHouses, chartData.lagnaNavamsaRashi);
             
-            // Show result
+            // Populate Table
+            const tbody = document.getElementById('planetary-table-body');
+            tbody.innerHTML = chartData.planets.map(p => `
+                <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                    <td style="padding: var(--space-3) var(--space-2); font-weight: bold; color: var(--color-secondary)">${p.name}</td>
+                    <td style="padding: var(--space-3) var(--space-2);">${p.rashiName}</td>
+                    <td style="padding: var(--space-3) var(--space-2);">${p.degreeStr}</td>
+                    <td style="padding: var(--space-3) var(--space-2);">${p.nakshatra} (Pada ${p.pada})</td>
+                </tr>
+            `).join('');
+
+            // Populate Dasha
+            const dashaContainer = document.getElementById('dasha-timeline');
+            dashaContainer.innerHTML = chartData.dashas.map(d => `
+                <div style="background: rgba(255,255,255,0.05); border: 1px solid var(--surface-border); border-radius: var(--radius-sm); padding: var(--space-3); text-align: center;">
+                    <div style="font-weight: bold; color: var(--color-primary); margin-bottom: 4px;">${d.lord}</div>
+                    <div style="font-size: var(--text-xs); color: var(--text-muted);">${d.startYear} - ${d.endYear}</div>
+                </div>
+            `).join('');
+            
             document.getElementById('kundaliResult').style.display = 'block';
             
-            // Scroll to it on mobile
             if (window.innerWidth < 768) {
                 document.getElementById('kundaliResult').scrollIntoView({ behavior: 'smooth' });
             }
 
-            Components.showToast('Kundali Generated successfully!', 'success');
+            Components.showToast('Advanced Kundali Generated!', 'success');
         } catch (e) {
             console.error(e);
             Components.showToast('Error generating chart. Check input data.', 'error');
