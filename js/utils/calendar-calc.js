@@ -242,44 +242,59 @@ const CalendarCalc = (() => {
     }
 
     /**
-     * Determine if a date is auspicious based on basic Panchang rules
+     * Determine if a date is auspicious based on event-specific Panchang rules
      */
-    function isAuspicious(year, month, day, eventType) {
+    function isAuspicious(year, month, day, eventRecs) {
         const jd = gregorianToJD(year, month, day) + 0.5;
         const tithi = calculateTithi(jd);
         const nakshatra = calculateNakshatra(jd);
         const dayOfWeek = new Date(year, month - 1, day).getDay();
+        const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
 
-        // Generally auspicious tithis: 2, 3, 5, 7, 10, 11, 13
-        const auspiciousTithis = [1, 2, 4, 6, 9, 10, 12]; // 0-indexed within paksha
-        const tithiInPaksha = tithi.index % 15;
+        let isTithiGood = false;
+        let isTithiBad = false;
+        let isDayGood = false;
+        let isDayBad = false;
+
+        if (eventRecs) {
+            // Strip Paksha from Tithi name for comparison (e.g., "Pratipada")
+            let baseTithiName = tithi.name;
+            isTithiGood = eventRecs.preferredTithis.includes(baseTithiName);
+            isTithiBad = eventRecs.avoidTithis.includes(baseTithiName);
+            isDayGood = eventRecs.goodDays.includes(dayName);
+            isDayBad = eventRecs.avoidDays.includes(dayName);
+        } else {
+            // Fallback general rules
+            const auspiciousTithis = [1, 2, 4, 6, 9, 10, 12];
+            const tithiInPaksha = tithi.index % 15;
+            isTithiGood = auspiciousTithis.includes(tithiInPaksha);
+            isDayGood = ![2, 6].includes(dayOfWeek);
+            isDayBad = [2, 6].includes(dayOfWeek);
+        }
         
-        // Generally auspicious nakshatras
-        const auspiciousNakshatras = [0, 2, 3, 6, 7, 10, 11, 12, 16, 21, 24, 25, 26]; // indices
-
-        const isTithiGood = auspiciousTithis.includes(tithiInPaksha);
+        // Generally auspicious nakshatras (fallback)
+        const auspiciousNakshatras = [0, 2, 3, 6, 7, 10, 11, 12, 16, 21, 24, 25, 26];
         const isNakshatraGood = auspiciousNakshatras.includes(nakshatra.index);
-        
-        // Avoid Tuesdays and Saturdays for most events
-        const isDayGood = ![2, 6].includes(dayOfWeek);
 
         let score = 0;
         if (isTithiGood) score += 3;
-        if (isNakshatraGood) score += 3;
-        if (isDayGood) score += 2;
-        if (tithi.pakshaIndex === 0) score += 1; // Shukla paksha slightly preferred
+        if (isTithiBad) score -= 3;
+        if (isNakshatraGood) score += 2;
+        if (isDayGood) score += 3;
+        if (isDayBad) score -= 3;
+        if (tithi.pakshaIndex === 0) score += 1; // Shukla paksha preferred
 
         return {
             score,
             maxScore: 9,
-            isRecommended: score >= 6,
+            isRecommended: score >= 5 && !isTithiBad && !isDayBad,
             tithi,
             nakshatra,
-            dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek],
+            dayOfWeek: dayName,
             reasons: [
-                isTithiGood ? `✅ ${tithi.name} is an auspicious tithi` : `⚠️ ${tithi.name} — consider another tithi`,
-                isNakshatraGood ? `✅ ${nakshatra.name} nakshatra is favorable` : `⚠️ ${nakshatra.name} nakshatra — verify with scholar`,
-                isDayGood ? `✅ Day is generally suitable` : `⚠️ This day is traditionally avoided for new beginnings`
+                isTithiGood ? `✅ ${tithi.name} is highly favorable` : (isTithiBad ? `🚫 ${tithi.name} should be avoided` : `⚠️ ${tithi.name} is neutral`),
+                isNakshatraGood ? `✅ ${nakshatra.name} nakshatra is favorable` : `⚠️ ${nakshatra.name} nakshatra is neutral`,
+                isDayGood ? `✅ ${dayName} is an excellent day` : (isDayBad ? `🚫 ${dayName} is traditionally avoided` : `⚠️ ${dayName} is acceptable`)
             ]
         };
     }
@@ -287,7 +302,7 @@ const CalendarCalc = (() => {
     /**
      * Get auspicious dates in a date range for a given event type
      */
-    function findAuspiciousDates(startDate, endDate, eventType) {
+    function findAuspiciousDates(startDate, endDate, eventRecs) {
         const results = [];
         const current = new Date(startDate);
         
@@ -296,7 +311,7 @@ const CalendarCalc = (() => {
             const month = current.getMonth() + 1;
             const day = current.getDate();
             
-            const result = isAuspicious(year, month, day, eventType);
+            const result = isAuspicious(year, month, day, eventRecs);
             if (result.isRecommended) {
                 results.push({
                     date: new Date(current),

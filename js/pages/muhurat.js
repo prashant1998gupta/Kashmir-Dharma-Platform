@@ -157,12 +157,12 @@ const MuhuratPage = (() => {
             return;
         }
 
-        // Find auspicious dates
-        const auspiciousDates = CalendarCalc.findAuspiciousDates(startDate, endDate, selectedEvent);
-        
         // Get event-specific recommendations
         const eventRecs = muhuratData.dayRecommendations[selectedEvent];
         const eventInfo = muhuratData.eventTypes.find(e => e.id === selectedEvent);
+
+        // Find auspicious dates using the specific rules
+        const auspiciousDates = CalendarCalc.findAuspiciousDates(startDate, endDate, eventRecs);
 
         const resultsContainer = document.getElementById('muhuratResults');
         if (!resultsContainer) return;
