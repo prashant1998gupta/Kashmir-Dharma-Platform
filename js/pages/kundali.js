@@ -80,6 +80,28 @@ const KundaliPage = (() => {
                                     <h3 style="text-align: center; margin-bottom: var(--space-4)">Navamsa Chart (D9)</h3>
                                     <div id="chart-d9-container" style="max-width: 400px; margin: 0 auto;"></div>
                                 </div>
+                                <div>
+                                    <h3 style="text-align: center; margin-bottom: var(--space-4)">Dasamsa Chart (D10)</h3>
+                                    <div id="chart-d10-container" style="max-width: 400px; margin: 0 auto;"></div>
+                                </div>
+                                <div>
+                                    <h3 style="text-align: center; margin-bottom: var(--space-4)">Saptamsa Chart (D7)</h3>
+                                    <div id="chart-d7-container" style="max-width: 400px; margin: 0 auto;"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Birth Panchang -->
+                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Birth Panchang</h3>
+                            <div style="background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--space-4); margin-bottom: var(--space-8); display: flex; flex-wrap: wrap; gap: var(--space-6); justify-content: space-between;">
+                                <div><span style="color: var(--text-muted); font-size: var(--text-xs); text-transform: uppercase;">Vaar (Day)</span><div id="panchang-vaar" style="font-weight: bold; color: var(--color-secondary);"></div></div>
+                                <div><span style="color: var(--text-muted); font-size: var(--text-xs); text-transform: uppercase;">Tithi</span><div id="panchang-tithi" style="font-weight: bold; color: var(--color-secondary);"></div></div>
+                                <div><span style="color: var(--text-muted); font-size: var(--text-xs); text-transform: uppercase;">Yoga</span><div id="panchang-yoga" style="font-weight: bold; color: var(--color-secondary);"></div></div>
+                                <div><span style="color: var(--text-muted); font-size: var(--text-xs); text-transform: uppercase;">Karana</span><div id="panchang-karana" style="font-weight: bold; color: var(--color-secondary);"></div></div>
+                            </div>
+                            
+                            <!-- Doshas -->
+                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Astrological Doshas</h3>
+                            <div id="dosha-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-8);">
                             </div>
                             
                             <!-- Planetary Details Table -->
@@ -92,6 +114,7 @@ const KundaliPage = (() => {
                                             <th style="padding: var(--space-2);">Sign (Rashi)</th>
                                             <th style="padding: var(--space-2);">Degree</th>
                                             <th style="padding: var(--space-2);">Nakshatra</th>
+                                            <th style="padding: var(--space-2);">Dignity & State</th>
                                         </tr>
                                     </thead>
                                     <tbody id="planetary-table-body">
@@ -192,6 +215,23 @@ const KundaliPage = (() => {
             
             document.getElementById('chart-d1-container').innerHTML = drawChartSVG(chartData.houses, chartData.lagnaRashi);
             document.getElementById('chart-d9-container').innerHTML = drawChartSVG(chartData.navamsaHouses, chartData.lagnaNavamsaRashi);
+            document.getElementById('chart-d10-container').innerHTML = drawChartSVG(chartData.dasamsaHouses, chartData.lagnaDasamsaRashi);
+            document.getElementById('chart-d7-container').innerHTML = drawChartSVG(chartData.saptamsaHouses, chartData.lagnaSaptamsaRashi);
+            
+            // Populate Panchang
+            document.getElementById('panchang-vaar').textContent = chartData.panchang.vaar;
+            document.getElementById('panchang-tithi').textContent = chartData.panchang.tithi;
+            document.getElementById('panchang-yoga').textContent = chartData.panchang.yoga;
+            document.getElementById('panchang-karana').textContent = chartData.panchang.karana;
+            
+            // Populate Doshas
+            const doshaContainer = document.getElementById('dosha-container');
+            doshaContainer.innerHTML = chartData.doshas.map(d => `
+                <div style="background: rgba(${d.severe ? '163,38,38' : '46,92,58'}, 0.1); border: 1px solid rgba(${d.severe ? '163,38,38' : '46,92,58'}, 0.3); border-radius: var(--radius-sm); padding: var(--space-4);">
+                    <div style="font-weight: bold; color: var(--text-primary); margin-bottom: var(--space-2);">${d.name}</div>
+                    <div style="font-size: var(--text-sm); color: var(--text-secondary);">${d.desc}</div>
+                </div>
+            `).join('');
             
             // Populate Table
             const tbody = document.getElementById('planetary-table-body');
@@ -201,6 +241,7 @@ const KundaliPage = (() => {
                     <td style="padding: var(--space-3) var(--space-2);">${p.rashiName}</td>
                     <td style="padding: var(--space-3) var(--space-2);">${p.degreeStr}</td>
                     <td style="padding: var(--space-3) var(--space-2);">${p.nakshatra} (Pada ${p.pada})</td>
+                    <td style="padding: var(--space-3) var(--space-2);">${p.dignity}</td>
                 </tr>
             `).join('');
 

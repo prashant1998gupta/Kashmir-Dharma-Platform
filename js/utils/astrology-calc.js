@@ -152,6 +152,46 @@ const AstroCalc = (() => {
         return navamsaRashi;
     }
 
+    function getDasamsa(siderealLon) {
+        let normalized = siderealLon % 360;
+        if (normalized < 0) normalized += 360;
+        const rashi = Math.floor(normalized / 30) + 1;
+        const rashiDeg = normalized % 30;
+        const size = 3.0; // 30 / 10
+        const index = Math.floor(rashiDeg / size);
+        
+        let startRashi = rashi;
+        if (rashi % 2 === 0) {
+            startRashi = rashi + 8; // 9th from it: rashi + 9 - 1
+            if (startRashi > 12) startRashi -= 12;
+        }
+        
+        let dRashi = startRashi + index;
+        if (dRashi > 12) dRashi = dRashi % 12;
+        if (dRashi === 0) dRashi = 12;
+        return dRashi;
+    }
+
+    function getSaptamsa(siderealLon) {
+        let normalized = siderealLon % 360;
+        if (normalized < 0) normalized += 360;
+        const rashi = Math.floor(normalized / 30) + 1;
+        const rashiDeg = normalized % 30;
+        const size = 30 / 7;
+        const index = Math.floor(rashiDeg / size);
+        
+        let startRashi = rashi;
+        if (rashi % 2 === 0) {
+            startRashi = rashi + 6; // 7th from it: rashi + 7 - 1
+            if (startRashi > 12) startRashi -= 12;
+        }
+        
+        let dRashi = startRashi + index;
+        if (dRashi > 12) dRashi = dRashi % 12;
+        if (dRashi === 0) dRashi = 12;
+        return dRashi;
+    }
+
     function formatDegree(lon) {
         const degInRashi = lon % 30;
         const d = Math.floor(degInRashi);
@@ -200,6 +240,111 @@ const AstroCalc = (() => {
     }
 
     /**
+     * Calculate Planetary Dignity (Exaltation/Debilitation)
+     */
+    function getPlanetaryDignity(id, rashi) {
+        const dignities = {
+            'Sun': { exalted: 1, debilitated: 7, own: [5] },
+            'Moon': { exalted: 2, debilitated: 8, own: [4] },
+            'Mars': { exalted: 10, debilitated: 4, own: [1, 8] },
+            'Mercury': { exalted: 6, debilitated: 12, own: [3, 6] },
+            'Jupiter': { exalted: 4, debilitated: 10, own: [9, 12] },
+            'Venus': { exalted: 12, debilitated: 6, own: [2, 7] },
+            'Saturn': { exalted: 7, debilitated: 1, own: [10, 11] },
+            'Rahu': { exalted: 2, debilitated: 8, own: [] },
+            'Ketu': { exalted: 8, debilitated: 2, own: [] }
+        };
+        const d = dignities[id];
+        if (!d) return "";
+        if (d.exalted === rashi) return "Exalted (Ucha)";
+        if (d.debilitated === rashi) return "Debilitated (Neecha)";
+        if (d.own.includes(rashi)) return "Own Sign (Swakshetra)";
+        return "Neutral";
+    }
+
+    /**
+     * Detect Astrological Doshas
+     */
+    function checkDoshas(lagnaRashi, moonRashi, planets) {
+        const doshas = [];
+        
+        // Manglik Dosha
+        const mars = planets.find(p => p.id === 'Mars');
+        if (mars) {
+            let houseFromLagna = mars.rashi - lagnaRashi + 1;
+            if (houseFromLagna <= 0) houseFromLagna += 12;
+            let houseFromMoon = mars.rashi - moonRashi + 1;
+            if (houseFromMoon <= 0) houseFromMoon += 12;
+            
+            const manglikHouses = [1, 4, 7, 8, 12];
+            if (manglikHouses.includes(houseFromLagna) || manglikHouses.includes(houseFromMoon)) {
+                // Exceptions
+                if (mars.rashi !== 1 && mars.rashi !== 8 && mars.rashi !== 10) {
+                    doshas.push({ name: "Manglik (Kuja) Dosha", desc: "Mars is placed in a sensitive house affecting marriage/relationships.", severe: true });
+                }
+            }
+        }
+        
+        // Kalsarp Dosha
+        const rahu = planets.find(p => p.id === 'Rahu');
+        const ketu = planets.find(p => p.id === 'Ketu');
+        if (rahu && ketu) {
+            let rL = rahu.longitude;
+            let kL = ketu.longitude;
+            let allOneSide = true;
+            let allOtherSide = true;
+            
+            planets.forEach(p => {
+                if (['Rahu', 'Ketu', 'Uranus', 'Neptune', 'Pluto'].includes(p.id)) return;
+                let lon = p.longitude;
+                // Check if all are between Rahu and Ketu
+                let diff1 = (lon - rL + 360) % 360;
+                let diff2 = (kL - rL + 360) % 360;
+                if (diff1 > diff2) allOneSide = false;
+                
+                let diff3 = (lon - kL + 360) % 360;
+                let diff4 = (rL - kL + 360) % 360;
+                if (diff3 > diff4) allOtherSide = false;
+            });
+            
+            if (allOneSide || allOtherSide) {
+                doshas.push({ name: "Kalsarp Dosha", desc: "All planets are hemmed between the Rahu-Ketu axis.", severe: true });
+            }
+        }
+        
+        if (doshas.length === 0) {
+            doshas.push({ name: "No Major Doshas", desc: "The chart is free from major afflictions like Manglik or Kalsarp.", severe: false });
+        }
+        
+        return doshas;
+    }
+
+    /**
+     * Calculate Birth Panchang
+     */
+    function calculatePanchang(sunLon, moonLon, date) {
+        let diff = (moonLon - sunLon + 360) % 360;
+        let tithiIndex = Math.floor(diff / 12) + 1;
+        let isShukla = tithiIndex <= 15;
+        let tithiName = `Tithi ${tithiIndex} (${isShukla ? 'Shukla Paksha' : 'Krishna Paksha'})`;
+        
+        let sum = (moonLon + sunLon) % 360;
+        let yogaIndex = Math.floor(sum / 13.3333) + 1;
+        
+        let karanaIndex = Math.floor(diff / 6) + 1;
+        
+        const weekdays = ["Sunday (Ravivaar)", "Monday (Somvaar)", "Tuesday (Mangalvaar)", "Wednesday (Budhvaar)", "Thursday (Guruvaar)", "Friday (Shukravaar)", "Saturday (Shanivaar)"];
+        let vaar = weekdays[date.getDay()];
+        
+        return {
+            tithi: tithiName,
+            yoga: `Yoga #${yogaIndex}`,
+            karana: `Karana #${karanaIndex}`,
+            vaar: vaar
+        };
+    }
+
+    /**
      * Generate the complete Kundali chart data
      */
     function generateKundali(birthDate, birthTime, cityObj) {
@@ -240,6 +385,8 @@ const AstroCalc = (() => {
 
             let rashi = getRashiFromLongitude(siderealLon);
             let navamsaRashi = getNavamsa(siderealLon);
+            let dasamsaRashi = getDasamsa(siderealLon);
+            let saptamsaRashi = getSaptamsa(siderealLon);
             let nakData = getNakshatraData(siderealLon);
             
             chart.planets.push({
@@ -249,8 +396,11 @@ const AstroCalc = (() => {
                 rashi: rashi,
                 rashiName: RASHIS[rashi - 1],
                 navamsaRashi: navamsaRashi,
+                dasamsaRashi: dasamsaRashi,
+                saptamsaRashi: saptamsaRashi,
                 nakshatra: nakData.name,
-                pada: nakData.pada
+                pada: nakData.pada,
+                dignity: getPlanetaryDignity(p.id, rashi)
             });
         });
 
@@ -262,11 +412,15 @@ const AstroCalc = (() => {
           {id:'Ketu', name:'Ketu', symbol:'Ke', lon:ketuLon} ].forEach(node => {
             let r = getRashiFromLongitude(node.lon);
             let nr = getNavamsa(node.lon);
+            let dr = getDasamsa(node.lon);
+            let sr = getSaptamsa(node.lon);
             let nd = getNakshatraData(node.lon);
             chart.planets.push({
                 ...node, longitude: node.lon, degreeStr: formatDegree(node.lon),
                 rashi: r, rashiName: RASHIS[r - 1], navamsaRashi: nr,
-                nakshatra: nd.name, pada: nd.pada
+                dasamsaRashi: dr, saptamsaRashi: sr,
+                nakshatra: nd.name, pada: nd.pada,
+                dignity: getPlanetaryDignity(node.id, r)
             });
         });
 
@@ -280,7 +434,12 @@ const AstroCalc = (() => {
         const lagnaDegreeWithinRashi = ((hoursSinceSunrise % 2) / 2) * 30;
         const lagnaAbsoluteLon = ((lagnaSign - 1) * 30) + lagnaDegreeWithinRashi;
         const lagnaNavamsaRashi = getNavamsa(lagnaAbsoluteLon);
+        const lagnaDasamsaRashi = getDasamsa(lagnaAbsoluteLon);
+        const lagnaSaptamsaRashi = getSaptamsa(lagnaAbsoluteLon);
+        
         chart.lagnaNavamsaRashi = lagnaNavamsaRashi;
+        chart.lagnaDasamsaRashi = lagnaDasamsaRashi;
+        chart.lagnaSaptamsaRashi = lagnaSaptamsaRashi;
 
         // Map D1 Houses
         chart.planets.forEach(p => {
@@ -295,6 +454,24 @@ const AstroCalc = (() => {
             if (houseOffset < 0) houseOffset += 12;
             chart.navamsaHouses[houseOffset + 1].push(p.symbol);
         });
+        
+        // Map D10 Houses
+        chart.dasamsaHouses = {};
+        for (let i = 1; i <= 12; i++) chart.dasamsaHouses[i] = [];
+        chart.planets.forEach(p => {
+            let houseOffset = p.dasamsaRashi - lagnaDasamsaRashi;
+            if (houseOffset < 0) houseOffset += 12;
+            chart.dasamsaHouses[houseOffset + 1].push(p.symbol);
+        });
+        
+        // Map D7 Houses
+        chart.saptamsaHouses = {};
+        for (let i = 1; i <= 12; i++) chart.saptamsaHouses[i] = [];
+        chart.planets.forEach(p => {
+            let houseOffset = p.saptamsaRashi - lagnaSaptamsaRashi;
+            if (houseOffset < 0) houseOffset += 12;
+            chart.saptamsaHouses[houseOffset + 1].push(p.symbol);
+        });
 
         const moon = chart.planets.find(p => p.id === 'Moon');
         if (moon) {
@@ -303,6 +480,9 @@ const AstroCalc = (() => {
         }
 
         chart.dashas = calculateDasha(moonSiderealLon, calcDate);
+        
+        chart.panchang = calculatePanchang(sunSiderealLon, moonSiderealLon, calcDate);
+        chart.doshas = checkDoshas(lagnaSign, moon ? moon.rashi : lagnaSign, chart.planets);
 
         return chart;
     }
