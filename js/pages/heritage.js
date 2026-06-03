@@ -214,7 +214,12 @@ const HeritagePage = (() => {
         
         // Update preview
         const preview = document.getElementById('heritagePreview');
-        if (preview) preview.innerHTML = renderPreview(data);
+        if (preview) {
+            preview.innerHTML = renderPreview(data);
+            setTimeout(() => {
+                preview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
         
         Components.showToast('Family heritage saved successfully!', 'success');
     }
