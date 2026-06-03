@@ -149,7 +149,7 @@ const MatchingPage = (() => {
             bCityObj = {
                 name: bCityName,
                 lat: parseFloat(bCityInput.dataset.lat),
-                lng: parseFloat(bCityInput.dataset.lng),
+                lon: parseFloat(bCityInput.dataset.lon),
                 tz: typeof CityAPI !== 'undefined' ? CityAPI.getTzOffset(bCityInput.dataset.tzStr, `${bDate}T${bTime}:00`) : 5.5
             };
         } else {
@@ -161,7 +161,7 @@ const MatchingPage = (() => {
             gCityObj = {
                 name: gCityName,
                 lat: parseFloat(gCityInput.dataset.lat),
-                lng: parseFloat(gCityInput.dataset.lng),
+                lon: parseFloat(gCityInput.dataset.lon),
                 tz: typeof CityAPI !== 'undefined' ? CityAPI.getTzOffset(gCityInput.dataset.tzStr, `${gDate}T${gTime}:00`) : 5.5
             };
         } else {

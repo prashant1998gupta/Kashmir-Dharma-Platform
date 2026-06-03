@@ -189,7 +189,7 @@ const VarshphalPage = (() => {
             cityObj = {
                 name: cityName,
                 lat: parseFloat(cityInput.dataset.lat),
-                lng: parseFloat(cityInput.dataset.lng),
+                lon: parseFloat(cityInput.dataset.lon),
                 tz: typeof CityAPI !== 'undefined' ? CityAPI.getTzOffset(cityInput.dataset.tzStr, `${date}T${time}:00`) : 5.5
             };
         } else {

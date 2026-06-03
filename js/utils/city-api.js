@@ -38,7 +38,7 @@ const CityAPI = (() => {
                     id: city.id,
                     name: displayName,
                     lat: city.latitude,
-                    lng: city.longitude,
+                    lon: city.longitude,
                     tzStr: city.timezone || 'UTC'
                 };
             });
@@ -85,7 +85,7 @@ const CityAPI = (() => {
             
             // Clear dataset on new input
             input.dataset.lat = '';
-            input.dataset.lng = '';
+            input.dataset.lon = '';
             input.dataset.tzStr = '';
 
             if (val.length < 2) {
@@ -117,18 +117,30 @@ const CityAPI = (() => {
                     li.onmouseover = () => li.style.background = 'var(--bg-card-hover)';
                     li.onmouseout = () => li.style.background = 'transparent';
 
-                    li.innerHTML = `<strong>${city.name.split(',')[0]}</strong><span style="font-size: 0.85em; color: var(--text-muted); margin-left: 8px;">${city.name.substring(city.name.indexOf(','))}</span>`;
+                    li.innerHTML = `<span style="margin-right: 8px;">🌍</span><strong>${city.name.split(',')[0]}</strong><span style="font-size: 0.85em; color: var(--text-muted); margin-left: 8px;">${city.name.substring(city.name.indexOf(','))}</span>`;
                     
                     li.addEventListener('click', () => {
                         input.value = city.name;
                         input.dataset.lat = city.lat;
-                        input.dataset.lng = city.lng;
+                        input.dataset.lon = city.lon;
                         input.dataset.tzStr = city.tzStr;
                         resultsBox.style.display = 'none';
                     });
 
                     resultsBox.appendChild(li);
                 });
+
+                // Add API Footer
+                const footer = document.createElement('li');
+                footer.style.padding = '8px 15px';
+                footer.style.fontSize = '0.75em';
+                footer.style.textAlign = 'right';
+                footer.style.color = 'var(--color-secondary)';
+                footer.style.borderTop = '1px solid var(--surface-border)';
+                footer.style.background = 'rgba(0,0,0,0.2)';
+                footer.innerHTML = `<em>⚡ Powered by Global Open-Meteo API</em>`;
+                resultsBox.appendChild(footer);
+
             }, 400); // 400ms debounce
         });
 

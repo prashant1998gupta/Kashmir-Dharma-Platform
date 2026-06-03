@@ -220,7 +220,7 @@ const KundaliPage = (() => {
             cityObj = {
                 name: cityName,
                 lat: parseFloat(cityInput.dataset.lat),
-                lng: parseFloat(cityInput.dataset.lng),
+                lon: parseFloat(cityInput.dataset.lon),
                 tz: tzOffset
             };
         } else {
