@@ -1240,9 +1240,13 @@ a:hover {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--surface-border);
     border-radius: var(--radius-xl);
-    overflow: hidden;
     box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
+
+.calendar-header-cell:first-child { border-top-left-radius: calc(var(--radius-xl) - 1px) !important; }
+.calendar-header-cell:nth-child(7) { border-top-right-radius: calc(var(--radius-xl) - 1px) !important; }
+.calendar-cell:nth-last-child(7) { border-bottom-left-radius: calc(var(--radius-xl) - 1px) !important; }
+.calendar-cell:last-child { border-bottom-right-radius: calc(var(--radius-xl) - 1px) !important; }
 
 .calendar-header-cell {
     padding: var(--space-4) var(--space-3);

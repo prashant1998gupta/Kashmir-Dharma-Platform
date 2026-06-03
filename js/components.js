@@ -351,10 +351,13 @@ const Components = (() => {
             let tithiHTML = '';
             try {
                 if (typeof CalendarCalc !== 'undefined') {
-                    const cellDate = new Date(year, month, d, 12, 0, 0);
-                    const hDate = CalendarCalc.getHinduDate(cellDate);
+                    const hDate = CalendarCalc.getHinduDate(year, month + 1, d, 12, 0);
                     const paksha = hDate.tithi.pakshaIndex === 0 ? 'S' : 'K';
-                    const tithiNum = hDate.tithi.index;
+                    
+                    // The tithi array has 30 items. 0-14 is Shukla 1-15, 15-29 is Krishna 1-15.
+                    // To display a number 1-15, we can use (hDate.tithi.index % 15) + 1
+                    const tithiNum = (hDate.tithi.index % 15) + 1;
+                    
                     tithiHTML = `<span class="calendar-tithi" title="${hDate.tithi.name} (${hDate.tithi.paksha})">${paksha}${tithiNum}</span>`;
                 }
             } catch(e) {}
