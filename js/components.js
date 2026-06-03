@@ -347,8 +347,21 @@ const Components = (() => {
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
             const dayEvents = events.filter(e => e.dateStr === dateStr);
             
+            // Calculate Tithi for the cell if CalendarCalc is available
+            let tithiHTML = '';
+            try {
+                if (typeof CalendarCalc !== 'undefined') {
+                    const cellDate = new Date(year, month, d, 12, 0, 0);
+                    const hDate = CalendarCalc.getHinduDate(cellDate);
+                    const paksha = hDate.tithi.pakshaIndex === 0 ? 'S' : 'K';
+                    const tithiNum = hDate.tithi.index;
+                    tithiHTML = `<span class="calendar-tithi" title="${hDate.tithi.name} (${hDate.tithi.paksha})">${paksha}${tithiNum}</span>`;
+                }
+            } catch(e) {}
+            
             html += `<div class="calendar-cell ${isToday ? 'today' : ''}" onclick="CalendarPage.onDayClick('${dateStr}')">`;
             html += `<span class="calendar-date">${d}</span>`;
+            html += tithiHTML;
             dayEvents.forEach(e => {
                 html += `<div class="calendar-event ${e.type}">${e.name}</div>`;
             });

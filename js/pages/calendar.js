@@ -25,10 +25,16 @@ const CalendarPage = (() => {
                 )}
 
                 <!-- Calendar Navigation -->
-                <div class="flex items-center justify-between mb-6">
-                    <button class="btn btn-ghost" onclick="CalendarPage.changeMonth(-1)">← Previous</button>
-                    <h3 id="calendarMonthTitle">${monthNames[currentMonth]} ${currentYear}</h3>
-                    <button class="btn btn-ghost" onclick="CalendarPage.changeMonth(1)">Next →</button>
+                <div class="flex items-center justify-between mb-6" style="background: var(--bg-card); padding: var(--space-4) var(--space-6); border-radius: var(--radius-full); border: 1px solid var(--surface-border); box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                    <button class="btn btn-ghost" style="border-radius: var(--radius-full); padding: var(--space-2) var(--space-4);" onclick="CalendarPage.changeMonth(-1)">
+                        <span style="font-size: 1.2rem; margin-right: 8px;">←</span> Previous
+                    </button>
+                    <h3 id="calendarMonthTitle" style="margin: 0; font-family: var(--font-heading); font-size: 1.5rem; letter-spacing: 1px; color: var(--color-secondary);">
+                        ${monthNames[currentMonth]} ${currentYear}
+                    </h3>
+                    <button class="btn btn-ghost" style="border-radius: var(--radius-full); padding: var(--space-2) var(--space-4);" onclick="CalendarPage.changeMonth(1)">
+                        Next <span style="font-size: 1.2rem; margin-left: 8px;">→</span>
+                    </button>
                 </div>
 
                 <!-- Calendar Grid -->
