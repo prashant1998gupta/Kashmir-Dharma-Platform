@@ -247,7 +247,11 @@ const MuhuratPage = (() => {
             </div>
         `;
 
-        setTimeout(() => Components.initScrollReveal(), 100);
+        setTimeout(() => {
+            Components.initScrollReveal();
+            const y = resultsContainer.getBoundingClientRect().top + window.scrollY - 80;
+            window.scrollTo({top: y, behavior: 'smooth'});
+        }, 150);
     }
 
     return { render, afterRender, selectEvent, findMuhurat };

@@ -212,8 +212,12 @@ const BirthdayPage = (() => {
 
         setTimeout(() => {
             Components.initScrollReveal();
-            document.getElementById('birthdayResults').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
+            const res = document.getElementById('birthdayResults');
+            if (res) {
+                const y = res.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            }
+        }, 150);
     }
 
     function loadProfile(id) {

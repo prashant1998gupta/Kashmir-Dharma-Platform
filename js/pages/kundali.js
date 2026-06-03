@@ -311,8 +311,9 @@ const KundaliPage = (() => {
             
             // Smooth scroll down to results so user knows it generated
             setTimeout(() => {
-                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
+                const y = resultDiv.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            }, 150);
 
             Components.showToast('Advanced Kundali Generated!', 'success');
         } catch (e) {

@@ -217,8 +217,9 @@ const HeritagePage = (() => {
         if (preview) {
             preview.innerHTML = renderPreview(data);
             setTimeout(() => {
-                preview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }, 100);
+                const y = preview.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            }, 150);
         }
         
         Components.showToast('Family heritage saved successfully!', 'success');
