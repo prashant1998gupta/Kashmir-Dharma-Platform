@@ -63,7 +63,7 @@ const VarshphalCalc = (() => {
     function generateVarshphal(birthDateStr, birthTimeStr, cityObj, targetYear) {
         // 1. Get Natal Chart Data
         const natalChart = AstroCalc.generateKundali(birthDateStr, birthTimeStr, cityObj);
-        const natalSunLon = natalChart.planets.find(p => p.id === 'Sun').siderealLon;
+        const natalSunLon = natalChart.planets.find(p => p.id === 'Sun').longitude;
         const natalLagnaRashi = natalChart.lagnaRashi;
         
         // 2. Find Varshapravesh (Solar Return) Date/Time
