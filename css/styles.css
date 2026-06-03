@@ -104,6 +104,39 @@
     --z-toast: 400;
 }
 
+/* --- Light Theme Overrides --- */
+:root[data-theme="light"] {
+    /* Background - Pearl White & Ivory */
+    --bg-primary: #FDFBF7;
+    --bg-secondary: #F6F3EC;
+    --bg-tertiary: #EBE5D9;
+    
+    /* Premium Glassmorphism */
+    --bg-card: rgba(0, 0, 0, 0.02);
+    --bg-card-hover: rgba(0, 0, 0, 0.04);
+    --bg-glass: rgba(253, 251, 247, 0.7);
+    --bg-glass-strong: rgba(253, 251, 247, 0.95);
+
+    /* Surface & Borders */
+    --surface-border: rgba(212, 175, 55, 0.4);
+    --surface-border-hover: rgba(212, 175, 55, 0.7);
+    --surface-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    --surface-shadow-lg: 0 16px 50px rgba(0, 0, 0, 0.12);
+    --inner-glow: inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+    --inner-glow-hover: inset 0 0 0 1px rgba(212, 175, 55, 0.3);
+
+    /* Text - Charcoal & Deep Brown */
+    --text-primary: #1A1814;
+    --text-secondary: #4A463C;
+    --text-muted: #736E65;
+    --text-accent: #B08D2E;
+    --text-heading: #0A0908;
+    
+    /* Keep primary and secondary colors the same, or slightly darker for contrast */
+    --color-primary-glow: rgba(163, 38, 38, 0.15);
+    --color-secondary-glow: rgba(212, 175, 55, 0.15);
+}
+
 /* --- Reset & Base --- */
 *,
 *::before,

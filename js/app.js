@@ -10,6 +10,7 @@ const App = (() => {
      * Initialize the application
      */
     function init() {
+        setupTheme();
         setupMobileMenu();
         setupModalClose();
         Router.init();
@@ -87,7 +88,49 @@ const App = (() => {
         });
     }
 
-    return { init, loadData };
+    /**
+     * Setup Light/Dark Mode Theme
+     */
+    function setupTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        if (savedTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            updateThemeToggleButton('light');
+        }
+    }
+
+    /**
+     * Toggle Theme Function
+     */
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        if (newTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+        
+        localStorage.setItem('theme', newTheme);
+        updateThemeToggleButton(newTheme);
+    }
+
+    function updateThemeToggleButton(theme) {
+        const icon = document.getElementById('themeToggleIcon');
+        const text = document.getElementById('themeToggleText');
+        if (icon && text) {
+            if (theme === 'light') {
+                icon.textContent = '🌙';
+                text.textContent = 'Dark Mode';
+            } else {
+                icon.textContent = '☀️';
+                text.textContent = 'Light Mode';
+            }
+        }
+    }
+
+    return { init, loadData, toggleTheme };
 })();
 
 // Boot the application when DOM is ready
