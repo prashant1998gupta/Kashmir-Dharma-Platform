@@ -210,9 +210,10 @@ const MatchingPage = (() => {
         const now = new Date();
 
         let html = `<div class="card card-glass" style="padding: var(--space-6);">
-            <!-- Print Button -->
-            <div class="no-print" style="text-align: right; margin-bottom: var(--space-4);">
-                <button class="btn btn-outline" onclick="window.print()">🖨️ Print / Save as PDF</button>
+            <!-- Export Buttons -->
+            <div class="no-print" style="text-align: right; margin-bottom: var(--space-4); display:flex; gap:var(--space-3); justify-content:flex-end;">
+                <button class="btn btn-primary" style="padding:var(--space-2) var(--space-5);" onclick="PDFGenerator.generatePDF('matchResult','Kundali_Matching_Report.pdf','Kundali Matching Report')">📥 Download PDF</button>
+                <button class="btn btn-outline" onclick="window.print()">🖨️ Print</button>
             </div>
 
             <!-- ═══════ PAGE 1: TITLE & SUMMARY ═══════ -->
@@ -391,6 +392,65 @@ const MatchingPage = (() => {
                     <p style="color:var(--text-secondary); margin-top:var(--space-2);">The horoscopes are free from Bhakoot Dosha and Nadi Dosha. This is a very positive indicator for the marriage.</p>
                 </div>` : ''}
             </div>
+
+            <!-- ═══════ PAGE 6: DASHA TIMING COMPATIBILITY ═══════ -->
+            <div class="print-page-break"></div>
+            <div class="report-section" style="margin-bottom:var(--space-8);">
+                <h2 class="report-section-title" style="color:var(--color-secondary); border-bottom:2px solid var(--color-secondary); padding-bottom:var(--space-2); margin-bottom:var(--space-6);">⏰ Dasha Timing Compatibility</h2>
+                <p style="color:var(--text-secondary); line-height:1.6; margin-bottom:var(--space-4);">The Vimshottari Dasha system determines the planetary periods currently active for both individuals. Timing of marriage is considered auspicious when both partners are running compatible Dasha periods.</p>
+                ${result.dashaAnalysis && result.dashaAnalysis.available ? `
+                    <div class="grid-2" style="margin-bottom:var(--space-6);">
+                        <div style="background:rgba(255,255,255,0.03); padding:var(--space-4); border-radius:var(--radius-md); border:1px solid var(--surface-border);">
+                            <div style="color:var(--text-muted); font-size:var(--text-xs); text-transform:uppercase; margin-bottom:4px;">${bName}'s Current Dasha</div>
+                            <div style="font-size:var(--text-lg); font-weight:bold; color:var(--color-primary);">${result.dashaAnalysis.boyDasha.mahadasha} - ${result.dashaAnalysis.boyDasha.antardasha}</div>
+                            <div style="font-size:var(--text-xs); color:var(--text-muted); margin-top:2px;">Mahadasha: ${result.dashaAnalysis.boyDasha.mdStart} to ${result.dashaAnalysis.boyDasha.mdEnd}</div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.03); padding:var(--space-4); border-radius:var(--radius-md); border:1px solid var(--surface-border);">
+                            <div style="color:var(--text-muted); font-size:var(--text-xs); text-transform:uppercase; margin-bottom:4px;">${gName}'s Current Dasha</div>
+                            <div style="font-size:var(--text-lg); font-weight:bold; color:var(--color-secondary);">${result.dashaAnalysis.girlDasha.mahadasha} - ${result.dashaAnalysis.girlDasha.antardasha}</div>
+                            <div style="font-size:var(--text-xs); color:var(--text-muted); margin-top:2px;">Mahadasha: ${result.dashaAnalysis.girlDasha.mdStart} to ${result.dashaAnalysis.girlDasha.mdEnd}</div>
+                        </div>
+                    </div>
+                    <div style="background:rgba(${result.dashaAnalysis.compatibility === 'Excellent' ? '46,204,113' : (result.dashaAnalysis.compatibility === 'Challenging' ? '231,76,60' : '201,169,89')},0.1); border:1px solid rgba(${result.dashaAnalysis.compatibility === 'Excellent' ? '46,204,113' : (result.dashaAnalysis.compatibility === 'Challenging' ? '231,76,60' : '201,169,89')},0.3); border-radius:var(--radius-md); padding:var(--space-5);">
+                        <div style="font-weight:bold; color:${result.dashaAnalysis.compatibility === 'Excellent' ? '#2ecc71' : (result.dashaAnalysis.compatibility === 'Challenging' ? '#e74c3c' : 'var(--color-secondary)')}; margin-bottom:var(--space-2);">Dasha Compatibility: ${result.dashaAnalysis.compatibility}</div>
+                        <p style="color:var(--text-secondary); line-height:1.7; font-size:var(--text-sm);">${result.dashaAnalysis.interpretation}</p>
+                    </div>
+                ` : '<p style="color:var(--text-muted);">Dasha data could not be computed. This may be due to incomplete birth time information.</p>'}
+            </div>
+
+            <!-- ═══════ PAGE 7: MARRIAGE YOGA ANALYSIS ═══════ -->
+            <div class="print-page-break"></div>
+            <div class="report-section" style="margin-bottom:var(--space-8);">
+                <h2 class="report-section-title" style="color:var(--color-secondary); border-bottom:2px solid var(--color-secondary); padding-bottom:var(--space-2); margin-bottom:var(--space-6);">💍 Marriage Yoga Analysis (Personalized)</h2>
+                <p style="color:var(--text-secondary); line-height:1.6; margin-bottom:var(--space-6);">Beyond the Ashtakoot system, individual chart analysis of the 7th House Lord, Venus (marriage karaka), and Jupiter provides deep insight into each person's marriage potential.</p>
+                
+                <h3 style="color:var(--color-primary); margin-bottom:var(--space-4);">${bName}'s Marriage Indicators</h3>
+                ${(result.boyMarriageYogas || []).map(y => `
+                    <div class="print-avoid-break" style="background:rgba(255,255,255,0.03); border-radius:var(--radius-md); padding:var(--space-4); margin-bottom:var(--space-3); border-left:4px solid var(--color-primary);">
+                        <div style="font-weight:bold; color:var(--text-primary); margin-bottom:var(--space-2);">${y.title}</div>
+                        <p style="color:var(--text-secondary); line-height:1.6; font-size:var(--text-sm);">${y.text}</p>
+                    </div>
+                `).join('')}
+
+                <h3 style="color:var(--color-secondary); margin-top:var(--space-6); margin-bottom:var(--space-4);">${gName}'s Marriage Indicators</h3>
+                ${(result.girlMarriageYogas || []).map(y => `
+                    <div class="print-avoid-break" style="background:rgba(255,255,255,0.03); border-radius:var(--radius-md); padding:var(--space-4); margin-bottom:var(--space-3); border-left:4px solid var(--color-secondary);">
+                        <div style="font-weight:bold; color:var(--text-primary); margin-bottom:var(--space-2);">${y.title}</div>
+                        <p style="color:var(--text-secondary); line-height:1.6; font-size:var(--text-sm);">${y.text}</p>
+                    </div>
+                `).join('')}
+            </div>
+
+            <!-- ═══════ PAGE 7.5: NAVAMSA (D9) CROSS-ANALYSIS ═══════ -->
+            ${result.navamsaAnalysis ? `
+            <div class="print-page-break"></div>
+            <div class="report-section" style="margin-bottom:var(--space-8);">
+                <h2 class="report-section-title" style="color:var(--color-secondary); border-bottom:2px solid var(--color-secondary); padding-bottom:var(--space-2); margin-bottom:var(--space-6);">🔯 Navamsa (D9) Marriage Compatibility</h2>
+                <div style="background:rgba(201,169,89,0.08); border:1px solid rgba(201,169,89,0.3); border-radius:var(--radius-md); padding:var(--space-5);">
+                    <p style="color:var(--text-secondary); line-height:1.7; font-size:var(--text-sm); white-space:pre-line;">${result.navamsaAnalysis}</p>
+                </div>
+            </div>
+            ` : ''}
 
             <!-- ═══════ PAGE 9: RECOMMENDATIONS & REMEDIES ═══════ -->
             <div class="print-page-break"></div>

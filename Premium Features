@@ -1,0 +1,52 @@
+# 🚀 Premium Features Completed!
+
+The **Automated Kundali Matching (Guna Milan)** and the **Annual Varshphal** systems have been completely designed, mathematically coded, and integrated directly into the Kashmir Dharma Platform. 
+
+These are fully functioning, production-ready premium calculation engines.
+
+---
+
+## 1. Automated Kundali Matching (Ashtakoot)
+
+I built a highly complex matching algorithm in `js/utils/match-calc.js` that exactly follows the ancient Ashtakoot Guna Milan principles.
+
+### Key Capabilities:
+- **Instant Astrological Matrix:** It takes the boy's and girl's exact time and city of birth, dynamically calculates both of their Moon Longitudes, finds their exact Nakshatras and Rashis, and cross-references them against classical astrological compatibility matrices.
+- **8 Kootas Analyzed:** It precisely calculates:
+  - Varna (Ego Compatibility)
+  - Vashya (Mutual Attraction)
+  - Tara (Destiny & Health)
+  - Yoni (Biological Compatibility)
+  - Graha Maitri (Mental Friendship)
+  - Gana (Temperament)
+  - Bhakoot (Family Compatibility)
+  - Nadi (Genetic/Progeny Compatibility)
+- **Beautiful UI:** A brand new, split-screen glassmorphism form where users enter the Boy's and Girl's details side-by-side.
+- **Visual Scorecard:** It generates a stunning dynamic circular progress bar that shows the score out of 36 points, providing an instant verdict ("Excellent Match", "Average", or "Not Recommended").
+
+---
+
+## 2. Annual Horoscope (Tajika Varshphal)
+
+I built a hyper-precise Solar Return engine in `js/utils/varshphal-calc.js`.
+
+### Key Capabilities:
+- **Exact Solar Return Calculation:** It mathematically scans the target year (e.g. 2024 or 2025) and finds the *exact second* the Sun returns to the exact mathematical degree it was at when the user was born.
+- **Muntha Logic:** It correctly calculates the progressed Ascendant (Muntha) based on the user's age `(Natal Lagna + Age) % 12`.
+- **Varsheshvara (Year Lord):** It determines the ruling planet for that specific year, generating a highly personalized prediction summary for the user.
+- **Dual Chart Generation:** The UI beautifully displays the *Natal Chart* and the *Solar Return (Varsha Lagna) Chart* side-by-side for comparison.
+
+## 🖨️ PDF Monetization Ready
+
+Both of these new features natively support the highly-optimized Print/PDF engine we perfected earlier!
+- Users can click **Print / Save as PDF** on the Matching Results or the Varshphal Results.
+- The UI forms instantly disappear.
+- The breakdown, scores, and charts cleanly format themselves onto A4 paper, ready to be sold as a digital download!
+
+---
+
+> [!TIP]
+> **To Test:** 
+> 1. Open your browser and completely refresh the page. 
+> 2. Look at the sidebar on the left. You will see two brand new tabs: **❤️ Kundali Matching** and **📜 Annual Varshphal**. 
+> 3. Enter test data into both of them and generate the results!

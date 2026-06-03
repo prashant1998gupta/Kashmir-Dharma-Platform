@@ -329,6 +329,180 @@ const MatchCalc = (() => {
     }
 
     // ═══════════════════════════════════════
+    // Dasha Compatibility Analysis
+    // ═══════════════════════════════════════
+    function analyzeDashaCompatibility(boyChart, girlChart) {
+        if (!boyChart || !girlChart || !boyChart.dashas || !girlChart.dashas) {
+            return { available: false };
+        }
+
+        const now = new Date();
+        const nowStr = now.toISOString().split('T')[0];
+
+        function findCurrentDasha(dashas) {
+            for (const md of dashas) {
+                if (nowStr >= md.startStr && nowStr <= md.endStr) {
+                    let currentAD = null;
+                    for (const ad of md.antardashas) {
+                        if (nowStr >= ad.startStr && nowStr <= ad.endStr) {
+                            currentAD = ad;
+                            break;
+                        }
+                    }
+                    return { mahadasha: md.lord, antardasha: currentAD ? currentAD.lord : md.lord, mdStart: md.startStr, mdEnd: md.endStr, adStart: currentAD ? currentAD.startStr : '', adEnd: currentAD ? currentAD.endStr : '' };
+                }
+            }
+            return null;
+        }
+
+        const boyDasha = findCurrentDasha(boyChart.dashas);
+        const girlDasha = findCurrentDasha(girlChart.dashas);
+
+        if (!boyDasha || !girlDasha) return { available: false };
+
+        // Compatibility of Dasha Lords
+        const NATURAL_FRIENDS = {
+            'Sun': ['Moon', 'Mars', 'Jupiter'],
+            'Moon': ['Sun', 'Mercury'],
+            'Mars': ['Sun', 'Moon', 'Jupiter'],
+            'Mercury': ['Sun', 'Venus'],
+            'Jupiter': ['Sun', 'Moon', 'Mars'],
+            'Venus': ['Mercury', 'Saturn'],
+            'Saturn': ['Mercury', 'Venus'],
+            'Rahu': ['Saturn', 'Venus', 'Mercury'],
+            'Ketu': ['Mars', 'Jupiter']
+        };
+
+        function areFriendly(p1, p2) {
+            return (NATURAL_FRIENDS[p1] || []).includes(p2);
+        }
+
+        const mdCompatible = areFriendly(boyDasha.mahadasha, girlDasha.mahadasha);
+        const adCompatible = areFriendly(boyDasha.antardasha, girlDasha.antardasha);
+
+        let compatibility = 'Moderate';
+        let interpretation = '';
+
+        if (mdCompatible && adCompatible) {
+            compatibility = 'Excellent';
+            interpretation = `The boy is currently running ${boyDasha.mahadasha} Mahadasha with ${boyDasha.antardasha} Antardasha (${boyDasha.mdStart.substring(0,4)}-${boyDasha.mdEnd.substring(0,4)}), while the girl is running ${girlDasha.mahadasha} Mahadasha with ${girlDasha.antardasha} Antardasha (${girlDasha.mdStart.substring(0,4)}-${girlDasha.mdEnd.substring(0,4)}). These Dasha lords are naturally friendly planets, indicating that this is an excellent time for both to get married. The planetary periods support harmony, mutual growth, and marital bliss during this phase.`;
+        } else if (mdCompatible || adCompatible) {
+            compatibility = 'Good';
+            interpretation = `The boy is running ${boyDasha.mahadasha}-${boyDasha.antardasha} Dasha, and the girl is running ${girlDasha.mahadasha}-${girlDasha.antardasha} Dasha. The Mahadasha lords are ${mdCompatible ? 'compatible' : 'neutral to each other'}, while the Antardasha lords are ${adCompatible ? 'compatible' : 'not naturally aligned'}. Overall, the current Dasha period is ${mdCompatible ? 'supportive' : 'manageable'} for marriage. The couple should be mindful of potential friction during the ${!adCompatible ? 'Antardasha' : 'Mahadasha'} transitions.`;
+        } else {
+            compatibility = 'Challenging';
+            interpretation = `The boy is running ${boyDasha.mahadasha}-${boyDasha.antardasha} Dasha, and the girl is running ${girlDasha.mahadasha}-${girlDasha.antardasha} Dasha. These Dasha lords are not naturally friendly planets. Marriage during this period may face initial adjustment challenges. It is advisable to perform Navagraha Shanti Puja and strengthen both partners' current Dasha lords through appropriate remedies before and after marriage. The challenges are temporary and will ease as the Dasha periods evolve.`;
+        }
+
+        return {
+            available: true,
+            boyDasha, girlDasha,
+            compatibility, interpretation,
+            mdCompatible, adCompatible
+        };
+    }
+
+    // ═══════════════════════════════════════
+    // 7th House & Venus/Jupiter Deep Analysis
+    // ═══════════════════════════════════════
+    function analyzeMarriageYogas(chart, personName) {
+        const analysis = [];
+        const planets = chart.planets;
+        const lagnaRashi = chart.lagnaRashi;
+
+        function getHouse(rashi) {
+            let h = rashi - lagnaRashi;
+            if (h < 0) h += 12;
+            return h + 1;
+        }
+
+        // 7th House Lord Analysis
+        const seventhRashi = ((lagnaRashi + 5) % 12) + 1;
+        const LORDS_MAP = { 1:'Mars', 2:'Venus', 3:'Mercury', 4:'Moon', 5:'Sun', 6:'Mercury', 7:'Venus', 8:'Mars', 9:'Jupiter', 10:'Saturn', 11:'Saturn', 12:'Jupiter' };
+        const seventhLord = LORDS_MAP[seventhRashi];
+        const seventhLordPlanet = planets.find(p => p.name.includes(seventhLord) || p.id === seventhLord);
+
+        if (seventhLordPlanet) {
+            const slHouse = getHouse(seventhLordPlanet.rashi);
+            const dignity = seventhLordPlanet.dignity || 'Neutral';
+            let text = `${personName}'s 7th House Lord is ${seventhLord}, placed in House ${slHouse} (${seventhLordPlanet.rashiName}) with ${dignity} dignity. `;
+            if ([1,4,7,10].includes(slHouse)) {
+                text += `Being in a Kendra house, the 7th lord is strongly positioned — indicating a good marriage, supportive spouse, and harmonious partnership.`;
+            } else if ([5,9].includes(slHouse)) {
+                text += `Placed in a Trikona (trine), the 7th lord indicates a spiritually compatible and fortunate marriage.`;
+            } else if ([6,8,12].includes(slHouse)) {
+                text += `Placed in a Dusthana house, the 7th lord may indicate some challenges in married life — delays, health concerns of spouse, or adjustment issues. Remedies for ${seventhLord} are recommended.`;
+            } else {
+                text += `The 7th lord in this position indicates a steady, moderate marriage experience.`;
+            }
+            if (dignity.includes('Exalted')) text += ` The fact that ${seventhLord} is exalted greatly enhances marital prospects.`;
+            if (dignity.includes('Debilitated')) text += ` The debilitation of ${seventhLord} needs attention — strengthening this planet through gemstones or mantras is advised.`;
+            analysis.push({ title: '7th House Lord', text });
+        }
+
+        // Venus Analysis (Karaka of Marriage)
+        const venus = planets.find(p => p.id === 'Venus');
+        if (venus) {
+            const venusHouse = getHouse(venus.rashi);
+            let text = `Venus (the natural significator of marriage) is at ${venus.degreeStr} in ${venus.rashiName} (House ${venusHouse}). `;
+            if (venus.dignity.includes('Exalted') || venus.dignity.includes('Own Sign')) {
+                text += `Venus is strong in ${personName}'s chart, blessing the native with natural charm, love for aesthetics, and a fulfilling romantic life.`;
+            } else if (venus.dignity.includes('Debilitated')) {
+                text += `Venus is debilitated, which may cause challenges in expressing affection or finding satisfaction in relationships. Wearing a Diamond or White Sapphire (after consultation) and chanting Venus mantra can help.`;
+            } else {
+                text += `Venus is in a neutral position, indicating a balanced approach to love and relationships.`;
+            }
+            analysis.push({ title: 'Venus (Marriage Karaka)', text });
+        }
+
+        // Jupiter Analysis (Karaka of Husband for female charts)
+        const jupiter = planets.find(p => p.id === 'Jupiter');
+        if (jupiter) {
+            const jupHouse = getHouse(jupiter.rashi);
+            let text = `Jupiter (Guru) is at ${jupiter.degreeStr} in ${jupiter.rashiName} (House ${jupHouse}). `;
+            if (jupiter.dignity.includes('Exalted') || jupiter.dignity.includes('Own Sign')) {
+                text += `Jupiter is strong, indicating wisdom, righteousness, and divine blessings in married life. The native will attract a knowledgeable and virtuous spouse.`;
+            } else if ([1,4,7,10].includes(jupHouse)) {
+                text += `Jupiter in a Kendra house creates Hamsa Mahapurusha Yoga, bestowing noble qualities and a fortunate marriage.`;
+            } else {
+                text += `Jupiter's placement is average — the native will benefit from seeking Jupiter's blessings through Thursday fasting and Guru mantra recitation.`;
+            }
+            analysis.push({ title: 'Jupiter (Wisdom & Dharma)', text });
+        }
+
+        return analysis;
+    }
+
+    // ═══════════════════════════════════════
+    // Navamsa (D9) Marriage Cross-Analysis
+    // ═══════════════════════════════════════
+    function analyzeNavamsaCompatibility(boyChart, girlChart) {
+        if (!boyChart || !girlChart) return null;
+
+        const boyNavLagna = boyChart.lagnaNavamsaRashi;
+        const girlNavLagna = girlChart.lagnaNavamsaRashi;
+        const RASHIS_LOCAL = ["Aries","Taurus","Gemini","Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius","Capricorn","Aquarius","Pisces"];
+
+        let text = `The Navamsa (D9) chart is the most important divisional chart for marriage analysis.\n\n`;
+        text += `Boy's Navamsa Lagna: ${RASHIS_LOCAL[(boyNavLagna || 1) - 1]} | Girl's Navamsa Lagna: ${RASHIS_LOCAL[(girlNavLagna || 1) - 1]}.\n\n`;
+
+        if (boyNavLagna && girlNavLagna) {
+            const diff = Math.abs(boyNavLagna - girlNavLagna);
+            if (diff === 0) {
+                text += `Both partners share the same Navamsa Lagna — this is an exceptionally rare and auspicious combination! It indicates deep soul-level compatibility and a marriage that is destined by karma. The couple will share similar spiritual paths and life purposes.`;
+            } else if (diff === 6) {
+                text += `The Navamsa Lagnas are in 7/7 opposition (facing each other), which is considered favorable for marriage. This indicates complementary energies — what one partner lacks, the other provides. The marriage will be a balanced partnership.`;
+            } else if ([3,5,9,11].includes(diff) || [3,5,9,11].includes(12-diff)) {
+                text += `The Navamsa Lagnas are in a harmonious trine or sextile relationship, indicating natural compatibility in the spiritual dimension of marriage. The couple will grow together spiritually.`;
+            } else {
+                text += `The Navamsa Lagnas are in a challenging aspect. This doesn't negate the marriage — it means the spiritual growth will come through overcoming challenges together. Shared spiritual practices like meditation or temple visits will strengthen the bond.`;
+            }
+        }
+
+        return text;
+    }
+
+    // ═══════════════════════════════════════
     // Main Calculation Function
     // ═══════════════════════════════════════
     function calculateGunaMilan(boy, girl, boyChart, girlChart) {
@@ -357,6 +531,16 @@ const MatchCalc = (() => {
         const boyManglik = boyChart ? checkManglikStatus(boyChart) : { isManglik: false, severity: 'None', cancellations: [] };
         const girlManglik = girlChart ? checkManglikStatus(girlChart) : { isManglik: false, severity: 'None', cancellations: [] };
         
+        // Dasha compatibility
+        const dashaAnalysis = analyzeDashaCompatibility(boyChart, girlChart);
+
+        // Marriage yoga analysis
+        const boyMarriageYogas = boyChart ? analyzeMarriageYogas(boyChart, 'Boy') : [];
+        const girlMarriageYogas = girlChart ? analyzeMarriageYogas(girlChart, 'Girl') : [];
+
+        // Navamsa compatibility
+        const navamsaAnalysis = analyzeNavamsaCompatibility(boyChart, girlChart);
+
         // Overall recommendation
         const recommendation = getOverallRecommendation(total, kootas, boyManglik, girlManglik);
 
@@ -365,6 +549,10 @@ const MatchCalc = (() => {
             total,
             boyManglik,
             girlManglik,
+            dashaAnalysis,
+            boyMarriageYogas,
+            girlMarriageYogas,
+            navamsaAnalysis,
             recommendation,
             boyRashiName: RASHIS[boy.rashi - 1],
             girlRashiName: RASHIS[girl.rashi - 1],
@@ -381,3 +569,4 @@ const MatchCalc = (() => {
         RASHIS, NAKSHATRAS, VARNA, VASHYA_GROUP, YONI, RASHI_LORD, GANA, NADI
     };
 })();
+

@@ -1856,3 +1856,29 @@ a:hover {
         page-break-inside: avoid !important;
     }
 }
+
+/* ============================================
+   PDF Export Mode (html2canvas)
+   ============================================ */
+.pdf-export-mode .card-glass,
+.pdf-rendering {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+.pdf-rendering * {
+    color: #1a1a1a !important;
+    border-color: #ddd !important;
+}
+.pdf-rendering .report-section-title {
+    color: #333 !important;
+    border-color: #c9a959 !important;
+}
+.pdf-rendering svg text {
+    fill: #1a1a1a !important;
+}
+.pdf-rendering svg line,
+.pdf-rendering svg rect {
+    stroke: #c9a959 !important;
+}

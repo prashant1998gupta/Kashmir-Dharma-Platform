@@ -1,0 +1,148 @@
+# Upgrade Kundali Matching & Varshphal to Professional Astrologer-Grade Reports + Fix PDF
+
+## Problem
+
+An astrologer reviewed the paid features and confirmed they are far too basic for a paid product:
+
+### Kundali Matching (Current State — ~1 page)
+- Only shows: Total score circle + 8 Koota one-line scores
+- **Missing**: Boy/Girl individual charts, planetary tables, Manglik analysis per person, Bhakoot/Nadi dosha explanations, detailed interpretive text for each Koota, recommendation section, remedies
+
+### Annual Varshphal (Current State — ~1 page)  
+- Only shows: 3 stat cards (Muntha, Muntha Lord, Year Lord) + 2 charts + 1 paragraph
+- **Missing**: Full planetary position tables for both charts, Pancha-Adhikari lord system, Tajika Yoga analysis, house-by-house prediction, Dasha for the year, remedies section, month-by-month forecast
+
+### PDF/Print (Broken)
+- `@media print` CSS only targets `#kundaliResult` — the Matching and Varshphal result sections are actively hidden by the rule `.card:not(#kundaliResult .card)` which hides ALL cards that aren't inside `#kundaliResult`
+
+---
+
+## Proposed Changes
+
+### 1. Fix Print/PDF CSS
+
+#### [MODIFY] [styles.css](file:///d:/Prashant_WorkSpace/Python/Kashmir%20Dharma%20Platform/css/styles.css)
+- Change the print CSS selector to also show `#matchResult` and `#varshphalResult` alongside `#kundaliResult`
+- Add proper print styling for both new result containers
+- White background, black text, proper page breaks for multi-page reports
+- Hide sidebar, buttons, forms — only show the generated report content
+
+---
+
+### 2. Kundali Matching — Expand to 10+ Page Report
+
+#### [MODIFY] [match-calc.js](file:///d:/Prashant_WorkSpace/Python/Kashmir%20Dharma%20Platform/js/utils/match-calc.js)
+- Add detailed text interpretations for each Koota score (what 0, partial, and full points mean for the couple)
+- Return Manglik dosha status from both birth charts
+- Return Bhakoot/Nadi dosha cancellation check
+- Return overall marriage recommendation with detailed reasoning
+
+#### [MODIFY] [matching.js](file:///d:/Prashant_WorkSpace/Python/Kashmir%20Dharma%20Platform/js/pages/matching.js)
+Expand the result section to include these report pages:
+
+**Page 1 — Title & Summary**
+- Report header with both names, date of generation
+- Overall score with large circular gauge
+- Verdict with color (Excellent/Good/Average/Not Recommended)
+- Quick summary paragraph
+
+**Page 2 — Boy's Birth Details**
+- Full personal details table
+- Lagna Chart (D1) SVG
+- Navamsa Chart (D9) SVG
+- Planetary positions table
+- Manglik status
+
+**Page 3 — Girl's Birth Details**  
+- Same structure as boy's section
+
+**Pages 4-7 — Ashtakoot Detailed Breakdown**
+- Each Koota gets a full card with:
+  - Name, Sanskrit name, maximum points
+  - Boy's value, Girl's value, scored points
+  - Detailed interpretation paragraph explaining what this score means
+  - Visual bar showing scored/max
+
+**Page 8 — Dosha Analysis**
+- Bhakoot Dosha check with cancellation rules
+- Nadi Dosha check with cancellation rules  
+- Manglik Dosha cross-analysis (both charts)
+- Each dosha with severity, explanation, and whether cancellation applies
+
+**Page 9 — Recommendations & Remedies**
+- Overall marriage compatibility assessment (multi-paragraph)
+- Areas of strength
+- Areas of concern
+- Recommended remedies (mantras, gemstones, rituals)
+- Favorable marriage muhurat guidance
+
+**Page 10 — Disclaimer & Footer**
+- Professional disclaimer
+- Report generation timestamp
+- Platform branding
+
+---
+
+### 3. Annual Varshphal — Expand to 10+ Page Report
+
+#### [MODIFY] [varshphal-calc.js](file:///d:/Prashant_WorkSpace/Python/Kashmir%20Dharma%20Platform/js/utils/varshphal-calc.js)
+- Implement Panchadhikari (5 Year Lords) calculation
+- Calculate Muntha house position relative to Varsha Lagna
+- Generate Tajika Yoga detection (Ikbaal, Induvara, Ithasala, etc.)
+- Compute house-by-house annual predictions based on planet placements
+- Return full planetary data for both natal and solar return charts
+
+#### [MODIFY] [varshphal.js](file:///d:/Prashant_WorkSpace/Python/Kashmir%20Dharma%20Platform/js/pages/varshphal.js)
+Expand the result section:
+
+**Page 1 — Title & Key Highlights**
+- Name, target year, age
+- Solar Return exact date/time
+- Muntha Rashi, Muntha Lord, Year Lord (Varsheshvara)
+- Quick annual summary paragraph
+
+**Page 2 — Natal Birth Chart**
+- Full Natal D1 chart SVG
+- Complete planetary positions table (all 9 grahas + Rahu/Ketu)
+
+**Page 3 — Solar Return (Varsha Pravesh) Chart**
+- Full Varsha D1 chart SVG  
+- Complete planetary positions table at the moment of solar return
+
+**Page 4 — Pancha-Adhikari Analysis**
+- 5 Year Lords: Muntha Lord, Janma Lagna Lord, Varsha Lagna Lord, Tri-Rashi Lord, Day Lord
+- Strongest lord determination = Varsheshvara
+
+**Page 5 — Muntha Analysis**
+- Muntha Rashi and house placement
+- Muntha Lord strength and dignity
+- Interpretation of Muntha house position (good houses vs. bad houses)
+
+**Page 6-7 — House-by-House Annual Predictions**
+- All 12 houses with predictions for: Career, Finance, Health, Relationships, Education, Spiritual growth, etc.
+- Based on which planets are in which houses in the Varsha chart
+
+**Page 8 — Tajika Yoga Analysis**
+- Detection of major Tajika Yogas formed in the annual chart
+- Each yoga with name, planets involved, and prediction
+
+**Page 9 — Remedies & Guidance**
+- Favorable/unfavorable months
+- Recommended mantras for Year Lord
+- Gemstone recommendation
+- Spiritual practices for the year
+
+**Page 10 — Disclaimer & Footer**
+
+---
+
+## Verification Plan
+
+### Automated Tests
+- Open browser and test Matching with sample data, verify 10+ sections render
+- Open browser and test Varshphal with sample data, verify 10+ sections render
+- Test Print/PDF by triggering `window.print()` and verifying result sections are visible
+
+### Manual Verification
+- User to test with real birth data and compare with professional astrologer's assessment
+- User to verify PDF saves correctly via browser print dialog

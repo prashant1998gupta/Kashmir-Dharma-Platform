@@ -375,6 +375,9 @@ const VarshphalCalc = (() => {
         
         // 9. Remedies
         const remedies = getYearRemedies(panchadhikari.varsheshvara, munthaRashi, munthaHouse);
+
+        // 10. Dasha sequence during this year
+        const dashaForYear = getDashaForYear(natalChart, returnDate);
         
         return {
             natalChart,
@@ -390,9 +393,63 @@ const VarshphalCalc = (() => {
             tajikaYogas,
             housePredictions,
             monthlyGuidance,
-            remedies
+            remedies,
+            dashaForYear
         };
+    }
+
+    /**
+     * Get Dasha periods active during this year
+     */
+    function getDashaForYear(natalChart, returnDate) {
+        if (!natalChart || !natalChart.dashas) return [];
+        
+        const yearStart = returnDate;
+        const yearEnd = new Date(yearStart.getTime() + 365.25 * 24 * 60 * 60 * 1000);
+        const yearStartStr = yearStart.toISOString().split('T')[0];
+        const yearEndStr = yearEnd.toISOString().split('T')[0];
+        
+        const periods = [];
+        
+        const DASHA_EFFECTS = {
+            'Sun': { theme: 'Authority, father, government, health, confidence', good: 'Recognition, promotion, paternal support', challenge: 'Ego conflicts, health of father, eye issues' },
+            'Moon': { theme: 'Mind, mother, emotions, public, travel', good: 'Emotional satisfaction, property gains, popularity', challenge: 'Mental restlessness, mother\'s health, fluid-related issues' },
+            'Mars': { theme: 'Energy, property, siblings, courage, conflict', good: 'Property acquisition, physical strength, decisive actions', challenge: 'Accidents, disputes, blood pressure, anger issues' },
+            'Mercury': { theme: 'Communication, business, intelligence, education', good: 'Business success, intellectual growth, new skills', challenge: 'Nervous disorders, skin issues, communication gaps' },
+            'Jupiter': { theme: 'Wisdom, wealth, children, spirituality, expansion', good: 'Spiritual growth, financial gains, birth of children', challenge: 'Over-expansion, liver issues, weight gain, false promises' },
+            'Venus': { theme: 'Love, marriage, arts, luxury, vehicles', good: 'Marriage, romantic bliss, artistic success, luxury purchases', challenge: 'Relationship complications, kidney issues, overindulgence' },
+            'Saturn': { theme: 'Discipline, karma, delays, longevity, service', good: 'Career stability, karmic rewards, discipline development', challenge: 'Delays, obstacles, joint pains, isolation, depression' },
+            'Rahu': { theme: 'Ambition, foreign, unconventional, technology', good: 'Foreign opportunities, technological gains, breaking barriers', challenge: 'Confusion, deception, phobias, unconventional problems' },
+            'Ketu': { theme: 'Spirituality, detachment, moksha, past karma', good: 'Spiritual awakening, occult knowledge, liberation', challenge: 'Sudden losses, mysterious ailments, detachment from loved ones' }
+        };
+        
+        for (const md of natalChart.dashas) {
+            if (md.endStr < yearStartStr || md.startStr > yearEndStr) continue;
+            
+            // This Mahadasha overlaps with our year
+            for (const ad of md.antardashas) {
+                if (ad.endStr < yearStartStr || ad.startStr > yearEndStr) continue;
+                
+                // This AD is active during our year
+                const adStart = ad.startStr > yearStartStr ? ad.startStr : yearStartStr;
+                const adEnd = ad.endStr < yearEndStr ? ad.endStr : yearEndStr;
+                const effect = DASHA_EFFECTS[ad.lord] || DASHA_EFFECTS['Saturn'];
+                const mdEffect = DASHA_EFFECTS[md.lord] || DASHA_EFFECTS['Saturn'];
+                
+                periods.push({
+                    mahadasha: md.lord,
+                    antardasha: ad.lord,
+                    startDate: adStart,
+                    endDate: adEnd,
+                    theme: `${mdEffect.theme.split(',')[0]} × ${effect.theme.split(',')[0]}`,
+                    interpretation: `During ${md.lord}-${ad.lord} period (${adStart} to ${adEnd}), the combined energy of ${md.lord} (Mahadasha) and ${ad.lord} (Antardasha) will influence your life. ${md.lord}'s overarching theme of "${mdEffect.theme}" combines with ${ad.lord}'s energy of "${effect.theme}". Favorable aspects: ${effect.good}. Areas requiring attention: ${effect.challenge}. Strengthening ${ad.lord} during this sub-period through mantras and donations will enhance positive outcomes.`
+                });
+            }
+        }
+        
+        return periods;
     }
 
     return { generateVarshphal, RASHIS };
 })();
+

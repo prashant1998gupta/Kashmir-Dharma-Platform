@@ -155,8 +155,9 @@ const VarshphalPage = (() => {
         const RASHIS = VarshphalCalc.RASHIS;
 
         let html = `<div class="card card-glass" style="padding: var(--space-6);">
-            <div class="no-print" style="text-align: right; margin-bottom: var(--space-4);">
-                <button class="btn btn-outline" onclick="window.print()">🖨️ Print / Save as PDF</button>
+            <div class="no-print" style="text-align: right; margin-bottom: var(--space-4); display:flex; gap:var(--space-3); justify-content:flex-end;">
+                <button class="btn btn-primary" style="padding:var(--space-2) var(--space-5);" onclick="PDFGenerator.generatePDF('varshphalResult','Varshphal_Report_${targetYear}.pdf','Annual Varshphal Report ${targetYear}')">📥 Download PDF</button>
+                <button class="btn btn-outline" onclick="window.print()">🖨️ Print</button>
             </div>
 
             <!-- ═══════ PAGE 1: TITLE & HIGHLIGHTS ═══════ -->
@@ -316,6 +317,31 @@ const VarshphalPage = (() => {
                     </div>`;
                 }).join('')}
             </div>
+
+            <!-- ═══════ PAGE 8.5: DASHA FOR THE YEAR ═══════ -->
+            ${(result.dashaForYear && result.dashaForYear.length > 0) ? `
+            <div class="print-page-break"></div>
+            <div class="report-section" style="margin-bottom:var(--space-8);">
+                <h2 class="report-section-title" style="color:var(--color-secondary); border-bottom:2px solid var(--color-secondary); padding-bottom:var(--space-2); margin-bottom:var(--space-6);">⏰ Vimshottari Dasha Timeline for ${targetYear}</h2>
+                <p style="color:var(--text-secondary); line-height:1.6; margin-bottom:var(--space-6);">The Vimshottari Dasha system divides your life into planetary periods. Below are the Mahadasha-Antardasha combinations active during this year, with their specific effects and timing.</p>
+                
+                ${result.dashaForYear.map((period, idx) => {
+                    const colors = {'Sun':'#e67e22','Moon':'#3498db','Mars':'#e74c3c','Mercury':'#2ecc71','Jupiter':'#f1c40f','Venus':'#e91e90','Saturn':'#9b59b6','Rahu':'#7f8c8d','Ketu':'#d35400'};
+                    const clr = colors[period.antardasha] || '#c9a959';
+                    return `
+                    <div class="print-avoid-break" style="background:rgba(255,255,255,0.03); border-radius:var(--radius-md); padding:var(--space-4); margin-bottom:var(--space-3); border-left:4px solid ${clr};">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-2); flex-wrap:wrap; gap:var(--space-2);">
+                            <div>
+                                <span style="font-weight:bold; color:var(--text-primary); font-size:1.1em;">${period.mahadasha} - ${period.antardasha}</span>
+                                <span style="color:var(--text-muted); margin-left:var(--space-2); font-size:var(--text-sm);">| ${period.theme}</span>
+                            </div>
+                            <div style="font-size:var(--text-xs); padding:3px 10px; border-radius:var(--radius-full); background:rgba(201,169,89,0.15); color:var(--color-secondary);">${period.startDate} — ${period.endDate}</div>
+                        </div>
+                        <p style="color:var(--text-secondary); line-height:1.6; font-size:var(--text-sm);">${period.interpretation}</p>
+                    </div>`;                    
+                }).join('')}
+            </div>
+            ` : ''}
 
             <!-- ═══════ PAGE 9: REMEDIES ═══════ -->
             <div class="print-page-break"></div>
