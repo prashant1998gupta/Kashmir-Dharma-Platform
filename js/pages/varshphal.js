@@ -21,7 +21,7 @@ const VarshphalPage = (() => {
                     { h1: true }
                 )}
 
-                <div class="card card-glass" style="padding: var(--space-6); max-width: 800px; margin: 0 auto var(--space-8) auto;">
+                <div class="card card-glass" style="padding: var(--space-6); max-width: 800px; margin: 0 auto var(--space-8) auto; overflow: visible;">
                     <div class="grid-2">
                         <div class="form-group">
                             <label class="form-label" for="v-name">Name</label>

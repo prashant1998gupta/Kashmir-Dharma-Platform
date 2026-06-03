@@ -63,6 +63,8 @@ const CityAPI = (() => {
         resultsBox.style.position = 'absolute';
         resultsBox.style.zIndex = '1000';
         resultsBox.style.width = '100%';
+        resultsBox.style.top = '100%';
+        resultsBox.style.left = '0';
         resultsBox.style.background = 'var(--bg-card)';
         resultsBox.style.backdropFilter = 'blur(15px)';
         resultsBox.style.border = '1px solid var(--surface-border)';

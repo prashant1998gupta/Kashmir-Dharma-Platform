@@ -23,7 +23,7 @@ const MatchingPage = (() => {
 
                 <div class="grid-2">
                     <!-- Boy's Details -->
-                    <div class="card card-glass" style="padding: var(--space-6);">
+                    <div class="card card-glass" style="padding: var(--space-6); overflow: visible;">
                         <h3 style="color: var(--color-primary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Boy's Details</h3>
                         <div class="form-group">
                             <label class="form-label" for="boy-name">Name</label>
@@ -47,7 +47,7 @@ const MatchingPage = (() => {
                     </div>
 
                     <!-- Girl's Details -->
-                    <div class="card card-glass" style="padding: var(--space-6);">
+                    <div class="card card-glass" style="padding: var(--space-6); overflow: visible;">
                         <h3 style="color: var(--color-secondary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Girl's Details</h3>
                         <div class="form-group">
                             <label class="form-label" for="girl-name">Name</label>

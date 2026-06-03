@@ -20,7 +20,7 @@ const KundaliPage = (() => {
 
                 <div class="grid-2">
                     <!-- Form Section -->
-                    <div class="card card-glass" style="padding: var(--space-6)">
+                    <div class="card card-glass" style="padding: var(--space-6); overflow: visible;">
                         ${ProfileManager.renderProfileSelector('kundaliProfileSelect', 'KundaliPage.loadProfile')}
                         <h3 style="margin-bottom: var(--space-4)">Enter Birth Details</h3>
                         
