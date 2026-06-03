@@ -306,11 +306,13 @@ const KundaliPage = (() => {
                 </details>
             `).join('');
             
-            document.getElementById('kundaliResult').style.display = 'block';
+            const resultDiv = document.getElementById('kundaliResult');
+            resultDiv.style.display = 'block';
             
-            if (window.innerWidth < 768) {
-                document.getElementById('kundaliResult').scrollIntoView({ behavior: 'smooth' });
-            }
+            // Smooth scroll down to results so user knows it generated
+            setTimeout(() => {
+                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
 
             Components.showToast('Advanced Kundali Generated!', 'success');
         } catch (e) {

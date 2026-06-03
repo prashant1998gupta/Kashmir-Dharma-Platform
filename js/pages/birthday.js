@@ -210,7 +210,10 @@ const BirthdayPage = (() => {
             </div>
         `;
 
-        setTimeout(() => Components.initScrollReveal(), 100);
+        setTimeout(() => {
+            Components.initScrollReveal();
+            document.getElementById('birthdayResults').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
     }
 
     function loadProfile(id) {
