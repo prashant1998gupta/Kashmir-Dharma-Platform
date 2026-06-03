@@ -132,9 +132,13 @@
     --text-accent: #B08D2E;
     --text-heading: #0A0908;
     
-    /* Keep primary and secondary colors the same, or slightly darker for contrast */
+    /* Ensure primary and secondary contrast well in light mode */
+    --color-secondary: #B08D2E; /* Darker gold for better contrast on white */
+    --color-secondary-light: #D4AF37;
+    --color-secondary-dark: #8A6D23;
+    
     --color-primary-glow: rgba(163, 38, 38, 0.15);
-    --color-secondary-glow: rgba(212, 175, 55, 0.15);
+    --color-secondary-glow: rgba(176, 141, 46, 0.15);
 }
 
 /* --- Reset & Base --- */
@@ -607,7 +611,7 @@ a:hover {
 
 .btn-primary {
     background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
-    color: var(--text-primary);
+    color: #FFFFFF;
     box-shadow: 0 4px 16px var(--color-primary-glow);
 }
 
