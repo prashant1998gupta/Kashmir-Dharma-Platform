@@ -580,5 +580,10 @@ const AstroCalc = (() => {
         return chart;
     }
 
-    return { generateKundali, RASHIS };
+    return { 
+        generateKundali, 
+        RASHIS,
+        getAyanamsa,
+        getPlanetLongitude
+    };
 })();
