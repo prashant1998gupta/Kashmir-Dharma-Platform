@@ -509,6 +509,44 @@ a:hover {
     animation: spin 0.8s linear infinite;
 }
 
+/* --- Form Controls --- */
+.form-group {
+    margin-bottom: var(--space-4);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: var(--space-2);
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.form-control, .form-input {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    transition: all var(--transition-base);
+    outline: none;
+    color-scheme: dark;
+}
+
+.form-control:focus, .form-input:focus {
+    border-color: var(--color-secondary);
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+.form-control::placeholder, .form-input::placeholder {
+    color: var(--text-muted);
+}
+
+
 /* --- Card Components --- */
 .card {
     background: var(--bg-card);

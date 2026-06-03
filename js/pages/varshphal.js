@@ -5,6 +5,9 @@
 const VarshphalPage = (() => {
 
     function render() {
+        const cityOptions = typeof CityDatabase !== 'undefined' ? 
+            CityDatabase.map(c => `<option value="${c.name}"></option>`).join('') : '';
+
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
@@ -43,8 +46,10 @@ const VarshphalPage = (() => {
                     
                     <div class="form-group">
                         <label class="form-label" for="v-city">City of Birth</label>
-                        <input type="text" id="v-city" class="form-control search-input" placeholder="Search city..." autocomplete="off">
-                        <ul id="v-city-results" class="search-results"></ul>
+                        <input list="v-city-list" id="v-city" class="form-control" placeholder="Search city..." autocomplete="off">
+                        <datalist id="v-city-list">
+                            ${cityOptions}
+                        </datalist>
                     </div>
                     
                     <div style="text-align: center; margin-top: var(--space-6);">
@@ -110,7 +115,6 @@ const VarshphalPage = (() => {
     }
 
     function afterRender() {
-        SearchEngine.initCitySearch('v-city', 'v-city-results');
         document.getElementById('v-target-year').value = new Date().getFullYear();
     }
 
@@ -179,9 +183,7 @@ const VarshphalPage = (() => {
             return;
         }
 
-        const cityObj = cityInput.dataset.lat ? {
-            name: cityName, lat: parseFloat(cityInput.dataset.lat), lng: parseFloat(cityInput.dataset.lng), tz: parseFloat(cityInput.dataset.tz)
-        } : CityDatabase.find(c => c.name === cityName);
+        const cityObj = CityDatabase.find(c => c.name === cityName);
 
         if (!cityObj) {
             Components.showToast('Please select a valid city', 'error');

@@ -5,6 +5,9 @@
 const MatchingPage = (() => {
 
     function render() {
+        const cityOptions = typeof CityDatabase !== 'undefined' ? 
+            CityDatabase.map(c => `<option value="${c.name}"></option>`).join('') : '';
+
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
@@ -38,8 +41,10 @@ const MatchingPage = (() => {
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="boy-city">City of Birth</label>
-                            <input type="text" id="boy-city" class="form-control search-input" placeholder="Search city..." autocomplete="off">
-                            <ul id="boy-city-results" class="search-results"></ul>
+                            <input list="boy-city-list" id="boy-city" class="form-control" placeholder="Search city..." autocomplete="off">
+                            <datalist id="boy-city-list">
+                                ${cityOptions}
+                            </datalist>
                         </div>
                     </div>
 
@@ -62,8 +67,10 @@ const MatchingPage = (() => {
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="girl-city">City of Birth</label>
-                            <input type="text" id="girl-city" class="form-control search-input" placeholder="Search city..." autocomplete="off">
-                            <ul id="girl-city-results" class="search-results"></ul>
+                            <input list="girl-city-list" id="girl-city" class="form-control" placeholder="Search city..." autocomplete="off">
+                            <datalist id="girl-city-list">
+                                ${cityOptions}
+                            </datalist>
                         </div>
                     </div>
                 </div>
@@ -111,9 +118,6 @@ const MatchingPage = (() => {
     }
 
     function afterRender() {
-        SearchEngine.initCitySearch('boy-city', 'boy-city-results');
-        SearchEngine.initCitySearch('girl-city', 'girl-city-results');
-        
         if (typeof AstroCalc === 'undefined' || typeof MatchCalc === 'undefined') {
             Components.showToast('Calculation engines failed to load. Please check internet connection.', 'error');
         }
@@ -139,13 +143,8 @@ const MatchingPage = (() => {
             return;
         }
 
-        const bCityObj = bCityInput.dataset.lat ? {
-            name: bCityName, lat: parseFloat(bCityInput.dataset.lat), lng: parseFloat(bCityInput.dataset.lng), tz: parseFloat(bCityInput.dataset.tz)
-        } : CityDatabase.find(c => c.name === bCityName);
-
-        const gCityObj = gCityInput.dataset.lat ? {
-            name: gCityName, lat: parseFloat(gCityInput.dataset.lat), lng: parseFloat(gCityInput.dataset.lng), tz: parseFloat(gCityInput.dataset.tz)
-        } : CityDatabase.find(c => c.name === gCityName);
+        const bCityObj = CityDatabase.find(c => c.name === bCityName);
+        const gCityObj = CityDatabase.find(c => c.name === gCityName);
 
         if (!bCityObj || !gCityObj) {
             Components.showToast('Please select valid cities from the dropdown list', 'error');
