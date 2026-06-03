@@ -1679,6 +1679,13 @@ a:hover {
         display: block !important;
     }
     
+    #kundaliResult .card {
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+    }
+    
     .print-avoid-break,
     table, tr,
     .grid-2 > div,
@@ -1687,14 +1694,29 @@ a:hover {
     }
     
     #kundaliResult .grid-2 {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr !important;
-        gap: 10px !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 20px !important;
+        justify-content: center !important;
     }
     
-    /* Ensure charts don't break across pages */
+    #kundaliResult .grid-2 > div {
+        flex: 0 0 45% !important;
+        max-width: 45% !important;
+        margin-bottom: 30px !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+    
+    /* Ensure charts don't break across pages and scale properly */
     svg {
-        page-break-inside: avoid;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+        width: 100% !important;
+        max-width: 350px !important;
+        height: auto !important;
+        display: block !important;
+        margin: 0 auto !important;
     }
     
     h2, h3 {
