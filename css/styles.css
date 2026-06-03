@@ -546,8 +546,10 @@ a:hover {
 }
 
 .card-featured {
-    border-color: rgba(201, 169, 89, 0.25);
-    background: rgba(201, 169, 89, 0.03);
+    border-color: var(--color-primary);
+    background: rgba(201, 169, 89, 0.08);
+    box-shadow: 0 0 15px rgba(201, 169, 89, 0.15);
+    transform: translateY(-2px);
 }
 
 .card-featured::after {

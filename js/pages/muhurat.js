@@ -124,9 +124,14 @@ const MuhuratPage = (() => {
         const selected = document.getElementById(`event-${eventId}`);
         if (selected) selected.classList.add('card-featured');
 
-        // Show date picker
+        // Show date picker and smooth scroll to it
         const picker = document.getElementById('muhuratDatePicker');
-        if (picker) picker.classList.remove('hidden');
+        if (picker) {
+            picker.classList.remove('hidden');
+            setTimeout(() => {
+                picker.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
 
         // Clear previous results
         const results = document.getElementById('muhuratResults');
