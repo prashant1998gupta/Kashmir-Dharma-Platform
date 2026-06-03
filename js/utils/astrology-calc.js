@@ -68,15 +68,13 @@ const AstroCalc = (() => {
      * Calculate approximate Lagna (Ascendant) Rashi
      * Based on Sun's sidereal position and time of birth
      */
-    function calculateLagna(date, sunSiderealLon, lat, lon) {
+    function calculateLagna(hh, mm, sunSiderealLon) {
         // This is a simplified Lagna approximation suitable for a V1 client-side engine.
         // In Vedic astrology, the Lagna advances roughly 1 sign every 2 hours.
         // At sunrise, the Lagna is in the same sign as the Sun.
         
         // Approximate local sunrise time to 6:00 AM local time
-        const hour = date.getHours();
-        const minute = date.getMinutes();
-        const timeInHours = hour + (minute / 60);
+        const timeInHours = hh + (mm / 60);
         
         const hoursSinceSunrise = timeInHours - 6.0;
         
@@ -295,11 +293,49 @@ const AstroCalc = (() => {
             let houseFromMoon = mars.rashi - moonRashi + 1;
             if (houseFromMoon <= 0) houseFromMoon += 12;
             
-            const manglikHouses = [1, 4, 7, 8, 12];
-            if (manglikHouses.includes(houseFromLagna) || manglikHouses.includes(houseFromMoon)) {
-                // Exceptions
-                if (mars.rashi !== 1 && mars.rashi !== 8 && mars.rashi !== 10) {
-                    doshas.push({ name: "Manglik (Kuja) Dosha", desc: "Mars is placed in a sensitive house affecting marriage/relationships.", severe: true });
+            const manglikHouses = [1, 2, 4, 7, 8, 12];
+            const isLagnaManglik = manglikHouses.includes(houseFromLagna);
+            const isMoonManglik = manglikHouses.includes(houseFromMoon);
+            
+            if (isLagnaManglik || isMoonManglik) {
+                // Check cancellations
+                let cancellations = [];
+                if (mars.rashi === 1 || mars.rashi === 8) {
+                    cancellations.push('Mars in own sign (Aries/Scorpio)');
+                }
+                if (mars.rashi === 10) {
+                    cancellations.push('Mars in Capricorn (Exalted)');
+                }
+                const jupiter = planets.find(p => p.id === 'Jupiter');
+                if (jupiter) {
+                    let jupHouse = jupiter.rashi - lagnaRashi + 1;
+                    if (jupHouse <= 0) jupHouse += 12;
+                    if ([1, 4, 7, 10].includes(jupHouse)) {
+                        cancellations.push(`Jupiter in Kendra (House ${jupHouse})`);
+                    }
+                }
+                
+                const cancelled = cancellations.length > 0;
+                
+                if (isLagnaManglik && !cancelled) {
+                    let severity = isMoonManglik ? "Severe (Double Manglik)" : "Moderate";
+                    doshas.push({
+                        name: `Manglik Dosha (${severity})`,
+                        desc: `Mars is placed in House ${houseFromLagna} from Lagna (Ascendant) and House ${houseFromMoon} from Moon, indicating active Manglik Dosha.`,
+                        severe: severity === "Severe (Double Manglik)"
+                    });
+                } else if (cancelled) {
+                    doshas.push({
+                        name: "Manglik Dosha (Cancelled)",
+                        desc: `Mars is placed in a Manglik house (${houseFromLagna} from Lagna), but the Dosha is cancelled because of: ${cancellations.join(', ')}.`,
+                        severe: false
+                    });
+                } else if (isMoonManglik) {
+                    doshas.push({
+                        name: "Chandra Manglik (Mild)",
+                        desc: `Mars is placed in House ${houseFromMoon} from Moon, indicating a mild, secondary Manglik energy. This does not require major matchmaking restrictions.`,
+                        severe: false
+                    });
                 }
             }
         }
@@ -341,7 +377,7 @@ const AstroCalc = (() => {
     /**
      * Calculate Birth Panchang
      */
-    function calculatePanchang(sunLon, moonLon, date) {
+    function calculatePanchang(sunLon, moonLon, weekdayIndex) {
         let diff = (moonLon - sunLon + 360) % 360;
         let tithiIndex = Math.floor(diff / 12) + 1;
         let isShukla = tithiIndex <= 15;
@@ -353,7 +389,7 @@ const AstroCalc = (() => {
         let karanaIndex = Math.floor(diff / 6) + 1;
         
         const weekdays = ["Sunday (Ravivaar)", "Monday (Somvaar)", "Tuesday (Mangalvaar)", "Wednesday (Budhvaar)", "Thursday (Guruvaar)", "Friday (Shukravaar)", "Saturday (Shanivaar)"];
-        let vaar = weekdays[date.getDay()];
+        let vaar = weekdays[weekdayIndex];
         
         return {
             tithi: tithiName,
@@ -499,13 +535,13 @@ const AstroCalc = (() => {
             });
         });
 
-        const lagnaSign = calculateLagna(calcDate, sunSiderealLon, cityObj.lat, cityObj.lon);
+        const lagnaSign = calculateLagna(hh, mm, sunSiderealLon);
         chart.lagnaRashi = lagnaSign;
         chart.lagnaName = RASHIS[lagnaSign - 1];
         
         // Approximate Lagna degree based on time since sunrise (very simplified)
         // 1 sign = 30 degrees = 2 hours. So 1 hour = 15 degrees.
-        const hoursSinceSunrise = (calcDate.getHours() + (calcDate.getMinutes()/60)) - 6.0;
+        const hoursSinceSunrise = (hh + (mm / 60)) - 6.0;
         const lagnaDegreeWithinRashi = ((hoursSinceSunrise % 2) / 2) * 30;
         const lagnaAbsoluteLon = ((lagnaSign - 1) * 30) + lagnaDegreeWithinRashi;
         const lagnaNavamsaRashi = getNavamsa(lagnaAbsoluteLon);
@@ -573,7 +609,9 @@ const AstroCalc = (() => {
 
         chart.dashas = calculateDasha(moonSiderealLon, calcDate);
         
-        chart.panchang = calculatePanchang(sunSiderealLon, moonSiderealLon, calcDate);
+        const localBirthDate = new Date(Date.UTC(year, month - 1, day));
+        const weekdayIndex = localBirthDate.getUTCDay();
+        chart.panchang = calculatePanchang(sunSiderealLon, moonSiderealLon, weekdayIndex);
         chart.doshas = checkDoshas(lagnaSign, moon ? moon.rashi : lagnaSign, chart.planets);
         chart.sav = calculateSAV(chart.planets, lagnaSign);
 

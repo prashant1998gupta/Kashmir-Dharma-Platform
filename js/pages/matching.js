@@ -191,14 +191,34 @@ const MatchingPage = (() => {
     }
 
     function renderManglikCard(manglik, personName) {
-        const color = manglik.isManglik ? (manglik.cancelled ? '#f1c40f' : '#e74c3c') : '#2ecc71';
-        const icon = manglik.isManglik ? (manglik.cancelled ? '⚠️' : '🔴') : '✅';
-        return `<div style="background:rgba(${manglik.isManglik ? '163,38,38' : '46,92,58'},0.1); border:1px solid rgba(${manglik.isManglik ? '163,38,38' : '46,92,58'},0.3); border-radius:var(--radius-md); padding:var(--space-4); margin-bottom:var(--space-4);">
-            <div style="font-weight:bold; font-size:var(--text-lg); margin-bottom:var(--space-2); color:${color};">${icon} ${personName} — ${manglik.isManglik ? 'Manglik' : 'Non-Manglik'}</div>
-            <div style="color:var(--text-secondary); line-height:1.6;">
+        let statusText = 'Non-Manglik';
+        let color = '#2ecc71';
+        let icon = '✅';
+        
+        if (manglik.isManglik) {
+            statusText = 'Manglik';
+            color = '#e74c3c';
+            icon = '🔴';
+        } else if (manglik.cancelled) {
+            statusText = 'Cancelled Manglik';
+            color = '#f1c40f';
+            icon = '⚠️';
+        } else if (manglik.isMoonManglik) {
+            statusText = 'Chandra Manglik (Mild)';
+            color = '#f1c40f';
+            icon = '⚠️';
+        }
+        
+        const isBgRed = statusText === 'Manglik';
+        const isBgYellow = statusText === 'Cancelled Manglik' || statusText === 'Chandra Manglik (Mild)';
+        const bgRgba = isBgRed ? '163,38,38' : (isBgYellow ? '241,196,15' : '46,92,58');
+        
+        return `<div style="background:rgba(${bgRgba},0.08); border:1px solid rgba(${bgRgba},0.3); border-radius:var(--radius-md); padding:var(--space-4); margin-bottom:var(--space-4);">
+            <div style="font-weight:bold; font-size:var(--text-lg); margin-bottom:var(--space-2); color:${color};">${icon} ${personName} — ${statusText}</div>
+            <div style="color:var(--text-secondary); line-height:1.6; display:flex; flex-direction:column; gap:4px;">
                 <div>Mars in House ${manglik.marsHouseFromLagna} from Lagna, House ${manglik.marsHouseFromMoon} from Moon</div>
                 <div>Severity: <strong>${manglik.severity}</strong></div>
-                ${manglik.cancellations.length > 0 ? `<div style="margin-top:var(--space-2); color:#f1c40f;">Cancellations Found: ${manglik.cancellations.join(', ')}</div>` : ''}
+                ${manglik.cancellations.length > 0 ? `<div style="margin-top:var(--space-2); color:#f1c40f; font-weight:500;">Cancellations Found: ${manglik.cancellations.join(', ')}</div>` : ''}
             </div>
         </div>`;
     }

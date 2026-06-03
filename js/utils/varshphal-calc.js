@@ -12,14 +12,15 @@ const VarshphalCalc = (() => {
     /**
      * Find exact Solar Return time (Varshapravesh)
      */
-    function findSolarReturn(natalSunLon, birthDate, targetYear) {
-        const yearsDiff = targetYear - birthDate.getFullYear();
+    function findSolarReturn(natalSunLon, birthDate, targetYear, byear) {
+        const yearsDiff = targetYear - byear;
         let approxTime = birthDate.getTime() + (yearsDiff * 365.25636 * 24 * 60 * 60 * 1000);
         let testDate = new Date(approxTime);
         let diff = 999, iterations = 0;
         
         while (Math.abs(diff) > 0.0001 && iterations < 25) {
-            const ayanamsa = AstroCalc.getAyanamsa(testDate.getFullYear());
+            const testYear = testDate.getUTCFullYear();
+            const ayanamsa = AstroCalc.getAyanamsa(testYear);
             let currentSunLon = (AstroCalc.getPlanetLongitude('Sun', testDate) - ayanamsa) % 360;
             if (currentSunLon < 0) currentSunLon += 360;
             diff = currentSunLon - natalSunLon;
@@ -54,7 +55,7 @@ const VarshphalCalc = (() => {
     /**
      * Pancha-Adhikari (5 Year Lords) Calculation
      */
-    function calculatePanchadhikari(natalChart, varshaChart, returnDate, munthaRashi) {
+    function calculatePanchadhikari(natalChart, varshaChart, returnDate, munthaRashi, tz) {
         const lords = [];
         
         // 1. Muntha Lord
@@ -76,7 +77,8 @@ const VarshphalCalc = (() => {
         lords.push({ title: 'Tri-Rashi Pati (त्रिराशि पति)', planet: triRashiLord, desc: 'Lord of the Dreshkana (1/3rd division) of the sign where the Sun is placed in the Annual chart.' });
         
         // 5. Dina Lord (Day Lord of the Solar Return)
-        const dayIndex = returnDate.getDay();
+        const localReturnDate = new Date(returnDate.getTime() + tz * 3600000);
+        const dayIndex = localReturnDate.getUTCDay();
         lords.push({ title: 'Dina Lord (दिनाधिपति)', planet: WEEKDAY_LORDS[dayIndex], desc: `Lord of the weekday (${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][dayIndex]}) when the Solar Return occurred.` });
         
         // Determine Varsheshvara (strongest lord)
@@ -344,25 +346,28 @@ const VarshphalCalc = (() => {
         const natalLagnaRashi = natalChart.lagnaRashi;
         
         // 2. Solar Return
-        const birthDateObj = new Date(`${birthDateStr}T${birthTimeStr}:00`);
-        const returnDate = findSolarReturn(natalSunLon, birthDateObj, parseInt(targetYear));
+        const [byear, bmonth, bday] = birthDateStr.split('-').map(Number);
+        const [bhh, bmm] = birthTimeStr.split(':').map(Number);
+        const birthDateUTC = new Date(Date.UTC(byear, bmonth - 1, bday, bhh, bmm) - cityObj.tz * 3600000);
+        const returnDate = findSolarReturn(natalSunLon, birthDateUTC, parseInt(targetYear), byear);
         
         // 3. Varsha Chart
-        const yr = returnDate.getFullYear();
-        const mo = String(returnDate.getMonth() + 1).padStart(2, '0');
-        const da = String(returnDate.getDate()).padStart(2, '0');
-        const hr = String(returnDate.getHours()).padStart(2, '0');
-        const mi = String(returnDate.getMinutes()).padStart(2, '0');
+        const localReturnDate = new Date(returnDate.getTime() + cityObj.tz * 3600000);
+        const yr = localReturnDate.getUTCFullYear();
+        const mo = String(localReturnDate.getUTCMonth() + 1).padStart(2, '0');
+        const da = String(localReturnDate.getUTCDate()).padStart(2, '0');
+        const hr = String(localReturnDate.getUTCHours()).padStart(2, '0');
+        const mi = String(localReturnDate.getUTCMinutes()).padStart(2, '0');
         const varshaChart = AstroCalc.generateKundali(`${yr}-${mo}-${da}`, `${hr}:${mi}`, cityObj);
         
         // 4. Age & Muntha
-        const age = parseInt(targetYear) - birthDateObj.getFullYear();
+        const age = parseInt(targetYear) - byear;
         const munthaRashi = calculateMuntha(natalLagnaRashi, age);
         const munthaHouse = getMunthaHouse(munthaRashi, varshaChart.lagnaRashi);
         const munthaLord = LORDS_MAP[munthaRashi];
         
         // 5. Pancha-Adhikari
-        const panchadhikari = calculatePanchadhikari(natalChart, varshaChart, returnDate, munthaRashi);
+        const panchadhikari = calculatePanchadhikari(natalChart, varshaChart, returnDate, munthaRashi, cityObj.tz);
         
         // 6. Tajika Yogas
         const tajikaYogas = detectTajikaYogas(varshaChart);

@@ -224,7 +224,7 @@ const MatchCalc = (() => {
     // ═══════════════════════════════════════
     function checkManglikStatus(chart) {
         const mars = chart.planets.find(p => p.id === 'Mars');
-        if (!mars) return { isManglik: false, severity: 'None', houses: [] };
+        if (!mars) return { isManglik: false, isLagnaManglik: false, isMoonManglik: false, severity: 'None', houses: [], cancellations: [], cancelled: false };
         
         const lagnaSign = chart.lagnaRashi;
         let marsHouse = mars.rashi - lagnaSign;
@@ -232,18 +232,19 @@ const MatchCalc = (() => {
         marsHouse += 1;
         
         const manglikHouses = [1, 2, 4, 7, 8, 12];
-        const isManglik = manglikHouses.includes(marsHouse);
+        const isLagnaManglik = manglikHouses.includes(marsHouse);
         
-        // Check from Moon sign as well
+        // Check from Moon sign
         const moon = chart.planets.find(p => p.id === 'Moon');
         let marsFromMoon = mars.rashi - moon.rashi;
         if (marsFromMoon < 0) marsFromMoon += 12;
         marsFromMoon += 1;
-        const isManglikFromMoon = manglikHouses.includes(marsFromMoon);
+        const isMoonManglik = manglikHouses.includes(marsFromMoon);
 
         let severity = 'None';
-        if (isManglik && isManglikFromMoon) severity = 'Severe (Double Manglik)';
-        else if (isManglik || isManglikFromMoon) severity = 'Moderate';
+        if (isLagnaManglik && isMoonManglik) severity = 'Severe (Double Manglik)';
+        else if (isLagnaManglik) severity = 'Moderate (Lagna Manglik)';
+        else if (isMoonManglik) severity = 'Mild (Chandra Manglik)';
         
         // Cancellation checks
         let cancellations = [];
@@ -257,13 +258,18 @@ const MatchCalc = (() => {
             if (jupHouse === 1 || jupHouse === 4 || jupHouse === 7) cancellations.push(`Jupiter in Kendra (House ${jupHouse})`);
         }
         
+        const cancelled = cancellations.length > 0;
+        const isActivelyManglik = isLagnaManglik && !cancelled;
+        
         return {
-            isManglik: isManglik || isManglikFromMoon,
+            isManglik: isActivelyManglik,
+            isLagnaManglik,
+            isMoonManglik,
             marsHouseFromLagna: marsHouse,
             marsHouseFromMoon: marsFromMoon,
             severity: severity,
             cancellations: cancellations,
-            cancelled: cancellations.length > 0
+            cancelled: cancelled
         };
     }
 
