@@ -126,6 +126,7 @@ const AstroCalc = (() => {
         
         return {
             name: NAKSHATRAS[index],
+            index: index,
             pada: pada,
             lord: DASHA_PERIODS[lordIndex].lord,
             percentRemaining: 1 - remainder
@@ -472,6 +473,7 @@ const AstroCalc = (() => {
                 dasamsaRashi: dasamsaRashi,
                 saptamsaRashi: saptamsaRashi,
                 nakshatra: nakData.name,
+                nakshatraIndex: nakData.index,
                 pada: nakData.pada,
                 dignity: getPlanetaryDignity(p.id, rashi)
             });
@@ -492,7 +494,7 @@ const AstroCalc = (() => {
                 ...node, longitude: node.lon, degreeStr: formatDegree(node.lon),
                 rashi: r, rashiName: RASHIS[r - 1], navamsaRashi: nr,
                 dasamsaRashi: dr, saptamsaRashi: sr,
-                nakshatra: nd.name, pada: nd.pada,
+                nakshatra: nd.name, nakshatraIndex: nd.index, pada: nd.pada,
                 dignity: getPlanetaryDignity(node.id, r)
             });
         });
