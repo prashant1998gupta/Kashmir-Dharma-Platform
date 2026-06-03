@@ -353,10 +353,15 @@ const CalendarCalc = (() => {
             const daysInMonth = new Date(targetYear, m, 0).getDate();
             for (let d = 1; d <= daysInMonth; d++) {
                 const jd = gregorianToJD(targetYear, m, d);
-                const tithi = calculateTithi(jd);
+                // Check both Sunrise (jd) and Noon (jd + 0.5) to catch Kshaya (skipped) Tithis
+                const tithiSunrise = calculateTithi(jd);
+                const tithiNoon = calculateTithi(jd + 0.5);
                 const hinduMonth = calculateHinduMonth(jd);
                 
-                if (tithi.pakshaIndex === pakshaIndex && tithi.name.toLowerCase() === tithiName.toLowerCase()) {
+                const matchesTithi = (tithiSunrise.pakshaIndex === pakshaIndex && tithiSunrise.name.toLowerCase() === tithiName.toLowerCase()) || 
+                                     (tithiNoon.pakshaIndex === pakshaIndex && tithiNoon.name.toLowerCase() === tithiName.toLowerCase());
+
+                if (matchesTithi) {
                     let diff = 0;
                     if (targetMonthIndex !== -1) {
                         diff = Math.abs(hinduMonth.index - targetMonthIndex);

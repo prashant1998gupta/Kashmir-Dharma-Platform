@@ -84,12 +84,12 @@ const CalendarPage = (() => {
         const festivalRules = {
             'navreh': { month: 'Chaitra', paksha: 0, tithi: 'Pratipada' },
             'herath': { month: 'Phalguna', paksha: 1, tithi: 'Trayodashi' },
-            'zyeth-atham': { month: 'Bhadrapada', paksha: 0, tithi: 'Ashtami' },
+            'zyeth-atham': { month: 'Jyeshtha', paksha: 0, tithi: 'Ashtami' },
             'khetsrimavas': { month: 'Jyeshtha', paksha: 1, tithi: 'Amavasya' },
             'pan-festival': { month: 'Bhadrapada', paksha: 0, tithi: 'Chaturthi' },
             'janmashtami': { month: 'Bhadrapada', paksha: 1, tithi: 'Ashtami' },
             'ram-navami': { month: 'Chaitra', paksha: 0, tithi: 'Navami' },
-            'sharika-jayanti': { month: 'Ashvina', paksha: 0, tithi: 'Ashtami' }
+            'sharika-jayanti': { month: 'Ashadha', paksha: 0, tithi: 'Navami' }
         };
 
         const events = [];
