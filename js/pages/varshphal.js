@@ -46,10 +46,8 @@ const VarshphalPage = (() => {
                     
                     <div class="form-group">
                         <label class="form-label" for="v-city">City of Birth</label>
-                        <input list="v-city-list" id="v-city" class="form-control" placeholder="Search city..." autocomplete="off">
-                        <datalist id="v-city-list">
-                            ${cityOptions}
-                        </datalist>
+                        <input type="text" id="v-city" class="form-control" placeholder="Search global cities..." autocomplete="off">
+                        <ul id="v-city-results"></ul>
                     </div>
                     
                     <div style="text-align: center; margin-top: var(--space-6);">
@@ -115,6 +113,9 @@ const VarshphalPage = (() => {
     }
 
     function afterRender() {
+        if (typeof CityAPI !== 'undefined') {
+            CityAPI.initCityAutocomplete('v-city', 'v-city-results');
+        }
         document.getElementById('v-target-year').value = new Date().getFullYear();
     }
 
@@ -183,7 +184,17 @@ const VarshphalPage = (() => {
             return;
         }
 
-        const cityObj = CityDatabase.find(c => c.name === cityName);
+        let cityObj;
+        if (cityInput.dataset.lat) {
+            cityObj = {
+                name: cityName,
+                lat: parseFloat(cityInput.dataset.lat),
+                lng: parseFloat(cityInput.dataset.lng),
+                tz: typeof CityAPI !== 'undefined' ? CityAPI.getTzOffset(cityInput.dataset.tzStr, `${date}T${time}:00`) : 5.5
+            };
+        } else {
+            cityObj = CityDatabase.find(c => c.name.toLowerCase() === cityName.toLowerCase());
+        }
 
         if (!cityObj) {
             Components.showToast('Please select a valid city', 'error');

@@ -5,11 +5,6 @@
 const KundaliPage = (() => {
     
     function render() {
-        // Generate options for cities
-        const cityOptions = (typeof CityDatabase !== 'undefined' ? CityDatabase : [])
-            .map(c => `<option value="${c.name}">${c.name}</option>`)
-            .join('');
-
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
@@ -46,10 +41,8 @@ const KundaliPage = (() => {
                         
                         <div class="form-group" style="margin-bottom: var(--space-6)">
                             <label class="form-label" style="display: block; margin-bottom: var(--space-2)">City of Birth (Searchable)</label>
-                            <input list="k-city-list" id="k-city" class="form-input" placeholder="Type to search city..." style="width: 100%; color-scheme: dark;">
-                            <datalist id="k-city-list">
-                                ${cityOptions}
-                            </datalist>
+                            <input type="text" id="k-city" class="form-control" placeholder="Type to search global cities..." autocomplete="off">
+                            <ul id="k-city-results"></ul>
                         </div>
                         
                         <button class="btn btn-primary" style="width: 100%; padding: var(--space-3); font-size: var(--text-lg)" onclick="KundaliPage.generateChart()">
@@ -148,6 +141,9 @@ const KundaliPage = (() => {
     }
 
     function afterRender() {
+        if (typeof CityAPI !== 'undefined') {
+            CityAPI.initCityAutocomplete('k-city', 'k-city-results');
+        }
         setTimeout(() => Components.initScrollReveal(), 100);
         if (typeof Astronomy === 'undefined') {
             Components.showToast('Astronomy Engine library failed to load. Please check your internet connection.', 'error');
@@ -216,19 +212,24 @@ const KundaliPage = (() => {
 
         let cityObj;
         const cityInput = document.getElementById('k-city');
+        
         if (cityInput.dataset.lat) {
+            const tzOffset = typeof CityAPI !== 'undefined' ? 
+                CityAPI.getTzOffset(cityInput.dataset.tzStr, `${date}T${time}:00`) : 5.5;
+                
             cityObj = {
                 name: cityName,
                 lat: parseFloat(cityInput.dataset.lat),
                 lng: parseFloat(cityInput.dataset.lng),
-                tz: parseFloat(cityInput.dataset.tz)
+                tz: tzOffset
             };
         } else {
-            cityObj = CityDatabase.find(c => c.name === cityName);
+            cityObj = typeof CityDatabase !== 'undefined' ? 
+                CityDatabase.find(c => c.name.toLowerCase() === cityName.toLowerCase()) : null;
         }
 
         if (!cityObj) {
-            Components.showToast('Please select a valid city from the list', 'error');
+            Components.showToast('Please select a valid city from the search dropdown', 'error');
             return;
         }
 
