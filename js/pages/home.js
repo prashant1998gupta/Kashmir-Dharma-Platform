@@ -28,6 +28,11 @@ const HomePage = (() => {
 
                 ${Components.ornamentalDivider('🔱')}
 
+                <!-- Today's Panchang Widget -->
+                <section class="mb-8 reveal" id="homePanchangWidget">
+                    <!-- Loaded dynamically in afterRender -->
+                </section>
+
                 <!-- Stats -->
                 <section class="grid-4 mb-8 reveal">
                     ${Components.statCard('8+', 'Festivals', '📅')}
@@ -104,7 +109,61 @@ const HomePage = (() => {
         `;
     }
 
+    function renderPanchangWidget() {
+        const container = document.getElementById('homePanchangWidget');
+        if (!container) return;
+        
+        try {
+            const now = new Date();
+            // Wait for astronomy engine to load, retry if not loaded yet
+            if (typeof CalendarCalc === 'undefined' || typeof CalendarCalc.getHinduDate === 'undefined') {
+                setTimeout(renderPanchangWidget, 500);
+                return;
+            }
+
+            // Using default coordinates for Srinagar (can be enhanced to use Geolocation API later)
+            const hinduDate = CalendarCalc.getHinduDate(now.getFullYear(), now.getMonth() + 1, now.getDate(), now.getHours(), now.getMinutes());
+            
+            container.innerHTML = Components.card(`
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+                    <h3 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 1.5rem">🌅</span> Today's Panchang
+                    </h3>
+                    <div style="font-size: var(--text-sm); color: var(--text-muted);">
+                        ${now.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-4);">
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--surface-border); border-radius: var(--radius-sm); padding: var(--space-4);">
+                        <div style="font-size: var(--text-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-2);">Tithi</div>
+                        <div style="font-size: var(--text-lg); font-weight: bold; color: var(--color-secondary);">${hinduDate.tithi.paksha} ${hinduDate.tithi.name}</div>
+                        <div style="font-size: var(--text-xs); color: var(--text-muted); margin-top: 2px;">${hinduDate.hinduMonth.name} Mass</div>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--surface-border); border-radius: var(--radius-sm); padding: var(--space-4);">
+                        <div style="font-size: var(--text-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-2);">Nakshatra</div>
+                        <div style="font-size: var(--text-lg); font-weight: bold; color: var(--color-secondary);">${hinduDate.nakshatra.name}</div>
+                        <div style="font-size: var(--text-xs); color: var(--text-muted); margin-top: 2px;">Moon in ${hinduDate.rashi.name} Rashi</div>
+                    </div>
+                    
+                    <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--surface-border); border-radius: var(--radius-sm); padding: var(--space-4);">
+                        <div style="font-size: var(--text-xs); color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: var(--space-2);">Sunrise (IST)</div>
+                        <div style="font-size: var(--text-lg); font-weight: bold; color: var(--color-secondary);">05:30 AM</div>
+                        <div style="font-size: var(--text-xs); color: var(--text-muted); margin-top: 2px;">Vedic Day Begins</div>
+                    </div>
+                </div>
+            `, { glass: true, featured: false });
+        } catch(e) {
+            console.error("Error rendering Panchang Widget", e);
+            container.innerHTML = ''; // Fail silently
+        }
+    }
+
     function afterRender() {
+        // Render Panchang
+        renderPanchangWidget();
+
         // Load upcoming festivals
         App.loadData('festivals').then(festivals => {
             const container = document.getElementById('homeUpcomingFestivals');

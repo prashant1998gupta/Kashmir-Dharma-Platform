@@ -79,6 +79,12 @@ const CalendarCalc = (() => {
         // Normalize
         sunLong = sunLong % 360;
         if (sunLong < 0) sunLong += 360;
+
+        // Convert to Sidereal (Lahiri Ayanamsa)
+        const ayanamsa = 23.85 + (T * 1.397);
+        sunLong = (sunLong - ayanamsa) % 360;
+        if (sunLong < 0) sunLong += 360;
+
         return sunLong;
     }
 
@@ -107,6 +113,12 @@ const CalendarCalc = (() => {
 
         moonLong = moonLong % 360;
         if (moonLong < 0) moonLong += 360;
+
+        // Convert to Sidereal (Lahiri Ayanamsa)
+        const ayanamsa = 23.85 + (T * 1.397);
+        moonLong = (moonLong - ayanamsa) % 360;
+        if (moonLong < 0) moonLong += 360;
+
         return moonLong;
     }
 
@@ -158,8 +170,8 @@ const CalendarCalc = (() => {
      */
     function calculateHinduMonth(jd) {
         const sunLong = getSunLongitude(jd);
-        const monthIndex = Math.floor(sunLong / 30);
-        // Solar month to lunar month mapping (approximate)
+        // Solar to Lunar mapping: Lunar month relates to Sun transit + 1
+        const monthIndex = (Math.floor(sunLong / 30) + 1) % 12;
         return {
             index: monthIndex,
             name: HINDU_MONTHS[monthIndex]
@@ -333,32 +345,43 @@ const CalendarCalc = (() => {
      * @param {string} tithiName (e.g., 'Pratipada')
      */
     function findFestivalDate(targetYear, hinduMonthName, pakshaIndex, tithiName) {
-        // Approximate month mapping to limit search scope
-        const monthIndex = HINDU_MONTHS.findIndex(m => m.toLowerCase().includes(hinduMonthName.toLowerCase()) || hinduMonthName.toLowerCase().includes(m.toLowerCase()));
+        const targetMonthIndex = HINDU_MONTHS.findIndex(m => m.toLowerCase().includes(hinduMonthName.toLowerCase()) || hinduMonthName.toLowerCase().includes(m.toLowerCase()));
         
+        let matches = [];
+
         for (let m = 1; m <= 12; m++) {
             const daysInMonth = new Date(targetYear, m, 0).getDate();
             for (let d = 1; d <= daysInMonth; d++) {
-                // gregorianToJD returns the Julian Day at 00:00 UTC (which is exactly 5:30 AM IST - Sunrise)
-                // We do NOT add 0.5 here, because that would shift it to 5:30 PM IST!
                 const jd = gregorianToJD(targetYear, m, d);
                 const tithi = calculateTithi(jd);
                 const hinduMonth = calculateHinduMonth(jd);
                 
-                // Match month (allowing 1 index drift due to solar/lunar approximations)
-                let isMonthMatch = false;
-                if (monthIndex !== -1) {
-                    const diff = Math.abs(hinduMonth.index - monthIndex);
-                    isMonthMatch = (diff <= 1 || diff >= 11);
-                } else {
-                    isMonthMatch = true; // If month not found, ignore month check
-                }
-
-                if (isMonthMatch && tithi.pakshaIndex === pakshaIndex && tithi.name.toLowerCase() === tithiName.toLowerCase()) {
-                    return new Date(targetYear, m - 1, d);
+                if (tithi.pakshaIndex === pakshaIndex && tithi.name.toLowerCase() === tithiName.toLowerCase()) {
+                    let diff = 0;
+                    if (targetMonthIndex !== -1) {
+                        diff = Math.abs(hinduMonth.index - targetMonthIndex);
+                        if (diff === 11) diff = 1; // Wrap around for Phalguna/Chaitra
+                    }
+                    
+                    if (diff <= 1) {
+                        matches.push({
+                            date: new Date(targetYear, m - 1, d),
+                            diff: diff
+                        });
+                    }
                 }
             }
         }
+
+        if (matches.length > 0) {
+            // Sort by exact month match first (diff = 0)
+            matches.sort((a, b) => {
+                if (a.diff !== b.diff) return a.diff - b.diff;
+                return a.date - b.date;
+            });
+            return matches[0].date;
+        }
+
         return null;
     }
 

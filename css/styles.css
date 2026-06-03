@@ -704,6 +704,7 @@ a:hover {
     display: flex;
     flex-direction: column;
     gap: var(--space-2);
+    margin-bottom: var(--space-4);
 }
 
 .form-label {
@@ -1559,4 +1560,60 @@ a:hover {
     color: var(--color-secondary);
     font-size: var(--text-2xl);
     opacity: 0.8;
+}
+
+/* --- Print Styles (PDF Export) --- */
+@media print {
+    /* Hide UI Elements */
+    .sidebar, .menu-toggle, .theme-toggle, .sidebar-overlay, .modal-overlay, #menuToggle {
+        display: none !important;
+    }
+
+    /* Reset layout for print */
+    body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+    
+    .main-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    /* Hide form elements on print */
+    .card:not(#kundaliResult .card), .breadcrumb, button, .sidebar-footer {
+        display: none !important;
+    }
+
+    /* Force background colors to print */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    /* Format Kundali Result */
+    #kundaliResult {
+        display: block !important;
+        page-break-inside: avoid;
+    }
+    
+    #kundaliResult .grid-2 {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+    }
+    
+    /* Ensure charts don't break across pages */
+    svg {
+        page-break-inside: avoid;
+    }
+    
+    h2, h3 {
+        page-break-after: avoid;
+        color: #000000 !important;
+    }
 }

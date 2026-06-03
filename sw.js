@@ -11,6 +11,7 @@ const ASSETS_TO_CACHE = [
     './js/utils/storage.js',
     './js/utils/search.js',
     './js/utils/calendar-calc.js',
+    './js/utils/profile-manager.js',
     './js/pages/home.js',
     './js/pages/calendar.js',
     './js/pages/rituals.js',
@@ -19,6 +20,7 @@ const ASSETS_TO_CACHE = [
     './js/pages/muhurat.js',
     './js/pages/heritage.js',
     './js/pages/archive.js',
+    './js/pages/audio.js',
     './js/pages/guide.js',
     './js/pages/sharada.js',
     './js/pages/kundali.js',
@@ -64,6 +66,9 @@ self.addEventListener('activate', (event) => {
 
 // Fetch Event (Network First, falling back to Cache)
 self.addEventListener('fetch', (event) => {
+    // Only handle http/https requests — skip chrome-extension:// etc.
+    if (!event.request.url.startsWith('http')) return;
+
     event.respondWith(
         fetch(event.request)
             .then((response) => {

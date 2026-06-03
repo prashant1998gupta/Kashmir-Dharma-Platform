@@ -20,6 +20,7 @@ const BirthdayPage = (() => {
                 <div class="grid-2" style="align-items: start">
                     <!-- Input Form -->
                     ${Components.card(`
+                        ${ProfileManager.renderProfileSelector('birthdayProfileSelect', 'BirthdayPage.loadProfile')}
                         <h3 style="margin-bottom: var(--space-6)">🎂 Enter Your Birth Details</h3>
                         
                         <div class="form-group mb-4">
@@ -212,5 +213,16 @@ const BirthdayPage = (() => {
         setTimeout(() => Components.initScrollReveal(), 100);
     }
 
-    return { render, afterRender, calculate };
+    function loadProfile(id) {
+        if (!id) return;
+        const profile = ProfileManager.getProfileById(id);
+        if (profile) {
+            document.getElementById('birthDate').value = profile.dob || '';
+            document.getElementById('birthTime').value = profile.time || '';
+            document.getElementById('birthPlace').value = `Auto-filled (${profile.lat}, ${profile.lng})`;
+            Components.showToast('Profile loaded successfully!', 'success');
+        }
+    }
+
+    return { render, afterRender, calculate, loadProfile };
 })();

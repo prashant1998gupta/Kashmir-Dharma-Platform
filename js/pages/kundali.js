@@ -26,6 +26,7 @@ const KundaliPage = (() => {
                 <div class="grid-2">
                     <!-- Form Section -->
                     <div class="card card-glass" style="padding: var(--space-6)">
+                        ${ProfileManager.renderProfileSelector('kundaliProfileSelect', 'KundaliPage.loadProfile')}
                         <h3 style="margin-bottom: var(--space-4)">Enter Birth Details</h3>
                         
                         <div class="form-group" style="margin-bottom: var(--space-4)">
@@ -62,6 +63,9 @@ const KundaliPage = (() => {
                             <div style="text-align: center; margin-bottom: var(--space-6)">
                                 <h2 id="res-name" style="margin-bottom: var(--space-2); color: var(--color-secondary)"></h2>
                                 <p id="res-details" style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-4)"></p>
+                                <button class="btn btn-outline" style="margin-bottom: var(--space-4);" onclick="window.print()">
+                                    🖨️ Print / Save as PDF
+                                </button>
                                 
                                 <div style="display: flex; justify-content: center; gap: var(--space-4); flex-wrap: wrap;">
                                     <div class="badge badge-primary">Lagna: <span id="res-lagna"></span></div>
@@ -210,8 +214,23 @@ const KundaliPage = (() => {
             return;
         }
 
-        const cityObj = CityDatabase.find(c => c.name === cityName);
-        if (!cityObj) return;
+        let cityObj;
+        const cityInput = document.getElementById('k-city');
+        if (cityInput.dataset.lat) {
+            cityObj = {
+                name: cityName,
+                lat: parseFloat(cityInput.dataset.lat),
+                lng: parseFloat(cityInput.dataset.lng),
+                tz: parseFloat(cityInput.dataset.tz)
+            };
+        } else {
+            cityObj = CityDatabase.find(c => c.name === cityName);
+        }
+
+        if (!cityObj) {
+            Components.showToast('Please select a valid city from the list', 'error');
+            return;
+        }
 
         try {
             const chartData = AstroCalc.generateKundali(date, time, cityObj);
@@ -300,5 +319,25 @@ const KundaliPage = (() => {
         }
     }
 
-    return { render, afterRender, generateChart };
+    function loadProfile(id) {
+        if (!id) return;
+        const profile = ProfileManager.getProfileById(id);
+        if (profile) {
+            document.getElementById('k-name').value = profile.name || '';
+            document.getElementById('k-date').value = profile.dob || '';
+            document.getElementById('k-time').value = profile.time || '';
+            
+            // Reconstruct a mock city to fill the input
+            document.getElementById('k-city').value = `Auto-filled (${profile.lat}, ${profile.lng})`;
+            
+            // Temporarily store the exact coords on the input element for generateChart to read
+            document.getElementById('k-city').dataset.lat = profile.lat;
+            document.getElementById('k-city').dataset.lng = profile.lng;
+            document.getElementById('k-city').dataset.tz = profile.tz;
+            
+            Components.showToast('Profile loaded successfully!', 'success');
+        }
+    }
+
+    return { render, afterRender, generateChart, loadProfile };
 })();

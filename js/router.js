@@ -13,6 +13,7 @@ const Router = (() => {
         'muhurat': { page: MuhuratPage, title: 'Muhurat Finder' },
         'heritage': { page: HeritagePage, title: 'Family Heritage' },
         'archive': { page: ArchivePage, title: 'Knowledge Archive' },
+        'audio': { page: AudioPage, title: 'Audio Library' },
         'guide': { page: GuidePage, title: 'Knowledge Guide' },
         'sharada': { page: SharadaPage, title: 'Learn Sharada Script' }
     };
