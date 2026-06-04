@@ -317,10 +317,13 @@ const Components = (() => {
         document.body.style.overflow = '';
     }
 
+
+
+
     /**
      * Render a calendar month grid
      */
-    function calendarMonth(year, month, events = []) {
+    function calendarMonth(year, month, events = [], selectedDateStr = null) {
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
         const daysInPrevMonth = new Date(year, month, 0).getDate();
@@ -342,10 +345,21 @@ const Components = (() => {
             html += `<div class="calendar-cell other-month"><span class="calendar-date">${day}</span></div>`;
         }
 
+        // Kashmiri tithi names local mapping for tooltip
+        const localKashmiriTithis = {
+            'Pratipada': 'Okdoh/ओकदोह', 'Dwitiya': 'Duyeh/दुयेह', 'Tritiya': 'Triyeh/त्रियेह',
+            'Chaturthi': 'Tsodah/त्सोदह', 'Panchami': 'Panchem/पंचेम', 'Shashthi': 'Sheyam/शेयम',
+            'Saptami': 'Satam/सतम', 'Ashtami': 'Atham/अठम', 'Navami': 'Navam/नवम',
+            'Dashami': 'Dahim/दहिम', 'Ekadashi': 'Kah/काह', 'Dwadashi': 'Duvah/दुवाह',
+            'Trayodashi': 'Truvah/त्रुवाह', 'Chaturdashi': 'Tsohda/त्सोहदा', 'Purnima': 'Punim/पुनिम',
+            'Amavasya': 'Mavas/मावास'
+        };
+
         // Current month days
         for (let d = 1; d <= daysInMonth; d++) {
             const isToday = today.getFullYear() === year && today.getMonth() === month && today.getDate() === d;
             const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+            const isSelected = dateStr === selectedDateStr;
             const dayEvents = events.filter(e => e.dateStr === dateStr);
             
             // Calculate Tithi for the cell if CalendarCalc is available
@@ -354,16 +368,19 @@ const Components = (() => {
                 if (typeof CalendarCalc !== 'undefined') {
                     const hDate = CalendarCalc.getHinduDate(year, month + 1, d, 12, 0);
                     const paksha = hDate.tithi.pakshaIndex === 0 ? 'S' : 'K';
-                    
-                    // The tithi array has 30 items. 0-14 is Shukla 1-15, 15-29 is Krishna 1-15.
-                    // To display a number 1-15, we can use (hDate.tithi.index % 15) + 1
                     const tithiNum = (hDate.tithi.index % 15) + 1;
                     
-                    tithiHTML = `<span class="calendar-tithi" title="${hDate.tithi.name} (${hDate.tithi.paksha})">${paksha}${tithiNum}</span>`;
+                    const tithiNameTranslated = typeof I18n !== 'undefined' ? I18n.t(`astro.tithi.${hDate.tithi.name}`) : hDate.tithi.name;
+                    const pakshaTranslated = typeof I18n !== 'undefined' ? I18n.t(`astro.paksha.${hDate.tithi.pakshaIndex === 0 ? 'Sukla' : 'Krishna'}`) : (hDate.tithi.pakshaIndex === 0 ? 'Shukla' : 'Krishna');
+                    const koshurTithi = localKashmiriTithis[hDate.tithi.name] || '';
+                    
+                    const tooltip = `${pakshaTranslated} ${tithiNameTranslated} (${koshurTithi})`;
+                    
+                    tithiHTML = `<span class="calendar-tithi" title="${tooltip}">${paksha}${tithiNum}</span>`;
                 }
             } catch(e) {}
             
-            html += `<div class="calendar-cell ${isToday ? 'today' : ''}" onclick="CalendarPage.onDayClick('${dateStr}')">`;
+            html += `<div class="calendar-cell ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" onclick="CalendarPage.onDayClick('${dateStr}')">`;
             html += `<span class="calendar-date">${d}</span>`;
             html += tithiHTML;
             dayEvents.forEach(e => {

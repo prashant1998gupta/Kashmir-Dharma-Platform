@@ -6,6 +6,40 @@ const CalendarPage = (() => {
     let festivals = [];
     let currentYear = new Date().getFullYear();
     let currentMonth = new Date().getMonth();
+    let selectedDateStr = null;
+
+    const KASHMIRI_MONTHS = {
+        en: {
+            'Chaitra': 'Tsithr', 'Vaishakha': 'Vahakh', 'Jyeshtha': 'Zyeth', 'Ashadha': 'Har',
+            'Shravana': 'Shravun', 'Bhadrapada': 'Bhedrepeth', 'Ashvina': 'Ashvin', 'Kartika': 'Kartik',
+            'Margashirsha': 'Monjhor', 'Pausha': 'Poh', 'Magha': 'Mag', 'Phalguna': 'Phagun'
+        },
+        hi: {
+            'Chaitra': 'त्सिथ्र', 'Vaishakha': 'वहख', 'Jyeshtha': 'ज़ेठ', 'Ashadha': 'हार',
+            'Shravana': 'श्रावुन', 'Bhadrapada': 'भाद्रप्यथ', 'Ashvina': 'आश्विन', 'Kartika': 'कार्तिक',
+            'Margashirsha': 'मंजहोर', 'Pausha': 'पोह', 'Magha': 'माग', 'Phalguna': 'फागुन'
+        }
+    };
+
+    const KASHMIRI_TITHIS = {
+        en: {
+            'Pratipada': 'Okdoh', 'Dwitiya': 'Duyeh', 'Tritiya': 'Triyeh', 'Chaturthi': 'Tsodah',
+            'Panchami': 'Panchem', 'Shashthi': 'Sheyam', 'Saptami': 'Satam', 'Ashtami': 'Atham',
+            'Navami': 'Navam', 'Dashami': 'Dahim', 'Ekadashi': 'Kah', 'Dwadashi': 'Duvah',
+            'Trayodashi': 'Truvah', 'Chaturdashi': 'Tsohda', 'Purnima': 'Punim', 'Amavasya': 'Mavas'
+        },
+        hi: {
+            'Pratipada': 'ओकदोह', 'Dwitiya': 'दुयेह', 'Tritiya': 'त्रियेह', 'Chaturthi': 'त्सोदह',
+            'Panchami': 'पंचेम', 'Shashthi': 'शेयम', 'Saptami': 'सतम', 'Ashtami': 'अठम',
+            'Navami': 'नवम', 'Dashami': 'दहिम', 'Ekadashi': 'काह', 'Dwadashi': 'दुवाह',
+            'Trayodashi': 'त्रुवाह', 'Chaturdashi': 'त्सोहदा', 'Purnima': 'पुनिम', 'Amavasya': 'मावास'
+        }
+    };
+
+    const FULL_DAYS = {
+        en: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        hi: ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार']
+    };
 
     function render() {
         const titleText = typeof I18n !== 'undefined' ? I18n.t('calendar.title') : 'Festival Calendar';
@@ -43,9 +77,17 @@ const CalendarPage = (() => {
                     </button>
                 </div>
 
-                <!-- Calendar Grid -->
-                <div id="calendarGrid" class="mb-8">
-                    <div class="skeleton skeleton-card" style="height: 400px"></div>
+                <!-- Calendar & Panchang Layout Container -->
+                <div class="calendar-layout-container mb-8">
+                    <!-- Left: Calendar Month Grid -->
+                    <div id="calendarGrid">
+                        <div class="skeleton skeleton-card" style="height: 400px"></div>
+                    </div>
+                    
+                    <!-- Right: Daily Panchang Card -->
+                    <div id="panchangDetailsPanel">
+                        <div class="skeleton skeleton-card" style="height: 400px"></div>
+                    </div>
                 </div>
 
                 ${Components.ornamentalDivider('🪔')}
@@ -68,9 +110,14 @@ const CalendarPage = (() => {
     }
 
     function afterRender() {
+        const today = new Date();
+        if (!selectedDateStr) {
+            selectedDateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+        }
         App.loadData('festivals').then(data => {
             festivals = data || [];
             renderCalendar();
+            renderPanchangDetails(selectedDateStr);
             renderFestivalCards(festivals);
         });
     }
@@ -87,7 +134,7 @@ const CalendarPage = (() => {
         
         const gridEl = document.getElementById('calendarGrid');
         if (gridEl) {
-            gridEl.innerHTML = Components.calendarMonth(currentYear, currentMonth, events);
+            gridEl.innerHTML = Components.calendarMonth(currentYear, currentMonth, events, selectedDateStr);
         }
     }
 
@@ -134,7 +181,10 @@ const CalendarPage = (() => {
         currentMonth += delta;
         if (currentMonth > 11) { currentMonth = 0; currentYear++; }
         if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+        // Default to the first day of the new month
+        selectedDateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-01`;
         renderCalendar();
+        renderPanchangDetails(selectedDateStr);
     }
 
     function filterFestivals(query) {
@@ -230,12 +280,212 @@ const CalendarPage = (() => {
         Components.openModal(content);
     }
 
-    function onDayClick(dateStr) {
+    function getAuspiciousReasons(hDate, dayOfWeek, lang) {
+        const tithiInPaksha = hDate.tithi.index % 15;
+        const auspiciousTithis = [1, 2, 4, 6, 9, 10, 12];
+        const isTithiGood = auspiciousTithis.includes(tithiInPaksha);
+        
+        const auspiciousNakshatras = [0, 2, 3, 6, 7, 10, 11, 12, 16, 21, 24, 25, 26];
+        const isNakshatraGood = auspiciousNakshatras.includes(hDate.nakshatra.index);
+        
+        const isDayGood = ![2, 6].includes(dayOfWeek);
+        const isDayBad = [2, 6].includes(dayOfWeek);
+        
+        const tithiName = typeof I18n !== 'undefined' ? I18n.t(`astro.tithi.${hDate.tithi.name}`) : hDate.tithi.name;
+        const koshurTithi = KASHMIRI_TITHIS[lang][hDate.tithi.name] || '';
+        const displayTithi = koshurTithi ? `${tithiName} (${koshurTithi})` : tithiName;
+        
+        const nakName = typeof I18n !== 'undefined' ? I18n.t(`astro.nakshatra.${hDate.nakshatra.name.replace(/\s+/g, '_')}`) : hDate.nakshatra.name;
+        const dayName = FULL_DAYS[lang][dayOfWeek];
+        
+        if (lang === 'hi') {
+            return [
+                isTithiGood ? `✅ ${displayTithi} अत्यंत अनुकूल तिथि है` : `⚠️ ${displayTithi} सामान्य तिथि है`,
+                isNakshatraGood ? `✅ ${nakName} नक्षत्र अनुकूल है` : `⚠️ ${nakName} नक्षत्र सामान्य है`,
+                isDayGood ? `✅ ${dayName} एक उत्तम दिन है` : `🚫 ${dayName} को पारंपरिक रूप से टाला जाता है`
+            ];
+        } else {
+            return [
+                isTithiGood ? `✅ ${displayTithi} is a highly favorable tithi` : `⚠️ ${displayTithi} is a neutral tithi`,
+                isNakshatraGood ? `✅ ${nakName} nakshatra is favorable` : `⚠️ ${nakName} nakshatra is neutral`,
+                isDayGood ? `✅ ${dayName} is an excellent day` : `🚫 ${dayName} is traditionally avoided`
+            ];
+        }
+    }
+
+    function renderPanchangDetails(dateStr) {
+        const panel = document.getElementById('panchangDetailsPanel');
+        if (!panel) return;
+        
+        const lang = typeof I18n !== 'undefined' ? I18n.getLanguage() : 'en';
+        const [year, month, day] = dateStr.split('-').map(Number);
+        
+        // Calculate Hindu date
+        let hDate = null;
+        let auspicious = null;
+        try {
+            if (typeof CalendarCalc !== 'undefined') {
+                hDate = CalendarCalc.getHinduDate(year, month, day, 12, 0);
+                auspicious = CalendarCalc.isAuspicious(year, month, day, null);
+            }
+        } catch(e) {
+            console.error("Error calculating Hindu Date:", e);
+        }
+        
+        if (!hDate || !auspicious) {
+            panel.innerHTML = `<p class="text-muted" style="text-align: center; padding: var(--space-8)">Panchang calculations unavailable</p>`;
+            return;
+        }
+        
+        // Get day of the week
+        const dayOfWeek = new Date(year, month - 1, day).getDay();
+        const displayDayOfWeek = FULL_DAYS[lang][dayOfWeek];
+        
+        // Format Gregorian Date
+        const gregDateObj = new Date(year, month - 1, day);
+        const gregDateFormatted = gregDateObj.toLocaleDateString(lang === 'hi' ? 'hi-IN' : 'en-IN', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+        
+        // Kashmiri Names
+        const koshurMonth = KASHMIRI_MONTHS[lang][hDate.hinduMonth.name] || hDate.hinduMonth.name;
+        const koshurTithi = KASHMIRI_TITHIS[lang][hDate.tithi.name] || hDate.tithi.name;
+        
+        // Translated Names
+        const tithiTrans = typeof I18n !== 'undefined' ? I18n.t(`astro.tithi.${hDate.tithi.name}`) : hDate.tithi.name;
+        const monthTrans = typeof I18n !== 'undefined' ? I18n.t(`astro.month.${hDate.hinduMonth.name}`) : hDate.hinduMonth.name;
+        const pakshaTrans = typeof I18n !== 'undefined' ? I18n.t(`astro.paksha.${hDate.tithi.pakshaIndex === 0 ? 'Sukla' : 'Krishna'}`) : (hDate.tithi.pakshaIndex === 0 ? 'Shukla' : 'Krishna');
+        const nakshatraTrans = typeof I18n !== 'undefined' ? I18n.t(`astro.nakshatra.${hDate.nakshatra.name.replace(/\s+/g, '_')}`) : hDate.nakshatra.name;
+        
+        const baseRashiName = hDate.rashi.name.split(' ')[0];
+        const rashiTrans = typeof I18n !== 'undefined' ? I18n.t(`astro.rashi.${baseRashiName}`) : hDate.rashi.name;
+        
+        // Auspiciousness Rating Info
+        let auspiciousStatus = '';
+        let badgeClass = '';
+        if (auspicious.score >= 5) {
+            auspiciousStatus = lang === 'hi' ? 'अति शुभ' : 'Highly Auspicious';
+            badgeClass = 'favorable';
+        } else if (auspicious.score >= 2) {
+            auspiciousStatus = lang === 'hi' ? 'शुभ / सामान्य' : 'Auspicious / Neutral';
+            badgeClass = 'neutral';
+        } else {
+            auspiciousStatus = lang === 'hi' ? 'वर्जित / अशुभ' : 'Avoid / Unfavorable';
+            badgeClass = 'unfavorable';
+        }
+        
+        const scorePercentage = Math.round((Math.max(0, auspicious.score + 3) / 12) * 100);
+        const reasonsList = getAuspiciousReasons(hDate, dayOfWeek, lang);
+        
+        // Find if any festival matches this date
         const events = getCalendarEvents().filter(e => e.dateStr === dateStr);
+        let festivalHTML = '';
         if (events.length > 0) {
             const festival = festivals.find(f => f.name === events[0].name);
-            if (festival) showFestivalDetail(festival.id);
+            if (festival) {
+                const viewRitualLabel = lang === 'hi' ? '🪔 पूजा विधि एवं प्रसाद' : '🪔 View Rituals & Foods';
+                const typeLabel = festival.type === 'Major Festival' ? 
+                    (lang === 'hi' ? 'प्रमुख त्योहार' : 'Major Festival') : 
+                    (lang === 'hi' ? 'उत्सव' : 'Observance');
+                    
+                festivalHTML = `
+                    <div style="margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid rgba(255,255,255,0.05);">
+                        <div class="card card-featured card-compact" style="margin-top: var(--space-2)">
+                            <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3)">
+                                <span style="font-size: 2rem">${festival.icon || '🪔'}</span>
+                                <div>
+                                    <h4 style="margin: 0; font-family: var(--font-heading); font-size: 1.1rem; color: var(--color-secondary);">${festival.name}</h4>
+                                    <span class="badge badge-primary" style="font-size: 10px; margin-top: 4px; display: inline-block;">${typeLabel}</span>
+                                </div>
+                            </div>
+                            <p style="font-size: var(--text-xs); color: var(--text-secondary); margin: 0 0 var(--space-4); line-height: 1.4;">${festival.description}</p>
+                            <button class="btn btn-primary btn-sm w-full" onclick="CalendarPage.showFestivalDetail('${festival.id}')">
+                                ${viewRitualLabel}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
         }
+        
+        const labelKoshurDate = lang === 'hi' ? 'कश्मीरी चंद्र तिथि' : 'Kashmiri Lunar Date';
+        const labelSanskritDate = lang === 'hi' ? 'वैदिक चंद्र तिथि' : 'Vedic Lunar Date';
+        const labelGregorian = lang === 'hi' ? 'ग्रेगोरियन तिथि' : 'Gregorian Date';
+        const labelVaar = lang === 'hi' ? 'वार' : 'Vaar (Weekday)';
+        const labelTithi = lang === 'hi' ? 'तिथि' : 'Tithi';
+        const labelNakshatra = lang === 'hi' ? 'नक्षत्र' : 'Nakshatra';
+        const labelRashi = lang === 'hi' ? 'चंद्र राशि' : 'Moon Rashi';
+        const labelPaksha = lang === 'hi' ? 'पक्ष' : 'Paksha';
+        const labelAuspiciousIndex = lang === 'hi' ? 'शुभ मुहूर्त सूचकांक' : 'Auspiciousness Index';
+        
+        panel.innerHTML = `
+            <div class="panchang-header">
+                <h3 class="panchang-title">${displayDayOfWeek}</h3>
+                <p class="panchang-subtitle">${gregDateFormatted}</p>
+            </div>
+            
+            <div class="panchang-koshur-title">
+                🌸 ${koshurMonth} ${koshurTithi}
+            </div>
+            
+            <table class="panchang-table">
+                <tr>
+                    <td class="label">${labelKoshurDate}</td>
+                    <td class="value">${koshurMonth} ${koshurTithi}</td>
+                </tr>
+                <tr>
+                    <td class="label">${labelSanskritDate}</td>
+                    <td class="value">${monthTrans} ${pakshaTrans} ${tithiTrans}</td>
+                </tr>
+                <tr>
+                    <td class="label">${labelGregorian}</td>
+                    <td class="value">${gregDateFormatted}</td>
+                </tr>
+                <tr>
+                    <td class="label">${labelVaar}</td>
+                    <td class="value">${displayDayOfWeek}</td>
+                </tr>
+                <tr>
+                    <td class="label">${labelTithi}</td>
+                    <td class="value">${tithiTrans} (${koshurTithi})</td>
+                </tr>
+                <tr>
+                    <td class="label">${labelPaksha}</td>
+                    <td class="value">${pakshaTrans}</td>
+                </tr>
+                <tr>
+                    <td class="label">${labelNakshatra}</td>
+                    <td class="value">${nakshatraTrans}</td>
+                </tr>
+                <tr>
+                    <td class="label">${labelRashi}</td>
+                    <td class="value">${rashiTrans}</td>
+                </tr>
+            </table>
+            
+            <div class="auspicious-container">
+                <div class="auspicious-score-row">
+                    <span class="auspicious-label">${labelAuspiciousIndex}</span>
+                    <span class="auspicious-badge ${badgeClass}">${auspiciousStatus}</span>
+                </div>
+                <div class="auspicious-bar-bg">
+                    <div class="auspicious-bar-fill ${badgeClass}" style="width: ${scorePercentage}%"></div>
+                </div>
+                <ul class="auspicious-reasons">
+                    ${reasonsList.map(r => `<li>${r}</li>`).join('')}
+                </ul>
+            </div>
+            
+            ${festivalHTML}
+        `;
+    }
+
+    function onDayClick(dateStr) {
+        selectedDateStr = dateStr;
+        renderCalendar();
+        renderPanchangDetails(dateStr);
     }
 
     return { render, afterRender, changeMonth, filterFestivals, showFestivalDetail, onDayClick };
