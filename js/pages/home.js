@@ -53,6 +53,13 @@ const HomePage = (() => {
                     </section>
                 </div>
 
+                <section id="homeCosmicEnergyWidget" class="mb-8 reveal">
+                    <h2 class="dharma-section-title">Current Cosmic Energy</h2>
+                    <div class="presence-glass-card mt-4" style="text-align: center; display: block; padding: var(--space-5);">
+                        <div class="skeleton" style="height: 60px; width: 100%;"></div>
+                    </div>
+                </section>
+
                 ${Components.ornamentalDivider('❖')}
 
                 <!-- Quick Actions Grid -->
@@ -190,6 +197,45 @@ const HomePage = (() => {
                     </div>
                 </div>
             `;
+
+            // 4. Render Cosmic Energy
+            const cosmicContainer = document.getElementById('homeCosmicEnergyWidget');
+            if (cosmicContainer) {
+                const rashiName = hinduDate.rashi.name || '';
+                const rashiMeanings = {
+                    'Mesh': { en: 'Aries', icon: '♈', desc: 'A time of dynamic energy and initiation. Focus on taking bold steps forward and leading with courage.' },
+                    'Vrish': { en: 'Taurus', icon: '♉', desc: 'A period of grounding and stability. Excellent for focusing on finances, sensual comforts, and building solid foundations.' },
+                    'Mithun': { en: 'Gemini', icon: '♊', desc: 'A time of communication and curiosity. Connect with others, exchange ideas, and satisfy your intellectual pursuits.' },
+                    'Karka': { en: 'Cancer', icon: '♋', desc: 'A phase of emotional depth and nurturing. Ideal for focusing on home, family, and inner spiritual peace.' },
+                    'Simh': { en: 'Leo', icon: '♌', desc: 'A period of creativity and self-expression. Step into the spotlight and let your natural leadership shine.' },
+                    'Kanya': { en: 'Virgo', icon: '♍', desc: 'A time for organization and service. Focus on details, health routines, and practical improvements in your daily life.' },
+                    'Tula': { en: 'Libra', icon: '♎', desc: 'A phase of balance and relationships. Seek harmony in partnerships and appreciate beauty in all its forms.' },
+                    'Vrishchik': { en: 'Scorpio', icon: '♏', desc: 'A time of transformation and intensity. Delve deep into mysteries and embrace profound emotional connections.' },
+                    'Dhanu': { en: 'Sagittarius', icon: '♐', desc: 'A period of expansion and philosophy. Embrace optimism, travel, and the search for higher wisdom.' },
+                    'Makar': { en: 'Capricorn', icon: '♑', desc: 'A phase of discipline and ambition. Focus on your career, responsibilities, and long-term goals.' },
+                    'Kumbh': { en: 'Aquarius', icon: '♒', desc: 'A time of innovation and community. Connect with groups, embrace your uniqueness, and champion humanitarian causes.' },
+                    'Meen': { en: 'Pisces', icon: '♓', desc: 'A period of intuition and spirituality. Rest, reflect, and connect with the divine through art and meditation.' }
+                };
+
+                const rashiKey = Object.keys(rashiMeanings).find(k => rashiName.includes(k));
+                if (rashiKey) {
+                    const rData = rashiMeanings[rashiKey];
+                    cosmicContainer.innerHTML = `
+                        <h2 class="dharma-section-title">Current Cosmic Energy</h2>
+                        <div class="presence-glass-card mt-4" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: var(--space-6);">
+                            <div style="font-size: 3rem; color: var(--color-secondary); margin-bottom: var(--space-2); text-shadow: 0 0 20px var(--color-secondary-glow);">${rData.icon}</div>
+                            <h3 style="font-family: var(--font-heading); font-size: var(--text-xl); color: var(--text-primary); margin-bottom: var(--space-3);">
+                                The Moon is in <span style="color: var(--color-secondary);">${rashiName}</span>
+                            </h3>
+                            <p style="color: var(--text-secondary); max-width: 600px; line-height: 1.6; font-size: var(--text-base); margin: 0 auto;">
+                                ${rData.desc}
+                            </p>
+                        </div>
+                    `;
+                } else {
+                    cosmicContainer.style.display = 'none';
+                }
+            }
             
         } catch(e) {
             console.error("Error rendering Panchang Data", e);
