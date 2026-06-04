@@ -115,43 +115,62 @@ const HomePage = (() => {
             // 2. Render Sun Widgets
             let sunriseStr = "06:00 AM";
             let sunsetStr = "06:00 PM";
-            if (typeof Astronomy !== 'undefined') {
+
+            const calculateSunTimes = (lat, lon) => {
+                if (typeof Astronomy === 'undefined') return { rise: sunriseStr, set: sunsetStr };
                 try {
-                    // Coordinates for Srinagar, Kashmir
-                    const observer = new Astronomy.Observer(34.0837, 74.7973, 1585);
+                    const observer = new Astronomy.Observer(lat, lon, 0);
                     const astroDate = new Astronomy.AstroTime(now);
                     const rise = Astronomy.SearchRiseSet(Astronomy.Body.Sun, observer, 1, astroDate, 1);
                     const set = Astronomy.SearchRiseSet(Astronomy.Body.Sun, observer, -1, astroDate, 1);
-                    
-                    if (rise) {
-                        sunriseStr = rise.date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-                    }
-                    if (set) {
-                        sunsetStr = set.date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-                    }
+                    return {
+                        rise: rise ? rise.date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : sunriseStr,
+                        set: set ? set.date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : sunsetStr
+                    };
                 } catch (e) {
                     console.error("Error calculating sun times", e);
+                    return { rise: sunriseStr, set: sunsetStr };
                 }
-            }
+            };
+
+            const defaultTimes = calculateSunTimes(34.0837, 74.7973); // Srinagar
 
             sunContainer.innerHTML = `
                 <div class="pahar-tracker">
                     <div class="pahar-card pahar-sunrise">
                         <div class="pahar-icon">🌅</div>
                         <div class="pahar-info">
-                            <span class="pahar-label">Sunrise</span>
-                            <span class="pahar-time">${sunriseStr}</span>
+                            <span class="pahar-label" id="sunriseLabel">Sunrise (Srinagar)</span>
+                            <span class="pahar-time" id="sunriseTime">${defaultTimes.rise}</span>
                         </div>
                     </div>
                     <div class="pahar-card pahar-sunset">
                         <div class="pahar-icon">🌙</div>
                         <div class="pahar-info">
-                            <span class="pahar-label">Sunset</span>
-                            <span class="pahar-time">${sunsetStr}</span>
+                            <span class="pahar-label" id="sunsetLabel">Sunset (Srinagar)</span>
+                            <span class="pahar-time" id="sunsetTime">${defaultTimes.set}</span>
                         </div>
                     </div>
                 </div>
             `;
+
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition((position) => {
+                    const localTimes = calculateSunTimes(position.coords.latitude, position.coords.longitude);
+                    const srTimeEl = document.getElementById('sunriseTime');
+                    const ssTimeEl = document.getElementById('sunsetTime');
+                    const srLabelEl = document.getElementById('sunriseLabel');
+                    const ssLabelEl = document.getElementById('sunsetLabel');
+                    if (srTimeEl && ssTimeEl) {
+                        srTimeEl.innerText = localTimes.rise;
+                        ssTimeEl.innerText = localTimes.set;
+                        srLabelEl.innerText = 'Sunrise (Local)';
+                        ssLabelEl.innerText = 'Sunset (Local)';
+                    }
+                }, () => {
+                    console.log("Geolocation permission denied or unavailable. Using Srinagar times.");
+                });
+            }
 
             // 3. Render Presence
             presenceContainer.innerHTML = `
