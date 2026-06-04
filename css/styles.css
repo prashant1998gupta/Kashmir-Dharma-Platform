@@ -1882,3 +1882,316 @@ a:hover {
 .pdf-rendering svg rect {
     stroke: #c9a959 !important;
 }
+
+/* ============================================
+   Sacred Companion Dashboard Styles
+   ============================================ */
+
+.home-dashboard {
+    padding-top: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+}
+
+/* Sacred Header Panel */
+.sacred-header-panel {
+    background: var(--bg-glass);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    box-shadow: var(--surface-shadow);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.sacred-header-panel::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--color-secondary), transparent);
+}
+
+.sacred-header-panel::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at top, var(--color-secondary-glow) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.tithi-sacred-display {
+    position: relative;
+    z-index: 1;
+}
+
+.tithi-sacred-main {
+    font-family: var(--font-heading);
+    font-size: clamp(3rem, 10vw, 5rem);
+    color: var(--color-secondary);
+    line-height: 1;
+    text-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+    margin-bottom: var(--space-2);
+}
+
+.tithi-sacred-sub {
+    font-size: var(--text-xl);
+    color: var(--text-primary);
+    font-family: var(--font-subheading);
+    margin-bottom: var(--space-4);
+}
+
+.gregorian-sacred-date {
+    display: inline-block;
+    padding: var(--space-2) var(--space-6);
+    border-top: 1px solid var(--surface-border);
+    border-bottom: 1px solid var(--surface-border);
+    font-size: var(--text-sm);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+
+/* Pahar (Sun) Tracker */
+.pahar-tracker {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+}
+
+.pahar-card {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4) var(--space-6);
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    min-width: 200px;
+    position: relative;
+    overflow: hidden;
+}
+
+.pahar-sunrise::before {
+    content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 2px;
+    background: linear-gradient(to bottom, #FFB75E, #ED8F03);
+}
+
+.pahar-sunset::before {
+    content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 2px;
+    background: linear-gradient(to bottom, #8E2DE2, #4A00E0);
+}
+
+.pahar-icon {
+    font-size: 2rem;
+}
+
+.pahar-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.pahar-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+.pahar-time {
+    font-size: var(--text-xl);
+    font-family: var(--font-heading);
+    color: var(--text-primary);
+}
+
+/* Framed Inspiration Section */
+.framed-inspiration {
+    background: var(--bg-card);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-6);
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    position: relative;
+    box-shadow: var(--surface-shadow);
+}
+
+.framed-inspiration::before {
+    content: 'ॐ';
+    position: absolute;
+    right: 20px;
+    bottom: -20px;
+    font-size: 10rem;
+    color: var(--surface-border);
+    opacity: 0.3;
+    font-family: sans-serif;
+    line-height: 1;
+    pointer-events: none;
+}
+
+.inspiration-image-frame {
+    flex-shrink: 0;
+    width: 240px;
+    height: 320px;
+    border-radius: var(--radius-lg);
+    border: 2px solid var(--color-secondary);
+    padding: 8px;
+    background: rgba(212, 175, 55, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+.inspiration-image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+}
+
+.inspiration-text-content {
+    flex-grow: 1;
+    z-index: 1;
+}
+
+.inspiration-mantra {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin-bottom: var(--space-4);
+}
+
+.inspiration-mantra .highlight {
+    color: var(--color-secondary);
+}
+
+.inspiration-meaning {
+    color: var(--text-secondary);
+    font-size: var(--text-lg);
+    max-width: 500px;
+    line-height: 1.6;
+}
+
+/* Mobile adjustments for framed inspiration */
+@media (max-width: 768px) {
+    .framed-inspiration {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--space-4);
+    }
+    
+    .pahar-tracker {
+        flex-direction: column;
+    }
+}
+
+/* Dharma Highlights & Presence */
+.dharma-section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-subheading);
+    font-size: var(--text-2xl);
+    color: var(--color-secondary);
+    margin-bottom: var(--space-4);
+}
+
+.dharma-section-title::after {
+    content: '';
+    flex-grow: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--surface-border), transparent);
+}
+
+.presence-glass-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+}
+
+.presence-item {
+    text-align: center;
+}
+
+.presence-item-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-1);
+}
+
+.presence-item-value {
+    font-family: var(--font-heading);
+    font-size: var(--text-2xl);
+    color: var(--text-primary);
+}
+
+.highlight-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.highlight-glass-item {
+    background: var(--bg-card);
+    border: 1px solid var(--surface-border);
+    border-left: 3px solid var(--color-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all var(--transition-base);
+}
+
+.highlight-glass-item:hover {
+    background: var(--bg-card-hover);
+    transform: translateX(4px);
+}
+
+.highlight-glass-item.personal {
+    border-left-color: var(--color-primary);
+}
+
+.hg-content h4 {
+    font-family: var(--font-heading);
+    font-size: var(--text-xl);
+    color: var(--text-primary);
+    margin-bottom: 4px;
+}
+
+.hg-content p {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.hg-badge {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--color-secondary);
+    font-size: 0.65rem;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    letter-spacing: 0.1em;
+    font-weight: 600;
+}
+
+.personal .hg-badge {
+    background: rgba(163, 38, 38, 0.1);
+    color: var(--color-primary-light);
+}
