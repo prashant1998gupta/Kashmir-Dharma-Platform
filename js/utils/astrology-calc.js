@@ -65,31 +65,39 @@ const AstroCalc = (() => {
     }
 
     /**
-     * Calculate approximate Lagna (Ascendant) Rashi
-     * Based on Sun's sidereal position and time of birth
+     * Calculate exact Sidereal Lagna (Ascendant) Longitude
+     * Based on user's exact geographical coordinates and time
      */
-    function calculateLagna(hh, mm, sunSiderealLon) {
-        // This is a simplified Lagna approximation suitable for a V1 client-side engine.
-        // In Vedic astrology, the Lagna advances roughly 1 sign every 2 hours.
-        // At sunrise, the Lagna is in the same sign as the Sun.
+    function calculateExactLagna(date, lat, lon, ayanamsa) {
+        if (typeof Astronomy === 'undefined') return 0;
         
-        // Approximate local sunrise time to 6:00 AM local time
-        const timeInHours = hh + (mm / 60);
+        // Greenwich Apparent Sidereal Time (in hours)
+        const gast = Astronomy.SiderealTime(date);
         
-        const hoursSinceSunrise = timeInHours - 6.0;
+        // Local Sidereal Time (in degrees)
+        let lst = (gast * 15 + lon) % 360;
+        if (lst < 0) lst += 360;
         
-        const sunSign = getRashiFromLongitude(sunSiderealLon); // 1 to 12
+        const rad = Math.PI / 180;
+        const e = 23.4392911 * rad; // Approximate Obliquity of ecliptic
         
-        // Advance 1 sign every 2 hours
-        const signsToAdvance = Math.floor(hoursSinceSunrise / 2);
+        const lstRad = lst * rad;
+        const latRad = lat * rad;
         
-        let lagnaSign = sunSign + signsToAdvance;
+        // Standard Ascendant Formula:
+        const y = Math.cos(lstRad);
+        const x = -Math.sin(lstRad) * Math.cos(e) - Math.tan(latRad) * Math.sin(e);
         
-        // Wrap around 12
-        lagnaSign = lagnaSign % 12;
-        if (lagnaSign <= 0) lagnaSign += 12;
+        let ascRad = Math.atan2(y, x);
+        if (ascRad < 0) ascRad += 2 * Math.PI;
         
-        return lagnaSign;
+        let ascEcliptic = ascRad / rad; // Tropical Ascendant in degrees
+        
+        // Convert Tropical Ascendant to Sidereal using Ayanamsa
+        let siderealAsc = (ascEcliptic - ayanamsa) % 360;
+        if (siderealAsc < 0) siderealAsc += 360;
+        
+        return siderealAsc;
     }
 
     const NAKSHATRAS = [
@@ -313,6 +321,20 @@ const AstroCalc = (() => {
                     if ([1, 4, 7, 10].includes(jupHouse)) {
                         cancellations.push(`Jupiter in Kendra (House ${jupHouse})`);
                     }
+                    if (mars.rashi === jupiter.rashi) {
+                        cancellations.push(`Mars conjunct Jupiter`);
+                    }
+                }
+                const moon = planets.find(p => p.id === 'Moon');
+                if (moon) {
+                    let moonHouse = moon.rashi - lagnaRashi + 1;
+                    if (moonHouse <= 0) moonHouse += 12;
+                    if ([1, 4, 7, 10].includes(moonHouse)) {
+                        cancellations.push(`Moon in Kendra (House ${moonHouse})`);
+                    }
+                    if (mars.rashi === moon.rashi) {
+                        cancellations.push(`Mars conjunct Moon`);
+                    }
                 }
                 
                 const cancelled = cancellations.length > 0;
@@ -535,15 +557,12 @@ const AstroCalc = (() => {
             });
         });
 
-        const lagnaSign = calculateLagna(hh, mm, sunSiderealLon);
+        const lagnaAbsoluteLon = calculateExactLagna(calcDate, cityObj.lat, cityObj.lon, ayanamsa);
+        const lagnaSign = getRashiFromLongitude(lagnaAbsoluteLon);
         chart.lagnaRashi = lagnaSign;
         chart.lagnaName = RASHIS[lagnaSign - 1];
         
-        // Approximate Lagna degree based on time since sunrise (very simplified)
-        // 1 sign = 30 degrees = 2 hours. So 1 hour = 15 degrees.
-        const hoursSinceSunrise = (hh + (mm / 60)) - 6.0;
-        const lagnaDegreeWithinRashi = ((hoursSinceSunrise % 2) / 2) * 30;
-        const lagnaAbsoluteLon = ((lagnaSign - 1) * 30) + lagnaDegreeWithinRashi;
+        const lagnaDegreeWithinRashi = lagnaAbsoluteLon % 30;
         const lagnaNavamsaRashi = getNavamsa(lagnaAbsoluteLon);
         const lagnaDasamsaRashi = getDasamsa(lagnaAbsoluteLon);
         const lagnaSaptamsaRashi = getSaptamsa(lagnaAbsoluteLon);
