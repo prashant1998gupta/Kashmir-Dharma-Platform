@@ -113,20 +113,41 @@ const HomePage = (() => {
             `;
 
             // 2. Render Sun Widgets
+            let sunriseStr = "06:00 AM";
+            let sunsetStr = "06:00 PM";
+            if (typeof Astronomy !== 'undefined') {
+                try {
+                    // Coordinates for Srinagar, Kashmir
+                    const observer = new Astronomy.Observer(34.0837, 74.7973, 1585);
+                    const astroDate = new Astronomy.AstroTime(now);
+                    const rise = Astronomy.SearchRiseSet(Astronomy.Body.Sun, observer, 1, astroDate, 1);
+                    const set = Astronomy.SearchRiseSet(Astronomy.Body.Sun, observer, -1, astroDate, 1);
+                    
+                    if (rise) {
+                        sunriseStr = rise.date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    }
+                    if (set) {
+                        sunsetStr = set.date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    }
+                } catch (e) {
+                    console.error("Error calculating sun times", e);
+                }
+            }
+
             sunContainer.innerHTML = `
                 <div class="pahar-tracker">
                     <div class="pahar-card pahar-sunrise">
                         <div class="pahar-icon">🌅</div>
                         <div class="pahar-info">
                             <span class="pahar-label">Sunrise</span>
-                            <span class="pahar-time">06:19 AM</span>
+                            <span class="pahar-time">${sunriseStr}</span>
                         </div>
                     </div>
                     <div class="pahar-card pahar-sunset">
                         <div class="pahar-icon">🌙</div>
                         <div class="pahar-info">
                             <span class="pahar-label">Sunset</span>
-                            <span class="pahar-time">06:37 PM</span>
+                            <span class="pahar-time">${sunsetStr}</span>
                         </div>
                     </div>
                 </div>
@@ -137,15 +158,15 @@ const HomePage = (() => {
                 <h2 class="dharma-section-title">Today's Presence</h2>
                 <div class="presence-glass-card mt-4">
                     <div class="presence-item">
-                        <div class="presence-item-label">Tithi</div>
+                        <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">🌙</span> Tithi</div>
                         <div class="presence-item-value" style="color: var(--color-secondary);">${tithiName}</div>
                     </div>
                     <div class="presence-item">
-                        <div class="presence-item-label">Nakshatra</div>
+                        <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">✨</span> Nakshatra</div>
                         <div class="presence-item-value">${hinduDate.nakshatra.name || 'Pushya'}</div>
                     </div>
                     <div class="presence-item">
-                        <div class="presence-item-label">Rashi</div>
+                        <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">♋</span> Rashi</div>
                         <div class="presence-item-value">${hinduDate.rashi.name || 'Karka'}</div>
                     </div>
                 </div>
@@ -163,17 +184,6 @@ const HomePage = (() => {
         App.loadData('festivals').then(festivals => {
             let highlightsHTML = '<div class="highlight-list mt-4">';
             
-            // Personal Event
-            highlightsHTML += `
-                <div class="highlight-glass-item personal">
-                    <div class="hg-content">
-                        <h4>Pappa ji's birthday</h4>
-                        <p>Family Celebration</p>
-                    </div>
-                    <div class="hg-badge">MY EVENT</div>
-                </div>
-            `;
-
             // Festival Event
             if (festivals && festivals.length > 0) {
                 const f = festivals[0];
@@ -184,6 +194,12 @@ const HomePage = (() => {
                             <p>${f.date || 'Upcoming'}</p>
                         </div>
                         <div class="hg-badge">FESTIVAL</div>
+                    </div>
+                `;
+            } else {
+                highlightsHTML += `
+                    <div class="highlight-glass-item" style="justify-content: center; opacity: 0.7;">
+                        <p style="margin: 0;">No major highlights today.</p>
                     </div>
                 `;
             }
