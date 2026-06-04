@@ -81,6 +81,11 @@ const Router = (() => {
             if (route.page.afterRender) {
                 route.page.afterRender();
             }
+            
+            // Re-run translations for newly injected page content
+            if (typeof I18n !== 'undefined') {
+                I18n.translatePage();
+            }
 
             // Scroll to top
             window.scrollTo({ top: 0, behavior: 'smooth' });

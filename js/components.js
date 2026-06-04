@@ -331,8 +331,9 @@ const Components = (() => {
         let html = '<div class="calendar-grid">';
         
         // Header
-        dayNames.forEach(d => {
-            html += `<div class="calendar-header-cell">${d}</div>`;
+        dayNames.forEach((d, index) => {
+            const translatedDay = typeof I18n !== 'undefined' ? I18n.t('day.' + index) : d;
+            html += `<div class="calendar-header-cell">${translatedDay}</div>`;
         });
 
         // Previous month days

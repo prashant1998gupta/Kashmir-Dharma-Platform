@@ -48,13 +48,13 @@ const AudioPage = (() => {
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
-                    { label: 'Home', href: '#home' },
-                    { label: 'Sacred Sounds & Wanwun' }
+                    { label: typeof I18n !== 'undefined' ? I18n.t('nav.home', 'Home') : 'Home', href: '#home' },
+                    { label: typeof I18n !== 'undefined' ? I18n.t('audio.title', 'Sacred Sounds & Wanwun') : 'Sacred Sounds & Wanwun' }
                 ])}
 
                 ${Components.sectionHeader(
-                    'Sacred Sounds & Wanwun',
-                    'Listen to traditional Kashmiri Pandit mantras, bhajans, and wedding songs (Wanwun).',
+                    typeof I18n !== 'undefined' ? I18n.t('audio.header', 'Sacred Sounds & Wanwun') : 'Sacred Sounds & Wanwun',
+                    typeof I18n !== 'undefined' ? I18n.t('audio.desc', 'Listen to traditional Kashmiri Pandit mantras, bhajans, and wedding songs (Wanwun).') : 'Listen to traditional Kashmiri Pandit mantras, bhajans, and wedding songs (Wanwun).',
                     { h1: true }
                 )}
 
@@ -62,7 +62,7 @@ const AudioPage = (() => {
                     <!-- Mantras Section -->
                     <div>
                         <h3 style="margin-bottom: var(--space-4); display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 1.5rem">🕉️</span> Mantras & Stotras
+                            <span style="font-size: 1.5rem">🕉️</span> ${typeof I18n !== 'undefined' ? I18n.t('audio.mantras', 'Mantras & Stotras') : 'Mantras & Stotras'}
                         </h3>
                         <div style="display: flex; flex-direction: column; gap: var(--space-4);">
                             ${audioData.filter(a => a.category === 'mantras').map(renderAudioCard).join('')}
@@ -72,7 +72,7 @@ const AudioPage = (() => {
                     <!-- Wanwun Section -->
                     <div>
                         <h3 style="margin-bottom: var(--space-4); display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 1.5rem">🎵</span> Traditional Wanwun
+                            <span style="font-size: 1.5rem">🎵</span> ${typeof I18n !== 'undefined' ? I18n.t('audio.wanwun', 'Traditional Wanwun') : 'Traditional Wanwun'}
                         </h3>
                         <div style="display: flex; flex-direction: column; gap: var(--space-4);">
                             ${audioData.filter(a => a.category === 'wanwun').map(renderAudioCard).join('')}
@@ -85,7 +85,7 @@ const AudioPage = (() => {
                         <div class="flex items-center gap-3">
                             <span style="font-size: 1.5rem">💡</span>
                             <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0">
-                                <strong>Note:</strong> Currently playing placeholder chimes. You can replace the audio source files in the local directory with actual MP3 recordings of your choice.
+                                ${typeof I18n !== 'undefined' ? I18n.t('audio.note', '<strong>Note:</strong> Currently playing placeholder chimes. You can replace the audio source files in the local directory with actual MP3 recordings of your choice.') : '<strong>Note:</strong> Currently playing placeholder chimes. You can replace the audio source files in the local directory with actual MP3 recordings of your choice.'}
                             </p>
                         </div>
                     `, { compact: true })}

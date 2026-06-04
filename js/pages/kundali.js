@@ -5,16 +5,31 @@
 const KundaliPage = (() => {
     
     function render() {
+        const homeText = typeof I18n !== 'undefined' ? I18n.t('nav.home') : 'Home';
+        const titleText = typeof I18n !== 'undefined' ? I18n.t('kundali.title') : 'Kundali Generator';
+        const descText = typeof I18n !== 'undefined' ? I18n.t('kundali.desc') : 'Generate your Vedic Birth Chart locally and privately. No data is sent to any server.';
+        const enterDetailsText = typeof I18n !== 'undefined' ? I18n.t('kundali.enter_details') : 'Enter Birth Details';
+        const nameText = typeof I18n !== 'undefined' ? I18n.t('kundali.name') : 'Name';
+        const dobText = typeof I18n !== 'undefined' ? I18n.t('kundali.dob') : 'Date of Birth';
+        const tobText = typeof I18n !== 'undefined' ? I18n.t('kundali.tob') : 'Time of Birth';
+        const cityText = typeof I18n !== 'undefined' ? I18n.t('kundali.city') : 'City of Birth (Searchable)';
+        const cityPlaceholder = typeof I18n !== 'undefined' ? I18n.t('kundali.city_placeholder') : 'Type to search global cities...';
+        const generateText = typeof I18n !== 'undefined' ? I18n.t('kundali.generate') : 'Generate Kundali ✨';
+        const printText = typeof I18n !== 'undefined' ? I18n.t('kundali.print') : '🖨️ Print / Save as PDF';
+        const lagnaText = typeof I18n !== 'undefined' ? I18n.t('kundali.lagna') : 'Lagna:';
+        const rashiText = typeof I18n !== 'undefined' ? I18n.t('kundali.rashi') : 'Rashi:';
+        const nakshatraText = typeof I18n !== 'undefined' ? I18n.t('kundali.nakshatra') : 'Nakshatra:';
+
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
-                    { label: 'Home', href: '#home' },
-                    { label: 'Kundali Generator' }
+                    { label: homeText, href: '#home' },
+                    { label: titleText }
                 ])}
 
                 ${Components.sectionHeader(
-                    'Kundali Generator',
-                    'Generate your Vedic Birth Chart locally and privately. No data is sent to any server.',
+                    titleText,
+                    descText,
                     { h1: true }
                 )}
 
@@ -22,31 +37,31 @@ const KundaliPage = (() => {
                     <!-- Form Section -->
                     <div class="card card-glass" style="padding: var(--space-6); overflow: visible;">
                         ${ProfileManager.renderProfileSelector('kundaliProfileSelect', 'KundaliPage.loadProfile')}
-                        <h3 style="margin-bottom: var(--space-4)">Enter Birth Details</h3>
+                        <h3 style="margin-bottom: var(--space-4)">${enterDetailsText}</h3>
                         
                         <div class="form-group" style="margin-bottom: var(--space-4)">
-                            <label class="form-label" style="display: block; margin-bottom: var(--space-2)">Name</label>
+                            <label class="form-label" style="display: block; margin-bottom: var(--space-2)">${nameText}</label>
                             <input type="text" id="k-name" class="form-input" placeholder="E.g., Rahul Koul" style="width: 100%;">
                         </div>
                         
                         <div class="form-group" style="margin-bottom: var(--space-4)">
-                            <label class="form-label" style="display: block; margin-bottom: var(--space-2)">Date of Birth</label>
+                            <label class="form-label" style="display: block; margin-bottom: var(--space-2)">${dobText}</label>
                             <input type="date" id="k-date" class="form-input" style="width: 100%; color-scheme: dark;">
                         </div>
                         
                         <div class="form-group" style="margin-bottom: var(--space-4)">
-                            <label class="form-label" style="display: block; margin-bottom: var(--space-2)">Time of Birth</label>
+                            <label class="form-label" style="display: block; margin-bottom: var(--space-2)">${tobText}</label>
                             <input type="time" id="k-time" class="form-input" style="width: 100%; color-scheme: dark;">
                         </div>
                         
                         <div class="form-group" style="margin-bottom: var(--space-6)">
-                            <label class="form-label" style="display: block; margin-bottom: var(--space-2)">City of Birth (Searchable)</label>
-                            <input type="text" id="k-city" class="form-control" placeholder="Type to search global cities..." autocomplete="off">
+                            <label class="form-label" style="display: block; margin-bottom: var(--space-2)">${cityText}</label>
+                            <input type="text" id="k-city" class="form-control" placeholder="${cityPlaceholder}" autocomplete="off">
                             <ul id="k-city-results"></ul>
                         </div>
                         
                         <button class="btn btn-primary" style="width: 100%; padding: var(--space-3); font-size: var(--text-lg)" onclick="KundaliPage.generateChart()">
-                            Generate Kundali ✨
+                            ${generateText}
                         </button>
                     </div>
 
@@ -57,42 +72,42 @@ const KundaliPage = (() => {
                                 <h2 id="res-name" style="margin-bottom: var(--space-2); color: var(--color-secondary)"></h2>
                                 <p id="res-details" style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-4)"></p>
                                 <button class="btn btn-outline" style="margin-bottom: var(--space-4);" onclick="window.print()">
-                                    🖨️ Print / Save as PDF
+                                    ${printText}
                                 </button>
                                 
                                 <div style="display: flex; justify-content: center; gap: var(--space-4); flex-wrap: wrap;">
-                                    <div class="badge badge-primary">Lagna: <span id="res-lagna"></span></div>
-                                    <div class="badge badge-secondary">Rashi: <span id="res-rashi"></span></div>
-                                    <div class="badge" style="background: var(--bg-tertiary)">Nakshatra: <span id="res-nakshatra"></span></div>
+                                    <div class="badge badge-primary">${lagnaText} <span id="res-lagna"></span></div>
+                                    <div class="badge badge-secondary">${rashiText} <span id="res-rashi"></span></div>
+                                    <div class="badge" style="background: var(--bg-tertiary)">${nakshatraText} <span id="res-nakshatra"></span></div>
                                 </div>
                             </div>
                             
                             <!-- Charts Container -->
                             <div class="grid-2" style="margin-bottom: var(--space-8); gap: var(--space-6)">
                                 <div>
-                                    <h3 style="text-align: center; margin-bottom: var(--space-4)">Lagna Chart (D1)</h3>
+                                    <h3 style="text-align: center; margin-bottom: var(--space-4)">${typeof I18n !== 'undefined' ? I18n.t('kundali.d1') : 'Lagna Chart (D1)'}</h3>
                                     <div id="chart-d1-container" style="max-width: 400px; margin: 0 auto;"></div>
                                 </div>
                                 <div>
-                                    <h3 style="text-align: center; margin-bottom: var(--space-4)">Navamsa Chart (D9)</h3>
+                                    <h3 style="text-align: center; margin-bottom: var(--space-4)">${typeof I18n !== 'undefined' ? I18n.t('kundali.d9') : 'Navamsa Chart (D9)'}</h3>
                                     <div id="chart-d9-container" style="max-width: 400px; margin: 0 auto;"></div>
                                 </div>
                                 <div>
-                                    <h3 style="text-align: center; margin-bottom: var(--space-4)">Dasamsa Chart (D10)</h3>
+                                    <h3 style="text-align: center; margin-bottom: var(--space-4)">${typeof I18n !== 'undefined' ? I18n.t('kundali.d10') : 'Dasamsa Chart (D10)'}</h3>
                                     <div id="chart-d10-container" style="max-width: 400px; margin: 0 auto;"></div>
                                 </div>
                                 <div>
-                                    <h3 style="text-align: center; margin-bottom: var(--space-4)">Saptamsa Chart (D7)</h3>
+                                    <h3 style="text-align: center; margin-bottom: var(--space-4)">${typeof I18n !== 'undefined' ? I18n.t('kundali.d7') : 'Saptamsa Chart (D7)'}</h3>
                                     <div id="chart-d7-container" style="max-width: 400px; margin: 0 auto;"></div>
                                 </div>
                                 <div>
-                                    <h3 style="text-align: center; margin-bottom: var(--space-4)">Bhava Chalit Chart</h3>
+                                    <h3 style="text-align: center; margin-bottom: var(--space-4)">${typeof I18n !== 'undefined' ? I18n.t('kundali.chalit') : 'Bhava Chalit Chart'}</h3>
                                     <div id="chart-chalit-container" style="max-width: 400px; margin: 0 auto;"></div>
                                 </div>
                             </div>
                             
                             <!-- Birth Panchang -->
-                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Birth Panchang</h3>
+                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('kundali.panchang') : 'Birth Panchang'}</h3>
                             <div style="background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--space-4); margin-bottom: var(--space-8); display: flex; flex-wrap: wrap; gap: var(--space-6); justify-content: space-between;">
                                 <div><span style="color: var(--text-muted); font-size: var(--text-xs); text-transform: uppercase;">Vaar (Day)</span><div id="panchang-vaar" style="font-weight: bold; color: var(--color-secondary);"></div></div>
                                 <div><span style="color: var(--text-muted); font-size: var(--text-xs); text-transform: uppercase;">Tithi</span><div id="panchang-tithi" style="font-weight: bold; color: var(--color-secondary);"></div></div>
@@ -101,12 +116,12 @@ const KundaliPage = (() => {
                             </div>
                             
                             <!-- Doshas -->
-                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Astrological Doshas</h3>
+                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('kundali.doshas') : 'Astrological Doshas'}</h3>
                             <div id="dosha-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-8);">
                             </div>
                             
                             <!-- Planetary Details Table -->
-                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Planetary Positions</h3>
+                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('kundali.planets') : 'Planetary Positions'}</h3>
                             <div style="overflow-x: auto; margin-bottom: var(--space-8);">
                                 <table style="width: 100%; text-align: left; border-collapse: collapse;">
                                     <thead>
@@ -124,13 +139,13 @@ const KundaliPage = (() => {
                             </div>
 
                             <!-- Sarvashtakavarga (SAV) Points -->
-                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Ashtakavarga (SAV) Points</h3>
+                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('kundali.sav') : 'Ashtakavarga (SAV) Points'}</h3>
                             <div style="margin-bottom: var(--space-8); display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: var(--space-2);">
                                 <div id="sav-container" style="display: contents;"></div>
                             </div>
 
                             <!-- Vimshottari Dasha Timeline -->
-                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Vimshottari Dasha (Mahadasha & Antardasha)</h3>
+                            <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('kundali.dasha') : 'Vimshottari Dasha (Mahadasha & Antardasha)'}</h3>
                             <div id="dasha-timeline" style="display: flex; flex-direction: column; gap: var(--space-3);">
                             </div>
                         </div>
@@ -239,8 +254,8 @@ const KundaliPage = (() => {
             document.getElementById('res-name').textContent = `${name}'s Kundali`;
             document.getElementById('res-details').textContent = `${date} at ${time} | ${cityName}`;
             
-            document.getElementById('res-lagna').textContent = chartData.lagnaName || 'Unknown';
-            document.getElementById('res-rashi').textContent = chartData.moonSign || 'Unknown';
+            document.getElementById('res-lagna').textContent = typeof I18n !== 'undefined' ? I18n.tAstro(chartData.lagnaName || 'Unknown') : (chartData.lagnaName || 'Unknown');
+            document.getElementById('res-rashi').textContent = typeof I18n !== 'undefined' ? I18n.tAstro(chartData.moonSign || 'Unknown') : (chartData.moonSign || 'Unknown');
             document.getElementById('res-nakshatra').textContent = chartData.moonNakshatra || 'Unknown';
             
             document.getElementById('chart-d1-container').innerHTML = drawChartSVG(chartData.houses, chartData.lagnaRashi);
@@ -250,10 +265,10 @@ const KundaliPage = (() => {
             document.getElementById('chart-chalit-container').innerHTML = drawChartSVG(chartData.chalitHouses, chartData.lagnaRashi);
             
             // Populate Panchang
-            document.getElementById('panchang-vaar').textContent = chartData.panchang.vaar;
-            document.getElementById('panchang-tithi').textContent = chartData.panchang.tithi;
-            document.getElementById('panchang-yoga').textContent = chartData.panchang.yoga;
-            document.getElementById('panchang-karana').textContent = chartData.panchang.karana;
+            document.getElementById('panchang-vaar').textContent = typeof I18n !== 'undefined' ? I18n.tAstro(chartData.panchang.vaar) : chartData.panchang.vaar;
+            document.getElementById('panchang-tithi').textContent = typeof I18n !== 'undefined' ? I18n.tAstro(chartData.panchang.tithi) : chartData.panchang.tithi;
+            document.getElementById('panchang-yoga').textContent = typeof I18n !== 'undefined' ? I18n.tAstro(chartData.panchang.yoga) : chartData.panchang.yoga;
+            document.getElementById('panchang-karana').textContent = typeof I18n !== 'undefined' ? I18n.tAstro(chartData.panchang.karana) : chartData.panchang.karana;
             
             // Populate Doshas
             const doshaContainer = document.getElementById('dosha-container');

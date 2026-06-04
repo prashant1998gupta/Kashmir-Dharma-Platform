@@ -10,13 +10,13 @@ const GuidePage = (() => {
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
-                    { label: 'Home', href: '#home' },
-                    { label: 'Knowledge Guide' }
+                    { label: typeof I18n !== 'undefined' ? I18n.t('nav.home', 'Home') : 'Home', href: '#home' },
+                    { label: typeof I18n !== 'undefined' ? I18n.t('guide.title', 'Knowledge Guide') : 'Knowledge Guide' }
                 ])}
 
                 ${Components.sectionHeader(
-                    'Knowledge Guide',
-                    'Ask questions about Kashmiri Pandit traditions and get answers from our scholar-validated knowledge base',
+                    typeof I18n !== 'undefined' ? I18n.t('guide.header', 'Knowledge Guide') : 'Knowledge Guide',
+                    typeof I18n !== 'undefined' ? I18n.t('guide.desc', 'Ask questions about Kashmiri Pandit traditions and get answers from our scholar-validated knowledge base') : 'Ask questions about Kashmiri Pandit traditions and get answers from our scholar-validated knowledge base',
                     { h1: true }
                 )}
 
@@ -27,20 +27,15 @@ const GuidePage = (() => {
                             <div class="chat-container" id="chatContainer">
                                 <div class="chat-messages" id="chatMessages">
                                     <div class="chat-bubble assistant">
-                                        <strong>🔮 Namaskar!</strong><br><br>
-                                        I'm your Knowledge Guide for Kashmiri Pandit traditions. Ask me anything about 
-                                        festivals, rituals, ceremonies, or cultural practices.<br><br>
-                                        <em style="color: var(--text-muted); font-size: var(--text-xs)">
-                                            I search through our scholar-validated knowledge base to answer your questions.
-                                        </em>
+                                        ${typeof I18n !== 'undefined' ? I18n.t('guide.greeting', "<strong>🔮 Namaskar!</strong><br><br>I'm your Knowledge Guide for Kashmiri Pandit traditions. Ask me anything about festivals, rituals, ceremonies, or cultural practices.<br><br><em style=\"color: var(--text-muted); font-size: var(--text-xs)\">I search through our scholar-validated knowledge base to answer your questions.</em>") : "<strong>🔮 Namaskar!</strong><br><br>I'm your Knowledge Guide for Kashmiri Pandit traditions. Ask me anything about festivals, rituals, ceremonies, or cultural practices.<br><br><em style=\"color: var(--text-muted); font-size: var(--text-xs)\">I search through our scholar-validated knowledge base to answer your questions.</em>"}
                                     </div>
                                 </div>
                                 <div class="chat-input-container">
                                     <input type="text" class="chat-input" id="chatInput" 
-                                           placeholder="Ask about Kashmiri Pandit traditions..."
+                                           placeholder="${typeof I18n !== 'undefined' ? I18n.t('guide.placeholder', 'Ask about Kashmiri Pandit traditions...') : 'Ask about Kashmiri Pandit traditions...'}"
                                            onkeypress="if(event.key==='Enter') GuidePage.sendMessage()">
                                     <button class="btn btn-primary" onclick="GuidePage.sendMessage()">
-                                        Send
+                                        ${typeof I18n !== 'undefined' ? I18n.t('guide.send', 'Send') : 'Send'}
                                     </button>
                                 </div>
                             </div>
@@ -50,7 +45,7 @@ const GuidePage = (() => {
                     <!-- Suggestions & Quick Links -->
                     <div>
                         ${Components.card(`
-                            <h3 style="margin-bottom: var(--space-4)">💡 Suggested Questions</h3>
+                            <h3 style="margin-bottom: var(--space-4)">💡 ${typeof I18n !== 'undefined' ? I18n.t('guide.suggested', 'Suggested Questions') : 'Suggested Questions'}</h3>
                             <div class="flex flex-col gap-2" id="suggestedQuestions">
                                 <div class="skeleton skeleton-text"></div>
                                 <div class="skeleton skeleton-text"></div>
@@ -60,7 +55,7 @@ const GuidePage = (() => {
 
                         <div class="mt-4">
                             ${Components.card(`
-                                <h3 style="margin-bottom: var(--space-4)">🔍 Quick Topics</h3>
+                                <h3 style="margin-bottom: var(--space-4)">🔍 ${typeof I18n !== 'undefined' ? I18n.t('guide.quick_topics', 'Quick Topics') : 'Quick Topics'}</h3>
                                 <div class="tag-group">
                                     <span class="tag" onclick="GuidePage.askQuestion('What is Navreh?')">Navreh</span>
                                     <span class="tag" onclick="GuidePage.askQuestion('What is Herath?')">Herath</span>
@@ -83,7 +78,7 @@ const GuidePage = (() => {
                                 <div class="flex items-center gap-3">
                                     <span style="font-size: 1.5rem">ℹ️</span>
                                     <div>
-                                        <h4 style="margin: 0 0 var(--space-1) 0; font-size: var(--text-sm)">About This Guide</h4>
+                                        <h4 style="margin: 0 0 var(--space-1) 0; font-size: var(--text-sm)">${typeof I18n !== 'undefined' ? I18n.t('guide.about', 'About This Guide') : 'About This Guide'}</h4>
                                         <p style="font-size: var(--text-xs); color: var(--text-muted); margin: 0">
                                             This guide searches through our curated knowledge base of festivals, rituals, 
                                             wedding ceremonies, and cultural articles. For complex religious questions, 

@@ -9,58 +9,58 @@ const HeritagePage = (() => {
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
-                    { label: 'Home', href: '#home' },
-                    { label: 'Family Heritage' }
+                    { label: typeof I18n !== 'undefined' ? I18n.t('nav.home', 'Home') : 'Home', href: '#home' },
+                    { label: typeof I18n !== 'undefined' ? I18n.t('heritage.title', 'Family Heritage') : 'Family Heritage' }
                 ])}
 
                 ${Components.sectionHeader(
-                    'Family Heritage Records',
-                    'Preserve your family heritage — Gotra, Kuldevta, native village, traditions, and important observances. All data is stored privately on your device.',
+                    typeof I18n !== 'undefined' ? I18n.t('heritage.header', 'Family Heritage Records') : 'Family Heritage Records',
+                    typeof I18n !== 'undefined' ? I18n.t('heritage.desc', 'Preserve your family heritage — Gotra, Kuldevta, native village, traditions, and important observances. All data is stored privately on your device.') : 'Preserve your family heritage — Gotra, Kuldevta, native village, traditions, and important observances. All data is stored privately on your device.',
                     { h1: true }
                 )}
 
                 <div class="grid-2" style="align-items: start">
                     <!-- Heritage Form -->
                     ${Components.card(`
-                        <h3 style="margin-bottom: var(--space-6)">👪 Your Family Details</h3>
+                        <h3 style="margin-bottom: var(--space-6)">👪 ${typeof I18n !== 'undefined' ? I18n.t('heritage.family_details', 'Your Family Details') : 'Your Family Details'}</h3>
                         
                         <div class="form-group mb-4">
-                            <label class="form-label" for="familyName">Family Name (Kram)</label>
+                            <label class="form-label" for="familyName">${typeof I18n !== 'undefined' ? I18n.t('heritage.family_name', 'Family Name (Kram)') : 'Family Name (Kram)'}</label>
                             <input type="text" class="form-input" id="familyName" 
                                    placeholder="e.g., Razdan, Kaul, Bhat, Dhar" 
                                    value="${heritage.familyName || ''}">
                         </div>
 
                         <div class="form-group mb-4">
-                            <label class="form-label" for="gotra">Gotra</label>
+                            <label class="form-label" for="gotra">${typeof I18n !== 'undefined' ? I18n.t('heritage.gotra', 'Gotra') : 'Gotra'}</label>
                             <input type="text" class="form-input" id="gotra" 
                                    placeholder="e.g., Bharadwaj, Kashyap, Vatsa"
                                    value="${heritage.gotra || ''}">
                         </div>
 
                         <div class="form-group mb-4">
-                            <label class="form-label" for="kuldevta">Kuldevta / Kuldevi</label>
+                            <label class="form-label" for="kuldevta">${typeof I18n !== 'undefined' ? I18n.t('heritage.kuldevta', 'Kuldevta / Kuldevi') : 'Kuldevta / Kuldevi'}</label>
                             <input type="text" class="form-input" id="kuldevta" 
                                    placeholder="e.g., Goddess Sharika, Lord Shiva"
                                    value="${heritage.kuldevta || ''}">
                         </div>
 
                         <div class="form-group mb-4">
-                            <label class="form-label" for="nativeVillage">Native Village / Place in Kashmir</label>
+                            <label class="form-label" for="nativeVillage">${typeof I18n !== 'undefined' ? I18n.t('heritage.native_village', 'Native Village / Place in Kashmir') : 'Native Village / Place in Kashmir'}</label>
                             <input type="text" class="form-input" id="nativeVillage" 
                                    placeholder="e.g., Habba Kadal, Rainawari, Baramulla"
                                    value="${heritage.nativeVillage || ''}">
                         </div>
 
                         <div class="form-group mb-4">
-                            <label class="form-label" for="traditions">Family Traditions & Customs</label>
+                            <label class="form-label" for="traditions">${typeof I18n !== 'undefined' ? I18n.t('heritage.traditions', 'Family Traditions & Customs') : 'Family Traditions & Customs'}</label>
                             <textarea class="form-textarea" id="traditions" 
                                       placeholder="Describe any unique family traditions, customs, or practices that have been passed down..."
                                       rows="4">${heritage.traditions || ''}</textarea>
                         </div>
 
                         <div class="form-group mb-6">
-                            <label class="form-label">Important Annual Observances</label>
+                            <label class="form-label">${typeof I18n !== 'undefined' ? I18n.t('heritage.observances', 'Important Annual Observances') : 'Important Annual Observances'}</label>
                             <div id="observancesContainer">
                                 ${(heritage.observances || []).map((obs, i) => `
                                     <div class="flex gap-2 mb-2 items-center" id="obs-${i}">
@@ -78,13 +78,13 @@ const HeritagePage = (() => {
 
                         <div class="flex gap-3 flex-wrap">
                             <button class="btn btn-primary" onclick="HeritagePage.save()">
-                                💾 Save Heritage
+                                💾 ${typeof I18n !== 'undefined' ? I18n.t('heritage.save_btn', 'Save Heritage') : 'Save Heritage'}
                             </button>
                             <button class="btn btn-outline" onclick="HeritagePage.exportData()">
-                                📤 Export
+                                📤 ${typeof I18n !== 'undefined' ? I18n.t('heritage.export_btn', 'Export') : 'Export'}
                             </button>
                             <label class="btn btn-outline" style="cursor: pointer">
-                                📥 Import
+                                📥 ${typeof I18n !== 'undefined' ? I18n.t('heritage.import_btn', 'Import') : 'Import'}
                                 <input type="file" accept=".json" style="display:none" 
                                        onchange="HeritagePage.importData(this.files[0])">
                             </label>
@@ -94,7 +94,7 @@ const HeritagePage = (() => {
                     <!-- Preview / Info -->
                     <div>
                         ${Components.card(`
-                            <h3 style="margin-bottom: var(--space-4)">📖 About Family Heritage</h3>
+                            <h3 style="margin-bottom: var(--space-4)">📖 ${typeof I18n !== 'undefined' ? I18n.t('heritage.about', 'About Family Heritage') : 'About Family Heritage'}</h3>
                             <p style="font-size: var(--text-sm); margin-bottom: var(--space-4)">
                                 Preserving family heritage is essential for maintaining the cultural identity of Kashmiri Pandits. 
                                 Many important details about family traditions, ancestral villages, and customs are at risk of 

@@ -9,13 +9,13 @@ const WeddingPage = (() => {
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
-                    { label: 'Home', href: '#home' },
-                    { label: 'Wedding Guide' }
+                    { label: typeof I18n !== 'undefined' ? I18n.t('nav.home', 'Home') : 'Home', href: '#home' },
+                    { label: typeof I18n !== 'undefined' ? I18n.t('wedding.title', 'Wedding Guide') : 'Wedding Guide' }
                 ])}
 
                 ${Components.sectionHeader(
-                    'Kashmiri Pandit Wedding Guide',
-                    'Your digital companion for understanding the complete Kashmiri Pandit marriage ceremonies',
+                    typeof I18n !== 'undefined' ? I18n.t('wedding.header', 'Kashmiri Pandit Wedding Guide') : 'Kashmiri Pandit Wedding Guide',
+                    typeof I18n !== 'undefined' ? I18n.t('wedding.desc', 'Your digital companion for understanding the complete Kashmiri Pandit marriage ceremonies') : 'Your digital companion for understanding the complete Kashmiri Pandit marriage ceremonies',
                     { h1: true }
                 )}
 
@@ -43,7 +43,7 @@ const WeddingPage = (() => {
             <!-- Overview -->
             ${Components.card(`
                 <div style="padding: var(--space-4)">
-                    <h3 style="margin-bottom: var(--space-3)">💒 Overview</h3>
+                    <h3 style="margin-bottom: var(--space-3)">💒 ${typeof I18n !== 'undefined' ? I18n.t('wedding.overview', 'Overview') : 'Overview'}</h3>
                     <p>${weddingData.overview}</p>
                 </div>
             `, { featured: true })}
@@ -51,7 +51,7 @@ const WeddingPage = (() => {
             <div style="margin-bottom: var(--space-8)"></div>
 
             <!-- Wedding Timeline -->
-            <h2 style="margin-bottom: var(--space-6)">Wedding Ceremony Timeline</h2>
+            <h2 style="margin-bottom: var(--space-6)">${typeof I18n !== 'undefined' ? I18n.t('wedding.timeline', 'Wedding Ceremony Timeline') : 'Wedding Ceremony Timeline'}</h2>
             
             ${Components.timeline(weddingData.ceremonies.map(c => ({
                 title: `${c.day ? c.day + ' — ' : ''}${c.name}`,
@@ -59,7 +59,7 @@ const WeddingPage = (() => {
                 extra: `
                     <div class="mt-4">
                         <button class="btn btn-outline btn-sm" onclick="WeddingPage.showCeremonyDetail('${c.id}')">
-                            View Details →
+                            ${typeof I18n !== 'undefined' ? I18n.t('wedding.view_details', 'View Details →') : 'View Details →'}
                         </button>
                     </div>
                 `
@@ -70,7 +70,7 @@ const WeddingPage = (() => {
             ${Components.ornamentalDivider('💒')}
 
             <!-- Traditional Songs -->
-            <h2 style="margin-bottom: var(--space-6)">Traditional Wedding Songs</h2>
+            <h2 style="margin-bottom: var(--space-6)">${typeof I18n !== 'undefined' ? I18n.t('wedding.songs', 'Traditional Wedding Songs') : 'Traditional Wedding Songs'}</h2>
             <div class="grid-2 mb-8">
                 ${weddingData.traditional_songs.map(s => Components.card(`
                     <h4 style="margin-bottom: var(--space-2)">🎵 ${s.name}</h4>
@@ -80,7 +80,7 @@ const WeddingPage = (() => {
             </div>
 
             <!-- Tips for Diaspora -->
-            <h2 style="margin-bottom: var(--space-6)">Tips for Families Outside Kashmir</h2>
+            <h2 style="margin-bottom: var(--space-6)">${typeof I18n !== 'undefined' ? I18n.t('wedding.tips', 'Tips for Families Outside Kashmir') : 'Tips for Families Outside Kashmir'}</h2>
             ${Components.card(`
                 <div class="checklist">
                     ${weddingData.tips_for_diaspora.map((tip, i) => `

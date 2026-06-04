@@ -8,44 +8,44 @@ const VarshphalPage = (() => {
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
-                    { label: 'Home', href: '#home' },
-                    { label: 'Annual Varshphal' }
+                    { label: typeof I18n !== 'undefined' ? I18n.t('nav.home', 'Home') : 'Home', href: '#home' },
+                    { label: typeof I18n !== 'undefined' ? I18n.t('varshphal.title', 'Annual Varshphal') : 'Annual Varshphal' }
                 ])}
 
                 ${Components.sectionHeader(
-                    'Tajika Varshphal',
-                    'Generate your comprehensive Annual Horoscope with Solar Return chart, Tajika Yoga analysis, house-by-house predictions, and remedies.',
+                    typeof I18n !== 'undefined' ? I18n.t('varshphal.header', 'Tajika Varshphal') : 'Tajika Varshphal',
+                    typeof I18n !== 'undefined' ? I18n.t('varshphal.desc', 'Generate your comprehensive Annual Horoscope with Solar Return chart, Tajika Yoga analysis, house-by-house predictions, and remedies.') : 'Generate your comprehensive Annual Horoscope with Solar Return chart, Tajika Yoga analysis, house-by-house predictions, and remedies.',
                     { h1: true }
                 )}
 
                 <div class="card card-glass" style="padding: var(--space-6); max-width: 800px; margin: 0 auto var(--space-8) auto; overflow: visible;">
                     <div class="grid-2">
                         <div class="form-group">
-                            <label class="form-label" for="v-name">Name</label>
-                            <input type="text" id="v-name" class="form-control" placeholder="Enter name">
+                            <label class="form-label" for="v-name">${typeof I18n !== 'undefined' ? I18n.t('varshphal.name', 'Name') : 'Name'}</label>
+                            <input type="text" id="v-name" class="form-control" placeholder="${typeof I18n !== 'undefined' ? I18n.t('varshphal.enter_name', 'Enter name') : 'Enter name'}">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="v-target-year">Target Year (e.g. 2024)</label>
+                            <label class="form-label" for="v-target-year">${typeof I18n !== 'undefined' ? I18n.t('varshphal.target_year', 'Target Year (e.g. 2024)') : 'Target Year (e.g. 2024)'}</label>
                             <input type="number" id="v-target-year" class="form-control" placeholder="2024" min="1900" max="2100">
                         </div>
                     </div>
                     <div class="grid-2">
                         <div class="form-group">
-                            <label class="form-label" for="v-date">Date of Birth</label>
+                            <label class="form-label" for="v-date">${typeof I18n !== 'undefined' ? I18n.t('varshphal.dob', 'Date of Birth') : 'Date of Birth'}</label>
                             <input type="date" id="v-date" class="form-control">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="v-time">Time of Birth</label>
+                            <label class="form-label" for="v-time">${typeof I18n !== 'undefined' ? I18n.t('varshphal.tob', 'Time of Birth') : 'Time of Birth'}</label>
                             <input type="time" id="v-time" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="v-city">City of Birth</label>
-                        <input type="text" id="v-city" class="form-control" placeholder="Search global cities..." autocomplete="off">
+                        <label class="form-label" for="v-city">${typeof I18n !== 'undefined' ? I18n.t('varshphal.city', 'City of Birth') : 'City of Birth'}</label>
+                        <input type="text" id="v-city" class="form-control" placeholder="${typeof I18n !== 'undefined' ? I18n.t('varshphal.search_city', 'Search global cities...') : 'Search global cities...'}" autocomplete="off">
                         <ul id="v-city-results"></ul>
                     </div>
                     <div style="text-align: center; margin-top: var(--space-6);">
-                        <button class="btn btn-primary" style="padding: var(--space-4) var(--space-8); font-size: 1.1rem; border-radius: var(--radius-full);" onclick="VarshphalPage.generateVarshphal()">🌟 Generate Annual Report</button>
+                        <button class="btn btn-primary" style="padding: var(--space-4) var(--space-8); font-size: 1.1rem; border-radius: var(--radius-full);" onclick="VarshphalPage.generateVarshphal()">${typeof I18n !== 'undefined' ? I18n.t('varshphal.gen_btn', '🌟 Generate Annual Report') : '🌟 Generate Annual Report'}</button>
                     </div>
                 </div>
 

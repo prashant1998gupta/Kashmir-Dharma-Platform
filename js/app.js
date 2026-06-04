@@ -14,6 +14,9 @@ const App = (() => {
         setupMobileMenu();
         setupModalClose();
         Router.init();
+        if (typeof I18n !== 'undefined') {
+            I18n.translatePage();
+        }
     }
 
     /**

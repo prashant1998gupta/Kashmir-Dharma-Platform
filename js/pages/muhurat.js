@@ -10,13 +10,13 @@ const MuhuratPage = (() => {
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
-                    { label: 'Home', href: '#home' },
-                    { label: 'Muhurat Finder' }
+                    { label: typeof I18n !== 'undefined' ? I18n.t('nav.home', 'Home') : 'Home', href: '#home' },
+                    { label: typeof I18n !== 'undefined' ? I18n.t('muhurat.title', 'Muhurat Finder') : 'Muhurat Finder' }
                 ])}
 
                 ${Components.sectionHeader(
-                    'Muhurat Finder',
-                    'Identify auspicious dates and timings for important life events based on traditional Panchang guidelines',
+                    typeof I18n !== 'undefined' ? I18n.t('muhurat.title', 'Muhurat Finder') : 'Muhurat Finder',
+                    typeof I18n !== 'undefined' ? I18n.t('muhurat.desc', 'Identify auspicious dates and timings for important life events based on traditional Panchang guidelines') : 'Identify auspicious dates and timings for important life events based on traditional Panchang guidelines',
                     { h1: true }
                 )}
 
@@ -41,7 +41,7 @@ const MuhuratPage = (() => {
 
         container.innerHTML = `
             <!-- Event Type Selection -->
-            <h3 style="margin-bottom: var(--space-4)">Select Event Type</h3>
+            <h3 style="margin-bottom: var(--space-4)">${typeof I18n !== 'undefined' ? I18n.t('muhurat.select_event', 'Select Event Type') : 'Select Event Type'}</h3>
             <div class="grid-3 mb-8">
                 ${muhuratData.eventTypes.map(et => `
                     <div class="card card-interactive shine-effect ${selectedEvent === et.id ? 'card-featured' : ''}" 
@@ -61,21 +61,21 @@ const MuhuratPage = (() => {
             <!-- Date Range Picker (shown after event selection) -->
             <div id="muhuratDatePicker" class="${selectedEvent ? '' : 'hidden'}">
                 ${Components.card(`
-                    <h3 style="margin-bottom: var(--space-4)">📅 Select Date Range</h3>
+                    <h3 style="margin-bottom: var(--space-4)">📅 ${typeof I18n !== 'undefined' ? I18n.t('muhurat.select_range', 'Select Date Range') : 'Select Date Range'}</h3>
                     <div class="grid-2" style="max-width: 500px">
                         <div class="form-group">
-                            <label class="form-label" for="muhuratStart">From Date</label>
+                            <label class="form-label" for="muhuratStart">${typeof I18n !== 'undefined' ? I18n.t('muhurat.from_date', 'From Date') : 'From Date'}</label>
                             <input type="date" class="form-input" id="muhuratStart" 
                                    value="${new Date().toISOString().split('T')[0]}">
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="muhuratEnd">To Date</label>
+                            <label class="form-label" for="muhuratEnd">${typeof I18n !== 'undefined' ? I18n.t('muhurat.to_date', 'To Date') : 'To Date'}</label>
                             <input type="date" class="form-input" id="muhuratEnd"
                                    value="${new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]}">
                         </div>
                     </div>
                     <button class="btn btn-primary mt-4" onclick="MuhuratPage.findMuhurat()">
-                        🌟 Find Auspicious Dates
+                        ${typeof I18n !== 'undefined' ? I18n.t('muhurat.find_btn', '🌟 Find Auspicious Dates') : '🌟 Find Auspicious Dates'}
                     </button>
                 `, { glass: true })}
             </div>

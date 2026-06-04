@@ -7,30 +7,30 @@ const RitualsPage = (() => {
     let activeCategory = 'all';
 
     const categories = [
-        { id: 'all', label: 'All Rituals', icon: '📖' },
-        { id: 'Life Events', label: 'Life Events', icon: '🎂' },
-        { id: 'Marriage', label: 'Marriage', icon: '💍' },
-        { id: 'Seasonal', label: 'Seasonal', icon: '🍂' },
-        { id: 'Regular Practice', label: 'Regular Practice', icon: '🔥' }
+        { id: 'all', label: typeof I18n !== 'undefined' ? I18n.t('rituals.cat_all', 'All Rituals') : 'All Rituals', icon: '📖' },
+        { id: 'Life Events', label: typeof I18n !== 'undefined' ? I18n.t('rituals.cat_life', 'Life Events') : 'Life Events', icon: '🎂' },
+        { id: 'Marriage', label: typeof I18n !== 'undefined' ? I18n.t('rituals.cat_marriage', 'Marriage') : 'Marriage', icon: '💍' },
+        { id: 'Seasonal', label: typeof I18n !== 'undefined' ? I18n.t('rituals.cat_seasonal', 'Seasonal') : 'Seasonal', icon: '🍂' },
+        { id: 'Regular Practice', label: typeof I18n !== 'undefined' ? I18n.t('rituals.cat_practice', 'Regular Practice') : 'Regular Practice', icon: '🔥' }
     ];
 
     function render() {
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
-                    { label: 'Home', href: '#home' },
-                    { label: 'Ritual Library' }
+                    { label: typeof I18n !== 'undefined' ? I18n.t('nav.home', 'Home') : 'Home', href: '#home' },
+                    { label: typeof I18n !== 'undefined' ? I18n.t('rituals.title', 'Ritual Library') : 'Ritual Library' }
                 ])}
 
                 ${Components.sectionHeader(
-                    'Ritual Knowledge Library',
-                    'A comprehensive encyclopedia of Kashmiri Pandit rituals — from daily practices to life ceremonies',
+                    typeof I18n !== 'undefined' ? I18n.t('rituals.header', 'Ritual Knowledge Library') : 'Ritual Knowledge Library',
+                    typeof I18n !== 'undefined' ? I18n.t('rituals.desc', 'A comprehensive encyclopedia of Kashmiri Pandit rituals — from daily practices to life ceremonies') : 'A comprehensive encyclopedia of Kashmiri Pandit rituals — from daily practices to life ceremonies',
                     { h1: true }
                 )}
 
                 <!-- Search -->
                 <div class="mb-6">
-                    ${Components.searchBar('Search rituals...', 'RitualsPage.filterRituals')}
+                    ${Components.searchBar(typeof I18n !== 'undefined' ? I18n.t('rituals.search', 'Search rituals...') : 'Search rituals...', 'RitualsPage.filterRituals')}
                 </div>
 
                 <!-- Category Tabs -->

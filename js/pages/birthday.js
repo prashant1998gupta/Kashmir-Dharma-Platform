@@ -7,13 +7,13 @@ const BirthdayPage = (() => {
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
-                    { label: 'Home', href: '#home' },
-                    { label: 'Janma Tithi Finder' }
+                    { label: typeof I18n !== 'undefined' ? I18n.t('nav.home', 'Home') : 'Home', href: '#home' },
+                    { label: typeof I18n !== 'undefined' ? I18n.t('birthday.title', 'Janma Tithi Finder') : 'Janma Tithi Finder' }
                 ])}
 
                 ${Components.sectionHeader(
-                    'Hindu Birthday (Janma Tithi) Finder',
-                    'Find your Hindu birthday based on the traditional lunar calendar. Enter your birth details to discover your Tithi, Nakshatra, and Rashi.',
+                    typeof I18n !== 'undefined' ? I18n.t('birthday.header', 'Hindu Birthday (Janma Tithi) Finder') : 'Hindu Birthday (Janma Tithi) Finder',
+                    typeof I18n !== 'undefined' ? I18n.t('birthday.desc', 'Find your Hindu birthday based on the traditional lunar calendar. Enter your birth details to discover your Tithi, Nakshatra, and Rashi.') : 'Find your Hindu birthday based on the traditional lunar calendar. Enter your birth details to discover your Tithi, Nakshatra, and Rashi.',
                     { h1: true }
                 )}
 
@@ -21,36 +21,36 @@ const BirthdayPage = (() => {
                     <!-- Input Form -->
                     ${Components.card(`
                         ${ProfileManager.renderProfileSelector('birthdayProfileSelect', 'BirthdayPage.loadProfile')}
-                        <h3 style="margin-bottom: var(--space-6)">🎂 Enter Your Birth Details</h3>
+                        <h3 style="margin-bottom: var(--space-6)">🎂 ${typeof I18n !== 'undefined' ? I18n.t('birthday.enter_details', 'Enter Your Birth Details') : 'Enter Your Birth Details'}</h3>
                         
                         <div class="form-group mb-4">
-                            <label class="form-label" for="birthDate">Date of Birth</label>
+                            <label class="form-label" for="birthDate">${typeof I18n !== 'undefined' ? I18n.t('birthday.dob', 'Date of Birth') : 'Date of Birth'}</label>
                             <input type="date" class="form-input" id="birthDate" required>
                         </div>
 
                         <div class="form-group mb-4">
-                            <label class="form-label" for="birthTime">Time of Birth (optional)</label>
+                            <label class="form-label" for="birthTime">${typeof I18n !== 'undefined' ? I18n.t('birthday.tob', 'Time of Birth (optional)') : 'Time of Birth (optional)'}</label>
                             <input type="time" class="form-input" id="birthTime" value="12:00">
                         </div>
 
                         <div class="form-group mb-4">
-                            <label class="form-label" for="birthPlace">Place of Birth (optional)</label>
+                            <label class="form-label" for="birthPlace">${typeof I18n !== 'undefined' ? I18n.t('birthday.place', 'Place of Birth (optional)') : 'Place of Birth (optional)'}</label>
                             <input type="text" class="form-input" id="birthPlace" placeholder="e.g., Srinagar, Jammu, Delhi">
                         </div>
 
                         <div class="form-group mb-6">
-                            <label class="form-label" for="targetYear">Show Hindu Birthday For Year</label>
+                            <label class="form-label" for="targetYear">${typeof I18n !== 'undefined' ? I18n.t('birthday.year', 'Show Hindu Birthday For Year') : 'Show Hindu Birthday For Year'}</label>
                             <input type="number" class="form-input" id="targetYear" value="${new Date().getFullYear()}" min="2000" max="2050">
                         </div>
 
                         <button class="btn btn-primary w-full" onclick="BirthdayPage.calculate()">
-                            🔍 Find My Janma Tithi
+                            ${typeof I18n !== 'undefined' ? I18n.t('birthday.find_btn', '🔍 Find My Janma Tithi') : '🔍 Find My Janma Tithi'}
                         </button>
                     `, { glass: true })}
 
                     <!-- Info Card -->
                     ${Components.card(`
-                        <h3 style="margin-bottom: var(--space-4)">📖 What is Janma Tithi?</h3>
+                        <h3 style="margin-bottom: var(--space-4)">📖 ${typeof I18n !== 'undefined' ? I18n.t('birthday.what_is', 'What is Janma Tithi?') : 'What is Janma Tithi?'}</h3>
                         <p style="font-size: var(--text-sm); margin-bottom: var(--space-4)">
                             In the Hindu tradition, birthdays are often celebrated according to the <strong style="color: var(--color-secondary)">lunar calendar (Panchang)</strong> rather than the Gregorian calendar.
                         </p>
@@ -60,7 +60,7 @@ const BirthdayPage = (() => {
                         <div class="accordion">
                             <div class="accordion-item" id="info-tithi">
                                 <button class="accordion-header" onclick="Components.toggleAccordion('info-tithi')">
-                                    <span>What is a Tithi?</span>
+                                    <span>${typeof I18n !== 'undefined' ? I18n.t('birthday.what_tithi', 'What is a Tithi?') : 'What is a Tithi?'}</span>
                                     <span class="accordion-arrow">▼</span>
                                 </button>
                                 <div class="accordion-body">
@@ -71,7 +71,7 @@ const BirthdayPage = (() => {
                             </div>
                             <div class="accordion-item" id="info-nakshatra">
                                 <button class="accordion-header" onclick="Components.toggleAccordion('info-nakshatra')">
-                                    <span>What is a Nakshatra?</span>
+                                    <span>${typeof I18n !== 'undefined' ? I18n.t('birthday.what_nakshatra', 'What is a Nakshatra?') : 'What is a Nakshatra?'}</span>
                                     <span class="accordion-arrow">▼</span>
                                 </button>
                                 <div class="accordion-body">
@@ -82,7 +82,7 @@ const BirthdayPage = (() => {
                             </div>
                             <div class="accordion-item" id="info-rashi">
                                 <button class="accordion-header" onclick="Components.toggleAccordion('info-rashi')">
-                                    <span>What is a Rashi?</span>
+                                    <span>${typeof I18n !== 'undefined' ? I18n.t('birthday.what_rashi', 'What is a Rashi?') : 'What is a Rashi?'}</span>
                                     <span class="accordion-arrow">▼</span>
                                 </button>
                                 <div class="accordion-body">

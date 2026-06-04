@@ -29,8 +29,8 @@ const HomePage = (() => {
                             <img src="img/inspiration/shiva.png" alt="Lord Shiva Meditation">
                         </div>
                         <div class="inspiration-text-content">
-                            <h3 class="inspiration-mantra">Om Namah Shivaya <br><span class="highlight">Har Har Mahadev</span></h3>
-                            <p class="inspiration-meaning">May the divine grace of Lord Shiva bring peace, wisdom, and strength to your spiritual journey.</p>
+                            <h3 class="inspiration-mantra" data-i18n="home.mantra">Om Namah Shivaya <br><span class="highlight" data-i18n="home.mantra_highlight">Har Har Mahadev</span></h3>
+                            <p class="inspiration-meaning" data-i18n="home.mantra_meaning">May the divine grace of Lord Shiva bring peace, wisdom, and strength to your spiritual journey.</p>
                         </div>
                     </div>
                 </section>
@@ -38,14 +38,14 @@ const HomePage = (() => {
                 <!-- Presence & Highlights -->
                 <div class="grid-2 reveal" style="gap: var(--space-6); align-items: start; margin-top: var(--space-4);">
                     <section id="homePresenceWidget">
-                        <h2 class="dharma-section-title">Today's Presence</h2>
+                        <h2 class="dharma-section-title" data-i18n="home.presence_title">Today's Presence</h2>
                         <div class="presence-glass-card mt-4">
                             <div class="skeleton" style="height: 100px; width: 100%;"></div>
                         </div>
                     </section>
 
                     <section id="homeHighlightsWidget">
-                        <h2 class="dharma-section-title">Highlights</h2>
+                        <h2 class="dharma-section-title" data-i18n="home.highlights_title">Highlights</h2>
                         <div class="highlight-list mt-4">
                             <div class="skeleton" style="height: 80px; border-radius: 8px;"></div>
                             <div class="skeleton" style="height: 80px; border-radius: 8px; margin-top: 12px;"></div>
@@ -54,7 +54,7 @@ const HomePage = (() => {
                 </div>
 
                 <section id="homeCosmicEnergyWidget" class="mb-8 reveal">
-                    <h2 class="dharma-section-title">Current Cosmic Energy</h2>
+                    <h2 class="dharma-section-title" data-i18n="home.cosmic_title">Current Cosmic Energy</h2>
                     <div class="presence-glass-card mt-4" style="text-align: center; display: block; padding: var(--space-5);">
                         <div class="skeleton" style="height: 60px; width: 100%;"></div>
                     </div>
@@ -64,21 +64,21 @@ const HomePage = (() => {
 
                 <!-- Quick Actions Grid -->
                 <section class="mb-8 reveal">
-                    ${Components.sectionHeader('Quick Tools', 'Access your spiritual utilities')}
+                    ${Components.sectionHeader((typeof I18n !== 'undefined') ? I18n.t('home.quick_tools') : 'Quick Tools', (typeof I18n !== 'undefined') ? I18n.t('home.quick_tools_desc') : 'Access your spiritual utilities')}
                     <div class="grid-3 stagger-children">
-                        ${Components.featureCard('📅', 'Festival Calendar', 'Explore Kashmiri Pandit festivals', '#calendar')}
-                        ${Components.featureCard('🌌', 'Kundali Generator', 'Generate your Vedic Birth Chart', '#kundali')}
-                        ${Components.featureCard('🌟', 'Muhurat Finder', 'Identify auspicious dates & timings', '#muhurat')}
+                        ${Components.featureCard('📅', (typeof I18n !== 'undefined') ? I18n.t('nav.calendar') : 'Festival Calendar', (typeof I18n !== 'undefined') ? I18n.t('home.card_cal_desc') : 'Explore Kashmiri Pandit festivals', '#calendar')}
+                        ${Components.featureCard('🌌', (typeof I18n !== 'undefined') ? I18n.t('nav.kundali') : 'Kundali Generator', (typeof I18n !== 'undefined') ? I18n.t('home.card_kundali_desc') : 'Generate your Vedic Birth Chart', '#kundali')}
+                        ${Components.featureCard('🌟', (typeof I18n !== 'undefined') ? I18n.t('nav.muhurat') : 'Muhurat Finder', (typeof I18n !== 'undefined') ? I18n.t('home.card_muhurat_desc') : 'Identify auspicious dates & timings', '#muhurat')}
                     </div>
                 </section>
                 
                 <!-- Explore More Grid -->
                 <section class="mb-8 reveal">
-                    ${Components.sectionHeader('Explore Knowledge', 'Deep dive into heritage')}
+                    ${Components.sectionHeader((typeof I18n !== 'undefined') ? I18n.t('home.explore_knowledge') : 'Explore Knowledge', (typeof I18n !== 'undefined') ? I18n.t('home.explore_knowledge_desc') : 'Deep dive into heritage')}
                     <div class="grid-3 stagger-children">
-                        ${Components.featureCard('📖', 'Ritual Library', 'Comprehensive encyclopedia of rituals', '#rituals')}
-                        ${Components.featureCard('💒', 'Wedding Guide', 'Your companion for KP weddings', '#wedding')}
-                        ${Components.featureCard('📜', 'Learn Sharada', 'Learn the ancient sacred script', '#sharada')}
+                        ${Components.featureCard('📖', (typeof I18n !== 'undefined') ? I18n.t('nav.rituals') : 'Ritual Library', (typeof I18n !== 'undefined') ? I18n.t('home.card_rituals_desc') : 'Comprehensive encyclopedia of rituals', '#rituals')}
+                        ${Components.featureCard('💒', (typeof I18n !== 'undefined') ? I18n.t('nav.wedding') : 'Wedding Guide', (typeof I18n !== 'undefined') ? I18n.t('home.card_wedding_desc') : 'Your companion for KP weddings', '#wedding')}
+                        ${Components.featureCard('📜', (typeof I18n !== 'undefined') ? I18n.t('nav.sharada') : 'Learn Sharada', (typeof I18n !== 'undefined') ? I18n.t('home.card_sharada_desc') : 'Learn the ancient sacred script', '#sharada')}
                     </div>
                 </section>
             </div>
@@ -102,18 +102,27 @@ const HomePage = (() => {
             const hinduDate = CalendarCalc.getHinduDate(now.getFullYear(), now.getMonth() + 1, now.getDate(), now.getHours(), now.getMinutes());
             
             // 1. Render Header
-            const gregorianDateStr = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+            const locale = (typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi') ? 'hi-IN' : 'en-GB';
+            const gregorianDateStr = now.toLocaleDateString(locale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
             
             const tithiName = hinduDate.tithi.name || 'Pratipada';
             const paksha = hinduDate.tithi.paksha || 'Shukla';
             const tithiNumber = hinduDate.tithi.number || 1;
             const monthName = hinduDate.hinduMonth.name || 'Chaitra';
             
+            const tithiNameTranslated = typeof I18n !== 'undefined' ? I18n.tAstro(tithiName) : tithiName;
+            
+            const pakshaBase = (paksha.split(' ')[0] || 'Shukla');
+            const pakshaTranslated = typeof I18n !== 'undefined' ? I18n.t(`astro.paksha.${pakshaBase}`, pakshaBase) : pakshaBase;
+            const pakshaWord = typeof I18n !== 'undefined' ? I18n.t('astro.paksha.word', 'Paksha') : 'Paksha';
+            
+            const monthNameTranslated = typeof I18n !== 'undefined' ? I18n.t(`astro.month.${monthName}`, monthName) : monthName;
+            
             headerContainer.innerHTML = `
                 <div class="sacred-header-panel">
                     <div class="tithi-sacred-display">
-                        <div class="tithi-sacred-main">${tithiName}</div>
-                        <div class="tithi-sacred-sub">${tithiNumber} ${monthName} • ${paksha} Paksha</div>
+                        <div class="tithi-sacred-main">${tithiNameTranslated}</div>
+                        <div class="tithi-sacred-sub">${tithiNumber} ${monthNameTranslated} • ${pakshaTranslated} ${pakshaWord}</div>
                         <div class="gregorian-sacred-date">${gregorianDateStr}</div>
                     </div>
                 </div>
@@ -142,19 +151,24 @@ const HomePage = (() => {
 
             const defaultTimes = calculateSunTimes(34.0837, 74.7973); // Srinagar
 
+            const tSunrise = typeof I18n !== 'undefined' ? I18n.t('home.sunrise') : 'Sunrise';
+            const tSunset = typeof I18n !== 'undefined' ? I18n.t('home.sunset') : 'Sunset';
+            const tSrinagar = typeof I18n !== 'undefined' ? I18n.t('home.srinagar') : 'Srinagar';
+            const tLocal = typeof I18n !== 'undefined' ? I18n.t('home.local') : 'Local';
+
             sunContainer.innerHTML = `
                 <div class="pahar-tracker">
                     <div class="pahar-card pahar-sunrise">
                         <div class="pahar-icon">🌅</div>
                         <div class="pahar-info">
-                            <span class="pahar-label" id="sunriseLabel">Sunrise (Srinagar)</span>
+                            <span class="pahar-label" id="sunriseLabel">${tSunrise} (${tSrinagar})</span>
                             <span class="pahar-time" id="sunriseTime">${defaultTimes.rise}</span>
                         </div>
                     </div>
                     <div class="pahar-card pahar-sunset">
                         <div class="pahar-icon">🌙</div>
                         <div class="pahar-info">
-                            <span class="pahar-label" id="sunsetLabel">Sunset (Srinagar)</span>
+                            <span class="pahar-label" id="sunsetLabel">${tSunset} (${tSrinagar})</span>
                             <span class="pahar-time" id="sunsetTime">${defaultTimes.set}</span>
                         </div>
                     </div>
@@ -171,8 +185,8 @@ const HomePage = (() => {
                     if (srTimeEl && ssTimeEl) {
                         srTimeEl.innerText = localTimes.rise;
                         ssTimeEl.innerText = localTimes.set;
-                        srLabelEl.innerText = 'Sunrise (Local)';
-                        ssLabelEl.innerText = 'Sunset (Local)';
+                        srLabelEl.innerText = `${tSunrise} (${tLocal})`;
+                        ssLabelEl.innerText = `${tSunset} (${tLocal})`;
                     }
                 }, () => {
                     console.log("Geolocation permission denied or unavailable. Using Srinagar times.");
@@ -180,20 +194,33 @@ const HomePage = (() => {
             }
 
             // 3. Render Presence
+            const tTithi = typeof I18n !== 'undefined' ? I18n.t('home.tithi') : 'Tithi';
+            const tNakshatra = typeof I18n !== 'undefined' ? I18n.t('home.nakshatra') : 'Nakshatra';
+            const tRashi = typeof I18n !== 'undefined' ? I18n.t('home.rashi') : 'Rashi';
+
+            const displayTithi = typeof I18n !== 'undefined' ? I18n.tAstro(tithiName) : tithiName;
+            
+            const rawNakshatra = hinduDate.nakshatra.name || 'Pushya';
+            const displayNakshatra = typeof I18n !== 'undefined' ? I18n.t(`astro.nakshatra.${rawNakshatra.replace(/ /g, '_')}`, rawNakshatra) : rawNakshatra;
+            
+            const rawRashi = hinduDate.rashi.name || 'Karka (Cancer)';
+            const rashiBaseNameWidget = rawRashi.split(' (')[0];
+            const displayRashi = typeof I18n !== 'undefined' ? I18n.t(`astro.rashi.${rashiBaseNameWidget}`, rawRashi) : rawRashi;
+
             presenceContainer.innerHTML = `
-                <h2 class="dharma-section-title">Today's Presence</h2>
+                <h2 class="dharma-section-title" data-i18n="home.presence_title">${typeof I18n !== 'undefined' ? I18n.t('home.presence_title') : 'Today\'s Presence'}</h2>
                 <div class="presence-glass-card mt-4">
                     <div class="presence-item">
-                        <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">🌙</span> Tithi</div>
-                        <div class="presence-item-value" style="color: var(--color-secondary);">${tithiName}</div>
+                        <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">🌙</span> ${tTithi}</div>
+                        <div class="presence-item-value" style="color: var(--color-secondary);">${displayTithi}</div>
                     </div>
                     <div class="presence-item">
-                        <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">✨</span> Nakshatra</div>
-                        <div class="presence-item-value">${hinduDate.nakshatra.name || 'Pushya'}</div>
+                        <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">✨</span> ${tNakshatra}</div>
+                        <div class="presence-item-value">${displayNakshatra}</div>
                     </div>
                     <div class="presence-item">
-                        <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">♋</span> Rashi</div>
-                        <div class="presence-item-value">${hinduDate.rashi.name || 'Karka'}</div>
+                        <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">♋</span> ${tRashi}</div>
+                        <div class="presence-item-value">${displayRashi}</div>
                     </div>
                 </div>
             `;
@@ -220,15 +247,21 @@ const HomePage = (() => {
                 const rashiKey = Object.keys(rashiMeanings).find(k => rashiName.includes(k));
                 if (rashiKey) {
                     const rData = rashiMeanings[rashiKey];
+                    const tMoonIn = typeof I18n !== 'undefined' ? I18n.t('home.moon_in', 'The Moon is in') : 'The Moon is in';
+                    const cosmicDesc = typeof I18n !== 'undefined' ? I18n.t(`home.cosmic.${rashiKey}`, rData.desc) : rData.desc;
+                    // We extract the english name from the parenthetical (e.g. "Makara (Capricorn)") to translate it properly or just use the base string
+                    const rashiBaseName = (hinduDate.rashi.name || '').split(' (')[0] || rashiName;
+                    const translatedRashi = typeof I18n !== 'undefined' ? I18n.t(`astro.rashi.${rashiBaseName}`, rashiBaseName) : rashiBaseName;
+                    
                     cosmicContainer.innerHTML = `
-                        <h2 class="dharma-section-title">Current Cosmic Energy</h2>
+                        <h2 class="dharma-section-title" data-i18n="home.cosmic_title">${typeof I18n !== 'undefined' ? I18n.t('home.cosmic_title') : 'Current Cosmic Energy'}</h2>
                         <div class="presence-glass-card mt-4" style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: var(--space-6);">
                             <div style="font-size: 3rem; color: var(--color-secondary); margin-bottom: var(--space-2); text-shadow: 0 0 20px var(--color-secondary-glow);">${rData.icon}</div>
                             <h3 style="font-family: var(--font-heading); font-size: var(--text-xl); color: var(--text-primary); margin-bottom: var(--space-3);">
-                                The Moon is in <span style="color: var(--color-secondary);">${rashiName}</span>
+                                ${tMoonIn} <span style="color: var(--color-secondary);">${translatedRashi}</span>
                             </h3>
                             <p style="color: var(--text-secondary); max-width: 600px; line-height: 1.6; font-size: var(--text-base); margin: 0 auto;">
-                                ${rData.desc}
+                                ${cosmicDesc}
                             </p>
                         </div>
                     `;
@@ -252,26 +285,28 @@ const HomePage = (() => {
             // Festival Event
             if (festivals && festivals.length > 0) {
                 const f = festivals[0];
+                const festName = typeof I18n !== 'undefined' ? I18n.t(`fest.${f.id}.name`, f.name) : f.name;
+                const festDate = typeof I18n !== 'undefined' ? I18n.t(`fest.${f.id}.date`, f.date || 'Upcoming') : (f.date || 'Upcoming');
                 highlightsHTML += `
                     <div class="highlight-glass-item">
                         <div class="hg-content">
-                            <h4>${f.name}</h4>
-                            <p>${f.date || 'Upcoming'}</p>
+                            <h4>${festName}</h4>
+                            <p>${festDate}</p>
                         </div>
-                        <div class="hg-badge">FESTIVAL</div>
+                        <div class="hg-badge">${typeof I18n !== 'undefined' ? I18n.t('home.festival', 'FESTIVAL') : 'FESTIVAL'}</div>
                     </div>
                 `;
             } else {
                 highlightsHTML += `
                     <div class="highlight-glass-item" style="justify-content: center; opacity: 0.7;">
-                        <p style="margin: 0;">No major highlights today.</p>
+                        <p style="margin: 0;">${typeof I18n !== 'undefined' ? I18n.t('home.no_highlights', 'No major highlights today.') : 'No major highlights today.'}</p>
                     </div>
                 `;
             }
             
             highlightsHTML += '</div>';
             container.innerHTML = `
-                <h2 class="dharma-section-title">Highlights</h2>
+                <h2 class="dharma-section-title" data-i18n="home.highlights_title">${typeof I18n !== 'undefined' ? I18n.t('home.highlights_title', 'Highlights') : 'Highlights'}</h2>
                 ${highlightsHTML}
             `;
         });

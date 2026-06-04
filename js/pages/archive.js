@@ -7,29 +7,29 @@ const ArchivePage = (() => {
     let activeCategory = 'all';
 
     const categories = [
-        { id: 'all', label: 'All', icon: '📚' },
-        { id: 'History', label: 'History', icon: '📜' },
-        { id: 'Teachings', label: 'Teachings', icon: '🕉️' },
-        { id: 'Culture', label: 'Culture', icon: '🎭' },
-        { id: 'Temples', label: 'Temples', icon: '🛕' }
+        { id: 'all', label: typeof I18n !== 'undefined' ? I18n.t('archive.cat_all', 'All') : 'All', icon: '📚' },
+        { id: 'History', label: typeof I18n !== 'undefined' ? I18n.t('archive.cat_history', 'History') : 'History', icon: '📜' },
+        { id: 'Teachings', label: typeof I18n !== 'undefined' ? I18n.t('archive.cat_teachings', 'Teachings') : 'Teachings', icon: '🕉️' },
+        { id: 'Culture', label: typeof I18n !== 'undefined' ? I18n.t('archive.cat_culture', 'Culture') : 'Culture', icon: '🎭' },
+        { id: 'Temples', label: typeof I18n !== 'undefined' ? I18n.t('archive.cat_temples', 'Temples') : 'Temples', icon: '🛕' }
     ];
 
     function render() {
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
-                    { label: 'Home', href: '#home' },
-                    { label: 'Knowledge Archive' }
+                    { label: typeof I18n !== 'undefined' ? I18n.t('nav.home', 'Home') : 'Home', href: '#home' },
+                    { label: typeof I18n !== 'undefined' ? I18n.t('archive.title', 'Knowledge Archive') : 'Knowledge Archive' }
                 ])}
 
                 ${Components.sectionHeader(
-                    'Knowledge Archive',
-                    'Articles, historical documents, cultural essays, temple information, and religious teachings',
+                    typeof I18n !== 'undefined' ? I18n.t('archive.header', 'Knowledge Archive') : 'Knowledge Archive',
+                    typeof I18n !== 'undefined' ? I18n.t('archive.desc', 'Articles, historical documents, cultural essays, temple information, and religious teachings') : 'Articles, historical documents, cultural essays, temple information, and religious teachings',
                     { h1: true }
                 )}
 
                 <div class="flex gap-4 mb-6 flex-wrap items-center">
-                    ${Components.searchBar('Search articles...', 'ArchivePage.filterArticles', 'archiveSearch')}
+                    ${Components.searchBar(typeof I18n !== 'undefined' ? I18n.t('archive.search', 'Search articles...') : 'Search articles...', 'ArchivePage.filterArticles', 'archiveSearch')}
                 </div>
 
                 ${Components.tabs(categories, activeCategory, 'ArchivePage.setCategory')}
@@ -111,7 +111,7 @@ const ArchivePage = (() => {
                         ${article.tags.slice(0, 3).map(t => `<span class="tag">${t}</span>`).join('')}
                     </div>
                     <button class="btn btn-ghost btn-sm" onclick="ArchivePage.showArticle('${article.id}')">
-                        Read →
+                        ${typeof I18n !== 'undefined' ? I18n.t('archive.read', 'Read →') : 'Read →'}
                     </button>
                 </div>
             `, { interactive: true });

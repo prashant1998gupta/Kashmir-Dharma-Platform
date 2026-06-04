@@ -8,32 +8,38 @@ const CalendarPage = (() => {
     let currentMonth = new Date().getMonth();
 
     function render() {
-        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-                          'July', 'August', 'September', 'October', 'November', 'December'];
+        const titleText = typeof I18n !== 'undefined' ? I18n.t('calendar.title') : 'Festival Calendar';
+        const descText = typeof I18n !== 'undefined' ? I18n.t('calendar.desc') : 'Explore the complete calendar of Kashmiri Pandit festivals, observances, and celebrations';
+        const homeText = typeof I18n !== 'undefined' ? I18n.t('nav.home') : 'Home';
+        const prevText = typeof I18n !== 'undefined' ? I18n.t('calendar.previous') : 'Previous';
+        const nextText = typeof I18n !== 'undefined' ? I18n.t('calendar.next') : 'Next';
+        const allFestTitle = typeof I18n !== 'undefined' ? I18n.t('calendar.all_festivals') : 'All Festivals & Observances';
+        const allFestDesc = typeof I18n !== 'undefined' ? I18n.t('calendar.all_festivals_desc') : 'Detailed guide to each festival';
+        const searchPlaceholder = typeof I18n !== 'undefined' ? I18n.t('calendar.search') : 'Search festivals...';
         
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
-                    { label: 'Home', href: '#home' },
-                    { label: 'Festival Calendar' }
+                    { label: homeText, href: '#home' },
+                    { label: titleText }
                 ])}
 
                 ${Components.sectionHeader(
-                    'Festival Calendar',
-                    'Explore the complete calendar of Kashmiri Pandit festivals, observances, and celebrations',
+                    titleText,
+                    descText,
                     { h1: true }
                 )}
 
                 <!-- Calendar Navigation -->
                 <div class="flex items-center justify-between mb-6" style="background: var(--bg-card); padding: var(--space-4) var(--space-6); border-radius: var(--radius-full); border: 1px solid var(--surface-border); box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
                     <button class="btn btn-ghost" style="border-radius: var(--radius-full); padding: var(--space-2) var(--space-4);" onclick="CalendarPage.changeMonth(-1)">
-                        <span style="font-size: 1.2rem; margin-right: 8px;">←</span> Previous
+                        <span style="font-size: 1.2rem; margin-right: 8px;">←</span> ${prevText}
                     </button>
                     <h3 id="calendarMonthTitle" style="margin: 0; font-family: var(--font-heading); font-size: 1.5rem; letter-spacing: 1px; color: var(--color-secondary);">
-                        ${monthNames[currentMonth]} ${currentYear}
+                        ${typeof I18n !== 'undefined' ? I18n.t('month.' + currentMonth) : monthNames[currentMonth]} ${currentYear}
                     </h3>
                     <button class="btn btn-ghost" style="border-radius: var(--radius-full); padding: var(--space-2) var(--space-4);" onclick="CalendarPage.changeMonth(1)">
-                        Next <span style="font-size: 1.2rem; margin-left: 8px;">→</span>
+                        ${nextText} <span style="font-size: 1.2rem; margin-left: 8px;">→</span>
                     </button>
                 </div>
 
@@ -45,11 +51,11 @@ const CalendarPage = (() => {
                 ${Components.ornamentalDivider('🪔')}
 
                 <!-- All Festivals List -->
-                ${Components.sectionHeader('All Festivals & Observances', 'Detailed guide to each festival')}
+                ${Components.sectionHeader(allFestTitle, allFestDesc)}
                 
                 <!-- Search -->
                 <div class="mb-6">
-                    ${Components.searchBar('Search festivals...', 'CalendarPage.filterFestivals')}
+                    ${Components.searchBar(searchPlaceholder, 'CalendarPage.filterFestivals')}
                 </div>
 
                 <div id="festivalsGrid" class="grid-auto">
@@ -74,7 +80,7 @@ const CalendarPage = (() => {
                           'July', 'August', 'September', 'October', 'November', 'December'];
         
         const titleEl = document.getElementById('calendarMonthTitle');
-        if (titleEl) titleEl.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+        if (titleEl) titleEl.textContent = `${typeof I18n !== 'undefined' ? I18n.t('month.' + currentMonth) : monthNames[currentMonth]} ${currentYear}`;
 
         // Map festivals to calendar events (approximate positioning)
         const events = getCalendarEvents();
@@ -147,7 +153,7 @@ const CalendarPage = (() => {
         if (!grid) return;
 
         if (list.length === 0) {
-            grid.innerHTML = Components.emptyState('📅', 'No festivals found', 'Try a different search term');
+            grid.innerHTML = Components.emptyState('📅', typeof I18n !== 'undefined' ? I18n.t('calendar.no_festivals') : 'No festivals found', typeof I18n !== 'undefined' ? I18n.t('calendar.try_different') : 'Try a different search term');
             return;
         }
 

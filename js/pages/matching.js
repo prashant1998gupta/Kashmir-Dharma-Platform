@@ -8,61 +8,61 @@ const MatchingPage = (() => {
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
-                    { label: 'Home', href: '#home' },
-                    { label: 'Kundali Matching' }
+                    { label: typeof I18n !== 'undefined' ? I18n.t('nav.home', 'Home') : 'Home', href: '#home' },
+                    { label: typeof I18n !== 'undefined' ? I18n.t('match.title', 'Kundali Matching') : 'Kundali Matching' }
                 ])}
 
                 ${Components.sectionHeader(
-                    'Ashtakoot Kundali Matching',
-                    'Discover marriage compatibility using the advanced 36-point Guna Milan system with detailed interpretations, dosha analysis, and remedies.',
+                    typeof I18n !== 'undefined' ? I18n.t('match.header', 'Ashtakoot Kundali Matching') : 'Ashtakoot Kundali Matching',
+                    typeof I18n !== 'undefined' ? I18n.t('match.desc', 'Discover marriage compatibility using the advanced 36-point Guna Milan system with detailed interpretations, dosha analysis, and remedies.') : 'Discover marriage compatibility using the advanced 36-point Guna Milan system with detailed interpretations, dosha analysis, and remedies.',
                     { h1: true }
                 )}
 
                 <div class="grid-2">
                     <!-- Boy's Details -->
                     <div class="card card-glass" style="padding: var(--space-6); overflow: visible;">
-                        <h3 style="color: var(--color-primary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Boy's Details</h3>
+                        <h3 style="color: var(--color-primary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('match.boy_details', 'Boy\'s Details') : 'Boy\'s Details'}</h3>
                         <div class="form-group">
-                            <label class="form-label" for="boy-name">Name</label>
-                            <input type="text" id="boy-name" class="form-control" placeholder="Enter name">
+                            <label class="form-label" for="boy-name">${typeof I18n !== 'undefined' ? I18n.t('match.name', 'Name') : 'Name'}</label>
+                            <input type="text" id="boy-name" class="form-control" placeholder="${typeof I18n !== 'undefined' ? I18n.t('match.enter_name', 'Enter name') : 'Enter name'}">
                         </div>
                         <div class="grid-2">
                             <div class="form-group">
-                                <label class="form-label" for="boy-date">Date of Birth</label>
+                                <label class="form-label" for="boy-date">${typeof I18n !== 'undefined' ? I18n.t('match.dob', 'Date of Birth') : 'Date of Birth'}</label>
                                 <input type="date" id="boy-date" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="boy-time">Time of Birth</label>
+                                <label class="form-label" for="boy-time">${typeof I18n !== 'undefined' ? I18n.t('match.tob', 'Time of Birth') : 'Time of Birth'}</label>
                                 <input type="time" id="boy-time" class="form-control">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="boy-city">City of Birth</label>
-                            <input type="text" id="boy-city" class="form-control" placeholder="Search global cities..." autocomplete="off">
+                            <label class="form-label" for="boy-city">${typeof I18n !== 'undefined' ? I18n.t('match.city', 'City of Birth') : 'City of Birth'}</label>
+                            <input type="text" id="boy-city" class="form-control" placeholder="${typeof I18n !== 'undefined' ? I18n.t('match.search_city', 'Search global cities...') : 'Search global cities...'}" autocomplete="off">
                             <ul id="boy-city-results"></ul>
                         </div>
                     </div>
 
                     <!-- Girl's Details -->
                     <div class="card card-glass" style="padding: var(--space-6); overflow: visible;">
-                        <h3 style="color: var(--color-secondary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">Girl's Details</h3>
+                        <h3 style="color: var(--color-secondary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('match.girl_details', 'Girl\'s Details') : 'Girl\'s Details'}</h3>
                         <div class="form-group">
-                            <label class="form-label" for="girl-name">Name</label>
-                            <input type="text" id="girl-name" class="form-control" placeholder="Enter name">
+                            <label class="form-label" for="girl-name">${typeof I18n !== 'undefined' ? I18n.t('match.name', 'Name') : 'Name'}</label>
+                            <input type="text" id="girl-name" class="form-control" placeholder="${typeof I18n !== 'undefined' ? I18n.t('match.enter_name', 'Enter name') : 'Enter name'}">
                         </div>
                         <div class="grid-2">
                             <div class="form-group">
-                                <label class="form-label" for="girl-date">Date of Birth</label>
+                                <label class="form-label" for="girl-date">${typeof I18n !== 'undefined' ? I18n.t('match.dob', 'Date of Birth') : 'Date of Birth'}</label>
                                 <input type="date" id="girl-date" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="girl-time">Time of Birth</label>
+                                <label class="form-label" for="girl-time">${typeof I18n !== 'undefined' ? I18n.t('match.tob', 'Time of Birth') : 'Time of Birth'}</label>
                                 <input type="time" id="girl-time" class="form-control">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="girl-city">City of Birth</label>
-                            <input type="text" id="girl-city" class="form-control" placeholder="Search global cities..." autocomplete="off">
+                            <label class="form-label" for="girl-city">${typeof I18n !== 'undefined' ? I18n.t('match.city', 'City of Birth') : 'City of Birth'}</label>
+                            <input type="text" id="girl-city" class="form-control" placeholder="${typeof I18n !== 'undefined' ? I18n.t('match.search_city', 'Search global cities...') : 'Search global cities...'}" autocomplete="off">
                             <ul id="girl-city-results"></ul>
                         </div>
                     </div>
@@ -70,7 +70,7 @@ const MatchingPage = (() => {
 
                 <div style="text-align: center; margin: var(--space-8) 0;">
                     <button class="btn btn-primary" style="padding: var(--space-4) var(--space-8); font-size: 1.1rem; border-radius: var(--radius-full);" onclick="MatchingPage.generateMatch()">
-                        ✨ Calculate Compatibility Match
+                        ${typeof I18n !== 'undefined' ? I18n.t('match.calc_btn', '✨ Calculate Compatibility Match') : '✨ Calculate Compatibility Match'}
                     </button>
                 </div>
 

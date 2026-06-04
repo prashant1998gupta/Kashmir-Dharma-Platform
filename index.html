@@ -27,8 +27,8 @@
             <div class="logo-container">
                 <div class="logo-icon">🔱</div>
                 <div class="logo-text">
-                    <span class="logo-title">Kashmir</span>
-                    <span class="logo-subtitle">Dharma Companion</span>
+                    <span class="logo-title" data-i18n="nav.logo_title">Kashmir</span>
+                    <span class="logo-subtitle" data-i18n="nav.logo_subtitle">Dharma Companion</span>
                 </div>
             </div>
         </div>
@@ -37,91 +37,91 @@
             <li>
                 <a href="#home" class="nav-link active" data-page="home" id="nav-home">
                     <span class="nav-icon">🏠</span>
-                    <span class="nav-text">Home</span>
+                    <span class="nav-text" data-i18n="nav.home">Home</span>
                 </a>
             </li>
             <li>
                 <a href="#calendar" class="nav-link" data-page="calendar" id="nav-calendar">
                     <span class="nav-icon">📅</span>
-                    <span class="nav-text">Festival Calendar</span>
+                    <span class="nav-text" data-i18n="nav.calendar">Festival Calendar</span>
                 </a>
             </li>
             <li>
                 <a href="#rituals" class="nav-link" data-page="rituals" id="nav-rituals">
                     <span class="nav-icon">📖</span>
-                    <span class="nav-text">Ritual Library</span>
+                    <span class="nav-text" data-i18n="nav.rituals">Ritual Library</span>
                 </a>
             </li>
             <li>
                 <a href="#wedding" class="nav-link" data-page="wedding" id="nav-wedding">
                     <span class="nav-icon">💒</span>
-                    <span class="nav-text">Wedding Guide</span>
+                    <span class="nav-text" data-i18n="nav.wedding">Wedding Guide</span>
                 </a>
             </li>
             <li>
                 <a href="#birthday" class="nav-link" data-page="birthday" id="nav-birthday">
                     <span class="nav-icon">🎂</span>
-                    <span class="nav-text">Janma Tithi</span>
+                    <span class="nav-text" data-i18n="nav.tithi">Janma Tithi</span>
                 </a>
             </li>
             <li>
                 <a href="#kundali" class="nav-link" data-page="kundali" id="nav-kundali">
                     <span class="nav-icon">🌌</span>
-                    <span class="nav-text">Kundali Generator</span>
+                    <span class="nav-text" data-i18n="nav.kundali">Kundali Generator</span>
                 </a>
             </li>
             <li>
                 <a href="#matching" class="nav-link" data-page="matching" id="nav-matching">
                     <span class="nav-icon">❤️</span>
-                    <span class="nav-text">Kundali Matching</span>
+                    <span class="nav-text" data-i18n="nav.matching">Kundali Matching</span>
                 </a>
             </li>
             <li>
                 <a href="#muhurat" class="nav-link" data-page="muhurat" id="nav-muhurat">
                     <span class="nav-icon">🌟</span>
-                    <span class="nav-text">Muhurat Finder</span>
+                    <span class="nav-text" data-i18n="nav.muhurat">Muhurat Finder</span>
                 </a>
             </li>
             <li>
                 <a href="#varshphal" class="nav-link" data-page="varshphal" id="nav-varshphal">
                     <span class="nav-icon">📜</span>
-                    <span class="nav-text">Annual Varshphal</span>
+                    <span class="nav-text" data-i18n="nav.varshphal">Annual Varshphal</span>
                 </a>
             </li>
             <li>
                 <a href="#heritage" class="nav-link" data-page="heritage" id="nav-heritage">
                     <span class="nav-icon">👪</span>
-                    <span class="nav-text">Family Heritage</span>
+                    <span class="nav-text" data-i18n="nav.heritage">Family Heritage</span>
                 </a>
             </li>
             <li>
                 <a href="#" class="nav-link" onclick="ProfileManager.openManagerModal(); return false;">
                     <span class="nav-icon">💾</span>
-                    <span class="nav-text">Saved Profiles</span>
+                    <span class="nav-text" data-i18n="nav.profiles">Saved Profiles</span>
                 </a>
             </li>
             <li>
                 <a href="#archive" class="nav-link" data-page="archive" id="nav-archive">
                     <span class="nav-icon">📚</span>
-                    <span class="nav-text">Knowledge Archive</span>
+                    <span class="nav-text" data-i18n="nav.knowledge">Knowledge Archive</span>
                 </a>
             </li>
             <li>
                 <a href="#audio" class="nav-link" data-page="audio" id="nav-audio">
                     <span class="nav-icon">🎵</span>
-                    <span class="nav-text">Audio & Wanwun</span>
+                    <span class="nav-text" data-i18n="nav.audio">Audio & Wanwun</span>
                 </a>
             </li>
             <li>
                 <a href="#sharada" class="nav-link" data-page="sharada" id="nav-sharada">
                     <span class="nav-icon">📜</span>
-                    <span class="nav-text">Learn Sharada</span>
+                    <span class="nav-text" data-i18n="nav.sharada">Learn Sharada</span>
                 </a>
             </li>
             <li>
                 <a href="#guide" class="nav-link" data-page="guide" id="nav-guide">
                     <span class="nav-icon">🔮</span>
-                    <span class="nav-text">Knowledge Guide</span>
+                    <span class="nav-text" data-i18n="nav.guide">Knowledge Guide</span>
                 </a>
             </li>
         </ul>
@@ -129,11 +129,15 @@
         <div class="sidebar-footer">
             <button id="themeToggleBtn" class="theme-toggle" aria-label="Toggle Light/Dark Mode" onclick="App.toggleTheme()" style="background: rgba(255,255,255,0.05); border: 1px solid var(--surface-border); border-radius: var(--radius-full); padding: 8px 12px; color: var(--text-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 12px; transition: var(--transition-base);">
                 <span id="themeToggleIcon" style="margin-right: 8px;">☀️</span> 
-                <span id="themeToggleText" style="font-size: var(--text-sm); font-weight: 500;">Light Mode</span>
+                <span id="themeToggleText" style="font-size: var(--text-sm); font-weight: 500;" data-i18n="settings.theme_light">Light Mode</span>
+            </button>
+            <button id="langToggleBtn" class="lang-toggle" aria-label="Toggle Language" onclick="I18n.setLanguage(I18n.getLanguage() === 'en' ? 'hi' : 'en')" style="background: rgba(255,255,255,0.05); border: 1px solid var(--surface-border); border-radius: var(--radius-full); padding: 8px 12px; color: var(--text-primary); cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 12px; transition: var(--transition-base);">
+                <span id="langToggleIcon" style="margin-right: 8px;">🌐</span> 
+                <span id="langToggleText" style="font-size: var(--text-sm); font-weight: 500;" data-i18n="settings.language">Language / भाषा</span>
             </button>
             <div class="scholar-badge">
                 <span class="badge-icon">✅</span>
-                <span class="badge-text">Scholar Validated</span>
+                <span class="badge-text" data-i18n="nav.scholar">Scholar Validated</span>
             </div>
         </div>
     </nav>
@@ -147,7 +151,7 @@
         </button>
         <div class="mobile-logo">
             <span class="logo-icon">🔱</span>
-            <span class="logo-title">Kashmir Dharma</span>
+            <span class="logo-title" data-i18n="nav.logo_mobile">Kashmir Dharma</span>
         </div>
     </header>
 
@@ -160,7 +164,7 @@
             <!-- Page content will be dynamically injected here -->
             <div class="page-loading">
                 <div class="loading-spinner"></div>
-                <p>Loading sacred knowledge...</p>
+                <p data-i18n="nav.loading">Loading sacred knowledge...</p>
             </div>
         </div>
     </main>
@@ -192,6 +196,7 @@
     <script src="js/utils/varshphal-calc.js"></script>
     <script src="js/utils/pdf-generator.js"></script>
     <script src="js/utils/profile-manager.js"></script>
+    <script src="js/utils/i18n.js"></script>
     <script src="js/components.js"></script>
     <script src="js/pages/home.js"></script>
     <script src="js/pages/calendar.js"></script>

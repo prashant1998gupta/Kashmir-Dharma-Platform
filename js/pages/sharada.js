@@ -9,13 +9,13 @@ const SharadaPage = (() => {
         return `
             <div class="page-enter">
                 ${Components.breadcrumb([
-                    { label: 'Home', href: '#home' },
-                    { label: 'Learn Sharada Script' }
+                    { label: typeof I18n !== 'undefined' ? I18n.t('nav.home', 'Home') : 'Home', href: '#home' },
+                    { label: typeof I18n !== 'undefined' ? I18n.t('sharada.title', 'Learn Sharada Script') : 'Learn Sharada Script' }
                 ])}
 
                 ${Components.sectionHeader(
-                    'Learn Sharada Script',
-                    'Explore the ancient, sacred script of Kashmir used for religious texts and horoscopes.',
+                    typeof I18n !== 'undefined' ? I18n.t('sharada.header', 'Learn Sharada Script') : 'Learn Sharada Script',
+                    typeof I18n !== 'undefined' ? I18n.t('sharada.desc', 'Explore the ancient, sacred script of Kashmir used for religious texts and horoscopes.') : 'Explore the ancient, sacred script of Kashmir used for religious texts and horoscopes.',
                     { h1: true }
                 )}
 
@@ -43,7 +43,7 @@ const SharadaPage = (() => {
             <!-- Overview -->
             ${Components.card(`
                 <div style="padding: var(--space-4)">
-                    <h3 style="margin-bottom: var(--space-3)">📜 About Sharada</h3>
+                    <h3 style="margin-bottom: var(--space-3)">📜 ${typeof I18n !== 'undefined' ? I18n.t('sharada.about', 'About Sharada') : 'About Sharada'}</h3>
                     <p style="margin-bottom: var(--space-4)">${sharadaData.description}</p>
                     <ul style="list-style: none;">
                         ${sharadaData.resources.map(r => `<li style="margin-bottom: var(--space-2); color: var(--color-secondary);">✨ ${r}</li>`).join('')}
