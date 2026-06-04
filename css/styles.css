@@ -1384,6 +1384,58 @@ a:hover {
     letter-spacing: 0.05em;
     opacity: 0.7;
     z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.moon-icon {
+    font-size: 12px;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+}
+
+.calendar-auspicious-indicator {
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    color: var(--color-accent);
+    font-size: 14px;
+    text-shadow: 0 0 5px var(--color-accent-glow);
+    z-index: 2;
+}
+
+.calendar-date-wrapper {
+    position: relative;
+    display: inline-flex;
+}
+
+.calendar-nakshatra {
+    position: relative;
+    z-index: 1;
+    font-size: 9px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: -6px;
+    margin-bottom: 2px;
+    opacity: 0.8;
+}
+
+.calendar-hindu-month {
+    position: relative;
+    z-index: 1;
+    font-size: 9px;
+    background: rgba(201, 169, 89, 0.15);
+    color: var(--color-secondary);
+    padding: 2px 4px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border: 1px solid rgba(201, 169, 89, 0.3);
 }
 
 .calendar-event {

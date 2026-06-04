@@ -364,6 +364,8 @@ const Components = (() => {
             
             // Calculate Tithi for the cell if CalendarCalc is available
             let tithiHTML = '';
+            let auspiciousHTML = '';
+            let extraHTML = '';
             try {
                 if (typeof CalendarCalc !== 'undefined') {
                     const hDate = CalendarCalc.getHinduDate(year, month + 1, d, 12, 0);
@@ -374,15 +376,50 @@ const Components = (() => {
                     const pakshaTranslated = typeof I18n !== 'undefined' ? I18n.t(`astro.paksha.${hDate.tithi.pakshaIndex === 0 ? 'Sukla' : 'Krishna'}`) : (hDate.tithi.pakshaIndex === 0 ? 'Shukla' : 'Krishna');
                     const koshurTithi = localKashmiriTithis[hDate.tithi.name] || '';
                     
+                    let moonIcon = '';
+                    if (hDate.tithi.pakshaIndex === 0) {
+                        if (tithiNum <= 5) moonIcon = '🌒';
+                        else if (tithiNum <= 9) moonIcon = '🌓';
+                        else if (tithiNum <= 14) moonIcon = '🌔';
+                        else moonIcon = '🌕'; // Purnima
+                    } else {
+                        if (tithiNum <= 5) moonIcon = '🌖';
+                        else if (tithiNum <= 9) moonIcon = '🌗';
+                        else if (tithiNum <= 14) moonIcon = '🌘';
+                        else moonIcon = '🌑'; // Amavasya
+                    }
+                    
                     const tooltip = `${pakshaTranslated} ${tithiNameTranslated} (${koshurTithi})`;
                     
-                    tithiHTML = `<span class="calendar-tithi" title="${tooltip}">${paksha}${tithiNum}</span>`;
+                    tithiHTML = `<span class="calendar-tithi" title="${tooltip}"><span class="moon-icon">${moonIcon}</span> ${paksha}${tithiNum}</span>`;
+
+                    // Check if auspicious (general rules)
+                    const ausp = CalendarCalc.isAuspicious(year, month + 1, d, null);
+                    if (ausp && ausp.isGood) {
+                        auspiciousHTML = `<div class="calendar-auspicious-indicator" title="Auspicious Day">✦</div>`;
+                    }
+
+                    // Nakshatra and Hindu Month info
+                    const nakshatraKey = hDate.nakshatra.name.replace(/ /g, '_');
+                    const nakshatraNameTranslated = typeof I18n !== 'undefined' ? (I18n.t(`astro.nakshatra.${nakshatraKey}`) || hDate.nakshatra.name) : hDate.nakshatra.name;
+                    
+                    extraHTML += `<div class="calendar-nakshatra" title="Nakshatra: ${nakshatraNameTranslated}">${nakshatraNameTranslated.substring(0, 3)}</div>`;
+                    
+                    if (tithiNum === 1 && hDate.tithi.pakshaIndex === 0) {
+                        // Shukla Pratipada (start of lunar month)
+                        const kMonthTranslated = typeof I18n !== 'undefined' ? (I18n.t(`astro.month.${hDate.hinduMonth.name}`) || hDate.hinduMonth.name) : hDate.hinduMonth.name;
+                        extraHTML += `<div class="calendar-hindu-month" title="Start of new lunar month">${kMonthTranslated}</div>`;
+                    }
                 }
             } catch(e) {}
             
             html += `<div class="calendar-cell ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" onclick="CalendarPage.onDayClick('${dateStr}')">`;
+            html += `<div class="calendar-date-wrapper">`;
             html += `<span class="calendar-date">${d}</span>`;
+            html += auspiciousHTML;
+            html += `</div>`;
             html += tithiHTML;
+            html += extraHTML;
             dayEvents.forEach(e => {
                 html += `<div class="calendar-event ${e.type}">${e.name}</div>`;
             });
