@@ -32,6 +32,9 @@
     --bg-card-hover: rgba(255, 255, 255, 0.035);
     --bg-glass: rgba(8, 8, 12, 0.5);
     --bg-glass-strong: rgba(3, 3, 6, 0.85);
+    --bg-input: rgba(0, 0, 0, 0.4);
+    --bg-input-focus: rgba(0, 0, 0, 0.6);
+    color-scheme: dark;
 
     /* Surface & Borders */
     --surface-border: rgba(212, 175, 55, 0.12);
@@ -116,6 +119,9 @@
     --bg-card-hover: rgba(0, 0, 0, 0.04);
     --bg-glass: rgba(253, 251, 247, 0.7);
     --bg-glass-strong: rgba(253, 251, 247, 0.95);
+    --bg-input: rgba(255, 255, 255, 0.5);
+    --bg-input-focus: rgba(255, 255, 255, 0.9);
+    color-scheme: light;
 
     /* Surface & Borders */
     --surface-border: rgba(212, 175, 55, 0.4);
@@ -524,7 +530,7 @@ a:hover {
 
 .form-control, .form-input {
     width: 100%;
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--bg-input);
     border: 1px solid var(--surface-border);
     border-radius: var(--radius-md);
     padding: var(--space-3) var(--space-4);
@@ -533,12 +539,11 @@ a:hover {
     font-size: var(--text-base);
     transition: all var(--transition-base);
     outline: none;
-    color-scheme: dark;
 }
 
 .form-control:focus, .form-input:focus {
     border-color: var(--color-secondary);
-    background: rgba(0, 0, 0, 0.6);
+    background: var(--bg-input-focus);
     box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
 }
 
@@ -758,7 +763,7 @@ a:hover {
 .form-select,
 .form-textarea {
     padding: var(--space-3) var(--space-4);
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--bg-input);
     border: 1px solid var(--surface-border);
     border-radius: var(--radius-md);
     color: var(--text-primary);
@@ -766,6 +771,7 @@ a:hover {
     font-size: var(--text-base);
     transition: all var(--transition-base);
     outline: none;
+    color-scheme: light dark;
 }
 
 .form-input:focus,
@@ -773,7 +779,7 @@ a:hover {
 .form-textarea:focus {
     border-color: var(--color-secondary);
     box-shadow: 0 0 0 3px var(--color-secondary-glow);
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--bg-input-focus);
 }
 
 .form-input::placeholder {
@@ -1040,7 +1046,7 @@ a:hover {
 .search-input {
     width: 100%;
     padding: var(--space-3) var(--space-4) var(--space-3) var(--space-10);
-    background: var(--bg-card);
+    background: var(--bg-input);
     border: 1px solid var(--surface-border);
     border-radius: var(--radius-lg);
     color: var(--text-primary);
@@ -1048,12 +1054,13 @@ a:hover {
     font-family: var(--font-body);
     transition: all var(--transition-base);
     outline: none;
+    color-scheme: light dark;
 }
 
 .search-input:focus {
     border-color: var(--color-secondary);
-    box-shadow: 0 0 0 3px var(--color-secondary-glow);
-    background: var(--bg-card-hover);
+    background: var(--bg-input-focus);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
 }
 
 .search-icon {
