@@ -85,14 +85,14 @@ const KundaliPage = (() => {
                             <!-- Premium Insights -->
                             <div id="simple-overview-container" style="background: rgba(212, 175, 55, 0.05); border: 1px solid var(--color-secondary); border-radius: var(--radius-md); padding: var(--space-6); margin-bottom: var(--space-8);">
                                 <div style="display: flex; justify-content: center; margin-bottom: var(--space-4);">
-                                    <h3 style="color: var(--color-secondary); border-bottom: 2px solid rgba(212, 175, 55, 0.3); padding-bottom: var(--space-2); text-transform: uppercase; letter-spacing: 2px;">Premium Astrological Insights</h3>
+                                    <h3 style="color: var(--color-secondary); border-bottom: 2px solid rgba(212, 175, 55, 0.3); padding-bottom: var(--space-2); text-transform: uppercase; letter-spacing: 2px;">${typeof I18n !== 'undefined' ? I18n.t('kundali.premium_insights', 'Premium Astrological Insights') : 'Premium Astrological Insights'}</h3>
                                 </div>
                                 <div style="margin-bottom: var(--space-6);">
-                                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">Your Ascendant (Rising Sign)</strong>
+                                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">${typeof I18n !== 'undefined' ? I18n.t('kundali.your_ascendant', 'Your Ascendant (Rising Sign)') : 'Your Ascendant (Rising Sign)'}</strong>
                                     <div id="simple-lagna-text" style="color: var(--text-secondary); font-size: var(--text-base); line-height: 1.7;"></div>
                                 </div>
                                 <div>
-                                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">Your Moon Sign (Emotions)</strong>
+                                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">${typeof I18n !== 'undefined' ? I18n.t('kundali.your_moon_sign', 'Your Moon Sign (Emotions)') : 'Your Moon Sign (Emotions)'}</strong>
                                     <div id="simple-moon-text" style="color: var(--text-secondary); font-size: var(--text-base); line-height: 1.7;"></div>
                                 </div>
                             </div>
@@ -124,10 +124,10 @@ const KundaliPage = (() => {
                             <!-- Birth Panchang -->
                             <h3 style="margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('kundali.panchang') : 'Birth Panchang'}</h3>
                             <div style="background: rgba(255,255,255,0.03); border-radius: var(--radius-sm); padding: var(--space-4); margin-bottom: var(--space-8); display: flex; flex-wrap: wrap; gap: var(--space-6); justify-content: space-between;">
-                                <div><span style="color: var(--text-muted); font-size: var(--text-xs); text-transform: uppercase;">Vaar (Day)</span><div id="panchang-vaar" style="font-weight: bold; color: var(--color-secondary);"></div></div>
-                                <div><span style="color: var(--text-muted); font-size: var(--text-xs); text-transform: uppercase;">Tithi</span><div id="panchang-tithi" style="font-weight: bold; color: var(--color-secondary);"></div></div>
-                                <div><span style="color: var(--text-muted); font-size: var(--text-xs); text-transform: uppercase;">Yoga</span><div id="panchang-yoga" style="font-weight: bold; color: var(--color-secondary);"></div></div>
-                                <div><span style="color: var(--text-muted); font-size: var(--text-xs); text-transform: uppercase;">Karana</span><div id="panchang-karana" style="font-weight: bold; color: var(--color-secondary);"></div></div>
+                                <div><span style="color: var(--text-muted); font-size: var(--text-xs); text-transform: uppercase;">${typeof I18n !== 'undefined' ? I18n.t('kundali.vaar', 'Vaar (Day)') : 'Vaar (Day)'}</span><div id="panchang-vaar" style="font-weight: bold; color: var(--color-secondary);"></div></div>
+                                <div><span style="color: var(--text-muted); font-size: var(--text-xs); text-transform: uppercase;">${typeof I18n !== 'undefined' ? I18n.t('kundali.tithi', 'Tithi') : 'Tithi'}</span><div id="panchang-tithi" style="font-weight: bold; color: var(--color-secondary);"></div></div>
+                                <div><span style="color: var(--text-muted); font-size: var(--text-xs); text-transform: uppercase;">${typeof I18n !== 'undefined' ? I18n.t('kundali.yoga', 'Yoga') : 'Yoga'}</span><div id="panchang-yoga" style="font-weight: bold; color: var(--color-secondary);"></div></div>
+                                <div><span style="color: var(--text-muted); font-size: var(--text-xs); text-transform: uppercase;">${typeof I18n !== 'undefined' ? I18n.t('kundali.karana', 'Karana') : 'Karana'}</span><div id="panchang-karana" style="font-weight: bold; color: var(--color-secondary);"></div></div>
                             </div>
                             
                             <!-- Doshas -->
@@ -141,11 +141,11 @@ const KundaliPage = (() => {
                                 <table style="width: 100%; text-align: left; border-collapse: collapse;">
                                     <thead>
                                         <tr style="border-bottom: 1px solid var(--color-secondary);">
-                                            <th style="padding: var(--space-2);">Planet</th>
-                                            <th style="padding: var(--space-2);">Sign (Rashi)</th>
-                                            <th style="padding: var(--space-2);">Degree</th>
-                                            <th style="padding: var(--space-2);">Nakshatra</th>
-                                            <th style="padding: var(--space-2);">Dignity & State</th>
+                                            <th style="padding: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('kundali.tbl_planet', 'Planet') : 'Planet'}</th>
+                                            <th style="padding: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('kundali.tbl_rashi', 'Sign (Rashi)') : 'Sign (Rashi)'}</th>
+                                            <th style="padding: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('kundali.tbl_degree', 'Degree') : 'Degree'}</th>
+                                            <th style="padding: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('kundali.tbl_nakshatra', 'Nakshatra') : 'Nakshatra'}</th>
+                                            <th style="padding: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('kundali.tbl_dignity', 'Dignity & State') : 'Dignity & State'}</th>
                                         </tr>
                                     </thead>
                                     <tbody id="planetary-table-body">

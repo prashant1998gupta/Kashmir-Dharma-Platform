@@ -214,11 +214,11 @@ const MatchingPage = (() => {
         const bgRgba = isBgRed ? '163,38,38' : (isBgYellow ? '241,196,15' : '46,92,58');
         
         return `<div style="background:rgba(${bgRgba},0.08); border:1px solid rgba(${bgRgba},0.3); border-radius:var(--radius-md); padding:var(--space-4); margin-bottom:var(--space-4);">
-            <div style="font-weight:bold; font-size:var(--text-lg); margin-bottom:var(--space-2); color:${color};">${icon} ${personName} — ${statusText}</div>
+            <div style="font-weight:bold; font-size:var(--text-lg); margin-bottom:var(--space-2); color:${color};">${icon} ${personName} — ${typeof I18n !== 'undefined' ? I18n.t(`match.status_${statusText.toLowerCase().replace(/[\s\(\)]+/g, '_')}`, statusText) : statusText}</div>
             <div style="color:var(--text-secondary); line-height:1.6; display:flex; flex-direction:column; gap:4px;">
-                <div>Mars in House ${manglik.marsHouseFromLagna} from Lagna, House ${manglik.marsHouseFromMoon} from Moon</div>
-                <div>Severity: <strong>${manglik.severity}</strong></div>
-                ${manglik.cancellations.length > 0 ? `<div style="margin-top:var(--space-2); color:#f1c40f; font-weight:500;">Cancellations Found: ${manglik.cancellations.join(', ')}</div>` : ''}
+                <div>${typeof I18n !== 'undefined' ? I18n.t('match.mars_in_house', 'Mars in House') : 'Mars in House'} ${manglik.marsHouseFromLagna} ${typeof I18n !== 'undefined' ? I18n.t('match.from_lagna', 'from Lagna, House') : 'from Lagna, House'} ${manglik.marsHouseFromMoon} ${typeof I18n !== 'undefined' ? I18n.t('match.from_moon', 'from Moon') : 'from Moon'}</div>
+                <div>${typeof I18n !== 'undefined' ? I18n.t('match.severity', 'Severity:') : 'Severity:'} <strong>${manglik.severity}</strong></div>
+                ${manglik.cancellations.length > 0 ? `<div style="margin-top:var(--space-2); color:#f1c40f; font-weight:500;">${typeof I18n !== 'undefined' ? I18n.t('match.cancellations_found', 'Cancellations Found:') : 'Cancellations Found:'} ${manglik.cancellations.join(', ')}</div>` : ''}
             </div>
         </div>`;
     }
@@ -232,24 +232,24 @@ const MatchingPage = (() => {
         let html = `<div class="card card-glass" style="padding: var(--space-6);">
             <!-- Export Buttons -->
             <div class="no-print" style="text-align: right; margin-bottom: var(--space-4); display:flex; gap:var(--space-3); justify-content:flex-end;">
-                <button class="btn btn-primary" style="padding:var(--space-2) var(--space-5);" onclick="PDFGenerator.generatePDF('matchResult','Kundali_Matching_Report.pdf','Kundali Matching Report')">📥 Download PDF</button>
-                <button class="btn btn-outline" onclick="PDFGenerator.generatePDF('matchResult','Kundali_Matching_Report.pdf','Kundali Matching Report')">🖨️ Print</button>
+                <button class="btn btn-primary" style="padding:var(--space-2) var(--space-5);" onclick="PDFGenerator.generatePDF('matchResult','Kundali_Matching_Report.pdf','Kundali Matching Report')">📥 ${typeof I18n !== 'undefined' ? I18n.t('match.download_pdf', 'Download PDF') : 'Download PDF'}</button>
+                <button class="btn btn-outline" onclick="PDFGenerator.generatePDF('matchResult','Kundali_Matching_Report.pdf','Kundali Matching Report')">🖨️ ${typeof I18n !== 'undefined' ? I18n.t('match.print', 'Print') : 'Print'}</button>
             </div>
 
             <!-- ═══════ PAGE 1: TITLE & SUMMARY ═══════ -->
             <div class="report-section print-avoid-break" style="text-align:center; margin-bottom:var(--space-8); padding:var(--space-8) 0; border-bottom:2px solid var(--color-secondary);">
-                <div style="font-size:0.9rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:3px; margin-bottom:var(--space-2);">Kashmir Dharma Companion</div>
-                <h1 style="color:var(--color-secondary); font-size:2rem; margin-bottom:var(--space-4);">Kundali Matching Report</h1>
+                <div style="font-size:0.9rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:3px; margin-bottom:var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('match.app_name', 'Kashmir Dharma Companion') : 'Kashmir Dharma Companion'}</div>
+                <h1 style="color:var(--color-secondary); font-size:2rem; margin-bottom:var(--space-4);">${typeof I18n !== 'undefined' ? I18n.t('match.report_title', 'Kundali Matching Report') : 'Kundali Matching Report'}</h1>
                 <h2 style="color:var(--text-primary); font-size:1.5rem; margin-bottom:var(--space-2);">${bName} & ${gName}</h2>
-                <p style="color:var(--text-muted);">Generated on ${now.toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' })} at ${now.toLocaleTimeString('en-IN')}</p>
+                <p style="color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.generated_on', 'Generated on') : 'Generated on'} ${now.toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' })} ${typeof I18n !== 'undefined' ? I18n.t('match.at', 'at') : 'at'} ${now.toLocaleTimeString('en-IN')}</p>
             </div>
 
             <!-- Score Gauge -->
             <div style="display:flex; justify-content:center; align-items:center; margin-bottom:var(--space-8); flex-direction:column;">
                 <div class="score-gauge-print" style="position:relative; width:200px; height:200px; border-radius:50%; background:conic-gradient(${rec.color} ${pct}%, rgba(255,255,255,0.05) 0); display:flex; justify-content:center; align-items:center; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
                     <div style="width:165px; height:165px; border-radius:50%; background:var(--bg-card); display:flex; flex-direction:column; justify-content:center; align-items:center;">
-                        <div style="font-size:3rem; font-weight:bold; color:var(--text-primary);">${result.total}</div>
-                        <div style="color:var(--text-muted); font-size:var(--text-sm);">Out of 36</div>
+                        <span style="font-size:3rem; font-weight:bold; color:var(--text-primary); line-height:1;">${result.total}</span>
+                        <span style="font-size:1rem; color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.out_of_36', 'out of 36') : 'out of 36'}</span>
                     </div>
                 </div>
                 <div style="margin-top:var(--space-4); font-size:var(--text-xl); font-weight:bold; color:${rec.color};">${rec.emoji} ${rec.level}</div>
@@ -258,25 +258,25 @@ const MatchingPage = (() => {
             <!-- Premium Compatibility Summary -->
             <div style="background: rgba(212, 175, 55, 0.05); border: 1px solid var(--color-secondary); border-radius: var(--radius-md); padding: var(--space-6); margin-bottom: var(--space-8);">
                 <div style="display: flex; justify-content: center; margin-bottom: var(--space-4);">
-                    <h3 style="color: var(--color-secondary); border-bottom: 2px solid rgba(212, 175, 55, 0.3); padding-bottom: var(--space-2); text-transform: uppercase; letter-spacing: 2px;">Premium Compatibility Insights</h3>
+                    <h3 style="color: var(--color-secondary); border-bottom: 2px solid rgba(212, 175, 55, 0.3); padding-bottom: var(--space-2); text-transform: uppercase; letter-spacing: 2px;">${typeof I18n !== 'undefined' ? I18n.t('match.premium_compatibility_insights', 'Premium Compatibility Insights') : 'Premium Compatibility Insights'}</h3>
                 </div>
                 <div id="premium-match-text" style="margin-bottom: var(--space-6);">
                     ${typeof AstroInterpretations !== 'undefined' ? AstroInterpretations.getMatchVerdict(result.total) : rec.level}
                 </div>
                 
                 <div style="display: flex; justify-content: center; margin-bottom: var(--space-4);">
-                    <h3 style="color: var(--color-secondary); border-bottom: 2px solid rgba(212, 175, 55, 0.3); padding-bottom: var(--space-2); text-transform: uppercase; letter-spacing: 2px;">Individual Emotional Resonance</h3>
+                    <h3 style="color: var(--color-secondary); border-bottom: 2px solid rgba(212, 175, 55, 0.3); padding-bottom: var(--space-2); text-transform: uppercase; letter-spacing: 2px;">${typeof I18n !== 'undefined' ? I18n.t('match.individual_emotional_resonance', 'Individual Emotional Resonance') : 'Individual Emotional Resonance'}</h3>
                 </div>
                 
                 <div style="margin-bottom: var(--space-6);">
-                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">${bName}'s Emotional Nature (${bChart.moonSign} Moon)</strong>
+                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">${bName}'s ${typeof I18n !== 'undefined' ? I18n.t('match.emotional_nature', 'Emotional Nature') : 'Emotional Nature'} (${gChart.moonSign} ${typeof I18n !== 'undefined' ? I18n.t('match.moon', 'Moon') : 'Moon'})</strong>
                     <div style="color: var(--text-secondary); font-size: var(--text-base); line-height: 1.7;">
                         ${typeof AstroInterpretations !== 'undefined' ? (AstroInterpretations.moon[bChart.moonSign] || AstroInterpretations.moon['Unknown']) : ''}
                     </div>
                 </div>
 
                 <div>
-                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">${gName}'s Emotional Nature (${gChart.moonSign} Moon)</strong>
+                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">${gName}'s ${typeof I18n !== 'undefined' ? I18n.t('match.emotional_nature', 'Emotional Nature') : 'Emotional Nature'} (${gChart.moonSign} ${typeof I18n !== 'undefined' ? I18n.t('match.moon', 'Moon') : 'Moon'})</strong>
                     <div style="color: var(--text-secondary); font-size: var(--text-base); line-height: 1.7;">
                         ${typeof AstroInterpretations !== 'undefined' ? (AstroInterpretations.moon[gChart.moonSign] || AstroInterpretations.moon['Unknown']) : ''}
                     </div>
@@ -287,19 +287,19 @@ const MatchingPage = (() => {
             <div class="print-avoid-break" style="margin-bottom:var(--space-8);">
                 <table style="width:100%; border-collapse:collapse; margin-bottom:var(--space-4);">
                     <tr style="border-bottom:1px solid var(--surface-border);">
-                        <td style="padding:var(--space-3); color:var(--text-muted); width:40%;">Boy's Moon Sign (Rashi)</td>
+                        <td style="padding:var(--space-3); color:var(--text-muted); width:40%;">${typeof I18n !== 'undefined' ? I18n.t('match.boy_moon_sign', 'Boy\\'s Moon Sign (Rashi)') : 'Boy\\'s Moon Sign (Rashi)'}</td>
                         <td style="padding:var(--space-3); font-weight:bold; color:var(--color-primary);">${result.boyRashiName}</td>
                     </tr>
                     <tr style="border-bottom:1px solid var(--surface-border);">
-                        <td style="padding:var(--space-3); color:var(--text-muted);">Boy's Nakshatra</td>
+                        <td style="padding:var(--space-3); color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.boy_nakshatra', 'Boy\\'s Nakshatra') : 'Boy\\'s Nakshatra'}</td>
                         <td style="padding:var(--space-3); font-weight:bold;">${result.boyNakshatraName}</td>
                     </tr>
                     <tr style="border-bottom:1px solid var(--surface-border);">
-                        <td style="padding:var(--space-3); color:var(--text-muted);">Girl's Moon Sign (Rashi)</td>
+                        <td style="padding:var(--space-3); color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.girl_moon_sign', 'Girl\\'s Moon Sign (Rashi)') : 'Girl\\'s Moon Sign (Rashi)'}</td>
                         <td style="padding:var(--space-3); font-weight:bold; color:var(--color-secondary);">${result.girlRashiName}</td>
                     </tr>
                     <tr style="border-bottom:1px solid var(--surface-border);">
-                        <td style="padding:var(--space-3); color:var(--text-muted);">Girl's Nakshatra</td>
+                        <td style="padding:var(--space-3); color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.girl_nakshatra', 'Girl\\'s Nakshatra') : 'Girl\\'s Nakshatra'}</td>
                         <td style="padding:var(--space-3); font-weight:bold;">${result.girlNakshatraName}</td>
                     </tr>
                     <tr>

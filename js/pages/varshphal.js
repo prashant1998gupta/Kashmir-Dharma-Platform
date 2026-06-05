@@ -156,32 +156,32 @@ const VarshphalPage = (() => {
 
         let html = `<div class="card card-glass" style="padding: var(--space-6);">
             <div class="no-print" style="text-align: right; margin-bottom: var(--space-4); display:flex; gap:var(--space-3); justify-content:flex-end;">
-                <button class="btn btn-primary" style="padding:var(--space-2) var(--space-5);" onclick="PDFGenerator.generatePDF('varshphalResult','Varshphal_Report_${targetYear}.pdf','Annual Varshphal Report ${targetYear}')">📥 Download PDF</button>
-                <button class="btn btn-outline" onclick="PDFGenerator.generatePDF('varshphalResult','Varshphal_Report_${targetYear}.pdf','Annual Varshphal Report ${targetYear}')">🖨️ Print</button>
+                <button class="btn btn-primary" style="padding:var(--space-2) var(--space-5);" onclick="PDFGenerator.generatePDF('varshphalResult','Varshphal_Report_${targetYear}.pdf','Annual Varshphal Report ${targetYear}')">📥 ${typeof I18n !== 'undefined' ? I18n.t('varshphal.download_pdf', 'Download PDF') : 'Download PDF'}</button>
+                <button class="btn btn-outline" onclick="PDFGenerator.generatePDF('varshphalResult','Varshphal_Report_${targetYear}.pdf','Annual Varshphal Report ${targetYear}')">🖨️ ${typeof I18n !== 'undefined' ? I18n.t('varshphal.print', 'Print') : 'Print'}</button>
             </div>
 
             <!-- ═══════ PAGE 1: TITLE & HIGHLIGHTS ═══════ -->
             <div class="report-section print-avoid-break" style="text-align:center; margin-bottom:var(--space-8); padding:var(--space-8) 0; border-bottom:2px solid var(--color-secondary);">
-                <div style="font-size:0.9rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:3px; margin-bottom:var(--space-2);">Kashmir Dharma Companion</div>
-                <h1 style="color:var(--color-secondary); font-size:2rem; margin-bottom:var(--space-4);">Annual Varshphal Report</h1>
-                <h2 style="color:var(--text-primary); font-size:1.5rem; margin-bottom:var(--space-2);">${name} — Year ${targetYear}</h2>
-                <p style="color:var(--text-muted);">Age: ${result.age} | Solar Return: ${rDateStr}</p>
-                <p style="color:var(--text-muted); font-size:var(--text-sm);">Generated on ${now.toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' })}</p>
+                <div style="font-size:0.9rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:3px; margin-bottom:var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('match.app_name', 'Kashmir Dharma Companion') : 'Kashmir Dharma Companion'}</div>
+                <h1 style="color:var(--color-secondary); font-size:2rem; margin-bottom:var(--space-4);">${typeof I18n !== 'undefined' ? I18n.t('varshphal.report_title', 'Annual Varshphal Report') : 'Annual Varshphal Report'}</h1>
+                <h2 style="color:var(--text-primary); font-size:1.5rem; margin-bottom:var(--space-2);">${name} — ${typeof I18n !== 'undefined' ? I18n.t('varshphal.year', 'Year') : 'Year'} ${targetYear}</h2>
+                <p style="color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('varshphal.age', 'Age:') : 'Age:'} ${result.age} | ${typeof I18n !== 'undefined' ? I18n.t('varshphal.solar_return', 'Solar Return:') : 'Solar Return:'} ${rDateStr}</p>
+                <p style="color:var(--text-muted); font-size:var(--text-sm);">${typeof I18n !== 'undefined' ? I18n.t('match.generated_on', 'Generated on') : 'Generated on'} ${now.toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' })}</p>
             </div>
 
             <!-- Key Highlights -->
             <div class="grid-3 print-avoid-break" style="margin-bottom:var(--space-8);">
                 <div style="background:rgba(255,255,255,0.05); padding:var(--space-4); border-radius:var(--radius-md); text-align:center; border:1px solid var(--surface-border);">
-                    <div style="color:var(--text-muted); font-size:var(--text-sm); margin-bottom:4px;">Muntha Rashi</div>
+                    <div style="color:var(--text-muted); font-size:var(--text-sm); margin-bottom:4px;">${typeof I18n !== 'undefined' ? I18n.t('varshphal.muntha_rashi', 'Muntha Rashi') : 'Muntha Rashi'}</div>
                     <div style="font-size:var(--text-xl); font-weight:bold; color:var(--color-primary);">${result.munthaRashiName}</div>
-                    <div style="font-size:var(--text-xs); color:var(--text-muted);">House ${result.munthaHouse}</div>
+                    <div style="font-size:var(--text-xs); color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('varshphal.house', 'House') : 'House'} ${result.munthaHouse}</div>
                 </div>
                 <div style="background:rgba(255,255,255,0.05); padding:var(--space-4); border-radius:var(--radius-md); text-align:center; border:1px solid var(--surface-border);">
-                    <div style="color:var(--text-muted); font-size:var(--text-sm); margin-bottom:4px;">Muntha Lord</div>
+                    <div style="color:var(--text-muted); font-size:var(--text-sm); margin-bottom:4px;">${typeof I18n !== 'undefined' ? I18n.t('varshphal.muntha_lord', 'Muntha Lord') : 'Muntha Lord'}</div>
                     <div style="font-size:var(--text-xl); font-weight:bold; color:var(--color-primary);">${result.munthaLord}</div>
                 </div>
                 <div style="background:rgba(255,255,255,0.05); padding:var(--space-4); border-radius:var(--radius-md); text-align:center; border:1px solid var(--color-secondary);">
-                    <div style="color:var(--text-muted); font-size:var(--text-sm); margin-bottom:4px; text-transform:uppercase;">Varsheshvara (Year Lord)</div>
+                    <div style="color:var(--text-muted); font-size:var(--text-sm); margin-bottom:4px; text-transform:uppercase;">${typeof I18n !== 'undefined' ? I18n.t('varshphal.varsheshvara', 'Varsheshvara (Year Lord)') : 'Varsheshvara (Year Lord)'}</div>
                     <div style="font-size:var(--text-xl); font-weight:bold; color:var(--color-secondary);">${result.yearLord}</div>
                 </div>
             </div>

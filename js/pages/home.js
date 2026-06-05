@@ -29,8 +29,8 @@ const HomePage = (() => {
                             <img src="img/inspiration/shiva.png" alt="Lord Shiva Meditation">
                         </div>
                         <div class="inspiration-text-content">
-                            <h3 class="inspiration-mantra" data-i18n="home.mantra">Om Namah Shivaya <br><span class="highlight" data-i18n="home.mantra_highlight">Har Har Mahadev</span></h3>
-                            <p class="inspiration-meaning" data-i18n="home.mantra_meaning">May the divine grace of Lord Shiva bring peace, wisdom, and strength to your spiritual journey.</p>
+                            <h3 class="inspiration-mantra" data-i18n="home.mantra">${typeof I18n !== 'undefined' ? I18n.t('home.mantra', 'Om Namah Shivaya') : 'Om Namah Shivaya'} <br><span class="highlight" data-i18n="home.mantra_highlight">${typeof I18n !== 'undefined' ? I18n.t('home.mantra_highlight', 'Har Har Mahadev') : 'Har Har Mahadev'}</span></h3>
+                            <p class="inspiration-meaning" data-i18n="home.mantra_meaning">${typeof I18n !== 'undefined' ? I18n.t('home.mantra_meaning', 'May the divine grace of Lord Shiva bring peace, wisdom, and strength to your spiritual journey.') : 'May the divine grace of Lord Shiva bring peace, wisdom, and strength to your spiritual journey.'}</p>
                         </div>
                     </div>
                 </section>
@@ -38,14 +38,14 @@ const HomePage = (() => {
                 <!-- Presence & Highlights -->
                 <div class="grid-2 reveal" style="gap: var(--space-6); align-items: start; margin-top: var(--space-4);">
                     <section id="homePresenceWidget">
-                        <h2 class="dharma-section-title" data-i18n="home.presence_title">Today's Presence</h2>
+                        <h2 class="dharma-section-title" data-i18n="home.presence_title">${typeof I18n !== 'undefined' ? I18n.t('home.presence_title', 'Today\\'s Presence') : 'Today\\'s Presence'}</h2>
                         <div class="presence-glass-card mt-4">
                             <div class="skeleton" style="height: 100px; width: 100%;"></div>
                         </div>
                     </section>
 
                     <section id="homeHighlightsWidget">
-                        <h2 class="dharma-section-title" data-i18n="home.highlights_title">Highlights</h2>
+                        <h2 class="dharma-section-title" data-i18n="home.highlights_title">${typeof I18n !== 'undefined' ? I18n.t('home.highlights_title', 'Highlights') : 'Highlights'}</h2>
                         <div class="highlight-list mt-4">
                             <div class="skeleton" style="height: 80px; border-radius: 8px;"></div>
                             <div class="skeleton" style="height: 80px; border-radius: 8px; margin-top: 12px;"></div>
@@ -54,7 +54,7 @@ const HomePage = (() => {
                 </div>
 
                 <section id="homeCosmicEnergyWidget" class="mb-8 reveal">
-                    <h2 class="dharma-section-title" data-i18n="home.cosmic_title">Current Cosmic Energy</h2>
+                    <h2 class="dharma-section-title" data-i18n="home.cosmic_title">${typeof I18n !== 'undefined' ? I18n.t('home.cosmic_title', 'Current Cosmic Energy') : 'Current Cosmic Energy'}</h2>
                     <div class="presence-glass-card mt-4" style="text-align: center; display: block; padding: var(--space-5);">
                         <div class="skeleton" style="height: 60px; width: 100%;"></div>
                     </div>

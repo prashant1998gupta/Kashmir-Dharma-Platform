@@ -50,19 +50,19 @@ const MuhuratPage = (() => {
             <!-- Personalization & Location -->
             <div class="grid-2 mb-8">
                 <div class="card card-glass" style="padding: var(--space-6); overflow: visible;">
-                    <h3 style="margin-bottom: var(--space-4)">👤 Personal Profile</h3>
+                    <h3 style="margin-bottom: var(--space-4)">👤 ${typeof I18n !== 'undefined' ? I18n.t('muhurat.personal_profile', 'Personal Profile') : 'Personal Profile'}</h3>
                     <p style="font-size: var(--text-sm); color: var(--text-muted); margin-bottom: var(--space-4)">
-                        Select a profile to personalize dates using Tara Bala and Chandra Bala (Optional).
+                        ${typeof I18n !== 'undefined' ? I18n.t('muhurat.personal_desc', 'Select a profile to personalize dates using Tara Bala and Chandra Bala (Optional).') : 'Select a profile to personalize dates using Tara Bala and Chandra Bala (Optional).'}
                     </p>
                     ${ProfileManager.renderProfileSelector('muhuratProfile', 'MuhuratPage.onProfileSelect')}
                 </div>
                 <div class="card card-glass" style="padding: var(--space-6); overflow: visible;">
-                    <h3 style="margin-bottom: var(--space-4)">📍 Exact Location</h3>
+                    <h3 style="margin-bottom: var(--space-4)">📍 ${typeof I18n !== 'undefined' ? I18n.t('muhurat.exact_location', 'Exact Location') : 'Exact Location'}</h3>
                     <p style="font-size: var(--text-sm); color: var(--text-muted); margin-bottom: var(--space-4)">
-                        Location is required to calculate accurate Choghadiya and Rahu Kalam.
+                        ${typeof I18n !== 'undefined' ? I18n.t('muhurat.location_desc', 'Location is required to calculate accurate Choghadiya and Rahu Kalam.') : 'Location is required to calculate accurate Choghadiya and Rahu Kalam.'}
                     </p>
                     <div class="form-group" style="position: relative; margin-bottom: 0;">
-                        <input type="text" class="form-input" id="m-city" placeholder="Search city (e.g. Srinagar)..." autocomplete="off">
+                        <input type="text" class="form-input" id="m-city" placeholder="${typeof I18n !== 'undefined' ? I18n.t('muhurat.search_city', 'Search city (e.g. Srinagar)...') : 'Search city (e.g. Srinagar)...'}" autocomplete="off">
                         <div id="m-city-results" class="autocomplete-results" style="display: none;"></div>
                     </div>
                 </div>
@@ -117,7 +117,7 @@ const MuhuratPage = (() => {
                     <div class="flex items-center gap-3">
                         <span style="font-size: 2rem">🙏</span>
                         <div>
-                            <h4 style="margin: 0 0 var(--space-2) 0">Scholar Guidance Recommended</h4>
+                            <h4 style="margin: 0 0 var(--space-2) 0">${typeof I18n !== 'undefined' ? I18n.t('muhurat.scholar_guidance', 'Scholar Guidance Recommended') : 'Scholar Guidance Recommended'}</h4>
                             <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0">
                                 ${muhuratData.disclaimer}
                             </p>
@@ -128,7 +128,7 @@ const MuhuratPage = (() => {
 
             <!-- General Guidelines -->
             <div class="mt-6">
-                <h3 style="margin-bottom: var(--space-4)">📋 General Guidelines</h3>
+                <h3 style="margin-bottom: var(--space-4)">📋 ${typeof I18n !== 'undefined' ? I18n.t('muhurat.general_guidelines', 'General Guidelines') : 'General Guidelines'}</h3>
                 ${Components.card(`
                     <ul style="list-style: none">
                         ${muhuratData.generalGuidelines.map(g => `
@@ -227,26 +227,26 @@ const MuhuratPage = (() => {
                 ${Components.ornamentalDivider('🌟')}
                 
                 <h2 style="margin-bottom: var(--space-2)">
-                    ${eventInfo.icon} Auspicious Dates for ${eventInfo.name}
+                    ${eventInfo.icon} ${typeof I18n !== 'undefined' ? I18n.t('muhurat.auspicious_dates_for', 'Auspicious Dates for') : 'Auspicious Dates for'} ${eventInfo.name}
                 </h2>
                 <p class="text-muted mb-6">
                     ${startDate.toLocaleDateString('en-IN')} — ${endDate.toLocaleDateString('en-IN')}
-                    · Found ${auspiciousDates.length} favorable date(s)
+                    · ${typeof I18n !== 'undefined' ? I18n.t('muhurat.found', 'Found') : 'Found'} ${auspiciousDates.length} ${typeof I18n !== 'undefined' ? I18n.t('muhurat.favorable_dates', 'favorable date(s)') : 'favorable date(s)'}
                 </p>
 
                 ${eventRecs ? `
                     ${Components.card(`
-                        <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">📝 Traditional Guidance</h4>
+                        <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">📝 ${typeof I18n !== 'undefined' ? I18n.t('muhurat.traditional_guidance', 'Traditional Guidance') : 'Traditional Guidance'}</h4>
                         <p style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-3)">${eventRecs.notes}</p>
                         <div class="flex gap-4 flex-wrap">
                             <div>
-                                <span class="text-muted" style="font-size: var(--text-xs)">FAVORABLE DAYS</span>
+                                <span class="text-muted" style="font-size: var(--text-xs)">${typeof I18n !== 'undefined' ? I18n.t('muhurat.favorable_days', 'FAVORABLE DAYS') : 'FAVORABLE DAYS'}</span>
                                 <div class="tag-group mt-2">
                                     ${eventRecs.goodDays.map(d => `<span class="tag active">${d}</span>`).join('')}
                                 </div>
                             </div>
                             <div>
-                                <span class="text-muted" style="font-size: var(--text-xs)">AVOID</span>
+                                <span class="text-muted" style="font-size: var(--text-xs)">${typeof I18n !== 'undefined' ? I18n.t('muhurat.avoid', 'AVOID') : 'AVOID'}</span>
                                 <div class="tag-group mt-2">
                                     ${eventRecs.avoidDays.map(d => `<span class="tag" style="border-color: rgba(139,26,26,0.3); color: var(--color-primary-light)">${d}</span>`).join('')}
                                 </div>
@@ -297,7 +297,7 @@ const MuhuratPage = (() => {
                                 <!-- Deep Scholarly Timings (Choghadiya & Rahu Kalam) -->
                                 ${ad.rahuKalam && ad.choghadiya ? `
                                     <div class="mt-4 pt-4" style="border-top: 1px solid var(--border-color)">
-                                        <h5 style="margin-bottom: var(--space-2); font-size: var(--text-xs); color: var(--text-muted); text-transform: uppercase;">Exact Daily Timings</h5>
+                                        <h5 style="margin-bottom: var(--space-2); font-size: var(--text-xs); color: var(--text-muted); text-transform: uppercase;">${typeof I18n !== 'undefined' ? I18n.t('muhurat.exact_timings', 'Exact Daily Timings') : 'Exact Daily Timings'}</h5>
                                         <div class="flex items-center gap-4 flex-wrap">
                                             <div style="flex: 1; min-width: 200px;">
                                                 <div style="display: flex; height: 8px; border-radius: 4px; overflow: hidden;">
@@ -306,18 +306,18 @@ const MuhuratPage = (() => {
                                                     `).join('')}
                                                 </div>
                                                 <div class="flex justify-between mt-1" style="font-size: 10px; color: var(--text-muted)">
-                                                    <span>Sunrise</span>
-                                                    <span>Sunset</span>
+                                                    <span>${typeof I18n !== 'undefined' ? I18n.t('muhurat.sunrise', 'Sunrise') : 'Sunrise'}</span>
+                                                    <span>${typeof I18n !== 'undefined' ? I18n.t('muhurat.sunset', 'Sunset') : 'Sunset'}</span>
                                                 </div>
                                             </div>
                                             <div style="font-size: var(--text-xs); background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.2);">
-                                                <strong>🚫 Rahu Kalam:</strong> ${ad.rahuKalam.start.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})} - ${ad.rahuKalam.end.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
+                                                <strong>🚫 ${typeof I18n !== 'undefined' ? I18n.t('muhurat.rahu_kalam', 'Rahu Kalam') : 'Rahu Kalam'}:</strong> ${ad.rahuKalam.start.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})} - ${ad.rahuKalam.end.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
                                             </div>
                                         </div>
                                         
                                         <!-- Best Time Windows -->
                                         <div class="mt-3 tag-group">
-                                            <span style="font-size: 10px; color: var(--text-muted); margin-right: 4px;">Best Hours:</span>
+                                            <span style="font-size: 10px; color: var(--text-muted); margin-right: 4px;">${typeof I18n !== 'undefined' ? I18n.t('muhurat.best_hours', 'Best Hours') : 'Best Hours'}:</span>
                                             ${ad.choghadiya.filter(c => c.isGood).map(c => `
                                                 <span class="tag" style="font-size: 10px; padding: 2px 6px; border-color: var(--color-secondary); color: var(--color-secondary)">
                                                     ${c.name}: ${c.start.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}

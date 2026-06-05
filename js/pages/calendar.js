@@ -235,44 +235,43 @@ const CalendarPage = (() => {
 
                 <p style="margin-bottom: var(--space-6)">${festival.description}</p>
 
-                ${festival.historicalSignificance ? `
-                    <h4 style="margin-bottom: var(--space-2); color: var(--color-secondary)">📜 Historical Significance</h4>
-                    <p style="margin-bottom: var(--space-6)">${festival.historicalSignificance}</p>
-                ` : ''}
+                <div class="grid-2">
+                    <div>
+                        <h4 style="margin-bottom: var(--space-2); color: var(--color-secondary)">📜 ${typeof I18n !== 'undefined' ? I18n.t('calendar.history', 'Historical Significance') : 'Historical Significance'}</h4>
+                        <p style="margin-bottom: var(--space-6)">${festival.historicalSignificance}</p>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: var(--space-2); color: var(--color-secondary)">🕉️ ${typeof I18n !== 'undefined' ? I18n.t('calendar.spiritual', 'Spiritual Significance') : 'Spiritual Significance'}</h4>
+                        <p style="margin-bottom: var(--space-6)">${festival.spiritualSignificance}</p>
+                    </div>
+                </div>
 
-                ${festival.spiritualSignificance ? `
-                    <h4 style="margin-bottom: var(--space-2); color: var(--color-secondary)">🕉️ Spiritual Significance</h4>
-                    <p style="margin-bottom: var(--space-6)">${festival.spiritualSignificance}</p>
-                ` : ''}
-
-                ${festival.ritualProcedure ? `
-                    <h4 style="margin-bottom: var(--space-2); color: var(--color-secondary)">📿 Ritual Procedure</h4>
-                    <p style="margin-bottom: var(--space-6)">${festival.ritualProcedure}</p>
-                ` : ''}
+                <h4 style="margin-bottom: var(--space-2); color: var(--color-secondary)">📿 ${typeof I18n !== 'undefined' ? I18n.t('calendar.ritual', 'Ritual Procedure') : 'Ritual Procedure'}</h4>
+                <p style="margin-bottom: var(--space-6)">${festival.ritualProcedure}</p>
 
                 ${festival.preparations && festival.preparations.length ? `
-                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">📋 Preparations Required</h4>
-                    ${Components.checklist(festival.preparations, `festival-prep-${id}`)}
+                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">📋 ${typeof I18n !== 'undefined' ? I18n.t('calendar.prep', 'Preparations Required') : 'Preparations Required'}</h4>
+                    ${Components.checklist(festival.preparations, `fest-prep-${id}`)}
                     <div style="margin-bottom: var(--space-6)"></div>
                 ` : ''}
 
                 ${festival.traditionalFoods && festival.traditionalFoods.length ? `
-                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">🍲 Traditional Foods</h4>
+                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">🍲 ${typeof I18n !== 'undefined' ? I18n.t('calendar.foods', 'Traditional Foods') : 'Traditional Foods'}</h4>
                     <div class="tag-group mb-6">
                         ${festival.traditionalFoods.map(f => `<span class="tag">${f}</span>`).join('')}
                     </div>
                 ` : ''}
 
                 ${festival.prayers && festival.prayers.length ? `
-                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">🙏 Important Prayers</h4>
+                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">🙏 ${typeof I18n !== 'undefined' ? I18n.t('calendar.prayers', 'Important Prayers') : 'Important Prayers'}</h4>
                     <ul style="list-style: none; margin-bottom: var(--space-6)">
                         ${festival.prayers.map(p => `<li style="padding: var(--space-1) 0; color: var(--text-secondary)">• ${p}</li>`).join('')}
                     </ul>
                 ` : ''}
 
-                ${festival.faqs && festival.faqs.length ? `
-                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">❓ Frequently Asked Questions</h4>
-                    ${Components.accordion(festival.faqs, `faq-${id}`)}
+                ${festival.faq && festival.faq.length ? `
+                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">❓ ${typeof I18n !== 'undefined' ? I18n.t('rituals.faq', 'Frequently Asked Questions') : 'Frequently Asked Questions'}</h4>
+                    ${Components.accordion(festival.faq, `fest-faq-${id}`)}
                 ` : ''}
             </div>
         `;
@@ -333,7 +332,7 @@ const CalendarPage = (() => {
         }
         
         if (!hDate || !auspicious) {
-            panel.innerHTML = `<p class="text-muted" style="text-align: center; padding: var(--space-8)">Panchang calculations unavailable</p>`;
+            panel.innerHTML = `<p class="text-muted" style="text-align: center; padding: var(--space-8)">${typeof I18n !== 'undefined' ? I18n.t('calendar.panchang_unavail', 'Panchang calculations unavailable') : 'Panchang calculations unavailable'}</p>`;
             return;
         }
         

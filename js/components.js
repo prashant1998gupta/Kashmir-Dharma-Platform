@@ -250,7 +250,7 @@ const Components = (() => {
             </div>
             <p style="font-size: var(--text-sm); margin-bottom: var(--space-3)">${ritual.purpose || ritual.description}</p>
             <button class="btn btn-outline btn-sm" onclick="RitualsPage.showRitualDetail('${ritual.id}')">
-                Learn More →
+                ${typeof I18n !== 'undefined' ? I18n.t('common.learn_more', 'Learn More') : 'Learn More'} →
             </button>
         `, { interactive: true });
     }

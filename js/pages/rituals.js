@@ -111,49 +111,51 @@ const RitualsPage = (() => {
                     </div>
                 </div>
 
-                ${ritual.audioUrl ? Components.audioPlayer(ritual.audioUrl, 'Listen to Mantra/Chant', ritual.audioSubtitle || 'Authentic pronunciation and recitation') : ''}
+                ${ritual.audioUrl ? Components.audioPlayer(ritual.audioUrl, typeof I18n !== 'undefined' ? I18n.t('rituals.listen', 'Listen to Mantra/Chant') : 'Listen to Mantra/Chant', ritual.audioSubtitle || (typeof I18n !== 'undefined' ? I18n.t('rituals.audio_subtitle', 'Authentic pronunciation and recitation') : 'Authentic pronunciation and recitation')) : ''}
 
                 <p style="margin-bottom: var(--space-6)">${ritual.purpose || ritual.description}</p>
 
-                ${ritual.history ? `
-                    <h4 style="margin-bottom: var(--space-2); color: var(--color-secondary)">📜 History</h4>
-                    <p style="margin-bottom: var(--space-6)">${ritual.history}</p>
-                ` : ''}
+                <div class="grid-2">
+                    <div>
+                        <h4 style="margin-bottom: var(--space-2); color: var(--color-secondary)">📜 ${typeof I18n !== 'undefined' ? I18n.t('rituals.history', 'History') : 'History'}</h4>
+                        <p style="margin-bottom: var(--space-6)">${ritual.history}</p>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: var(--space-2); color: var(--color-secondary)">🕉️ ${typeof I18n !== 'undefined' ? I18n.t('rituals.significance', 'Significance') : 'Significance'}</h4>
+                        <p style="margin-bottom: var(--space-6)">${ritual.significance}</p>
+                    </div>
+                </div>
 
-                ${ritual.significance ? `
-                    <h4 style="margin-bottom: var(--space-2); color: var(--color-secondary)">🕉️ Significance</h4>
-                    <p style="margin-bottom: var(--space-6)">${ritual.significance}</p>
-                ` : ''}
+                <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">📦 ${typeof I18n !== 'undefined' ? I18n.t('rituals.materials', 'Required Materials') : 'Required Materials'}</h4>
+                <div class="tag-group mb-6">
+                    ${ritual.materials.map(m => `<span class="tag">${m}</span>`).join('')}
+                </div>
 
-                ${ritual.materials && ritual.materials.length ? `
-                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">📦 Required Materials</h4>
-                    ${Components.checklist(ritual.materials, `ritual-mat-${id}`)}
-                    <div style="margin-bottom: var(--space-6)"></div>
-                ` : ''}
+                <h4 style="margin-bottom: var(--space-4); color: var(--color-secondary)">📋 ${typeof I18n !== 'undefined' ? I18n.t('rituals.steps', 'Step-by-Step Process') : 'Step-by-Step Process'}</h4>
+                <div style="margin-bottom: var(--space-6)">
+                    ${ritual.steps.map((s, i) => `
+                        <div class="flex gap-4 mb-4" style="background: var(--bg-tertiary); padding: var(--space-3); border-radius: var(--radius-md);">
+                            <div style="background: var(--color-secondary); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: var(--text-xs); flex-shrink: 0;">${i + 1}</div>
+                            <div>${s}</div>
+                        </div>
+                    `).join('')}
+                </div>
 
-                ${ritual.steps && ritual.steps.length ? `
-                    <h4 style="margin-bottom: var(--space-4); color: var(--color-secondary)">📋 Step-by-Step Process</h4>
-                    ${Components.timeline(ritual.steps)}
-                    <div style="margin-bottom: var(--space-6)"></div>
-                ` : ''}
-
-                ${ritual.variations && ritual.variations.length ? `
-                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">🔄 Regional Variations</h4>
-                    <ul style="list-style: none; margin-bottom: var(--space-6)">
-                        ${ritual.variations.map(v => `<li style="padding: var(--space-1) 0; color: var(--text-secondary)">• ${v}</li>`).join('')}
-                    </ul>
-                ` : ''}
+                <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">🔄 ${typeof I18n !== 'undefined' ? I18n.t('rituals.variations', 'Regional Variations') : 'Regional Variations'}</h4>
+                <ul style="list-style: none; margin-bottom: var(--space-6)">
+                    ${ritual.variations.map(v => `<li style="padding: var(--space-1) 0; color: var(--text-secondary)">• ${v}</li>`).join('')}
+                </ul>
 
                 ${ritual.misconceptions && ritual.misconceptions.length ? `
-                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">⚠️ Common Misconceptions</h4>
+                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">⚠️ ${typeof I18n !== 'undefined' ? I18n.t('rituals.misconceptions', 'Common Misconceptions') : 'Common Misconceptions'}</h4>
                     <ul style="list-style: none; margin-bottom: var(--space-6)">
                         ${ritual.misconceptions.map(m => `<li style="padding: var(--space-1) 0; color: var(--text-secondary)">❌ ${m}</li>`).join('')}
                     </ul>
                 ` : ''}
 
-                ${ritual.faqs && ritual.faqs.length ? `
-                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">❓ Frequently Asked Questions</h4>
-                    ${Components.accordion(ritual.faqs, `ritual-faq-${id}`)}
+                ${ritual.faq && ritual.faq.length > 0 ? `
+                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">❓ ${typeof I18n !== 'undefined' ? I18n.t('rituals.faq', 'Frequently Asked Questions') : 'Frequently Asked Questions'}</h4>
+                    ${Components.accordion(ritual.faq, `ritual-faq-${id}`)}
                 ` : ''}
             </div>
         `;

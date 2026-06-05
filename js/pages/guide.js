@@ -152,7 +152,7 @@ const GuidePage = (() => {
 
             if (answer.sources.length > 0) {
                 responseHtml += `<div style="margin-top: var(--space-4); padding-top: var(--space-3); border-top: 1px solid var(--surface-border)">`;
-                responseHtml += `<div style="font-size: var(--text-xs); color: var(--text-muted); margin-bottom: var(--space-2)">Related Topics:</div>`;
+                responseHtml += `<div style="font-size: var(--text-xs); color: var(--text-muted); margin-bottom: var(--space-2)">${typeof I18n !== 'undefined' ? I18n.t('guide.related', 'Related Topics:') : 'Related Topics:'}</div>`;
                 responseHtml += `<div class="flex gap-2 flex-wrap">`;
                 answer.sources.forEach(s => {
                     responseHtml += `<a href="#${s.page}" class="tag">${s.icon} ${s.title}</a>`;
@@ -162,7 +162,7 @@ const GuidePage = (() => {
 
             if (answer.suggestions.length > 0) {
                 responseHtml += `<div style="margin-top: var(--space-3)">`;
-                responseHtml += `<div style="font-size: var(--text-xs); color: var(--text-muted); margin-bottom: var(--space-2)">Try asking:</div>`;
+                responseHtml += `<div style="font-size: var(--text-xs); color: var(--text-muted); margin-bottom: var(--space-2)">${typeof I18n !== 'undefined' ? I18n.t('guide.try_asking', 'Try asking:') : 'Try asking:'}</div>`;
                 answer.suggestions.forEach(s => {
                     responseHtml += `<button class="btn btn-ghost btn-sm" style="font-size: var(--text-xs)" onclick="GuidePage.askQuestion('${s.replace(/'/g, "\\'")}')">💬 ${s}</button>`;
                 });
