@@ -393,19 +393,62 @@ const CalendarCalc = (() => {
         const auspiciousNakshatras = [0, 2, 3, 6, 7, 10, 11, 12, 16, 21, 24, 25, 26];
         const isNakshatraGood = auspiciousNakshatras.includes(nakshatra.index);
 
+        const TITHI_LORE = {
+            'Pratipada': 'ruled by Agni, bringing energy and illumination.',
+            'Dwitiya': 'ruled by Brahma, symbolizing creation and strong foundations.',
+            'Tritiya': 'ruled by Gauri (Parvati), blessing the endeavor with longevity, prosperity, and divine feminine grace.',
+            'Panchami': 'ruled by the Nagas, offering protection and removing hidden obstacles.',
+            'Saptami': 'ruled by Surya (the Sun), granting vitality, leadership, and glowing success.',
+            'Dashami': 'ruled by Yama, bringing discipline, order, and mastery over one\'s environment.',
+            'Ekadashi': 'a highly sacred day dedicated to Lord Vishnu, bringing immense purity, spiritual merit, and peaceful preservation.',
+            'Trayodashi': 'dedicated to Lord Shiva (Pradosha), excellent for overcoming past karmas and achieving spiritual triumphs.',
+            'Purnima': 'the Full Moon, radiating maximum lunar energy, fullness, and absolute completion.',
+            'Chaturthi': 'ruled by Ganesha; while good for overcoming enemies, it is generally considered a "Rikta" (empty) tithi for material gains.',
+            'Ashtami': 'ruled by Shiva in his destructive form; a day of transformation rather than material beginnings.',
+            'Navami': 'ruled by Durga; an aggressive day best suited for overcoming adversaries rather than peaceful events.',
+            'Chaturdashi': 'a fierce day ruled by Kali, avoided for gentle or long-term auspicious activities.',
+            'Amavasya': 'the New Moon, a day of zero lunar energy, reserved for ancestral rites rather than new worldly beginnings.'
+        };
+
+        const DAY_LORE = {
+            'Monday': 'ruled by the Moon (Chandra) and Lord Shiva, bringing emotional harmony, steady flow, and gentle grace.',
+            'Wednesday': 'ruled by Mercury (Budha), enhancing intellect, communication, and swift, smooth execution.',
+            'Thursday': 'ruled by Jupiter (Brihaspati), the Guru of the Gods, bestowing supreme wisdom, immense wealth, and divine protection.',
+            'Friday': 'ruled by Venus (Shukra), the planet of beauty, bringing luxury, comfort, artistic flair, and harmonious relationships.',
+            'Sunday': 'ruled by the Sun (Surya), bringing steadfast authority, but can be too fiery for gentle events.',
+            'Tuesday': 'ruled by Mars (Mangala), bringing aggressive, fiery energy that is generally avoided for peaceful milestones.',
+            'Saturday': 'ruled by Saturn (Shani), bringing delays, slow karmic lessons, and heavy energy, usually avoided for swift success.'
+        };
+
+        const NAK_LORE = {
+            'Rohini': 'a fixed and fruitful star ruled by Brahma, perfect for establishing long-lasting, stable roots.',
+            'Mrigashira': 'a gentle, seeking star bringing curiosity, pleasant experiences, and joyous outcomes.',
+            'Uttara Phalguni': 'ruled by Aryaman, bringing marital bliss, deep patronage, and lasting social success.',
+            'Hasta': 'ruled by Savitar (the rising Sun), bringing dexterity, manifestation, and the ability to grasp success.',
+            'Chitra': 'the star of opportunity and beautiful design, bringing aesthetic brilliance to the endeavor.',
+            'Anuradha': 'the star of success and friendship, fostering devotion and cooperative triumphs.',
+            'Uttara Ashadha': 'the universal star of undisputed victory, guaranteeing long-lasting, unshakeable success.',
+            'Revati': 'the final star ruled by Pushan (the nourisher), offering sweet, gentle, and wealthy completions to new beginnings.',
+            'Ashwini': 'the star of the divine physicians, bringing swift, miraculous energy and rapid healing or movement.',
+            'Pushya': 'the most nourishing and spiritually auspicious of all stars, bringing absolute divine care and flourishing growth.'
+        };
+
         let score = 0;
         let maxScore = 9;
         
-        if (isTithiGood) { score += 3; reasons.push(`✅ ${tithi.name} is highly favorable`); }
-        else if (isTithiBad) { score -= 3; reasons.push(`🚫 ${tithi.name} should be avoided`); }
-        else { reasons.push(`⚠️ ${tithi.name} is neutral`); }
+        let tLore = TITHI_LORE[tithi.name] || 'bringing neutral lunar energy.';
+        if (isTithiGood) { score += 3; reasons.push(`✅ <strong>${tithi.name} is highly favorable:</strong> This lunar day is ${tLore}`); }
+        else if (isTithiBad) { score -= 3; reasons.push(`🚫 <strong>${tithi.name} should be avoided:</strong> This is ${tLore}`); }
+        else { reasons.push(`⚠️ <strong>${tithi.name} is neutral:</strong> It provides average energy for this event.`); }
         
-        if (isNakshatraGood) { score += 2; reasons.push(`✅ ${nakshatra.name} nakshatra is favorable`); }
-        else { reasons.push(`⚠️ ${nakshatra.name} nakshatra is neutral`); }
+        let nLore = NAK_LORE[nakshatra.name] || 'providing standard cosmic influences.';
+        if (isNakshatraGood) { score += 2; reasons.push(`✅ <strong>${nakshatra.name} nakshatra is favorable:</strong> It is known as ${nLore}`); }
+        else { reasons.push(`⚠️ <strong>${nakshatra.name} nakshatra is neutral:</strong> ${nLore}`); }
         
-        if (isDayGood) { score += 3; reasons.push(`✅ ${dayName} is an excellent day`); }
-        else if (isDayBad) { score -= 3; reasons.push(`🚫 ${dayName} is traditionally avoided`); }
-        else { reasons.push(`⚠️ ${dayName} is acceptable`); }
+        let dLore = DAY_LORE[dayName] || 'providing standard solar energy.';
+        if (isDayGood) { score += 3; reasons.push(`✅ <strong>${dayName} is an excellent day:</strong> It is ${dLore}`); }
+        else if (isDayBad) { score -= 3; reasons.push(`🚫 <strong>${dayName} is traditionally avoided:</strong> It is ${dLore}`); }
+        else { reasons.push(`⚠️ <strong>${dayName} is acceptable:</strong> It provides balanced energy for the occasion.`); }
         
         if (tithi.pakshaIndex === 0) { score += 1; }
 
