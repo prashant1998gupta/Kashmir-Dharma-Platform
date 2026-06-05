@@ -233,7 +233,7 @@ const MatchingPage = (() => {
             <!-- Export Buttons -->
             <div class="no-print" style="text-align: right; margin-bottom: var(--space-4); display:flex; gap:var(--space-3); justify-content:flex-end;">
                 <button class="btn btn-primary" style="padding:var(--space-2) var(--space-5);" onclick="PDFGenerator.generatePDF('matchResult','Kundali_Matching_Report.pdf','Kundali Matching Report')">📥 Download PDF</button>
-                <button class="btn btn-outline" onclick="window.print()">🖨️ Print</button>
+                <button class="btn btn-outline" onclick="PDFGenerator.generatePDF('matchResult','Kundali_Matching_Report.pdf','Kundali Matching Report')">🖨️ Print</button>
             </div>
 
             <!-- ═══════ PAGE 1: TITLE & SUMMARY ═══════ -->

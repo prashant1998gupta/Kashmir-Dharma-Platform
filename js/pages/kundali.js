@@ -71,7 +71,7 @@ const KundaliPage = (() => {
                             <div style="text-align: center; margin-bottom: var(--space-6)">
                                 <h2 id="res-name" style="margin-bottom: var(--space-2); color: var(--color-secondary)"></h2>
                                 <p id="res-details" style="font-size: var(--text-sm); color: var(--text-secondary); margin-bottom: var(--space-4)"></p>
-                                <button class="btn btn-outline" style="margin-bottom: var(--space-4);" onclick="window.print()">
+                                <button class="btn btn-outline" style="margin-bottom: var(--space-4);" onclick="PDFGenerator.generatePDF('kundaliResult', 'Kundali_Report.pdf', 'Kundali Report')">
                                     ${printText}
                                 </button>
                                 

@@ -157,7 +157,7 @@ const VarshphalPage = (() => {
         let html = `<div class="card card-glass" style="padding: var(--space-6);">
             <div class="no-print" style="text-align: right; margin-bottom: var(--space-4); display:flex; gap:var(--space-3); justify-content:flex-end;">
                 <button class="btn btn-primary" style="padding:var(--space-2) var(--space-5);" onclick="PDFGenerator.generatePDF('varshphalResult','Varshphal_Report_${targetYear}.pdf','Annual Varshphal Report ${targetYear}')">📥 Download PDF</button>
-                <button class="btn btn-outline" onclick="window.print()">🖨️ Print</button>
+                <button class="btn btn-outline" onclick="PDFGenerator.generatePDF('varshphalResult','Varshphal_Report_${targetYear}.pdf','Annual Varshphal Report ${targetYear}')">🖨️ Print</button>
             </div>
 
             <!-- ═══════ PAGE 1: TITLE & HIGHLIGHTS ═══════ -->

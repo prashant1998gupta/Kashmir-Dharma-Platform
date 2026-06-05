@@ -12,132 +12,38 @@ const PDFGenerator = (() => {
      * @param {string} reportTitle - Title shown in PDF metadata
      */
     async function generatePDF(containerId, fileName, reportTitle) {
-        if (typeof jspdf === 'undefined' || typeof html2canvas === 'undefined') {
-            Components.showToast('PDF library loading... Please try again in a moment.', 'error');
-            return;
-        }
-
         const container = document.getElementById(containerId);
         if (!container) {
-            Components.showToast('Report not found. Please generate the report first.', 'error');
+            if (typeof Components !== 'undefined') {
+                Components.showToast('Report not found. Please generate the report first.', 'error');
+            }
             return;
         }
 
-        // Show loading toast
-        Components.showToast('Generating PDF... Please wait.', 'info');
-
         try {
-            // Temporarily apply print-friendly styles
-            container.classList.add('pdf-rendering');
-            document.body.classList.add('pdf-export-mode');
-
-            // Wait for styles to apply
-            await new Promise(r => setTimeout(r, 200));
-
-            const { jsPDF } = jspdf;
-            const pdf = new jsPDF({
-                orientation: 'portrait',
-                unit: 'mm',
-                format: 'a4'
-            });
-
-            const pageWidth = pdf.internal.pageSize.getWidth();
-            const pageHeight = pdf.internal.pageSize.getHeight();
-            const margin = 10;
-            const contentWidth = pageWidth - (margin * 2);
-
-            // Find all report sections
-            const sections = container.querySelectorAll('.report-section, .print-page-break + *');
+            // Set an attribute on body so CSS can isolate the exact container being printed
+            document.body.setAttribute('data-print-target', containerId);
             
-            // If no sections found, capture the entire container
-            const elements = sections.length > 0 ? 
-                Array.from(container.children).filter(el => el.offsetHeight > 0) : [container];
-
-            let isFirstPage = true;
-
-            for (let i = 0; i < elements.length; i++) {
-                const el = elements[i];
-                
-                // Skip empty elements and page breaks
-                if (el.classList.contains('print-page-break') || el.classList.contains('no-print') || el.offsetHeight < 5) continue;
-
-                const canvas = await html2canvas(el, {
-                    scale: 2,
-                    useCORS: true,
-                    logging: false,
-                    backgroundColor: '#FFFFFF',
-                    windowWidth: 800,
-                    onclone: (clonedDoc) => {
-                        // Force white background on cloned elements
-                        const clonedEl = clonedDoc.getElementById(el.id) || clonedDoc.body;
-                        clonedEl.style.background = '#FFFFFF';
-                        clonedEl.style.color = '#1a1a1a';
-                        // Force all text to be dark
-                        clonedEl.querySelectorAll('*').forEach(child => {
-                            child.style.color = child.style.color || '#1a1a1a';
-                        });
-                    }
-                });
-
-                const imgData = canvas.toDataURL('image/jpeg', 0.92);
-                const imgWidth = contentWidth;
-                const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-                // If image is taller than one page, split it
-                let yPos = margin;
-                let remainingHeight = imgHeight;
-                let sourceY = 0;
-
-                while (remainingHeight > 0) {
-                    if (!isFirstPage) {
-                        pdf.addPage();
-                    }
-                    isFirstPage = false;
-
-                    const availableHeight = pageHeight - (margin * 2);
-                    const sliceHeight = Math.min(remainingHeight, availableHeight);
-
-                    // Calculate source coordinates for slicing
-                    const sourceSliceHeight = (sliceHeight / imgHeight) * canvas.height;
-                    
-                    // Create a temp canvas for the slice
-                    const tempCanvas = document.createElement('canvas');
-                    tempCanvas.width = canvas.width;
-                    tempCanvas.height = sourceSliceHeight;
-                    const ctx = tempCanvas.getContext('2d');
-                    ctx.drawImage(canvas, 0, sourceY, canvas.width, sourceSliceHeight, 0, 0, canvas.width, sourceSliceHeight);
-
-                    const sliceData = tempCanvas.toDataURL('image/jpeg', 0.92);
-                    pdf.addImage(sliceData, 'JPEG', margin, margin, imgWidth, sliceHeight);
-
-                    // Add footer
-                    pdf.setFontSize(8);
-                    pdf.setTextColor(150, 150, 150);
-                    pdf.text('Kashmir Dharma Companion — Preserving Heritage Through Technology', pageWidth / 2, pageHeight - 5, { align: 'center' });
-
-                    sourceY += sourceSliceHeight;
-                    remainingHeight -= sliceHeight;
-                }
-            }
-
-            // Set PDF metadata
-            pdf.setProperties({
-                title: reportTitle,
-                subject: 'Vedic Astrology Report',
-                author: 'Kashmir Dharma Companion',
-                creator: 'Kashmir Dharma Companion'
-            });
-
-            // Save
-            pdf.save(fileName);
-            Components.showToast('PDF downloaded successfully!', 'success');
-
+            // Temporarily set document title to control the default PDF filename
+            const originalTitle = document.title;
+            document.title = fileName.replace('.pdf', '');
+            
+            // Allow browser to apply styles before printing
+            await new Promise(r => setTimeout(r, 100));
+            
+            // Open native print dialog
+            window.print();
+            
+            // Restore title
+            document.title = originalTitle;
+            
         } catch (e) {
-            console.error('PDF generation error:', e);
-            Components.showToast('PDF generation failed. Try Print/Save as PDF instead.', 'error');
+            console.error('Print error:', e);
+            if (typeof Components !== 'undefined') {
+                Components.showToast('Print failed.', 'error');
+            }
         } finally {
-            container.classList.remove('pdf-rendering');
-            document.body.classList.remove('pdf-export-mode');
+            document.body.removeAttribute('data-print-target');
         }
     }
 
