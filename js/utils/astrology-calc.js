@@ -35,7 +35,7 @@ const AstroCalc = (() => {
      * Get exact tropical longitude of a planet using Astronomy Engine (Geocentric)
      */
     function getPlanetLongitude(body, date) {
-        if (typeof Astronomy === 'undefined') return 0;
+        if (typeof Astronomy === 'undefined') throw new Error("Astronomy Engine library is not loaded. Please check your internet connection.");
         // Get the geocentric vector, then convert to ecliptic longitude
         const geoVec = Astronomy.GeoVector(body, date, true);
         const ecliptic = Astronomy.Ecliptic(geoVec);
@@ -69,7 +69,7 @@ const AstroCalc = (() => {
      * Based on user's exact geographical coordinates and time
      */
     function calculateExactLagna(date, lat, lon, ayanamsa) {
-        if (typeof Astronomy === 'undefined') return 0;
+        if (typeof Astronomy === 'undefined') throw new Error("Astronomy Engine library is not loaded. Please check your internet connection.");
         
         // Greenwich Apparent Sidereal Time (in hours)
         const gast = Astronomy.SiderealTime(date);
@@ -139,64 +139,45 @@ const AstroCalc = (() => {
         };
     }
 
-    function getNavamsa(siderealLon) {
+    function getVargaRashi(siderealLon, divisions, startRashiLogic) {
         let normalized = siderealLon % 360;
         if (normalized < 0) normalized += 360;
         const rashi = Math.floor(normalized / 30) + 1;
         const rashiDeg = normalized % 30;
-        const navamsaSize = 3 + (20/60);
-        const navamsaIndex = Math.floor(rashiDeg / navamsaSize);
+        const size = 30 / divisions;
+        const index = Math.floor(rashiDeg / size);
         
-        let startRashi = 1;
-        if (rashi % 4 === 1) startRashi = 1;
-        else if (rashi % 4 === 2) startRashi = 10;
-        else if (rashi % 4 === 3) startRashi = 7;
-        else if (rashi % 4 === 0) startRashi = 4;
+        let startRashi = startRashiLogic(rashi);
         
-        let navamsaRashi = startRashi + navamsaIndex;
-        if (navamsaRashi > 12) navamsaRashi = navamsaRashi % 12;
-        if (navamsaRashi === 0) navamsaRashi = 12;
-        return navamsaRashi;
+        let dRashi = startRashi + index;
+        if (dRashi > 12) dRashi = dRashi % 12;
+        if (dRashi === 0) dRashi = 12;
+        return dRashi;
+    }
+
+    function getNavamsa(siderealLon) {
+        return getVargaRashi(siderealLon, 9, (rashi) => {
+            if (rashi % 4 === 1) return 1;
+            if (rashi % 4 === 2) return 10;
+            if (rashi % 4 === 3) return 7;
+            return 4;
+        });
     }
 
     function getDasamsa(siderealLon) {
-        let normalized = siderealLon % 360;
-        if (normalized < 0) normalized += 360;
-        const rashi = Math.floor(normalized / 30) + 1;
-        const rashiDeg = normalized % 30;
-        const size = 3.0; // 30 / 10
-        const index = Math.floor(rashiDeg / size);
-        
-        let startRashi = rashi;
-        if (rashi % 2 === 0) {
-            startRashi = rashi + 8; // 9th from it: rashi + 9 - 1
-            if (startRashi > 12) startRashi -= 12;
-        }
-        
-        let dRashi = startRashi + index;
-        if (dRashi > 12) dRashi = dRashi % 12;
-        if (dRashi === 0) dRashi = 12;
-        return dRashi;
+        return getVargaRashi(siderealLon, 10, (rashi) => {
+            if (rashi % 2 === 1) return rashi; // Odd signs start from themselves
+            let start = rashi + 8; // Even signs start from 9th from themselves
+            return start > 12 ? start - 12 : start;
+        });
     }
 
     function getSaptamsa(siderealLon) {
-        let normalized = siderealLon % 360;
-        if (normalized < 0) normalized += 360;
-        const rashi = Math.floor(normalized / 30) + 1;
-        const rashiDeg = normalized % 30;
-        const size = 30 / 7;
-        const index = Math.floor(rashiDeg / size);
-        
-        let startRashi = rashi;
-        if (rashi % 2 === 0) {
-            startRashi = rashi + 6; // 7th from it: rashi + 7 - 1
-            if (startRashi > 12) startRashi -= 12;
-        }
-        
-        let dRashi = startRashi + index;
-        if (dRashi > 12) dRashi = dRashi % 12;
-        if (dRashi === 0) dRashi = 12;
-        return dRashi;
+        return getVargaRashi(siderealLon, 7, (rashi) => {
+            if (rashi % 2 === 1) return rashi; // Odd signs start from themselves
+            let start = rashi + 6; // Even signs start from 7th from themselves
+            return start > 12 ? start - 12 : start;
+        });
     }
 
     function formatDegree(lon) {
@@ -406,7 +387,7 @@ const AstroCalc = (() => {
         let tithiName = `Tithi ${tithiIndex} (${isShukla ? 'Shukla Paksha' : 'Krishna Paksha'})`;
         
         let sum = (moonLon + sunLon) % 360;
-        let yogaIndex = Math.floor(sum / 13.3333) + 1;
+        let yogaIndex = Math.floor(sum / (40 / 3)) + 1;
         
         let karanaIndex = Math.floor(diff / 6) + 1;
         
@@ -480,6 +461,9 @@ const AstroCalc = (() => {
      * Generate the complete Kundali chart data
      */
     function generateKundali(birthDate, birthTime, cityObj) {
+        if (!birthDate || !birthTime || !cityObj || typeof cityObj.lat === 'undefined') {
+            throw new Error("Invalid input data for Kundali generation.");
+        }
         const [hh, mm] = birthTime.split(':').map(Number);
         const [year, month, day] = birthDate.split('-').map(Number);
         const utcMs = Date.UTC(year, month - 1, day, hh, mm) - (cityObj.tz * 3600000);
