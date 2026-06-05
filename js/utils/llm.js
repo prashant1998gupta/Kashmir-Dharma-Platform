@@ -27,16 +27,43 @@ Instructions:
         return !!getApiKey();
     }
 
+    let availableModel = null;
+
+    async function getAvailableModel(apiKey) {
+        if (availableModel) return availableModel;
+
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch available models. Check your API key.');
+        }
+
+        const data = await response.json();
+        const models = data.models || [];
+        
+        // Find a gemini model that supports generateContent
+        const validModel = models.find(m => 
+            m.name.includes('gemini') && 
+            m.supportedGenerationMethods && 
+            m.supportedGenerationMethods.includes('generateContent')
+        );
+
+        if (validModel) {
+            // e.g. "models/gemini-1.5-flash"
+            availableModel = validModel.name;
+            return availableModel;
+        } else {
+            throw new Error('No compatible Gemini models found for this API key in your region.');
+        }
+    }
+
     async function generateKrishnaResponse(userMessage, chatHistory = []) {
         const apiKey = getApiKey();
         if (!apiKey) {
             throw new Error('API Key missing. Please configure your key in settings.');
         }
 
-        // We'll use Gemini API by default as it's highly accessible
-        // endpoint: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=...
-
-        const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        const modelName = await getAvailableModel(apiKey);
+        const url = `https://generativelanguage.googleapis.com/v1beta/${modelName}:generateContent?key=${apiKey}`;
 
         // Format history for Gemini
         // Gemini uses 'user' and 'model' roles.
