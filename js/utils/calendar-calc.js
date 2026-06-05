@@ -394,43 +394,43 @@ const CalendarCalc = (() => {
         const isNakshatraGood = auspiciousNakshatras.includes(nakshatra.index);
 
         const TITHI_LORE = {
-            'Pratipada': 'ruled by Agni, bringing energy and illumination.',
-            'Dwitiya': 'ruled by Brahma, symbolizing creation and strong foundations.',
-            'Tritiya': 'ruled by Gauri (Parvati), blessing the endeavor with longevity, prosperity, and divine feminine grace.',
-            'Panchami': 'ruled by the Nagas, offering protection and removing hidden obstacles.',
-            'Saptami': 'ruled by Surya (the Sun), granting vitality, leadership, and glowing success.',
-            'Dashami': 'ruled by Yama, bringing discipline, order, and mastery over one\'s environment.',
-            'Ekadashi': 'a highly sacred day dedicated to Lord Vishnu, bringing immense purity, spiritual merit, and peaceful preservation.',
-            'Trayodashi': 'dedicated to Lord Shiva (Pradosha), excellent for overcoming past karmas and achieving spiritual triumphs.',
-            'Purnima': 'the Full Moon, radiating maximum lunar energy, fullness, and absolute completion.',
-            'Chaturthi': 'ruled by Ganesha; while good for overcoming enemies, it is generally considered a "Rikta" (empty) tithi for material gains.',
-            'Ashtami': 'ruled by Shiva in his destructive form; a day of transformation rather than material beginnings.',
-            'Navami': 'ruled by Durga; an aggressive day best suited for overcoming adversaries rather than peaceful events.',
-            'Chaturdashi': 'a fierce day ruled by Kali, avoided for gentle or long-term auspicious activities.',
-            'Amavasya': 'the New Moon, a day of zero lunar energy, reserved for ancestral rites rather than new worldly beginnings.'
+            'Pratipada': 'the 1st lunar day, ruled by Agni (Fire). In practical terms, this gives a spark of high energy to your plans. It is like lighting a new lamp—perfect for starting something fresh that needs a lot of initial momentum.',
+            'Dwitiya': 'the 2nd lunar day, ruled by Lord Brahma (the Creator). For you, this means any foundation you lay today will be rock-solid. It is an excellent day for building things that you want to last a lifetime.',
+            'Tritiya': 'the 3rd lunar day, blessed by Goddess Parvati. This is incredibly auspicious for you because it brings the divine mother\'s protection. Whatever you begin today will enjoy a long life, endless prosperity, and bring immense peace to your family.',
+            'Panchami': 'the 5th lunar day, protected by the Nagas (Divine Serpents). This day acts as a spiritual shield. If you start a journey or project today, it will be protected from hidden enemies, jealousy, and unforeseen obstacles.',
+            'Saptami': 'the 7th lunar day, ruled by the Sun God (Surya). Just as the sun brings light, this day brings extreme clarity, leadership, and glowing success to your endeavors. It is perfect when you want your work to be recognized by others.',
+            'Dashami': 'the 10th lunar day, associated with discipline and order. If you need to start a business, sign contracts, or do something that requires strict rules and success over competitors, the energy of this day will support you perfectly.',
+            'Ekadashi': 'the 11th lunar day, deeply sacred to Lord Vishnu. This is a day of extreme purity. Any activity done today carries spiritual merit. It brings peaceful preservation, meaning whatever you acquire today will stay with you safely without causing stress.',
+            'Trayodashi': 'the 13th lunar day, dedicated to Lord Shiva. This day is a destroyer of bad karma. It is exceptionally good for overcoming past failures and achieving a spiritual or material triumph when all odds are against you.',
+            'Purnima': 'the Full Moon day. The moon is at its absolute brightest, radiating massive positive energy. This signifies 100% fullness and absolute completion, making it a highly blessed day for major life events and celebrations.',
+            'Chaturthi': 'the 4th lunar day, ruled by Lord Ganesha. While Ganesha removes obstacles, this specific day is generally considered "empty" for material gains like buying items. It is better used for clearing out old debts or fighting off problems.',
+            'Ashtami': 'the 8th lunar day. This day carries a very heavy, transformative energy. It is great for deep spiritual practices or ending bad habits, but it is traditionally avoided for happy, material beginnings like weddings or purchases.',
+            'Navami': 'the 9th lunar day, ruled by Goddess Durga. This is an aggressive, fierce day. It is highly successful if you need to win a court case or defeat an adversary, but it is too sharp and aggressive for peaceful events like buying a home.',
+            'Chaturdashi': 'the 14th lunar day, carrying fierce and unpredictable energy. In our tradition, this day is entirely avoided for gentle, happy, or long-term auspicious activities as it can bring sudden, unwanted changes.',
+            'Amavasya': 'the New Moon day. The moon is completely hidden, meaning there is zero lunar energy available to nourish your new beginnings. This day is strictly reserved for honoring ancestors and meditating, not for worldly tasks.'
         };
 
         const DAY_LORE = {
-            'Monday': 'ruled by the Moon (Chandra) and Lord Shiva, bringing emotional harmony, steady flow, and gentle grace.',
-            'Wednesday': 'ruled by Mercury (Budha), enhancing intellect, communication, and swift, smooth execution.',
-            'Thursday': 'ruled by Jupiter (Brihaspati), the Guru of the Gods, bestowing supreme wisdom, immense wealth, and divine protection.',
-            'Friday': 'ruled by Venus (Shukra), the planet of beauty, bringing luxury, comfort, artistic flair, and harmonious relationships.',
-            'Sunday': 'ruled by the Sun (Surya), bringing steadfast authority, but can be too fiery for gentle events.',
-            'Tuesday': 'ruled by Mars (Mangala), bringing aggressive, fiery energy that is generally avoided for peaceful milestones.',
-            'Saturday': 'ruled by Saturn (Shani), bringing delays, slow karmic lessons, and heavy energy, usually avoided for swift success.'
+            'Monday': 'ruled by the Moon (Chandra). The moon controls our emotions and peace of mind. Doing this today ensures that your decision will bring you emotional happiness, a steady flow of income, and a very calm, stress-free experience.',
+            'Wednesday': 'ruled by Mercury (Budha), the planet of intelligence and communication. This means your plans today will be executed swiftly and smartly, without any confusion or miscommunication. It is perfect for paperwork and deals.',
+            'Thursday': 'ruled by Jupiter (Brihaspati), the Guru of all planets. Jupiter is the ultimate planet of massive wealth, luck, and divine protection. Choosing Thursday almost guarantees supreme wisdom, financial growth, and blessings from above.',
+            'Friday': 'ruled by Venus (Shukra), the planet of luxury, beauty, and love. If you are buying a vehicle, gold, or a home today, Venus ensures it will be beautiful, comfortable, and bring harmonious relationships into your life.',
+            'Sunday': 'ruled by the Sun (Surya). The Sun brings steadfast authority and power. While it is good for government work or taking charge, its fiery heat can sometimes be too aggressive for very gentle, family-oriented events.',
+            'Tuesday': 'ruled by Mars (Mangala), the planet of war and fire. Mars brings highly aggressive energy. While excellent for surgeries or taking bold risks, it is traditionally avoided for peaceful milestones to prevent arguments or accidents.',
+            'Saturday': 'ruled by Saturn (Shani). Saturn is the slowest moving planet and represents delays, hard work, and heavy karmic lessons. Because it slows things down, we generally avoid starting fresh, happy things on Saturdays.'
         };
 
         const NAK_LORE = {
-            'Rohini': 'a fixed and fruitful star ruled by Brahma, perfect for establishing long-lasting, stable roots.',
-            'Mrigashira': 'a gentle, seeking star bringing curiosity, pleasant experiences, and joyous outcomes.',
-            'Uttara Phalguni': 'ruled by Aryaman, bringing marital bliss, deep patronage, and lasting social success.',
-            'Hasta': 'ruled by Savitar (the rising Sun), bringing dexterity, manifestation, and the ability to grasp success.',
-            'Chitra': 'the star of opportunity and beautiful design, bringing aesthetic brilliance to the endeavor.',
-            'Anuradha': 'the star of success and friendship, fostering devotion and cooperative triumphs.',
-            'Uttara Ashadha': 'the universal star of undisputed victory, guaranteeing long-lasting, unshakeable success.',
-            'Revati': 'the final star ruled by Pushan (the nourisher), offering sweet, gentle, and wealthy completions to new beginnings.',
-            'Ashwini': 'the star of the divine physicians, bringing swift, miraculous energy and rapid healing or movement.',
-            'Pushya': 'the most nourishing and spiritually auspicious of all stars, bringing absolute divine care and flourishing growth.'
+            'Rohini': 'a "fixed" star. Think of it like planting a massive Banyan tree. Whatever you start under Rohini will establish deep, unshakeable roots, making it absolutely perfect for long-lasting investments like property or marriage.',
+            'Mrigashira': 'a "gentle" star that brings a very sweet, curious, and joyous energy. Starting things today ensures that your experience will be pleasant, stress-free, and filled with happy little moments rather than intense drama.',
+            'Uttara Phalguni': 'a star that guarantees deep social success and patronage. If you start something today, you will receive immense support from your community, friends, and family, making it highly favored for weddings and social events.',
+            'Hasta': 'represented by a "hand". This star gives you the dexterity and ability to literally "grasp" success. It brings quick manifestation, meaning your desires and plans will turn into reality very quickly and smoothly.',
+            'Chitra': 'the star of beautiful design and opportunity. This brings extreme aesthetic brilliance to your endeavor. If you are buying a car, clothes, or a house today, they will turn out to be exceptionally beautiful and eye-catching.',
+            'Anuradha': 'the star of friendship and devotion. It fosters extremely cooperative energy. If your event requires teamwork, partnerships, or bringing families together, Anuradha ensures everyone gets along perfectly without conflict.',
+            'Uttara Ashadha': 'known as the "Universal Star of Undisputed Victory". It guarantees that no matter what obstacles come your way, you will win in the end. It provides a long-lasting, unshakeable success that cannot be easily broken.',
+            'Revati': 'the very last star, ruled by the nourisher. It offers an incredibly sweet, gentle, and wealthy completion to your new beginnings. It ensures that your journey is safe, well-fed, and ends happily without any bumps.',
+            'Ashwini': 'the star of the divine physicians. It brings miraculous, lightning-fast energy. If you need something done swiftly, or if you need rapid healing and movement, Ashwini provides the quick burst of horsepower you need.',
+            'Pushya': 'widely considered the absolute best and most nourishing star in astrology. It acts like a caring mother. Anything started under Pushya is guaranteed to receive absolute divine care, flourishing growth, and extreme good luck.'
         };
 
         let score = 0;
