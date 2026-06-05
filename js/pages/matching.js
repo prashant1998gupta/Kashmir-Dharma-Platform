@@ -21,7 +21,7 @@ const MatchingPage = (() => {
                 <div class="grid-2">
                     <!-- Boy's Details -->
                     <div class="card card-glass" style="padding: var(--space-6); overflow: visible;">
-                        <h3 style="color: var(--color-primary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('match.boy_details', 'Boy\'s Details') : 'Boy\'s Details'}</h3>
+                        <h3 style="color: var(--color-primary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('match.boy_details', "Boy's Details") : "Boy's Details"}</h3>
                         <div class="form-group">
                             <label class="form-label" for="boy-name">${typeof I18n !== 'undefined' ? I18n.t('match.name', 'Name') : 'Name'}</label>
                             <input type="text" id="boy-name" class="form-control" placeholder="${typeof I18n !== 'undefined' ? I18n.t('match.enter_name', 'Enter name') : 'Enter name'}">
@@ -45,7 +45,7 @@ const MatchingPage = (() => {
 
                     <!-- Girl's Details -->
                     <div class="card card-glass" style="padding: var(--space-6); overflow: visible;">
-                        <h3 style="color: var(--color-secondary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('match.girl_details', 'Girl\'s Details') : 'Girl\'s Details'}</h3>
+                        <h3 style="color: var(--color-secondary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('match.girl_details', "Girl's Details") : "Girl's Details"}</h3>
                         <div class="form-group">
                             <label class="form-label" for="girl-name">${typeof I18n !== 'undefined' ? I18n.t('match.name', 'Name') : 'Name'}</label>
                             <input type="text" id="girl-name" class="form-control" placeholder="${typeof I18n !== 'undefined' ? I18n.t('match.enter_name', 'Enter name') : 'Enter name'}">
@@ -287,19 +287,19 @@ const MatchingPage = (() => {
             <div class="print-avoid-break" style="margin-bottom:var(--space-8);">
                 <table style="width:100%; border-collapse:collapse; margin-bottom:var(--space-4);">
                     <tr style="border-bottom:1px solid var(--surface-border);">
-                        <td style="padding:var(--space-3); color:var(--text-muted); width:40%;">${typeof I18n !== 'undefined' ? I18n.t('match.boy_moon_sign', 'Boy\\'s Moon Sign (Rashi)') : 'Boy\\'s Moon Sign (Rashi)'}</td>
+                        <td style="padding:var(--space-3); color:var(--text-muted); width:40%;">${typeof I18n !== 'undefined' ? I18n.t('match.boy_moon_sign', "Boy's Moon Sign (Rashi)") : "Boy's Moon Sign (Rashi)"}</td>
                         <td style="padding:var(--space-3); font-weight:bold; color:var(--color-primary);">${result.boyRashiName}</td>
                     </tr>
                     <tr style="border-bottom:1px solid var(--surface-border);">
-                        <td style="padding:var(--space-3); color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.boy_nakshatra', 'Boy\\'s Nakshatra') : 'Boy\\'s Nakshatra'}</td>
+                        <td style="padding:var(--space-3); color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.boy_nakshatra', "Boy's Nakshatra") : "Boy's Nakshatra"}</td>
                         <td style="padding:var(--space-3); font-weight:bold;">${result.boyNakshatraName}</td>
                     </tr>
                     <tr style="border-bottom:1px solid var(--surface-border);">
-                        <td style="padding:var(--space-3); color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.girl_moon_sign', 'Girl\\'s Moon Sign (Rashi)') : 'Girl\\'s Moon Sign (Rashi)'}</td>
+                        <td style="padding:var(--space-3); color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.girl_moon_sign', "Girl's Moon Sign (Rashi)") : "Girl's Moon Sign (Rashi)"}</td>
                         <td style="padding:var(--space-3); font-weight:bold; color:var(--color-secondary);">${result.girlRashiName}</td>
                     </tr>
                     <tr style="border-bottom:1px solid var(--surface-border);">
-                        <td style="padding:var(--space-3); color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.girl_nakshatra', 'Girl\\'s Nakshatra') : 'Girl\\'s Nakshatra'}</td>
+                        <td style="padding:var(--space-3); color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.girl_nakshatra', "Girl's Nakshatra") : "Girl's Nakshatra"}</td>
                         <td style="padding:var(--space-3); font-weight:bold;">${result.girlNakshatraName}</td>
                     </tr>
                     <tr>

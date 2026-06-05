@@ -38,7 +38,7 @@ const HomePage = (() => {
                 <!-- Presence & Highlights -->
                 <div class="grid-2 reveal" style="gap: var(--space-6); align-items: start; margin-top: var(--space-4);">
                     <section id="homePresenceWidget">
-                        <h2 class="dharma-section-title" data-i18n="home.presence_title">${typeof I18n !== 'undefined' ? I18n.t('home.presence_title', 'Today\\'s Presence') : 'Today\\'s Presence'}</h2>
+                        <h2 class="dharma-section-title" data-i18n="home.presence_title">${typeof I18n !== 'undefined' ? I18n.t('home.presence_title', "Today's Presence") : "Today's Presence"}</h2>
                         <div class="presence-glass-card mt-4">
                             <div class="skeleton" style="height: 100px; width: 100%;"></div>
                         </div>
