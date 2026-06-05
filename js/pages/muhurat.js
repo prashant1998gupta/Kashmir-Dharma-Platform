@@ -349,3 +349,5 @@ const MuhuratPage = (() => {
 
     return { render, afterRender, selectEvent, findMuhurat };
 })();
+
+window.MuhuratPage = MuhuratPage;

@@ -220,3 +220,5 @@ const ProfileManager = (() => {
         handleDelete
     };
 })();
+
+window.ProfileManager = ProfileManager;
