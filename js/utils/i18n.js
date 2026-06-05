@@ -211,7 +211,49 @@ const I18n = (() => {
             'settings.theme_light': 'Light Mode',
             'settings.theme_dark': 'Dark Mode',
             'settings.language': 'Language / भाषा',
-            'settings.save': 'Save Preferences'
+            'settings.save': 'Save Preferences',
+
+            // Astrological Lore (Muhurat)
+            'lore.tithi.Pratipada': 'the 1st lunar day, ruled by Agni (Fire). In practical terms, this gives a spark of high energy to your plans. It is like lighting a new lamp—perfect for starting something fresh that needs a lot of initial momentum.',
+            'lore.tithi.Dwitiya': 'the 2nd lunar day, ruled by Lord Brahma (the Creator). For you, this means any foundation you lay today will be rock-solid. It is an excellent day for building things that you want to last a lifetime.',
+            'lore.tithi.Tritiya': 'the 3rd lunar day, blessed by Goddess Parvati. This is incredibly auspicious for you because it brings the divine mother\'s protection. Whatever you begin today will enjoy a long life, endless prosperity, and bring immense peace to your family.',
+            'lore.tithi.Panchami': 'the 5th lunar day, protected by the Nagas (Divine Serpents). This day acts as a spiritual shield. If you start a journey or project today, it will be protected from hidden enemies, jealousy, and unforeseen obstacles.',
+            'lore.tithi.Saptami': 'the 7th lunar day, ruled by the Sun God (Surya). Just as the sun brings light, this day brings extreme clarity, leadership, and glowing success to your endeavors. It is perfect when you want your work to be recognized by others.',
+            'lore.tithi.Dashami': 'the 10th lunar day, associated with discipline and order. If you need to start a business, sign contracts, or do something that requires strict rules and success over competitors, the energy of this day will support you perfectly.',
+            'lore.tithi.Ekadashi': 'the 11th lunar day, deeply sacred to Lord Vishnu. This is a day of extreme purity. Any activity done today carries spiritual merit. It brings peaceful preservation, meaning whatever you acquire today will stay with you safely without causing stress.',
+            'lore.tithi.Trayodashi': 'the 13th lunar day, dedicated to Lord Shiva. This day is a destroyer of bad karma. It is exceptionally good for overcoming past failures and achieving a spiritual or material triumph when all odds are against you.',
+            'lore.tithi.Purnima': 'the Full Moon day. The moon is at its absolute brightest, radiating massive positive energy. This signifies 100% fullness and absolute completion, making it a highly blessed day for major life events and celebrations.',
+            'lore.tithi.Chaturthi': 'the 4th lunar day, ruled by Lord Ganesha. While Ganesha removes obstacles, this specific day is generally considered "empty" for material gains like buying items. It is better used for clearing out old debts or fighting off problems.',
+            'lore.tithi.Ashtami': 'the 8th lunar day. This day carries a very heavy, transformative energy. It is great for deep spiritual practices or ending bad habits, but it is traditionally avoided for happy, material beginnings like weddings or purchases.',
+            'lore.tithi.Navami': 'the 9th lunar day, ruled by Goddess Durga. This is an aggressive, fierce day. It is highly successful if you need to win a court case or defeat an adversary, but it is too sharp and aggressive for peaceful events like buying a home.',
+            'lore.tithi.Chaturdashi': 'the 14th lunar day, carrying fierce and unpredictable energy. In our tradition, this day is entirely avoided for gentle, happy, or long-term auspicious activities as it can bring sudden, unwanted changes.',
+            'lore.tithi.Amavasya': 'the New Moon day. The moon is completely hidden, meaning there is zero lunar energy available to nourish your new beginnings. This day is strictly reserved for honoring ancestors and meditating, not for worldly tasks.',
+
+            'lore.day.Monday': 'ruled by the Moon (Chandra). The moon controls our emotions and peace of mind. Doing this today ensures that your decision will bring you emotional happiness, a steady flow of income, and a very calm, stress-free experience.',
+            'lore.day.Wednesday': 'ruled by Mercury (Budha), the planet of intelligence and communication. This means your plans today will be executed swiftly and smartly, without any confusion or miscommunication. It is perfect for paperwork and deals.',
+            'lore.day.Thursday': 'ruled by Jupiter (Brihaspati), the Guru of all planets. Jupiter is the ultimate planet of massive wealth, luck, and divine protection. Choosing Thursday almost guarantees supreme wisdom, financial growth, and blessings from above.',
+            'lore.day.Friday': 'ruled by Venus (Shukra), the planet of luxury, beauty, and love. If you are buying a vehicle, gold, or a home today, Venus ensures it will be beautiful, comfortable, and bring harmonious relationships into your life.',
+            'lore.day.Sunday': 'ruled by the Sun (Surya). The Sun brings steadfast authority and power. While it is good for government work or taking charge, its fiery heat can sometimes be too aggressive for very gentle, family-oriented events.',
+            'lore.day.Tuesday': 'ruled by Mars (Mangala), the planet of war and fire. Mars brings highly aggressive energy. While excellent for surgeries or taking bold risks, it is traditionally avoided for peaceful milestones to prevent arguments or accidents.',
+            'lore.day.Saturday': 'ruled by Saturn (Shani). Saturn is the slowest moving planet and represents delays, hard work, and heavy karmic lessons. Because it slows things down, we generally avoid starting fresh, happy things on Saturdays.',
+
+            'lore.nak.Rohini': 'a "fixed" star. Think of it like planting a massive Banyan tree. Whatever you start under Rohini will establish deep, unshakeable roots, making it absolutely perfect for long-lasting investments like property or marriage.',
+            'lore.nak.Mrigashira': 'a "gentle" star that brings a very sweet, curious, and joyous energy. Starting things today ensures that your experience will be pleasant, stress-free, and filled with happy little moments rather than intense drama.',
+            'lore.nak.Uttara Phalguni': 'a star that guarantees deep social success and patronage. If you start something today, you will receive immense support from your community, friends, and family, making it highly favored for weddings and social events.',
+            'lore.nak.Hasta': 'represented by a "hand". This star gives you the dexterity and ability to literally "grasp" success. It brings quick manifestation, meaning your desires and plans will turn into reality very quickly and smoothly.',
+            'lore.nak.Chitra': 'the star of beautiful design and opportunity. This brings extreme aesthetic brilliance to your endeavor. If you are buying a car, clothes, or a house today, they will turn out to be exceptionally beautiful and eye-catching.',
+            'lore.nak.Anuradha': 'the star of friendship and devotion. It fosters extremely cooperative energy. If your event requires teamwork, partnerships, or bringing families together, Anuradha ensures everyone gets along perfectly without conflict.',
+            'lore.nak.Uttara Ashadha': 'known as the "Universal Star of Undisputed Victory". It guarantees that no matter what obstacles come your way, you will win in the end. It provides a long-lasting, unshakeable success that cannot be easily broken.',
+            'lore.nak.Revati': 'the very last star, ruled by the nourisher. It offers an incredibly sweet, gentle, and wealthy completion to your new beginnings. It ensures that your journey is safe, well-fed, and ends happily without any bumps.',
+            'lore.nak.Ashwini': 'the star of the divine physicians. It brings miraculous, lightning-fast energy. If you need something done swiftly, or if you need rapid healing and movement, Ashwini provides the quick burst of horsepower you need.',
+            'lore.nak.Pushya': 'widely considered the absolute best and most nourishing star in astrology. It acts like a caring mother. Anything started under Pushya is guaranteed to receive absolute divine care, flourishing growth, and extreme good luck.',
+
+            'lore.favorable': 'is highly favorable',
+            'lore.avoid': 'should be avoided',
+            'lore.neutral': 'is neutral',
+            'lore.excellent_day': 'is an excellent day',
+            'lore.avoid_day': 'is traditionally avoided',
+            'lore.acceptable': 'is acceptable'
         },
         hi: {
             // Navigation
@@ -547,7 +589,49 @@ const I18n = (() => {
             'settings.theme_light': 'लाइट मोड',
             'settings.theme_dark': 'डार्क मोड',
             'settings.language': 'Language / भाषा',
-            'settings.save': 'सेटिंग्स सहेजें'
+            'settings.save': 'सेटिंग्स सहेजें',
+
+            // Astrological Lore (Muhurat)
+            'lore.tithi.Pratipada': 'पहला चंद्र दिवस, जो अग्नि द्वारा शासित है। व्यावहारिक रूप से, यह आपकी योजनाओं को उच्च ऊर्जा प्रदान करता है। यह एक नया दीपक जलाने जैसा है - कुछ ऐसा शुरू करने के लिए एकदम सही जिसे प्रारंभिक गति की आवश्यकता होती है।',
+            'lore.tithi.Dwitiya': 'दूसरा चंद्र दिवस, जो भगवान ब्रह्मा (निर्माता) द्वारा शासित है। आपके लिए, इसका अर्थ है कि आज आप जो भी नींव रखेंगे वह बहुत मजबूत होगी। यह उन चीजों को बनाने के लिए एक उत्कृष्ट दिन है जिन्हें आप जीवन भर चलाना चाहते हैं।',
+            'lore.tithi.Tritiya': 'तीसरा चंद्र दिवस, जिसे देवी पार्वती का आशीर्वाद प्राप्त है। यह आपके लिए बेहद शुभ है क्योंकि यह दिव्य माता की सुरक्षा लाता है। आज आप जो भी शुरू करेंगे वह लंबे जीवन, अनंत समृद्धि और आपके परिवार के लिए अपार शांति का आनंद लेगा।',
+            'lore.tithi.Panchami': '5 वां चंद्र दिवस, जो नागों (दिव्य नागों) द्वारा संरक्षित है। यह दिन एक आध्यात्मिक ढाल के रूप में कार्य करता है। यदि आप आज कोई यात्रा या परियोजना शुरू करते हैं, तो इसे छिपे हुए दुश्मनों, ईर्ष्या और अप्रत्याशित बाधाओं से बचाया जाएगा।',
+            'lore.tithi.Saptami': '7 वां चंद्र दिवस, जो सूर्य देव द्वारा शासित है। जिस तरह सूर्य प्रकाश लाता है, उसी तरह यह दिन आपके प्रयासों में अत्यधिक स्पष्टता, नेतृत्व और चमकदार सफलता लाता है। यह तब एकदम सही है जब आप चाहते हैं कि आपके काम को दूसरों द्वारा पहचाना जाए।',
+            'lore.tithi.Dashami': '10 वां चंद्र दिवस, जो अनुशासन और व्यवस्था से जुड़ा है। यदि आपको व्यवसाय शुरू करने, अनुबंध पर हस्ताक्षर करने, या कुछ ऐसा करने की आवश्यकता है जिसमें सख्त नियमों और प्रतिस्पर्धियों पर सफलता की आवश्यकता होती है, तो इस दिन की ऊर्जा पूरी तरह से आपका समर्थन करेगी।',
+            'lore.tithi.Ekadashi': '11 वां चंद्र दिवस, भगवान विष्णु को गहराई से समर्पित। यह अत्यधिक पवित्रता का दिन है। आज किया गया कोई भी कार्य आध्यात्मिक पुण्य रखता है। यह शांतिपूर्ण संरक्षण लाता है, जिसका अर्थ है कि आज आप जो भी हासिल करेंगे वह तनाव पैदा किए बिना सुरक्षित रूप से आपके पास रहेगा।',
+            'lore.tithi.Trayodashi': '13 वां चंद्र दिवस, भगवान शिव को समर्पित। यह दिन बुरे कर्मों का नाश करने वाला है। यह पिछली विफलताओं पर काबू पाने और आध्यात्मिक या भौतिक जीत हासिल करने के लिए असाधारण रूप से अच्छा है जब सभी बाधाएं आपके खिलाफ हों।',
+            'lore.tithi.Purnima': 'पूर्णिमा का दिन। चंद्रमा अपने पूर्ण रूप में होता है, जो विशाल सकारात्मक ऊर्जा बिखेरता है। यह 100% पूर्णता का प्रतीक है, जो इसे प्रमुख जीवन की घटनाओं और समारोहों के लिए एक अत्यधिक धन्य दिन बनाता है।',
+            'lore.tithi.Chaturthi': '4 था चंद्र दिवस, जो भगवान गणेश द्वारा शासित है। हालांकि गणेश बाधाओं को दूर करते हैं, इस विशिष्ट दिन को आमतौर पर आइटम खरीदने जैसे भौतिक लाभ के लिए "रिक्त" माना जाता है। इसका उपयोग पुराने ऋणों को चुकाने या समस्याओं से लड़ने के लिए बेहतर है।',
+            'lore.tithi.Ashtami': '8 वां चंद्र दिवस। यह दिन बहुत भारी, परिवर्तनकारी ऊर्जा रखता है। यह गहरी आध्यात्मिक प्रथाओं या बुरी आदतों को समाप्त करने के लिए बहुत अच्छा है, लेकिन शादियों या खरीददारी जैसी खुशहाल, भौतिक शुरुआत के लिए पारंपरिक रूप से इससे बचा जाता है।',
+            'lore.tithi.Navami': '9 वां चंद्र दिवस, जो देवी दुर्गा द्वारा शासित है। यह एक आक्रामक, भयंकर दिन है। यदि आपको अदालत का मामला जीतना है या किसी विरोधी को हराना है तो यह अत्यधिक सफल है, लेकिन घर खरीदने जैसी शांतिपूर्ण घटनाओं के लिए यह बहुत तेज और आक्रामक है।',
+            'lore.tithi.Chaturdashi': '14 वां चंद्र दिवस, जो भयंकर और अप्रत्याशित ऊर्जा ले जाता है। हमारी परंपरा में, यह दिन कोमल, खुशहाल या दीर्घकालिक शुभ गतिविधियों के लिए पूरी तरह से टाल दिया जाता है क्योंकि यह अचानक, अवांछित परिवर्तन ला सकता है।',
+            'lore.tithi.Amavasya': 'अमावस्या का दिन। चंद्रमा पूरी तरह से छिपा हुआ है, जिसका अर्थ है कि आपकी नई शुरुआत को पोषित करने के लिए शून्य चंद्र ऊर्जा उपलब्ध है। यह दिन सांसारिक कार्यों के लिए नहीं, बल्कि पूर्वजों का सम्मान करने और ध्यान करने के लिए सख्ती से आरक्षित है।',
+
+            'lore.day.Monday': 'चंद्रमा द्वारा शासित। चंद्रमा हमारी भावनाओं और मन की शांति को नियंत्रित करता है। आज यह सुनिश्चित करता है कि आपका निर्णय आपको भावनात्मक खुशी, आय का एक स्थिर प्रवाह और एक बहुत ही शांत, तनाव मुक्त अनुभव लाएगा।',
+            'lore.day.Wednesday': 'बुध ग्रह द्वारा शासित, जो बुद्धि और संचार का ग्रह है। इसका मतलब है कि आपकी योजनाएं आज बिना किसी भ्रम या गलत संचार के तेजी से और स्मार्ट तरीके से क्रियान्वित की जाएंगी। यह कागजी कार्रवाई और सौदों के लिए एकदम सही है।',
+            'lore.day.Thursday': 'बृहस्पति ग्रह द्वारा शासित, जो सभी ग्रहों के गुरु हैं। बृहस्पति भारी धन, भाग्य और दिव्य सुरक्षा का अंतिम ग्रह है। गुरुवार को चुनना लगभग सर्वोच्च ज्ञान, वित्तीय विकास और ऊपर से आशीर्वाद की गारंटी देता है।',
+            'lore.day.Friday': 'शुक्र ग्रह द्वारा शासित, जो विलासिता, सौंदर्य और प्रेम का ग्रह है। यदि आप आज कोई वाहन, सोना या घर खरीद रहे हैं, तो शुक्र यह सुनिश्चित करता है कि यह सुंदर, आरामदायक होगा और आपके जीवन में सामंजस्यपूर्ण रिश्ते लाएगा।',
+            'lore.day.Sunday': 'सूर्य द्वारा शासित। सूर्य दृढ़ अधिकार और शक्ति लाता है। हालांकि यह सरकारी काम या कार्यभार संभालने के लिए अच्छा है, इसकी तेज गर्मी कभी-कभी बहुत कोमल, परिवार-उन्मुख घटनाओं के लिए बहुत आक्रामक हो सकती है।',
+            'lore.day.Tuesday': 'मंगल ग्रह द्वारा शासित, जो युद्ध और अग्नि का ग्रह है। मंगल अत्यधिक आक्रामक ऊर्जा लाता है। हालांकि सर्जरी या साहसिक जोखिम लेने के लिए यह उत्कृष्ट है, लेकिन तर्कों या दुर्घटनाओं को रोकने के लिए पारंपरिक रूप से शांतिपूर्ण मील के पत्थर के लिए इससे बचा जाता है।',
+            'lore.day.Saturday': 'शनि ग्रह द्वारा शासित। शनि सबसे धीमी गति से चलने वाला ग्रह है और देरी, कड़ी मेहनत और भारी कर्म पाठ का प्रतिनिधित्व करता है। क्योंकि यह चीजों को धीमा कर देता है, हम आम तौर पर शनिवार को नई, खुशहाल चीजें शुरू करने से बचते हैं।',
+
+            'lore.nak.Rohini': 'एक "स्थिर" तारा। इसे एक विशाल बरगद का पेड़ लगाने के रूप में सोचें। रोहिणी के तहत आप जो भी शुरू करेंगे वह गहरी, अटूट जड़ें स्थापित करेगा, जो इसे संपत्ति या विवाह जैसे दीर्घकालिक निवेश के लिए बिल्कुल सही बनाता है।',
+            'lore.nak.Mrigashira': 'एक "कोमल" तारा जो बहुत ही मीठी, जिज्ञासु और आनंदमय ऊर्जा लाता है। आज चीजें शुरू करना यह सुनिश्चित करता है कि आपका अनुभव सुखद, तनाव-मुक्त और तीव्र नाटक के बजाय छोटे-छोटे खुशनुमा पलों से भरा होगा।',
+            'lore.nak.Uttara Phalguni': 'एक ऐसा तारा जो गहरी सामाजिक सफलता और संरक्षण की गारंटी देता है। यदि आप आज कुछ शुरू करते हैं, तो आपको अपने समुदाय, दोस्तों और परिवार से अपार समर्थन मिलेगा, जिससे यह शादियों और सामाजिक कार्यक्रमों के लिए अत्यधिक अनुकूल हो जाएगा।',
+            'lore.nak.Hasta': 'एक "हाथ" द्वारा दर्शाया गया। यह तारा आपको निपुणता और सफलता को सचमुच "पकड़ने" की क्षमता देता है। यह त्वरित अभिव्यक्ति लाता है, जिसका अर्थ है कि आपकी इच्छाएं और योजनाएं बहुत जल्दी और सुचारू रूप से वास्तविकता में बदल जाएंगी।',
+            'lore.nak.Chitra': 'सुंदर डिजाइन और अवसर का तारा। यह आपके प्रयास में अत्यधिक सौंदर्यपूर्ण चमक लाता है। यदि आप आज कार, कपड़े या घर खरीद रहे हैं, तो वे असाधारण रूप से सुंदर और आकर्षक साबित होंगे।',
+            'lore.nak.Anuradha': 'दोस्ती और भक्ति का तारा। यह अत्यंत सहयोगी ऊर्जा को बढ़ावा देता है। यदि आपके आयोजन में टीमवर्क, साझेदारी, या परिवारों को एक साथ लाने की आवश्यकता है, तो अनुराधा सुनिश्चित करती है कि सभी बिना किसी संघर्ष के पूरी तरह से साथ रहें।',
+            'lore.nak.Uttara Ashadha': 'इसे "निर्विवाद विजय का सार्वभौमिक तारा" के रूप में जाना जाता है। यह गारंटी देता है कि चाहे आपके रास्ते में कितनी भी बाधाएं आएं, अंत में जीत आपकी ही होगी। यह एक लंबे समय तक चलने वाली, अटूट सफलता प्रदान करता है जिसे आसानी से तोड़ा नहीं जा सकता।',
+            'lore.nak.Revati': 'अंतिम तारा, जो पोषणकर्ता द्वारा शासित है। यह आपकी नई शुरुआत को एक अविश्वसनीय रूप से मीठा, कोमल और समृद्ध समापन प्रदान करता है। यह सुनिश्चित करता है कि आपकी यात्रा सुरक्षित है, अच्छी तरह से पोषित है, और बिना किसी बाधा के खुशी से समाप्त होती है।',
+            'lore.nak.Ashwini': 'दिव्य चिकित्सकों का तारा। यह चमत्कारी, बिजली की तेजी वाली ऊर्जा लाता है। यदि आपको कुछ जल्दी करने की आवश्यकता है, या यदि आपको तेजी से उपचार और आंदोलन की आवश्यकता है, तो अश्विनी आपको आवश्यक हॉर्सपावर का त्वरित विस्फोट प्रदान करता है।',
+            'lore.nak.Pushya': 'ज्योतिष में सबसे अच्छा और सबसे अधिक पोषण देने वाला तारा माना जाता है। यह एक देखभाल करने वाली मां की तरह काम करता है। पुष्य के तहत शुरू की गई किसी भी चीज को पूर्ण ईश्वरीय देखभाल, फलती-फूलती वृद्धि और अत्यधिक भाग्य प्राप्त होने की गारंटी है।',
+
+            'lore.favorable': 'अत्यधिक अनुकूल है',
+            'lore.avoid': 'से बचना चाहिए',
+            'lore.neutral': 'तटस्थ है',
+            'lore.excellent_day': 'एक उत्कृष्ट दिन है',
+            'lore.avoid_day': 'पारंपरिक रूप से इससे बचा जाता है',
+            'lore.acceptable': 'स्वीकार्य है'
         }
     };
 
