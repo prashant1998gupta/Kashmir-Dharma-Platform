@@ -269,16 +269,16 @@ const MatchingPage = (() => {
                 </div>
                 
                 <div style="margin-bottom: var(--space-6);">
-                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">${bName}'s Emotional Nature (${result.boyRashiName} Moon)</strong>
+                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">${bName}'s Emotional Nature (${bChart.moonSign} Moon)</strong>
                     <div style="color: var(--text-secondary); font-size: var(--text-base); line-height: 1.7;">
-                        ${typeof AstroInterpretations !== 'undefined' ? (AstroInterpretations.moon[result.boyRashiName] || AstroInterpretations.moon['Unknown']) : ''}
+                        ${typeof AstroInterpretations !== 'undefined' ? (AstroInterpretations.moon[bChart.moonSign] || AstroInterpretations.moon['Unknown']) : ''}
                     </div>
                 </div>
 
                 <div>
-                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">${gName}'s Emotional Nature (${result.girlRashiName} Moon)</strong>
+                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">${gName}'s Emotional Nature (${gChart.moonSign} Moon)</strong>
                     <div style="color: var(--text-secondary); font-size: var(--text-base); line-height: 1.7;">
-                        ${typeof AstroInterpretations !== 'undefined' ? (AstroInterpretations.moon[result.girlRashiName] || AstroInterpretations.moon['Unknown']) : ''}
+                        ${typeof AstroInterpretations !== 'undefined' ? (AstroInterpretations.moon[gChart.moonSign] || AstroInterpretations.moon['Unknown']) : ''}
                     </div>
                 </div>
             </div>
