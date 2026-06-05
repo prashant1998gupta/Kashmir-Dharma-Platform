@@ -1820,6 +1820,8 @@ a:hover {
     * {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
     }
 
     /* Isolate the target print area */
@@ -1859,10 +1861,7 @@ a:hover {
     .print-avoid-break,
     svg,
     img,
-    .card,
-    .report-section,
-    .chart-wrapper,
-    table, tr, details,
+    table, tr,
     .koota-card-print,
     .dosha-card-print,
     .remedy-card-print {
