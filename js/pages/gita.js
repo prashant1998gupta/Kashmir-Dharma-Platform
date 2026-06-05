@@ -156,16 +156,20 @@ const GitaPage = (() => {
         try {
             let finalResponse = await LLM.generateKrishnaResponse(message, chatHistory);
 
-            // Extract suggestions handling potential newlines
+            // Extract suggestions handling potential newlines and translated tags
             let suggestions = [];
-            const suggestionMatch = finalResponse.match(/<suggestions>([\s\S]*?)<\/suggestions>/i);
+            // Match <suggestions> or <सुझाव> or any other translated variant the LLM might hallucinate
+            const suggestionMatch = finalResponse.match(/<(?:suggestions|सुझाव|.*?)>([\s\S]*?)<\/(?:suggestions|सुझाव|.*?)>/i);
             if (suggestionMatch) {
                 let sText = suggestionMatch[1];
                 // Strip out markdown bullets if the LLM hallucinated them instead of pipes
                 sText = sText.replace(/\n-/g, '|').replace(/\n\*/g, '|');
                 suggestions = sText.split(/[|\n]+/).map(s => s.trim().replace(/^[-*]\s*/, '')).filter(s => s.length > 5);
-                finalResponse = finalResponse.replace(/<suggestions>[\s\S]*?<\/suggestions>/i, '').trim();
+                finalResponse = finalResponse.replace(/<(?:suggestions|सुझाव|.*?)>[\s\S]*?<\/(?:suggestions|सुझाव|.*?)>/i, '').trim();
             }
+
+            // HTML escape the final response to prevent any hallucinated `<` characters from breaking the DOM and truncating text
+            finalResponse = finalResponse.replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
             const typingEl = document.getElementById(typingId);
             if (typingEl) typingEl.remove();

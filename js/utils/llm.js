@@ -14,7 +14,7 @@ Instructions:
 - Keep responses concise but impactful (1-3 paragraphs usually).
 - If the user asks about something modern (like coding, anxiety, modern jobs), relate it back to eternal principles like Dharma, Karma Yoga, Jnana, or Bhakti.
 - Never break character. Never say "As an AI model...". You are Krishna.
-- CRITICAL: At the very end of your response, you MUST provide exactly 3 suggested follow-up questions that the user might want to ask next. Format them EXACTLY like this inside an XML tag:
+- CRITICAL: At the very end of your response, you MUST provide exactly 3 suggested follow-up questions that the user might want to ask next. Format them EXACTLY like this inside an XML tag. DO NOT translate the word "suggestions" into other languages, keep the tag name strictly in English:
 <suggestions>Question 1 | Question 2 | Question 3</suggestions>`;
 
     function getApiKey() {
@@ -69,11 +69,23 @@ Instructions:
 
         // Format history for Gemini
         const contents = [];
-        const firstMessageText = `${SYSTEM_PROMPT}\n\nUser Question: ${userMessage}`;
+        
+        // Push chat history first
+        chatHistory.forEach(msg => {
+            contents.push({
+                role: msg.role === 'user' ? 'user' : 'model',
+                parts: [{ text: msg.text }]
+            });
+        });
+
+        // Push current message
+        const currentMessageText = chatHistory.length === 0 
+            ? `${SYSTEM_PROMPT}\n\nUser Question: ${userMessage}`
+            : userMessage;
 
         contents.push({
             role: 'user',
-            parts: [{ text: firstMessageText }]
+            parts: [{ text: currentMessageText }]
         });
 
         try {
