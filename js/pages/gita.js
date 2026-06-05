@@ -217,10 +217,10 @@ const GitaPage = (() => {
 
     function formatMarkdown(text) {
         return text
-            .replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>')
-            .replace(/\\*(.*?)\\*/g, '<em>$1</em>')
-            .replace(/\\n\\n/g, '<br><br>')
-            .replace(/\\n/g, '<br>');
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/\n\n/g, '<br><br>')
+            .replace(/\n/g, '<br>');
     }
 
     return { render, afterRender, sendMessage, ask, openSettingsModal, saveApiKey };
