@@ -154,36 +154,39 @@ const GitaPage = (() => {
         addBubble('<div class="typing-indicator"><span></span><span></span><span></span></div>', 'assistant', typingId);
 
         try {
-            let hasStarted = false;
+            const finalResponse = await LLM.generateKrishnaResponse(message, chatHistory);
+
+            const typingEl = document.getElementById(typingId);
+            if (typingEl) typingEl.remove();
+
             let responseBubbleId = 'msg-' + Date.now();
+            addBubble('', 'assistant', responseBubbleId);
 
-            const finalResponse = await LLM.streamKrishnaResponse(message, chatHistory, (chunkText) => {
-                if (!hasStarted) {
-                    hasStarted = true;
-                    const typingEl = document.getElementById(typingId);
-                    if (typingEl) typingEl.remove();
-                    
-                    // Add an empty bubble for streaming content
-                    addBubble('', 'assistant', responseBubbleId);
+            // Word-by-word typewriter effect
+            const words = finalResponse.split(' ');
+            let currentText = '';
+            let i = 0;
+            const bubble = document.getElementById(responseBubbleId);
+
+            function typeNextWord() {
+                if (i < words.length) {
+                    currentText += (i === 0 ? '' : ' ') + words[i];
+                    if (bubble) {
+                        bubble.innerHTML = formatMarkdown(currentText);
+                        const container = document.getElementById('gitaChatMessages');
+                        if (container) container.scrollTop = container.scrollHeight;
+                    }
+                    i++;
+                    setTimeout(typeNextWord, 40); // 40ms per word
+                } else {
+                    chatHistory.push({ role: 'user', text: message });
+                    chatHistory.push({ role: 'assistant', text: finalResponse });
+                    isTyping = false;
+                    if (btn) btn.style.opacity = '1';
                 }
-
-                const bubble = document.getElementById(responseBubbleId);
-                if (bubble) {
-                    bubble.innerHTML = formatMarkdown(chunkText);
-                    const container = document.getElementById('gitaChatMessages');
-                    if (container) container.scrollTop = container.scrollHeight;
-                }
-            });
-
-            if (!hasStarted) {
-                // In case the stream returns instantly without chunks
-                const typingEl = document.getElementById(typingId);
-                if (typingEl) typingEl.remove();
-                addBubble(formatMarkdown(finalResponse), 'assistant');
             }
-
-            chatHistory.push({ role: 'user', text: message });
-            chatHistory.push({ role: 'assistant', text: finalResponse });
+            
+            typeNextWord();
 
         } catch (error) {
             const typingEl = document.getElementById(typingId);
@@ -194,7 +197,6 @@ const GitaPage = (() => {
             if (error.message.includes('API Key')) {
                 openSettingsModal();
             }
-        } finally {
             isTyping = false;
             if (btn) btn.style.opacity = '1';
         }
