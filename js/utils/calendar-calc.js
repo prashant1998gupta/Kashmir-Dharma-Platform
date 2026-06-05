@@ -252,31 +252,137 @@ const CalendarCalc = (() => {
         
         return results;
     }
+    /**
+     * Determine Sunrise and Sunset times using Astronomy Engine
+     */
+    function calculateSunriseSunset(date, lat, lon) {
+        if (typeof Astronomy === 'undefined') return null;
+        
+        const observer = new Astronomy.Observer(lat, lon, 0);
+        const nextSunrise = Astronomy.SearchRiseSet(Astronomy.Body.Sun, observer, +1, date, 1);
+        const nextSunset = Astronomy.SearchRiseSet(Astronomy.Body.Sun, observer, -1, date, 1);
+        
+        return {
+            sunrise: nextSunrise ? nextSunrise.date : null,
+            sunset: nextSunset ? nextSunset.date : null
+        };
+    }
 
     /**
-     * Determine if a date is auspicious based on event-specific Panchang rules
+     * Calculate Rahu Kalam based on day of week and exact Sunrise/Sunset
      */
-    function isAuspicious(year, month, day, eventRecs) {
+    function calculateRahuKalam(sunrise, sunset, dayOfWeek) {
+        if (!sunrise || !sunset) return null;
+        
+        // Duration of daylight in ms
+        const daylightMs = sunset.getTime() - sunrise.getTime();
+        const segmentMs = daylightMs / 8; // 8 segments of daylight
+        
+        // Rahu Kalam segment index (0 to 7) based on Day of Week
+        // Sunday: 7, Monday: 1, Tuesday: 6, Wednesday: 4, Thursday: 5, Friday: 3, Saturday: 2
+        const rahuSegments = [7, 1, 6, 4, 5, 3, 2];
+        const segIndex = rahuSegments[dayOfWeek];
+        
+        const rahuStart = new Date(sunrise.getTime() + (segIndex * segmentMs));
+        const rahuEnd = new Date(rahuStart.getTime() + segmentMs);
+        
+        return { start: rahuStart, end: rahuEnd };
+    }
+
+    /**
+     * Calculate Daytime Choghadiya (8 segments of 1/8th daylight each)
+     */
+    function calculateChoghadiya(sunrise, sunset, dayOfWeek) {
+        if (!sunrise || !sunset) return [];
+        
+        const daylightMs = sunset.getTime() - sunrise.getTime();
+        const segmentMs = daylightMs / 8;
+        
+        const choghadiyaOrder = [
+            ['Udveg', 'Chal', 'Labh', 'Amrit', 'Kaal', 'Shubh', 'Rog'], // Sun
+            ['Amrit', 'Kaal', 'Shubh', 'Rog', 'Udveg', 'Chal', 'Labh'], // Mon
+            ['Rog', 'Udveg', 'Chal', 'Labh', 'Amrit', 'Kaal', 'Shubh'], // Tue
+            ['Labh', 'Amrit', 'Kaal', 'Shubh', 'Rog', 'Udveg', 'Chal'], // Wed
+            ['Shubh', 'Rog', 'Udveg', 'Chal', 'Labh', 'Amrit', 'Kaal'], // Thu
+            ['Chal', 'Labh', 'Amrit', 'Kaal', 'Shubh', 'Rog', 'Udveg'], // Fri
+            ['Kaal', 'Shubh', 'Rog', 'Udveg', 'Chal', 'Labh', 'Amrit']  // Sat
+        ];
+        
+        const order = choghadiyaOrder[dayOfWeek];
+        const segments = [];
+        
+        for (let i = 0; i < 8; i++) {
+            // 8th segment wraps around to the 1st
+            const name = order[i % 7];
+            const isGood = ['Amrit', 'Shubh', 'Labh'].includes(name);
+            const isNeutral = ['Chal'].includes(name);
+            const isBad = ['Rog', 'Udveg', 'Kaal'].includes(name);
+            
+            segments.push({
+                name,
+                start: new Date(sunrise.getTime() + (i * segmentMs)),
+                end: new Date(sunrise.getTime() + ((i + 1) * segmentMs)),
+                isGood, isNeutral, isBad
+            });
+        }
+        
+        return segments;
+    }
+
+    /**
+     * Calculate Tara Bala (Star Strength)
+     * birthNakshatra: 0-26, transitNakshatra: 0-26
+     * Returns: score (1-9), isGood (boolean)
+     */
+    function calculateTaraBala(birthNakshatra, transitNakshatra) {
+        let diff = (transitNakshatra - birthNakshatra);
+        if (diff < 0) diff += 27;
+        
+        const taraBala = (diff % 9) + 1; // 1 to 9
+        // 3 (Vipat), 5 (Pratyak), 7 (Naidhana) are bad
+        const isGood = ![3, 5, 7].includes(taraBala);
+        
+        const names = ["Janma (Neutral)", "Sampat (Wealth)", "Vipat (Danger)", "Kshema (Prosperity)", "Pratyak (Obstacles)", "Sadhaka (Achievement)", "Naidhana (Severe Danger)", "Mitra (Friendly)", "Ati-Mitra (Very Friendly)"];
+        
+        return { score: taraBala, isGood, name: names[taraBala - 1] };
+    }
+
+    /**
+     * Calculate Chandra Bala (Moon Strength)
+     */
+    function calculateChandraBala(birthRashi, transitRashi) {
+        let diff = (transitRashi - birthRashi) + 1;
+        if (diff <= 0) diff += 12;
+        
+        // 6, 8, 12 houses from birth moon are bad
+        const isGood = ![6, 8, 12].includes(diff);
+        return { position: diff, isGood };
+    }
+
+    /**
+     * Determine if a date is auspicious based on event-specific Panchang rules, location, and user profile
+     */
+    function isAuspicious(year, month, day, eventRecs, cityObj = null, userProfile = null) {
         const jd = gregorianToJD(year, month, day);
         const tithi = calculateTithi(jd);
         const nakshatra = calculateNakshatra(jd);
-        const dayOfWeek = new Date(year, month - 1, day).getDay();
+        const dateObj = new Date(year, month - 1, day, 12, 0, 0); // Noon
+        const dayOfWeek = dateObj.getDay();
         const dayName = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][dayOfWeek];
 
         let isTithiGood = false;
         let isTithiBad = false;
         let isDayGood = false;
         let isDayBad = false;
+        let reasons = [];
 
         if (eventRecs) {
-            // Strip Paksha from Tithi name for comparison (e.g., "Pratipada")
             let baseTithiName = tithi.name;
             isTithiGood = eventRecs.preferredTithis.includes(baseTithiName);
             isTithiBad = eventRecs.avoidTithis.includes(baseTithiName);
             isDayGood = eventRecs.goodDays.includes(dayName);
             isDayBad = eventRecs.avoidDays.includes(dayName);
         } else {
-            // Fallback general rules
             const auspiciousTithis = [1, 2, 4, 6, 9, 10, 12];
             const tithiInPaksha = tithi.index % 15;
             isTithiGood = auspiciousTithis.includes(tithiInPaksha);
@@ -284,37 +390,86 @@ const CalendarCalc = (() => {
             isDayBad = [2, 6].includes(dayOfWeek);
         }
         
-        // Generally auspicious nakshatras (fallback)
         const auspiciousNakshatras = [0, 2, 3, 6, 7, 10, 11, 12, 16, 21, 24, 25, 26];
         const isNakshatraGood = auspiciousNakshatras.includes(nakshatra.index);
 
         let score = 0;
-        if (isTithiGood) score += 3;
-        if (isTithiBad) score -= 3;
-        if (isNakshatraGood) score += 2;
-        if (isDayGood) score += 3;
-        if (isDayBad) score -= 3;
-        if (tithi.pakshaIndex === 0) score += 1; // Shukla paksha preferred
+        let maxScore = 9;
+        
+        if (isTithiGood) { score += 3; reasons.push(`✅ ${tithi.name} is highly favorable`); }
+        else if (isTithiBad) { score -= 3; reasons.push(`🚫 ${tithi.name} should be avoided`); }
+        else { reasons.push(`⚠️ ${tithi.name} is neutral`); }
+        
+        if (isNakshatraGood) { score += 2; reasons.push(`✅ ${nakshatra.name} nakshatra is favorable`); }
+        else { reasons.push(`⚠️ ${nakshatra.name} nakshatra is neutral`); }
+        
+        if (isDayGood) { score += 3; reasons.push(`✅ ${dayName} is an excellent day`); }
+        else if (isDayBad) { score -= 3; reasons.push(`🚫 ${dayName} is traditionally avoided`); }
+        else { reasons.push(`⚠️ ${dayName} is acceptable`); }
+        
+        if (tithi.pakshaIndex === 0) { score += 1; }
+
+        let choghadiya = [];
+        let rahuKalam = null;
+        
+        // Exact daily timings
+        if (cityObj) {
+            const sunData = calculateSunriseSunset(dateObj, cityObj.lat, cityObj.lon);
+            if (sunData && sunData.sunrise && sunData.sunset) {
+                rahuKalam = calculateRahuKalam(sunData.sunrise, sunData.sunset, dayOfWeek);
+                choghadiya = calculateChoghadiya(sunData.sunrise, sunData.sunset, dayOfWeek);
+            }
+        }
+        
+        // Personalization
+        let personalCompat = null;
+        if (userProfile && userProfile.nakshatraIndex !== undefined) {
+            maxScore += 5; // Increase max score for personal checks
+            
+            const tara = calculateTaraBala(userProfile.nakshatraIndex, nakshatra.index);
+            let rashiIndex = NAKSHATRA_RASHI_MAP[nakshatra.index] + 1; // 1-12
+            const chandra = calculateChandraBala(userProfile.lagnaRashi || 1, rashiIndex); // Use rashi from profile or fallback
+            
+            personalCompat = { tara, chandra };
+            
+            if (tara.isGood) {
+                score += 3;
+                reasons.push(`🌟 Tara Bala: ${tara.name} (Excellent)`);
+            } else {
+                score -= 2;
+                reasons.push(`⚠️ Tara Bala: ${tara.name} (Unfavorable)`);
+            }
+            
+            if (chandra.isGood) {
+                score += 2;
+                reasons.push(`🌟 Chandra Bala: Favorable Moon Transit`);
+            } else {
+                score -= 2;
+                reasons.push(`⚠️ Chandra Bala: Moon in ${chandra.position}th house (Unfavorable)`);
+            }
+        }
+
+        // Adjust recommendation threshold based on maxScore
+        const threshold = maxScore * 0.55;
 
         return {
             score,
-            maxScore: 9,
-            isRecommended: score >= 5 && !isTithiBad && !isDayBad,
+            maxScore,
+            isRecommended: score >= threshold && !isTithiBad && !isDayBad && (!personalCompat || (personalCompat.tara.isGood && personalCompat.chandra.isGood)),
             tithi,
             nakshatra,
             dayOfWeek: dayName,
-            reasons: [
-                isTithiGood ? `✅ ${tithi.name} is highly favorable` : (isTithiBad ? `🚫 ${tithi.name} should be avoided` : `⚠️ ${tithi.name} is neutral`),
-                isNakshatraGood ? `✅ ${nakshatra.name} nakshatra is favorable` : `⚠️ ${nakshatra.name} nakshatra is neutral`,
-                isDayGood ? `✅ ${dayName} is an excellent day` : (isDayBad ? `🚫 ${dayName} is traditionally avoided` : `⚠️ ${dayName} is acceptable`)
-            ]
+            reasons,
+            rahuKalam,
+            choghadiya,
+            personalCompat
         };
     }
 
     /**
-     * Get auspicious dates in a date range for a given event type
+     * Get auspicious dates in a date range for a given event type, optionally personalized
      */
-    function findAuspiciousDates(startDate, endDate, eventRecs) {
+    function findAuspiciousDates(startDate, endDate, eventRecs, cityObj = null, userProfile = null) {
         const results = [];
         const current = new Date(startDate);
         
@@ -323,7 +478,7 @@ const CalendarCalc = (() => {
             const month = current.getMonth() + 1;
             const day = current.getDate();
             
-            const result = isAuspicious(year, month, day, eventRecs);
+            const result = isAuspicious(year, month, day, eventRecs, cityObj, userProfile);
             if (result.isRecommended) {
                 results.push({
                     date: new Date(current),

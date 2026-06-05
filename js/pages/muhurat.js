@@ -28,10 +28,17 @@ const MuhuratPage = (() => {
     }
 
     function afterRender() {
+        if (typeof CityAPI !== 'undefined') {
+            CityAPI.initCityAutocomplete('m-city', 'm-city-results');
+        }
         App.loadData('muhurat-data').then(data => {
             muhuratData = data;
             renderContent();
         });
+    }
+
+    function onProfileSelect(profile) {
+        // Handled dynamically when findMuhurat is called
     }
 
     function renderContent() {
@@ -40,6 +47,27 @@ const MuhuratPage = (() => {
         if (!container) return;
 
         container.innerHTML = `
+            <!-- Personalization & Location -->
+            <div class="grid-2 mb-8">
+                <div class="card card-glass" style="padding: var(--space-6); overflow: visible;">
+                    <h3 style="margin-bottom: var(--space-4)">👤 Personal Profile</h3>
+                    <p style="font-size: var(--text-sm); color: var(--text-muted); margin-bottom: var(--space-4)">
+                        Select a profile to personalize dates using Tara Bala and Chandra Bala (Optional).
+                    </p>
+                    ${ProfileManager.renderProfileSelector('muhuratProfile', 'MuhuratPage.onProfileSelect')}
+                </div>
+                <div class="card card-glass" style="padding: var(--space-6); overflow: visible;">
+                    <h3 style="margin-bottom: var(--space-4)">📍 Exact Location</h3>
+                    <p style="font-size: var(--text-sm); color: var(--text-muted); margin-bottom: var(--space-4)">
+                        Location is required to calculate accurate Choghadiya and Rahu Kalam.
+                    </p>
+                    <div class="form-group" style="position: relative; margin-bottom: 0;">
+                        <input type="text" class="form-input" id="m-city" placeholder="Search city (e.g. Srinagar)..." autocomplete="off">
+                        <div id="m-city-results" class="autocomplete-results" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Event Type Selection -->
             <h3 style="margin-bottom: var(--space-4)">${typeof I18n !== 'undefined' ? I18n.t('muhurat.select_event', 'Select Event Type') : 'Select Event Type'}</h3>
             <div class="grid-3 mb-8">
@@ -162,12 +190,34 @@ const MuhuratPage = (() => {
             return;
         }
 
+        // Personalization and Location extraction
+        const cityName = document.getElementById('m-city')?.value;
+        const cityInput = document.getElementById('m-city');
+        let cityObj = null;
+        if (cityName) {
+            if (cityInput.dataset.lat) {
+                cityObj = {
+                    name: cityName,
+                    lat: parseFloat(cityInput.dataset.lat),
+                    lon: parseFloat(cityInput.dataset.lon)
+                };
+            } else if (typeof CityDatabase !== 'undefined') {
+                cityObj = CityDatabase.find(c => c.name.toLowerCase() === cityName.toLowerCase());
+            }
+        }
+
+        const profileId = document.getElementById('muhuratProfile')?.value;
+        let userProfile = null;
+        if (profileId && typeof ProfileManager !== 'undefined') {
+            userProfile = ProfileManager.getProfile(profileId);
+        }
+
         // Get event-specific recommendations
         const eventRecs = muhuratData.dayRecommendations[selectedEvent];
         const eventInfo = muhuratData.eventTypes.find(e => e.id === selectedEvent);
 
         // Find auspicious dates using the specific rules
-        const auspiciousDates = CalendarCalc.findAuspiciousDates(startDate, endDate, eventRecs);
+        const auspiciousDates = CalendarCalc.findAuspiciousDates(startDate, endDate, eventRecs, cityObj, userProfile);
 
         const resultsContainer = document.getElementById('muhuratResults');
         if (!resultsContainer) return;
@@ -208,37 +258,80 @@ const MuhuratPage = (() => {
 
                 ${auspiciousDates.length > 0 ? `
                     <div class="flex flex-col gap-4">
-                        ${auspiciousDates.slice(0, 15).map((ad, i) => Components.card(`
-                            <div class="flex items-center justify-between flex-wrap gap-4">
-                                <div class="flex items-center gap-4">
-                                    <div style="text-align: center; min-width: 60px">
-                                        <div style="font-size: var(--text-2xl); font-weight: 700; color: var(--color-secondary)">
-                                            ${ad.date.getDate()}
+                        ${auspiciousDates.slice(0, 15).map((ad, i) => `
+                            ${Components.card(`
+                                <div class="flex items-center justify-between flex-wrap gap-4">
+                                    <div class="flex items-center gap-4">
+                                        <div style="text-align: center; min-width: 60px">
+                                            <div style="font-size: var(--text-2xl); font-weight: 700; color: var(--color-secondary)">
+                                                ${ad.date.getDate()}
+                                            </div>
+                                            <div style="font-size: var(--text-xs); color: var(--text-muted)">
+                                                ${ad.date.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
+                                            </div>
                                         </div>
-                                        <div style="font-size: var(--text-xs); color: var(--text-muted)">
-                                            ${ad.date.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
+                                        <div>
+                                            <div style="font-weight: 600; margin-bottom: var(--space-1)">
+                                                ${ad.dayOfWeek}, ${ad.date.toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })}
+                                            </div>
+                                            <div style="font-size: var(--text-sm); color: var(--text-secondary)">
+                                                ${ad.tithi.name} (${ad.tithi.pakshaIndex === 0 ? 'Shukla' : 'Krishna'}) · ${ad.nakshatra.name}
+                                            </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <div style="font-weight: 600; margin-bottom: var(--space-1)">
-                                            ${ad.dayOfWeek}, ${ad.date.toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })}
+                                    <div class="flex flex-col items-end gap-1">
+                                        <div class="flex items-center gap-2">
+                                            <div style="font-size: var(--text-sm); color: var(--color-secondary); font-weight: 600">
+                                                ${Math.round(ad.score)}/${ad.maxScore}
+                                            </div>
+                                            ${Components.badge(ad.score >= (ad.maxScore * 0.75) ? 'Highly Favorable' : 'Favorable', ad.score >= (ad.maxScore * 0.75) ? 'accent' : 'secondary')}
                                         </div>
-                                        <div style="font-size: var(--text-sm); color: var(--text-secondary)">
-                                            ${ad.tithi.name} (${ad.tithi.pakshaIndex === 0 ? 'Shukla' : 'Krishna'}) · ${ad.nakshatra.name}
-                                        </div>
+                                        ${ad.personalCompat ? `
+                                            <div style="font-size: 10px; color: ${ad.personalCompat.tara.isGood ? 'var(--color-secondary)' : 'var(--text-muted)'}; text-transform: uppercase; font-weight: bold; margin-top: 4px;">
+                                                ⭐ ${ad.personalCompat.tara.name}
+                                            </div>
+                                        ` : ''}
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <div style="font-size: var(--text-sm); color: var(--color-secondary); font-weight: 600">
-                                        ${ad.score}/${ad.maxScore}
+
+                                <!-- Deep Scholarly Timings (Choghadiya & Rahu Kalam) -->
+                                ${ad.rahuKalam && ad.choghadiya ? `
+                                    <div class="mt-4 pt-4" style="border-top: 1px solid var(--border-color)">
+                                        <h5 style="margin-bottom: var(--space-2); font-size: var(--text-xs); color: var(--text-muted); text-transform: uppercase;">Exact Daily Timings</h5>
+                                        <div class="flex items-center gap-4 flex-wrap">
+                                            <div style="flex: 1; min-width: 200px;">
+                                                <div style="display: flex; height: 8px; border-radius: 4px; overflow: hidden;">
+                                                    ${ad.choghadiya.map(c => `
+                                                        <div style="flex: 1; background: ${c.isGood ? 'var(--color-secondary)' : c.isBad ? 'rgba(239, 68, 68, 0.7)' : 'var(--bg-tertiary)'};" title="${c.name} (${c.start.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})})"></div>
+                                                    `).join('')}
+                                                </div>
+                                                <div class="flex justify-between mt-1" style="font-size: 10px; color: var(--text-muted)">
+                                                    <span>Sunrise</span>
+                                                    <span>Sunset</span>
+                                                </div>
+                                            </div>
+                                            <div style="font-size: var(--text-xs); background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.2);">
+                                                <strong>🚫 Rahu Kalam:</strong> ${ad.rahuKalam.start.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})} - ${ad.rahuKalam.end.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Best Time Windows -->
+                                        <div class="mt-3 tag-group">
+                                            <span style="font-size: 10px; color: var(--text-muted); margin-right: 4px;">Best Hours:</span>
+                                            ${ad.choghadiya.filter(c => c.isGood).map(c => `
+                                                <span class="tag" style="font-size: 10px; padding: 2px 6px; border-color: var(--color-secondary); color: var(--color-secondary)">
+                                                    ${c.name}: ${c.start.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}
+                                                </span>
+                                            `).join('')}
+                                        </div>
                                     </div>
-                                    ${Components.badge(ad.score >= 7 ? 'Highly Favorable' : 'Favorable', ad.score >= 7 ? 'accent' : 'secondary')}
+                                ` : ''}
+
+                                <div class="mt-3" style="font-size: var(--text-xs)">
+                                    ${ad.reasons.map(r => `<div style="padding: 2px 0; color: var(--text-muted)">${r}</div>`).join('')}
                                 </div>
-                            </div>
-                            <div class="mt-3" style="font-size: var(--text-xs)">
-                                ${ad.reasons.map(r => `<div style="padding: 2px 0; color: var(--text-muted)">${r}</div>`).join('')}
-                            </div>
-                        `, { compact: true, featured: i === 0 })).join('')}
+                            `, { compact: true, featured: i === 0 })}
+                        `).join('')}
                     </div>
                 ` : `
                     ${Components.emptyState('📅', 'No highly auspicious dates found', 
