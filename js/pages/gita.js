@@ -12,12 +12,12 @@ const GitaPage = (() => {
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
                     <div>
                         <h1 style="color: var(--color-primary); margin: 0; font-size: var(--text-2xl); display: flex; align-items: center; gap: var(--space-2);">
-                            <span style="font-size: 1.5em;">🦚</span> Gita AI Companion
+                            <span style="font-size: 1.5em;">🦚</span> ${I18n.t('gita.title')}
                         </h1>
-                        <p style="color: var(--text-muted); margin-top: var(--space-1); font-size: var(--text-sm);">Seek wisdom from the Bhagavad Gita</p>
+                        <p style="color: var(--text-muted); margin-top: var(--space-1); font-size: var(--text-sm);">${I18n.t('gita.subtitle')}</p>
                     </div>
                     <button class="btn btn-outline btn-sm" onclick="GitaPage.openSettingsModal()" title="API Settings">
-                        ⚙️ Settings
+                        ⚙️ ${I18n.t('gita.settings')}
                     </button>
                 </div>
 
@@ -25,17 +25,17 @@ const GitaPage = (() => {
                     <!-- Chat Messages Area -->
                     <div id="gitaChatMessages" style="flex: 1; overflow-y: auto; padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-4);">
                         <div class="chat-bubble assistant divine-bubble">
-                            <strong>🦚 Radhe Radhe!</strong><br><br>
-                            I am your AI companion inspired by the teachings of Lord Krishna in the Bhagavad Gita. <br>
-                            Tell me, what troubles your mind today? How can I guide you towards peace and clarity?
+                            <strong>${I18n.t('gita.welcome_title')}</strong><br><br>
+                            ${I18n.t('gita.welcome_desc')}<br>
+                            ${I18n.t('gita.welcome_prompt')}
                         </div>
                     </div>
 
                     <!-- Quick Prompts (only show if chat is empty) -->
                     <div id="gitaQuickPrompts" style="padding: 0 var(--space-6) var(--space-4) var(--space-6); display: flex; gap: var(--space-2); flex-wrap: wrap;">
-                        <button class="tag" style="background: var(--bg-tertiary); cursor: pointer; border: none;" onclick="GitaPage.ask('I am feeling very anxious about my future.')">Anxiety about future</button>
-                        <button class="tag" style="background: var(--bg-tertiary); cursor: pointer; border: none;" onclick="GitaPage.ask('How do I find my life\\'s purpose (Dharma)?')">Finding purpose</button>
-                        <button class="tag" style="background: var(--bg-tertiary); cursor: pointer; border: none;" onclick="GitaPage.ask('I am struggling with a difficult relationship.')">Relationship troubles</button>
+                        <button class="tag" style="background: var(--bg-tertiary); cursor: pointer; border: none;" onclick="GitaPage.ask('${I18n.t('gita.quick_1_prompt')}')">${I18n.t('gita.quick_1')}</button>
+                        <button class="tag" style="background: var(--bg-tertiary); cursor: pointer; border: none;" onclick="GitaPage.ask('${I18n.t('gita.quick_2_prompt')}')">${I18n.t('gita.quick_2')}</button>
+                        <button class="tag" style="background: var(--bg-tertiary); cursor: pointer; border: none;" onclick="GitaPage.ask('${I18n.t('gita.quick_3_prompt')}')">${I18n.t('gita.quick_3')}</button>
                     </div>
 
                     <!-- Input Area -->
@@ -43,14 +43,14 @@ const GitaPage = (() => {
                         <div class="chat-input-container" style="display: flex; gap: var(--space-3);">
                             <input type="text" class="form-control" id="gitaChatInput" 
                                    style="flex: 1; border-radius: 24px; padding: var(--space-3) var(--space-5); background: rgba(255,255,255,0.05); border: 1px solid rgba(212,175,55,0.2);"
-                                   placeholder="Ask Krishna for guidance..."
+                                   placeholder="${I18n.t('gita.input_placeholder')}"
                                    onkeypress="if(event.key==='Enter') GitaPage.sendMessage()">
                             <button class="btn btn-primary" style="border-radius: 50%; width: 52px; height: 52px; padding: 0; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(163,38,38,0.4);" onclick="GitaPage.sendMessage()" id="gitaSendBtn">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                             </button>
                         </div>
                         <div style="text-align: center; font-size: 11px; color: var(--text-muted); margin-top: var(--space-2);">
-                            AI responses are generated based on the Bhagavad Gita. Requires a Gemini API Key.
+                            ${I18n.t('gita.disclaimer')}
                         </div>
                     </div>
                 </div>
@@ -58,20 +58,20 @@ const GitaPage = (() => {
                 <!-- API Settings Modal -->
                 <div id="gitaApiModal" class="modal-overlay" style="display: none; align-items: center; justify-content: center; z-index: 1000;">
                     <div class="card card-glass" style="max-width: 500px; width: 90%; padding: var(--space-6);">
-                        <h2 style="color: var(--color-primary); margin-bottom: var(--space-4);">AI Settings</h2>
+                        <h2 style="color: var(--color-primary); margin-bottom: var(--space-4);">${I18n.t('gita.modal_title')}</h2>
                         <p style="color: var(--text-secondary); font-size: var(--text-sm); margin-bottom: var(--space-4);">
-                            To use the Gita AI Companion, you need a free Google Gemini API Key. Your key is stored securely in your browser's local storage and is never sent to our servers.
+                            ${I18n.t('gita.modal_desc')}
                         </p>
                         <div class="form-group">
-                            <label class="form-label">Gemini API Key</label>
+                            <label class="form-label">${I18n.t('gita.modal_label')}</label>
                             <input type="password" id="gitaApiKeyInput" class="form-control" placeholder="AIzaSy...">
                         </div>
                         <div style="font-size: var(--text-xs); margin-bottom: var(--space-5);">
-                            <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--color-secondary);">Get a free Gemini API Key here →</a>
+                            <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--color-secondary);">${I18n.t('gita.modal_link')}</a>
                         </div>
                         <div style="display: flex; justify-content: flex-end; gap: var(--space-3);">
-                            <button class="btn btn-outline" onclick="document.getElementById('gitaApiModal').style.display = 'none'">Cancel</button>
-                            <button class="btn btn-primary" onclick="GitaPage.saveApiKey()">Save Key</button>
+                            <button class="btn btn-outline" onclick="document.getElementById('gitaApiModal').style.display = 'none'">${I18n.t('gita.btn_cancel')}</button>
+                            <button class="btn btn-primary" onclick="GitaPage.saveApiKey()">${I18n.t('gita.btn_save')}</button>
                         </div>
                     </div>
                 </div>
@@ -158,13 +158,13 @@ const GitaPage = (() => {
 
             // Extract suggestions handling potential newlines
             let suggestions = [];
-            const suggestionMatch = finalResponse.match(/\[SUGGESTIONS?:\s*([\s\S]*?)\]/i);
+            const suggestionMatch = finalResponse.match(/<suggestions>([\s\S]*?)<\/suggestions>/i);
             if (suggestionMatch) {
                 let sText = suggestionMatch[1];
                 // Strip out markdown bullets if the LLM hallucinated them instead of pipes
                 sText = sText.replace(/\n-/g, '|').replace(/\n\*/g, '|');
                 suggestions = sText.split(/[|\n]+/).map(s => s.trim().replace(/^[-*]\s*/, '')).filter(s => s.length > 5);
-                finalResponse = finalResponse.replace(/\[SUGGESTIONS?:[\s\S]*?\]/i, '').trim();
+                finalResponse = finalResponse.replace(/<suggestions>[\s\S]*?<\/suggestions>/i, '').trim();
             }
 
             const typingEl = document.getElementById(typingId);

@@ -254,7 +254,29 @@ const I18n = (() => {
             'lore.neutral': 'is neutral',
             'lore.excellent_day': 'is an excellent day',
             'lore.avoid_day': 'is traditionally avoided',
-            'lore.acceptable': 'is acceptable'
+            'lore.acceptable': 'is acceptable',
+
+            // Gita AI Companion
+            'gita.title': 'Gita AI Companion',
+            'gita.subtitle': 'Seek wisdom from the Bhagavad Gita',
+            'gita.settings': 'Settings',
+            'gita.welcome_title': '🦚 Radhe Radhe!',
+            'gita.welcome_desc': 'I am your AI companion inspired by the teachings of Lord Krishna in the Bhagavad Gita.',
+            'gita.welcome_prompt': 'Tell me, what troubles your mind today? How can I guide you towards peace and clarity?',
+            'gita.quick_1': 'Anxiety about future',
+            'gita.quick_1_prompt': 'I am feeling very anxious about my future.',
+            'gita.quick_2': 'Finding purpose',
+            'gita.quick_2_prompt': 'How do I find my life\'s purpose (Dharma)?',
+            'gita.quick_3': 'Relationship troubles',
+            'gita.quick_3_prompt': 'I am struggling with a difficult relationship.',
+            'gita.input_placeholder': 'Ask Krishna for guidance...',
+            'gita.disclaimer': 'AI responses are generated based on the Bhagavad Gita. Requires a Gemini API Key.',
+            'gita.modal_title': 'AI Settings',
+            'gita.modal_desc': 'To use the Gita AI Companion, you need a free Google Gemini API Key. Your key is stored securely in your browser\'s local storage and is never sent to our servers.',
+            'gita.modal_label': 'Gemini API Key',
+            'gita.modal_link': 'Get a free Gemini API Key here →',
+            'gita.btn_cancel': 'Cancel',
+            'gita.btn_save': 'Save Key'
         },
         hi: {
             // Navigation
@@ -633,7 +655,29 @@ const I18n = (() => {
             'lore.neutral': 'तटस्थ है',
             'lore.excellent_day': 'एक उत्कृष्ट दिन है',
             'lore.avoid_day': 'पारंपरिक रूप से इससे बचा जाता है',
-            'lore.acceptable': 'स्वीकार्य है'
+            'lore.acceptable': 'स्वीकार्य है',
+
+            // Gita AI Companion
+            'gita.title': 'गीता एआई (Gita AI)',
+            'gita.subtitle': 'भगवद गीता से ज्ञान प्राप्त करें',
+            'gita.settings': 'सेटिंग्स',
+            'gita.welcome_title': '🦚 राधे राधे!',
+            'gita.welcome_desc': 'मैं भगवद गीता में भगवान कृष्ण की शिक्षाओं से प्रेरित आपका एआई (AI) साथी हूँ।',
+            'gita.welcome_prompt': 'बताओ, आज तुम्हारे मन को क्या परेशान कर रहा है? मैं शांति और स्पष्टता की ओर तुम्हारा मार्गदर्शन कैसे कर सकता हूँ?',
+            'gita.quick_1': 'भविष्य की चिंता',
+            'gita.quick_1_prompt': 'मुझे अपने भविष्य को लेकर बहुत चिंता हो रही है।',
+            'gita.quick_2': 'उद्देश्य खोजना',
+            'gita.quick_2_prompt': 'मैं अपने जीवन का उद्देश्य (धर्म) कैसे खोजूँ?',
+            'gita.quick_3': 'रिश्तों में परेशानी',
+            'gita.quick_3_prompt': 'मैं एक कठिन रिश्ते से जूझ रहा हूँ।',
+            'gita.input_placeholder': 'कृष्ण से मार्गदर्शन मांगें...',
+            'gita.disclaimer': 'एआई प्रतिक्रियाएं भगवद गीता पर आधारित हैं। इसके लिए जेमिनी (Gemini) एपीआई कुंजी की आवश्यकता है।',
+            'gita.modal_title': 'एआई सेटिंग्स',
+            'gita.modal_desc': 'गीता एआई साथी का उपयोग करने के लिए, आपको एक मुफ्त Google जेमिनी एपीआई कुंजी की आवश्यकता है। आपकी कुंजी सुरक्षित रूप से आपके ब्राउज़र के स्थानीय संग्रहण में सहेजी जाती है और कभी भी हमारे सर्वर पर नहीं भेजी जाती है।',
+            'gita.modal_label': 'जेमिनी एपीआई कुंजी (Gemini API Key)',
+            'gita.modal_link': 'यहाँ मुफ्त जेमिनी एपीआई कुंजी प्राप्त करें →',
+            'gita.btn_cancel': 'रद्द करें',
+            'gita.btn_save': 'कुंजी सहेजें'
         }
     };
 
