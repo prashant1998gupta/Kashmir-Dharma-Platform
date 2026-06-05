@@ -17,7 +17,8 @@ const Router = (() => {
         'archive': { page: ArchivePage, title: 'Knowledge Archive' },
         'audio': { page: AudioPage, title: 'Audio Library' },
         'guide': { page: GuidePage, title: 'Knowledge Guide' },
-        'sharada': { page: SharadaPage, title: 'Learn Sharada Script' }
+        'sharada': { page: SharadaPage, title: 'Learn Sharada Script' },
+        'gita': { page: GitaPage, title: 'Gita AI Companion' }
     };
 
     let currentPage = null;
