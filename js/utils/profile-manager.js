@@ -61,7 +61,15 @@ const ProfileManager = (() => {
      */
     function renderProfileSelector(selectId, onchangeHandler) {
         const profiles = getProfiles();
-        if (profiles.length === 0) return '';
+        if (profiles.length === 0) {
+            return `
+                <div style="margin-top: var(--space-2);">
+                    <button class="btn btn-outline" onclick="ProfileManager.openManagerModal()" style="width: 100%; border-style: dashed;">
+                        + Add a Family Profile
+                    </button>
+                </div>
+            `;
+        }
         
         const options = profiles.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
         return `
