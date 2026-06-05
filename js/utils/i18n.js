@@ -211,49 +211,7 @@ const I18n = (() => {
             'settings.theme_light': 'Light Mode',
             'settings.theme_dark': 'Dark Mode',
             'settings.language': 'Language / भाषा',
-            'settings.save': 'Save Preferences',
-
-            // Astrological Lore (Muhurat)
-            'lore.tithi.Pratipada': 'the 1st lunar day, ruled by Agni (Fire). In practical terms, this gives a spark of high energy to your plans. It is like lighting a new lamp—perfect for starting something fresh that needs a lot of initial momentum.',
-            'lore.tithi.Dwitiya': 'the 2nd lunar day, ruled by Lord Brahma (the Creator). For you, this means any foundation you lay today will be rock-solid. It is an excellent day for building things that you want to last a lifetime.',
-            'lore.tithi.Tritiya': 'the 3rd lunar day, blessed by Goddess Parvati. This is incredibly auspicious for you because it brings the divine mother\'s protection. Whatever you begin today will enjoy a long life, endless prosperity, and bring immense peace to your family.',
-            'lore.tithi.Panchami': 'the 5th lunar day, protected by the Nagas (Divine Serpents). This day acts as a spiritual shield. If you start a journey or project today, it will be protected from hidden enemies, jealousy, and unforeseen obstacles.',
-            'lore.tithi.Saptami': 'the 7th lunar day, ruled by the Sun God (Surya). Just as the sun brings light, this day brings extreme clarity, leadership, and glowing success to your endeavors. It is perfect when you want your work to be recognized by others.',
-            'lore.tithi.Dashami': 'the 10th lunar day, associated with discipline and order. If you need to start a business, sign contracts, or do something that requires strict rules and success over competitors, the energy of this day will support you perfectly.',
-            'lore.tithi.Ekadashi': 'the 11th lunar day, deeply sacred to Lord Vishnu. This is a day of extreme purity. Any activity done today carries spiritual merit. It brings peaceful preservation, meaning whatever you acquire today will stay with you safely without causing stress.',
-            'lore.tithi.Trayodashi': 'the 13th lunar day, dedicated to Lord Shiva. This day is a destroyer of bad karma. It is exceptionally good for overcoming past failures and achieving a spiritual or material triumph when all odds are against you.',
-            'lore.tithi.Purnima': 'the Full Moon day. The moon is at its absolute brightest, radiating massive positive energy. This signifies 100% fullness and absolute completion, making it a highly blessed day for major life events and celebrations.',
-            'lore.tithi.Chaturthi': 'the 4th lunar day, ruled by Lord Ganesha. While Ganesha removes obstacles, this specific day is generally considered "empty" for material gains like buying items. It is better used for clearing out old debts or fighting off problems.',
-            'lore.tithi.Ashtami': 'the 8th lunar day. This day carries a very heavy, transformative energy. It is great for deep spiritual practices or ending bad habits, but it is traditionally avoided for happy, material beginnings like weddings or purchases.',
-            'lore.tithi.Navami': 'the 9th lunar day, ruled by Goddess Durga. This is an aggressive, fierce day. It is highly successful if you need to win a court case or defeat an adversary, but it is too sharp and aggressive for peaceful events like buying a home.',
-            'lore.tithi.Chaturdashi': 'the 14th lunar day, carrying fierce and unpredictable energy. In our tradition, this day is entirely avoided for gentle, happy, or long-term auspicious activities as it can bring sudden, unwanted changes.',
-            'lore.tithi.Amavasya': 'the New Moon day. The moon is completely hidden, meaning there is zero lunar energy available to nourish your new beginnings. This day is strictly reserved for honoring ancestors and meditating, not for worldly tasks.',
-
-            'lore.day.Monday': 'ruled by the Moon (Chandra). The moon controls our emotions and peace of mind. Doing this today ensures that your decision will bring you emotional happiness, a steady flow of income, and a very calm, stress-free experience.',
-            'lore.day.Wednesday': 'ruled by Mercury (Budha), the planet of intelligence and communication. This means your plans today will be executed swiftly and smartly, without any confusion or miscommunication. It is perfect for paperwork and deals.',
-            'lore.day.Thursday': 'ruled by Jupiter (Brihaspati), the Guru of all planets. Jupiter is the ultimate planet of massive wealth, luck, and divine protection. Choosing Thursday almost guarantees supreme wisdom, financial growth, and blessings from above.',
-            'lore.day.Friday': 'ruled by Venus (Shukra), the planet of luxury, beauty, and love. If you are buying a vehicle, gold, or a home today, Venus ensures it will be beautiful, comfortable, and bring harmonious relationships into your life.',
-            'lore.day.Sunday': 'ruled by the Sun (Surya). The Sun brings steadfast authority and power. While it is good for government work or taking charge, its fiery heat can sometimes be too aggressive for very gentle, family-oriented events.',
-            'lore.day.Tuesday': 'ruled by Mars (Mangala), the planet of war and fire. Mars brings highly aggressive energy. While excellent for surgeries or taking bold risks, it is traditionally avoided for peaceful milestones to prevent arguments or accidents.',
-            'lore.day.Saturday': 'ruled by Saturn (Shani). Saturn is the slowest moving planet and represents delays, hard work, and heavy karmic lessons. Because it slows things down, we generally avoid starting fresh, happy things on Saturdays.',
-
-            'lore.nak.Rohini': 'a "fixed" star. Think of it like planting a massive Banyan tree. Whatever you start under Rohini will establish deep, unshakeable roots, making it absolutely perfect for long-lasting investments like property or marriage.',
-            'lore.nak.Mrigashira': 'a "gentle" star that brings a very sweet, curious, and joyous energy. Starting things today ensures that your experience will be pleasant, stress-free, and filled with happy little moments rather than intense drama.',
-            'lore.nak.Uttara Phalguni': 'a star that guarantees deep social success and patronage. If you start something today, you will receive immense support from your community, friends, and family, making it highly favored for weddings and social events.',
-            'lore.nak.Hasta': 'represented by a "hand". This star gives you the dexterity and ability to literally "grasp" success. It brings quick manifestation, meaning your desires and plans will turn into reality very quickly and smoothly.',
-            'lore.nak.Chitra': 'the star of beautiful design and opportunity. This brings extreme aesthetic brilliance to your endeavor. If you are buying a car, clothes, or a house today, they will turn out to be exceptionally beautiful and eye-catching.',
-            'lore.nak.Anuradha': 'the star of friendship and devotion. It fosters extremely cooperative energy. If your event requires teamwork, partnerships, or bringing families together, Anuradha ensures everyone gets along perfectly without conflict.',
-            'lore.nak.Uttara Ashadha': 'known as the "Universal Star of Undisputed Victory". It guarantees that no matter what obstacles come your way, you will win in the end. It provides a long-lasting, unshakeable success that cannot be easily broken.',
-            'lore.nak.Revati': 'the very last star, ruled by the nourisher. It offers an incredibly sweet, gentle, and wealthy completion to your new beginnings. It ensures that your journey is safe, well-fed, and ends happily without any bumps.',
-            'lore.nak.Ashwini': 'the star of the divine physicians. It brings miraculous, lightning-fast energy. If you need something done swiftly, or if you need rapid healing and movement, Ashwini provides the quick burst of horsepower you need.',
-            'lore.nak.Pushya': 'widely considered the absolute best and most nourishing star in astrology. It acts like a caring mother. Anything started under Pushya is guaranteed to receive absolute divine care, flourishing growth, and extreme good luck.',
-
-            'lore.favorable': 'is highly favorable',
-            'lore.avoid': 'should be avoided',
-            'lore.neutral': 'is neutral',
-            'lore.excellent_day': 'is an excellent day',
-            'lore.avoid_day': 'is traditionally avoided',
-            'lore.acceptable': 'is acceptable'
+            'settings.save': 'Save Preferences'
         },
         hi: {
             // Navigation

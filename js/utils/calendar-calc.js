@@ -433,40 +433,22 @@ const CalendarCalc = (() => {
             'Pushya': 'widely considered the absolute best and most nourishing star in astrology. It acts like a caring mother. Anything started under Pushya is guaranteed to receive absolute divine care, flourishing growth, and extreme good luck.'
         };
 
-        const getI18n = (key, fallback) => typeof I18n !== 'undefined' ? I18n.t(key, fallback) : fallback;
-
         let score = 0;
         let maxScore = 9;
         
-        let tLore = getI18n('lore.tithi.' + tithi.name, TITHI_LORE[tithi.name] || 'bringing neutral lunar energy.');
-        if (isTithiGood) { 
-            score += 3; 
-            reasons.push(`✅ <strong>${tithi.name} ${getI18n('lore.favorable', 'is highly favorable')}:</strong> ${tLore}`); 
-        } else if (isTithiBad) { 
-            score -= 3; 
-            reasons.push(`🚫 <strong>${tithi.name} ${getI18n('lore.avoid', 'should be avoided')}:</strong> ${tLore}`); 
-        } else { 
-            reasons.push(`⚠️ <strong>${tithi.name} ${getI18n('lore.neutral', 'is neutral')}:</strong> ${tLore}`); 
-        }
+        let tLore = TITHI_LORE[tithi.name] || 'bringing neutral lunar energy.';
+        if (isTithiGood) { score += 3; reasons.push(`✅ <strong>${tithi.name} is highly favorable:</strong> This lunar day is ${tLore}`); }
+        else if (isTithiBad) { score -= 3; reasons.push(`🚫 <strong>${tithi.name} should be avoided:</strong> This is ${tLore}`); }
+        else { reasons.push(`⚠️ <strong>${tithi.name} is neutral:</strong> It provides average energy for this event.`); }
         
-        let nLore = getI18n('lore.nak.' + nakshatra.name, NAK_LORE[nakshatra.name] || 'providing standard cosmic influences.');
-        if (isNakshatraGood) { 
-            score += 2; 
-            reasons.push(`✅ <strong>${nakshatra.name} nakshatra ${getI18n('lore.favorable', 'is favorable')}:</strong> ${nLore}`); 
-        } else { 
-            reasons.push(`⚠️ <strong>${nakshatra.name} nakshatra ${getI18n('lore.neutral', 'is neutral')}:</strong> ${nLore}`); 
-        }
+        let nLore = NAK_LORE[nakshatra.name] || 'providing standard cosmic influences.';
+        if (isNakshatraGood) { score += 2; reasons.push(`✅ <strong>${nakshatra.name} nakshatra is favorable:</strong> It is known as ${nLore}`); }
+        else { reasons.push(`⚠️ <strong>${nakshatra.name} nakshatra is neutral:</strong> ${nLore}`); }
         
-        let dLore = getI18n('lore.day.' + dayName, DAY_LORE[dayName] || 'providing standard solar energy.');
-        if (isDayGood) { 
-            score += 3; 
-            reasons.push(`✅ <strong>${dayName} ${getI18n('lore.excellent_day', 'is an excellent day')}:</strong> ${dLore}`); 
-        } else if (isDayBad) { 
-            score -= 3; 
-            reasons.push(`🚫 <strong>${dayName} ${getI18n('lore.avoid_day', 'is traditionally avoided')}:</strong> ${dLore}`); 
-        } else { 
-            reasons.push(`⚠️ <strong>${dayName} ${getI18n('lore.acceptable', 'is acceptable')}:</strong> ${dLore}`); 
-        }
+        let dLore = DAY_LORE[dayName] || 'providing standard solar energy.';
+        if (isDayGood) { score += 3; reasons.push(`✅ <strong>${dayName} is an excellent day:</strong> It is ${dLore}`); }
+        else if (isDayBad) { score -= 3; reasons.push(`🚫 <strong>${dayName} is traditionally avoided:</strong> It is ${dLore}`); }
+        else { reasons.push(`⚠️ <strong>${dayName} is acceptable:</strong> It provides balanced energy for the occasion.`); }
         
         if (tithi.pakshaIndex === 0) { score += 1; }
 
