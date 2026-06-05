@@ -154,7 +154,16 @@ const GitaPage = (() => {
         addBubble('<div class="typing-indicator"><span></span><span></span><span></span></div>', 'assistant', typingId);
 
         try {
-            const finalResponse = await LLM.generateKrishnaResponse(message, chatHistory);
+            let finalResponse = await LLM.generateKrishnaResponse(message, chatHistory);
+
+            // Extract suggestions
+            let suggestions = [];
+            const suggestionMatch = finalResponse.match(/\[SUGGESTIONS:(.*?)\]/);
+            if (suggestionMatch) {
+                const sText = suggestionMatch[1];
+                suggestions = sText.split('|').map(s => s.trim()).filter(s => s);
+                finalResponse = finalResponse.replace(/\[SUGGESTIONS:.*?\]/, '').trim();
+            }
 
             const typingEl = document.getElementById(typingId);
             if (typingEl) typingEl.remove();
@@ -183,6 +192,31 @@ const GitaPage = (() => {
                     chatHistory.push({ role: 'assistant', text: finalResponse });
                     isTyping = false;
                     if (btn) btn.style.opacity = '1';
+
+                    // Display suggestions if any
+                    if (suggestions.length > 0 && bubble) {
+                        const suggContainer = document.createElement('div');
+                        suggContainer.style.marginTop = 'var(--space-4)';
+                        suggContainer.style.display = 'flex';
+                        suggContainer.style.gap = 'var(--space-2)';
+                        suggContainer.style.flexWrap = 'wrap';
+                        
+                        suggestions.forEach(s => {
+                            const btn = document.createElement('button');
+                            btn.className = 'tag';
+                            btn.style.background = 'rgba(212, 175, 55, 0.1)';
+                            btn.style.color = 'var(--color-secondary)';
+                            btn.style.cursor = 'pointer';
+                            btn.style.border = '1px solid rgba(212, 175, 55, 0.3)';
+                            btn.innerText = s;
+                            btn.onclick = () => GitaPage.ask(s);
+                            suggContainer.appendChild(btn);
+                        });
+                        bubble.appendChild(suggContainer);
+                        
+                        const container = document.getElementById('gitaChatMessages');
+                        if (container) container.scrollTop = container.scrollHeight;
+                    }
                 }
             }
             
