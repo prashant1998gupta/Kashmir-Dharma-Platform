@@ -8,7 +8,7 @@ const GitaPage = (() => {
 
     function render() {
         return `
-            <div class="page-enter gita-ai-page" style="height: calc(100vh - 120px); display: flex; flex-direction: column;">
+            <div class="page-enter gita-ai-page bg-divine" style="height: calc(100vh - 120px); display: flex; flex-direction: column;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
                     <div>
                         <h1 style="color: var(--color-primary); margin: 0; font-size: var(--text-2xl); display: flex; align-items: center; gap: var(--space-2);">
@@ -21,10 +21,10 @@ const GitaPage = (() => {
                     </button>
                 </div>
 
-                <div class="card card-glass" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 0;">
+                <div class="card gita-glass-container" style="flex: 1; display: flex; flex-direction: column; overflow: hidden; padding: 0;">
                     <!-- Chat Messages Area -->
                     <div id="gitaChatMessages" style="flex: 1; overflow-y: auto; padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-4);">
-                        <div class="chat-bubble assistant">
+                        <div class="chat-bubble assistant divine-bubble">
                             <strong>🦚 Radhe Radhe!</strong><br><br>
                             I am your AI companion inspired by the teachings of Lord Krishna in the Bhagavad Gita. <br>
                             Tell me, what troubles your mind today? How can I guide you towards peace and clarity?
@@ -39,13 +39,13 @@ const GitaPage = (() => {
                     </div>
 
                     <!-- Input Area -->
-                    <div style="padding: var(--space-4) var(--space-6); background: rgba(0,0,0,0.1); border-top: 1px solid var(--surface-border);">
+                    <div style="padding: var(--space-4) var(--space-6); background: rgba(0,0,0,0.2); border-top: 1px solid var(--surface-border);">
                         <div class="chat-input-container" style="display: flex; gap: var(--space-3);">
                             <input type="text" class="form-control" id="gitaChatInput" 
-                                   style="flex: 1; border-radius: 20px; padding: var(--space-3) var(--space-4);"
+                                   style="flex: 1; border-radius: 24px; padding: var(--space-3) var(--space-5); background: rgba(255,255,255,0.05); border: 1px solid rgba(212,175,55,0.2);"
                                    placeholder="Ask Krishna for guidance..."
                                    onkeypress="if(event.key==='Enter') GitaPage.sendMessage()">
-                            <button class="btn btn-primary" style="border-radius: 50%; width: 48px; height: 48px; padding: 0; display: flex; align-items: center; justify-content: center;" onclick="GitaPage.sendMessage()" id="gitaSendBtn">
+                            <button class="btn btn-primary" style="border-radius: 50%; width: 52px; height: 52px; padding: 0; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(163,38,38,0.4);" onclick="GitaPage.sendMessage()" id="gitaSendBtn">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                             </button>
                         </div>
@@ -156,13 +156,15 @@ const GitaPage = (() => {
         try {
             let finalResponse = await LLM.generateKrishnaResponse(message, chatHistory);
 
-            // Extract suggestions
+            // Extract suggestions handling potential newlines
             let suggestions = [];
-            const suggestionMatch = finalResponse.match(/\[SUGGESTIONS:(.*?)\]/);
+            const suggestionMatch = finalResponse.match(/\[SUGGESTIONS?:\s*([\s\S]*?)\]/i);
             if (suggestionMatch) {
-                const sText = suggestionMatch[1];
-                suggestions = sText.split('|').map(s => s.trim()).filter(s => s);
-                finalResponse = finalResponse.replace(/\[SUGGESTIONS:.*?\]/, '').trim();
+                let sText = suggestionMatch[1];
+                // Strip out markdown bullets if the LLM hallucinated them instead of pipes
+                sText = sText.replace(/\n-/g, '|').replace(/\n\*/g, '|');
+                suggestions = sText.split(/[|\n]+/).map(s => s.trim().replace(/^[-*]\s*/, '')).filter(s => s.length > 5);
+                finalResponse = finalResponse.replace(/\[SUGGESTIONS?:[\s\S]*?\]/i, '').trim();
             }
 
             const typingEl = document.getElementById(typingId);
@@ -203,11 +205,7 @@ const GitaPage = (() => {
                         
                         suggestions.forEach(s => {
                             const btn = document.createElement('button');
-                            btn.className = 'tag';
-                            btn.style.background = 'rgba(212, 175, 55, 0.1)';
-                            btn.style.color = 'var(--color-secondary)';
-                            btn.style.cursor = 'pointer';
-                            btn.style.border = '1px solid rgba(212, 175, 55, 0.3)';
+                            btn.className = 'suggestion-chip';
                             btn.innerText = s;
                             btn.onclick = () => GitaPage.ask(s);
                             suggContainer.appendChild(btn);
@@ -241,14 +239,14 @@ const GitaPage = (() => {
         if (!container) return;
 
         const bubble = document.createElement('div');
-        bubble.className = `chat-bubble ${type}`;
-        if (id) bubble.id = id;
         
         if (type === 'assistant') {
-            // Apply slight styling difference for Krishna's voice
-            bubble.style.borderLeft = '3px solid var(--color-secondary)';
-            bubble.style.background = 'rgba(212, 175, 55, 0.05)';
+            bubble.className = `chat-bubble ${type} divine-bubble`;
+        } else {
+            bubble.className = `chat-bubble ${type} modern-bubble`;
         }
+        
+        if (id) bubble.id = id;
 
         bubble.innerHTML = content;
         
