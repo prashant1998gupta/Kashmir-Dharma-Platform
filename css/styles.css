@@ -1856,6 +1856,9 @@ a:hover {
     }
 
     /* PREVENT CUT-OFFS (PAGE BREAKS) */
+    .print-avoid-break,
+    svg,
+    img,
     .card,
     .report-section,
     .chart-wrapper,
@@ -1865,6 +1868,11 @@ a:hover {
     .remedy-card-print {
         page-break-inside: avoid !important;
         break-inside: avoid !important;
+    }
+
+    svg, img {
+        max-width: 100% !important;
+        height: auto !important;
     }
 
     /* Force page breaks where needed */
