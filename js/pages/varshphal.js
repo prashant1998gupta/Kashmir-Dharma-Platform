@@ -186,6 +186,25 @@ const VarshphalPage = (() => {
                 </div>
             </div>
 
+            <!-- Premium Insights -->
+            <div style="background: rgba(212, 175, 55, 0.05); border: 1px solid var(--color-secondary); border-radius: var(--radius-md); padding: var(--space-6); margin-bottom: var(--space-8);">
+                <div style="display: flex; justify-content: center; margin-bottom: var(--space-4);">
+                    <h3 style="color: var(--color-secondary); border-bottom: 2px solid rgba(212, 175, 55, 0.3); padding-bottom: var(--space-2); text-transform: uppercase; letter-spacing: 2px;">Premium Annual Forecast</h3>
+                </div>
+                <div style="margin-bottom: var(--space-6);">
+                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">Your Main Focus for the Year (Muntha)</strong>
+                    <div style="color: var(--text-secondary); font-size: var(--text-base); line-height: 1.7;">
+                        ${typeof AstroInterpretations !== 'undefined' ? (AstroInterpretations.muntha[result.munthaHouse] || 'Your Muntha is in house ' + result.munthaHouse) : ''}
+                    </div>
+                </div>
+                <div>
+                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">The Ruling Energy of the Year (Year Lord)</strong>
+                    <div style="color: var(--text-secondary); font-size: var(--text-base); line-height: 1.7;">
+                        ${typeof AstroInterpretations !== 'undefined' ? (AstroInterpretations.varshLord[result.yearLord] || 'Your Year Lord is ' + result.yearLord) : ''}
+                    </div>
+                </div>
+            </div>
+
             <!-- Birth Details -->
             <div class="print-avoid-break" style="margin-bottom:var(--space-8);">
                 <table style="width:100%; border-collapse:collapse;">

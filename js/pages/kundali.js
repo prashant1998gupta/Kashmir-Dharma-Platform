@@ -82,6 +82,21 @@ const KundaliPage = (() => {
                                 </div>
                             </div>
                             
+                            <!-- Premium Insights -->
+                            <div id="simple-overview-container" style="background: rgba(212, 175, 55, 0.05); border: 1px solid var(--color-secondary); border-radius: var(--radius-md); padding: var(--space-6); margin-bottom: var(--space-8);">
+                                <div style="display: flex; justify-content: center; margin-bottom: var(--space-4);">
+                                    <h3 style="color: var(--color-secondary); border-bottom: 2px solid rgba(212, 175, 55, 0.3); padding-bottom: var(--space-2); text-transform: uppercase; letter-spacing: 2px;">Premium Astrological Insights</h3>
+                                </div>
+                                <div style="margin-bottom: var(--space-6);">
+                                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">Your Ascendant (Rising Sign)</strong>
+                                    <div id="simple-lagna-text" style="color: var(--text-secondary); font-size: var(--text-base); line-height: 1.7;"></div>
+                                </div>
+                                <div>
+                                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">Your Moon Sign (Emotions)</strong>
+                                    <div id="simple-moon-text" style="color: var(--text-secondary); font-size: var(--text-base); line-height: 1.7;"></div>
+                                </div>
+                            </div>
+                            
                             <!-- Charts Container -->
                             <div class="grid-2" style="margin-bottom: var(--space-8); gap: var(--space-6)">
                                 <div>
@@ -257,6 +272,15 @@ const KundaliPage = (() => {
             document.getElementById('res-lagna').textContent = typeof I18n !== 'undefined' ? I18n.tAstro(chartData.lagnaName || 'Unknown') : (chartData.lagnaName || 'Unknown');
             document.getElementById('res-rashi').textContent = typeof I18n !== 'undefined' ? I18n.tAstro(chartData.moonSign || 'Unknown') : (chartData.moonSign || 'Unknown');
             document.getElementById('res-nakshatra').textContent = chartData.moonNakshatra || 'Unknown';
+            
+            // Populate Premium Insights
+            if (typeof AstroInterpretations !== 'undefined') {
+                const lagnaKey = chartData.lagnaName || 'Unknown';
+                const moonKey = chartData.moonSign || 'Unknown';
+                document.getElementById('simple-lagna-text').innerHTML = AstroInterpretations.lagna[lagnaKey] || AstroInterpretations.lagna['Unknown'];
+                document.getElementById('simple-moon-text').innerHTML = AstroInterpretations.moon[moonKey] || AstroInterpretations.moon['Unknown'];
+            }
+            
             
             document.getElementById('chart-d1-container').innerHTML = drawChartSVG(chartData.houses, chartData.lagnaRashi);
             document.getElementById('chart-d9-container').innerHTML = drawChartSVG(chartData.navamsaHouses, chartData.lagnaNavamsaRashi);

@@ -255,6 +255,34 @@ const MatchingPage = (() => {
                 <div style="margin-top:var(--space-4); font-size:var(--text-xl); font-weight:bold; color:${rec.color};">${rec.emoji} ${rec.level}</div>
             </div>
 
+            <!-- Premium Compatibility Summary -->
+            <div style="background: rgba(212, 175, 55, 0.05); border: 1px solid var(--color-secondary); border-radius: var(--radius-md); padding: var(--space-6); margin-bottom: var(--space-8);">
+                <div style="display: flex; justify-content: center; margin-bottom: var(--space-4);">
+                    <h3 style="color: var(--color-secondary); border-bottom: 2px solid rgba(212, 175, 55, 0.3); padding-bottom: var(--space-2); text-transform: uppercase; letter-spacing: 2px;">Premium Compatibility Insights</h3>
+                </div>
+                <div id="premium-match-text" style="margin-bottom: var(--space-6);">
+                    ${typeof AstroInterpretations !== 'undefined' ? AstroInterpretations.getMatchVerdict(result.total) : rec.level}
+                </div>
+                
+                <div style="display: flex; justify-content: center; margin-bottom: var(--space-4);">
+                    <h3 style="color: var(--color-secondary); border-bottom: 2px solid rgba(212, 175, 55, 0.3); padding-bottom: var(--space-2); text-transform: uppercase; letter-spacing: 2px;">Individual Emotional Resonance</h3>
+                </div>
+                
+                <div style="margin-bottom: var(--space-6);">
+                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">${bName}'s Emotional Nature (${result.boyRashiName} Moon)</strong>
+                    <div style="color: var(--text-secondary); font-size: var(--text-base); line-height: 1.7;">
+                        ${typeof AstroInterpretations !== 'undefined' ? (AstroInterpretations.moon[result.boyRashiName] || AstroInterpretations.moon['Unknown']) : ''}
+                    </div>
+                </div>
+
+                <div>
+                    <strong style="color: var(--color-primary); font-size: var(--text-lg); display: block; border-left: 3px solid var(--color-primary); padding-left: var(--space-2); margin-bottom: var(--space-3);">${gName}'s Emotional Nature (${result.girlRashiName} Moon)</strong>
+                    <div style="color: var(--text-secondary); font-size: var(--text-base); line-height: 1.7;">
+                        ${typeof AstroInterpretations !== 'undefined' ? (AstroInterpretations.moon[result.girlRashiName] || AstroInterpretations.moon['Unknown']) : ''}
+                    </div>
+                </div>
+            </div>
+
             <!-- Quick Summary Table -->
             <div class="print-avoid-break" style="margin-bottom:var(--space-8);">
                 <table style="width:100%; border-collapse:collapse; margin-bottom:var(--space-4);">

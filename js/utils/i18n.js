@@ -113,6 +113,7 @@ const I18n = (() => {
             'kundali.planets': 'Planetary Positions',
             'kundali.sav': 'Ashtakavarga (SAV) Points',
             'kundali.dasha': 'Vimshottari Dasha (Mahadasha & Antardasha)',
+            'kundali.simple_overview': 'Simple Overview (For Beginners)',
 
             // Astrological
             'astro.tithi.Pratipada': 'Pratipada',
@@ -323,6 +324,7 @@ const I18n = (() => {
             'kundali.planets': 'ग्रह स्थिति',
             'kundali.sav': 'अष्टकवर्ग (SAV) अंक',
             'kundali.dasha': 'विंशोत्तरी दशा (महादशा और अंतर्दशा)',
+            'kundali.simple_overview': 'सरल अवलोकन (शुरुआती लोगों के लिए)',
 
             // Matching Page
             'match.title': 'कुंडली मिलान',
