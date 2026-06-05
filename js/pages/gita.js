@@ -154,18 +154,36 @@ const GitaPage = (() => {
         addBubble('<div class="typing-indicator"><span></span><span></span><span></span></div>', 'assistant', typingId);
 
         try {
-            const response = await LLM.generateKrishnaResponse(message, chatHistory);
-            
-            // Remove typing indicator
-            const typingEl = document.getElementById(typingId);
-            if (typingEl) typingEl.remove();
+            let hasStarted = false;
+            let responseBubbleId = 'msg-' + Date.now();
 
-            // Format markdown response
-            const formattedResponse = formatMarkdown(response);
-            addBubble(formattedResponse, 'assistant');
+            const finalResponse = await LLM.streamKrishnaResponse(message, chatHistory, (chunkText) => {
+                if (!hasStarted) {
+                    hasStarted = true;
+                    const typingEl = document.getElementById(typingId);
+                    if (typingEl) typingEl.remove();
+                    
+                    // Add an empty bubble for streaming content
+                    addBubble('', 'assistant', responseBubbleId);
+                }
+
+                const bubble = document.getElementById(responseBubbleId);
+                if (bubble) {
+                    bubble.innerHTML = formatMarkdown(chunkText);
+                    const container = document.getElementById('gitaChatMessages');
+                    if (container) container.scrollTop = container.scrollHeight;
+                }
+            });
+
+            if (!hasStarted) {
+                // In case the stream returns instantly without chunks
+                const typingEl = document.getElementById(typingId);
+                if (typingEl) typingEl.remove();
+                addBubble(formatMarkdown(finalResponse), 'assistant');
+            }
 
             chatHistory.push({ role: 'user', text: message });
-            chatHistory.push({ role: 'assistant', text: response });
+            chatHistory.push({ role: 'assistant', text: finalResponse });
 
         } catch (error) {
             const typingEl = document.getElementById(typingId);

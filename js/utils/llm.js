@@ -56,24 +56,19 @@ Instructions:
         }
     }
 
-    async function generateKrishnaResponse(userMessage, chatHistory = []) {
+    async function streamKrishnaResponse(userMessage, chatHistory = [], onChunk) {
         const apiKey = getApiKey();
         if (!apiKey) {
             throw new Error('API Key missing. Please configure your key in settings.');
         }
 
         const modelName = await getAvailableModel(apiKey);
-        const url = `https://generativelanguage.googleapis.com/v1beta/${modelName}:generateContent?key=${apiKey}`;
+        const url = `https://generativelanguage.googleapis.com/v1beta/${modelName}:streamGenerateContent?alt=sse&key=${apiKey}`;
 
         // Format history for Gemini
-        // Gemini uses 'user' and 'model' roles.
         const contents = [];
-        
-        // Inject system prompt into the first message
         const firstMessageText = `${SYSTEM_PROMPT}\n\nUser Question: ${userMessage}`;
 
-        // Just sending the current message for now to keep it simple, 
-        // but can be extended to include chatHistory.
         contents.push({
             role: 'user',
             parts: [{ text: firstMessageText }]
@@ -95,17 +90,46 @@ Instructions:
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error?.message || 'Failed to fetch response from AI');
+                let errMsg = 'Failed to fetch response from AI';
+                try {
+                    const errorData = await response.json();
+                    errMsg = errorData.error?.message || errMsg;
+                } catch(e) {}
+                throw new Error(errMsg);
             }
 
-            const data = await response.json();
-            
-            if (data.candidates && data.candidates.length > 0) {
-                return data.candidates[0].content.parts[0].text;
-            } else {
-                throw new Error('No response generated');
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder('utf-8');
+            let fullText = '';
+            let buffer = '';
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop(); 
+
+                for (const line of lines) {
+                    if (line.startsWith('data: ')) {
+                        const dataStr = line.substring(6).trim();
+                        if (!dataStr) continue;
+                        try {
+                            const data = JSON.parse(dataStr);
+                            if (data.candidates && data.candidates.length > 0) {
+                                const chunkText = data.candidates[0].content?.parts?.[0]?.text || '';
+                                fullText += chunkText;
+                                if (onChunk) onChunk(fullText);
+                            }
+                        } catch (e) {
+                            // ignore parse errors for partial chunks
+                        }
+                    }
+                }
             }
+            
+            return fullText;
 
         } catch (error) {
             console.error('LLM API Error:', error);
@@ -117,6 +141,6 @@ Instructions:
         getApiKey,
         setApiKey,
         hasApiKey,
-        generateKrishnaResponse
+        streamKrishnaResponse
     };
 })();
