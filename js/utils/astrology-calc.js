@@ -23,12 +23,22 @@ const AstroCalc = (() => {
         "Makara (Capricorn)", "Kumbha (Aquarius)", "Meena (Pisces)"
     ];
 
+    const MS_PER_DAY = 86400000;
+    const TROPICAL_YEAR_DAYS = 365.24219052;
+    const LAHIRI_AYANAMSA_J2000 = 23 + (51 / 60) + (11 / 3600);
+    const PRECESSION_RATE_DEG_PER_YEAR = 50.290966 / 3600;
+
     /**
-     * Approximate Lahiri Ayanamsa for a given year.
-     * Formula: 23.85 + (Year - 2000) * (50.29 / 3600)
+     * Date-aware mean Lahiri ayanamsa approximation.
+     * Production-grade paid reports should replace this with Swiss Ephemeris SE_SIDM_LAHIRI.
      */
-    function getAyanamsa(year) {
-        return 23.85 + ((year - 2000) * (50.29 / 3600));
+    function getAyanamsa(input) {
+        if (input instanceof Date) {
+            const daysSinceJ2000 = (input.getTime() - Date.UTC(2000, 0, 1, 12, 0, 0)) / MS_PER_DAY;
+            return LAHIRI_AYANAMSA_J2000 + ((daysSinceJ2000 / TROPICAL_YEAR_DAYS) * PRECESSION_RATE_DEG_PER_YEAR);
+        }
+
+        return LAHIRI_AYANAMSA_J2000 + (((Number(input) || 2000) - 2000) * PRECESSION_RATE_DEG_PER_YEAR);
     }
 
     /**
@@ -121,13 +131,26 @@ const AstroCalc = (() => {
     ];
 
     function getNakshatraData(siderealLon) {
+        if (typeof PanchangCore !== 'undefined') {
+            const nakshatra = PanchangCore.getNakshatraFromMoon(siderealLon);
+            const lordIndex = nakshatra.index % 9;
+
+            return {
+                name: nakshatra.name,
+                index: nakshatra.index,
+                pada: nakshatra.pada,
+                lord: DASHA_PERIODS[lordIndex].lord,
+                percentRemaining: 1 - nakshatra.progress
+            };
+        }
+
         let normalized = siderealLon % 360;
         if (normalized < 0) normalized += 360;
         const nakshatraSize = 13 + (20/60);
         const totalIndex = normalized / nakshatraSize;
-        const index = Math.floor(totalIndex);
+        const index = Math.min(26, Math.floor(totalIndex));
         const remainder = totalIndex - index;
-        const pada = Math.floor(remainder * 4) + 1;
+        const pada = Math.min(4, Math.floor(remainder * 4) + 1);
         const lordIndex = index % 9;
         
         return {
@@ -381,23 +404,65 @@ const AstroCalc = (() => {
      * Calculate Birth Panchang
      */
     function calculatePanchang(sunLon, moonLon, weekdayIndex) {
+        if (typeof PanchangCore !== 'undefined') {
+            const panchang = PanchangCore.getPanchangFromLongitudes(sunLon, moonLon, weekdayIndex);
+
+            return {
+                tithi: panchang.tithi.display,
+                tithiName: panchang.tithi.name,
+                tithiNumber: panchang.tithi.number,
+                paksha: panchang.tithi.paksha,
+                yoga: panchang.yoga.name,
+                karana: panchang.karana.name,
+                vaar: panchang.vaar ? panchang.vaar.name : '',
+                details: panchang
+            };
+        }
+
         let diff = (moonLon - sunLon + 360) % 360;
-        let tithiIndex = Math.floor(diff / 12) + 1;
-        let isShukla = tithiIndex <= 15;
-        let tithiName = `Tithi ${tithiIndex} (${isShukla ? 'Shukla Paksha' : 'Krishna Paksha'})`;
+        const tithiNames = [
+            'Pratipada', 'Dwitiya', 'Tritiya', 'Chaturthi', 'Panchami',
+            'Shashthi', 'Saptami', 'Ashtami', 'Navami', 'Dashami',
+            'Ekadashi', 'Dwadashi', 'Trayodashi', 'Chaturdashi', 'Purnima',
+            'Pratipada', 'Dwitiya', 'Tritiya', 'Chaturthi', 'Panchami',
+            'Shashthi', 'Saptami', 'Ashtami', 'Navami', 'Dashami',
+            'Ekadashi', 'Dwadashi', 'Trayodashi', 'Chaturdashi', 'Amavasya'
+        ];
+        const yogaNames = [
+            'Vishkumbha', 'Priti', 'Ayushman', 'Saubhagya', 'Shobhana',
+            'Atiganda', 'Sukarma', 'Dhriti', 'Shoola', 'Ganda',
+            'Vriddhi', 'Dhruva', 'Vyaghata', 'Harshana', 'Vajra',
+            'Siddhi', 'Vyatipata', 'Variyana', 'Parigha', 'Shiva',
+            'Siddha', 'Sadhya', 'Shubha', 'Shukla', 'Brahma',
+            'Indra', 'Vaidhriti'
+        ];
+        const getKaranaName = (index) => {
+            if (index === 0) return 'Kimstughna';
+            if (index === 57) return 'Shakuni';
+            if (index === 58) return 'Chatushpada';
+            if (index === 59) return 'Naga';
+            return ['Bava', 'Balava', 'Kaulava', 'Taitila', 'Gara', 'Vanija', 'Vishti'][(index - 1) % 7];
+        };
+
+        let tithiIndex = Math.min(29, Math.floor(diff / 12));
+        let isShukla = tithiIndex < 15;
+        let tithiName = `${tithiNames[tithiIndex]} (${isShukla ? 'Shukla Paksha' : 'Krishna Paksha'})`;
         
         let sum = (moonLon + sunLon) % 360;
-        let yogaIndex = Math.floor(sum / (40 / 3)) + 1;
+        let yogaIndex = Math.min(26, Math.floor(sum / (40 / 3)));
         
-        let karanaIndex = Math.floor(diff / 6) + 1;
+        let karanaIndex = Math.min(59, Math.floor(diff / 6));
         
         const weekdays = ["Sunday (Ravivaar)", "Monday (Somvaar)", "Tuesday (Mangalvaar)", "Wednesday (Budhvaar)", "Thursday (Guruvaar)", "Friday (Shukravaar)", "Saturday (Shanivaar)"];
         let vaar = weekdays[weekdayIndex];
         
         return {
             tithi: tithiName,
-            yoga: `Yoga #${yogaIndex}`,
-            karana: `Karana #${karanaIndex}`,
+            tithiName: tithiNames[tithiIndex],
+            tithiNumber: (tithiIndex % 15) + 1,
+            paksha: isShukla ? 'Shukla Paksha' : 'Krishna Paksha',
+            yoga: yogaNames[yogaIndex],
+            karana: getKaranaName(karanaIndex),
             vaar: vaar
         };
     }
@@ -468,14 +533,15 @@ const AstroCalc = (() => {
         const [year, month, day] = birthDate.split('-').map(Number);
         const utcMs = Date.UTC(year, month - 1, day, hh, mm) - (cityObj.tz * 3600000);
         const calcDate = new Date(utcMs);
-        const ayanamsa = getAyanamsa(year);
+        const ayanamsa = getAyanamsa(calcDate);
 
         const chart = {
             details: {
                 date: birthDate,
                 time: birthTime,
                 city: cityObj.name,
-                ayanamsa: ayanamsa.toFixed(4)
+                ayanamsa: ayanamsa.toFixed(4),
+                calculationMode: 'Astronomy Engine geocentric positions with mean Lahiri ayanamsa'
             },
             planets: [],
             houses: {}, // D1

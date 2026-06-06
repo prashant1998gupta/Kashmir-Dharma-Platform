@@ -80,9 +80,7 @@ const GuidePage = (() => {
                                     <div>
                                         <h4 style="margin: 0 0 var(--space-1) 0; font-size: var(--text-sm)">${typeof I18n !== 'undefined' ? I18n.t('guide.about', 'About This Guide') : 'About This Guide'}</h4>
                                         <p style="font-size: var(--text-xs); color: var(--text-muted); margin: 0">
-                                            This guide searches through our curated knowledge base of festivals, rituals, 
-                                            wedding ceremonies, and cultural articles. For complex religious questions, 
-                                            we recommend consulting with a Kashmiri Pandit scholar.
+                                            ${typeof I18n !== 'undefined' ? I18n.t('guide.about_text', 'This guide searches through our curated knowledge base of festivals, rituals, wedding ceremonies, and cultural articles. For complex religious questions, we recommend consulting with a Kashmiri Pandit scholar.') : 'This guide searches through our curated knowledge base of festivals, rituals, wedding ceremonies, and cultural articles. For complex religious questions, we recommend consulting with a Kashmiri Pandit scholar.'}
                                         </p>
                                     </div>
                                 </div>
@@ -140,7 +138,7 @@ const GuidePage = (() => {
         addChatBubble(question, 'user');
 
         if (!dataLoaded) {
-            addChatBubble('Please wait, I am still loading the knowledge base...', 'assistant');
+            addChatBubble(typeof I18n !== 'undefined' ? I18n.t('guide.loading', 'Please wait, I am still loading the knowledge base...') : 'Please wait, I am still loading the knowledge base...', 'assistant');
             return;
         }
 

@@ -173,7 +173,7 @@ const MuhuratPage = (() => {
         const endInput = document.getElementById('muhuratEnd');
         
         if (!startInput.value || !endInput.value) {
-            Components.showToast('Please select both dates', 'warning');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('muhurat.select_both_dates', 'Please select both dates') : 'Please select both dates', 'warning');
             return;
         }
 
@@ -181,12 +181,12 @@ const MuhuratPage = (() => {
         const endDate = new Date(endInput.value);
         
         if (endDate <= startDate) {
-            Components.showToast('End date must be after start date', 'warning');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('muhurat.end_after_start', 'End date must be after start date') : 'End date must be after start date', 'warning');
             return;
         }
 
         if ((endDate - startDate) / (1000 * 60 * 60 * 24) > 90) {
-            Components.showToast('Please select a range of 90 days or less', 'warning');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('muhurat.max_range', 'Please select a range of 90 days or less') : 'Please select a range of 90 days or less', 'warning');
             return;
         }
 

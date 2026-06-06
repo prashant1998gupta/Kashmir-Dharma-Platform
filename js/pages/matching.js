@@ -3,6 +3,23 @@
    ============================================ */
 
 const MatchingPage = (() => {
+    const PREMIUM_PRODUCT = {
+        name: 'Professional Kundali Matching PDF',
+        priceLabel: '₹299',
+        altPriceLabel: '$5',
+        storageKey: 'kdp_paid_match_unlocks',
+        funnelKey: 'kdp_paid_match_funnel_events',
+        paymentUrl: '', // Add your Razorpay/Paddle payment link here when ready to launch.
+        whatsappNumber: '', // Optional, digits only with country code. Example: 919876543210
+        upiId: '', // Optional fallback for manual UPI collection.
+        supportEmail: ''
+    };
+
+    let currentReport = null;
+
+    function t(key, fallback) {
+        return typeof I18n !== 'undefined' ? I18n.t(key, fallback) : fallback;
+    }
 
     function render() {
         return `
@@ -17,6 +34,26 @@ const MatchingPage = (() => {
                     typeof I18n !== 'undefined' ? I18n.t('match.desc', 'Discover marriage compatibility using the advanced 36-point Guna Milan system with detailed interpretations, dosha analysis, and remedies.') : 'Discover marriage compatibility using the advanced 36-point Guna Milan system with detailed interpretations, dosha analysis, and remedies.',
                     { h1: true }
                 )}
+
+                <div class="card card-glass no-print" style="padding: var(--space-6); margin-bottom: var(--space-8); border: 1px solid rgba(212,175,55,0.35);">
+                    <div class="grid-2" style="gap: var(--space-6); align-items: center;">
+                        <div>
+                            <div style="color: var(--color-secondary); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; font-size: var(--text-xs); margin-bottom: var(--space-2);">${t('match.paid_badge', 'Founding paid report test')}</div>
+                            <h2 style="font-family: var(--font-heading); color: var(--text-heading); margin-bottom: var(--space-3);">${t('match.paid_headline', 'Sell one clean compatibility PDF first')}</h2>
+                            <p style="color: var(--text-secondary); line-height: 1.7; margin: 0;">${t('match.paid_desc', 'Users get the compatibility score preview free. The detailed 10-section PDF unlocks after payment so you can test whether strangers will pay before building subscriptions or a marketplace.')}</p>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: var(--space-5);">
+                            <div style="font-size: var(--text-sm); color: var(--text-muted); margin-bottom: 4px;">${t('match.launch_price', 'Launch price')}</div>
+                            <div style="font-size: 2rem; font-weight: 800; color: var(--color-secondary); line-height: 1;">${PREMIUM_PRODUCT.priceLabel}</div>
+                            <div style="color: var(--text-muted); font-size: var(--text-sm); margin-top: 4px;">${t('match.diaspora_price', 'or {price} for diaspora buyers').replace('{price}', PREMIUM_PRODUCT.altPriceLabel)}</div>
+                            <div style="display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4);">
+                                <span class="badge badge-primary">${t('match.pdf_ready', 'PDF-ready')}</span>
+                                <span class="badge badge-secondary">${t('match.manual_unlock_mvp', 'Manual unlock MVP')}</span>
+                                <span class="badge badge-secondary">${t('match.no_backend_yet', 'No backend yet')}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="grid-2">
                     <!-- Boy's Details -->
@@ -149,13 +186,13 @@ const MatchingPage = (() => {
         const gTime = document.getElementById('girl-time').value;
 
         if (!bDate || !bTime || !gDate || !gTime) {
-            Components.showToast('Please fill all birth details for both individuals', 'error');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('match.missing_details', 'Please fill all birth details for both individuals') : 'Please fill all birth details for both individuals', 'error');
             return;
         }
 
         const bCityObj = resolveCityObj('boy-city', bDate, bTime);
         const gCityObj = resolveCityObj('girl-city', gDate, gTime);
-        if (!bCityObj || !gCityObj) { Components.showToast('Please select valid cities from the dropdown', 'error'); return; }
+        if (!bCityObj || !gCityObj) { Components.showToast(typeof I18n !== 'undefined' ? I18n.t('match.invalid_city', 'Please select valid cities from the dropdown') : 'Please select valid cities from the dropdown', 'error'); return; }
 
         try {
             const bChart = AstroCalc.generateKundali(bDate, bTime, bCityObj);
@@ -168,11 +205,306 @@ const MatchingPage = (() => {
             const girl = { rashi: gMoon.rashi, nakshatra: gMoon.nakshatraIndex };
             const result = MatchCalc.calculateGunaMilan(boy, girl, bChart, gChart);
 
-            renderFullReport(bName, gName, bDate, bTime, gDate, gTime, bCityObj, gCityObj, bChart, gChart, result);
+            cacheAndRenderPreview(bName, gName, bDate, bTime, gDate, gTime, bCityObj, gCityObj, bChart, gChart, result);
         } catch (e) {
             console.error(e);
-            Components.showToast('Error calculating match. Please check inputs.', 'error');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('match.calc_error', 'Error calculating match. Please check inputs.') : 'Error calculating match. Please check inputs.', 'error');
         }
+    }
+
+    function escapeHtml(value) {
+        return String(value || '').replace(/[&<>"']/g, char => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        }[char]));
+    }
+
+    function makeReportId(bName, gName, bDate, gDate) {
+        const raw = `${bName}|${gName}|${bDate}|${gDate}`.toLowerCase();
+        let hash = 0;
+        for (let i = 0; i < raw.length; i++) {
+            hash = ((hash << 5) - hash) + raw.charCodeAt(i);
+            hash |= 0;
+        }
+        return `KDP-${Math.abs(hash).toString(36).toUpperCase()}`;
+    }
+
+    function getPaymentConfig() {
+        return {
+            paymentUrl: localStorage.getItem('kdp_match_payment_link') || PREMIUM_PRODUCT.paymentUrl,
+            whatsappNumber: localStorage.getItem('kdp_sales_whatsapp') || PREMIUM_PRODUCT.whatsappNumber,
+            upiId: localStorage.getItem('kdp_sales_upi') || PREMIUM_PRODUCT.upiId,
+            supportEmail: localStorage.getItem('kdp_sales_email') || PREMIUM_PRODUCT.supportEmail
+        };
+    }
+
+    function getUnlockedReports() {
+        try {
+            return JSON.parse(localStorage.getItem(PREMIUM_PRODUCT.storageKey) || '{}');
+        } catch (e) {
+            return {};
+        }
+    }
+
+    function isReportUnlocked(reportId) {
+        return !!getUnlockedReports()[reportId];
+    }
+
+    function markReportUnlocked(reportId, paymentRef) {
+        const unlocked = getUnlockedReports();
+        unlocked[reportId] = {
+            paymentRef,
+            unlockedAt: new Date().toISOString()
+        };
+        localStorage.setItem(PREMIUM_PRODUCT.storageKey, JSON.stringify(unlocked));
+    }
+
+    function recordFunnelEvent(type, details = {}) {
+        try {
+            const events = JSON.parse(localStorage.getItem(PREMIUM_PRODUCT.funnelKey) || '[]');
+            events.push({
+                type,
+                reportId: currentReport ? currentReport.reportId : null,
+                at: new Date().toISOString(),
+                details
+            });
+            localStorage.setItem(PREMIUM_PRODUCT.funnelKey, JSON.stringify(events.slice(-100)));
+        } catch (e) {
+            console.warn('Could not record monetization event', e);
+        }
+    }
+
+    function cacheAndRenderPreview(bName, gName, bDate, bTime, gDate, gTime, bCity, gCity, bChart, gChart, result) {
+        currentReport = {
+            reportId: makeReportId(bName, gName, bDate, gDate),
+            bName,
+            gName,
+            bDate,
+            bTime,
+            gDate,
+            gTime,
+            bCity,
+            gCity,
+            bChart,
+            gChart,
+            result
+        };
+
+        recordFunnelEvent('preview_generated', {
+            total: result.total,
+            verdict: result.recommendation.level
+        });
+
+        if (isReportUnlocked(currentReport.reportId)) {
+            renderFullReport(bName, gName, bDate, bTime, gDate, gTime, bCity, gCity, bChart, gChart, result);
+            return;
+        }
+
+        renderPreviewReport();
+    }
+
+    function renderPreviewReport() {
+        if (!currentReport) return;
+
+        const { reportId, bName, gName, result } = currentReport;
+        const rec = result.recommendation;
+        const pct = (result.total / 36) * 100;
+        const kootas = ['varna', 'vashya', 'tara', 'yoni', 'graha', 'gana', 'bhakoot', 'nadi'];
+        const concerns = rec.concerns.length > 0 ? rec.concerns.slice(0, 2) : [t('match.no_preview_concern', 'No major concern surfaced in the free preview.')];
+        const strengths = rec.strengths.length > 0 ? rec.strengths.slice(0, 2) : [t('match.preview_strength_default', 'The charts show workable compatibility indicators.')];
+
+        const html = `<div class="card card-glass" style="padding: var(--space-6);">
+            <div class="no-print" style="display:flex; justify-content:space-between; gap:var(--space-4); align-items:flex-start; margin-bottom:var(--space-6); flex-wrap:wrap;">
+                <div>
+                    <div style="color:var(--color-secondary); font-size:var(--text-xs); text-transform:uppercase; letter-spacing:2px; font-weight:700; margin-bottom:var(--space-2);">${t('match.free_preview', 'Free preview')}</div>
+                    <h2 style="margin:0 0 var(--space-2) 0; color:var(--text-heading);">${t('match.preview_for', 'Kundali Match Preview for')} ${escapeHtml(bName)} & ${escapeHtml(gName)}</h2>
+                    <div style="color:var(--text-muted); font-size:var(--text-sm);">${t('match.report_id', 'Report ID')}: ${reportId}</div>
+                </div>
+                <button class="btn btn-primary" style="padding:var(--space-3) var(--space-5);" onclick="MatchingPage.openPaymentModal()">${t('match.unlock_full_pdf_price', 'Unlock Full PDF - {price}').replace('{price}', PREMIUM_PRODUCT.priceLabel)}</button>
+            </div>
+
+            <div class="grid-2" style="gap:var(--space-6); align-items:center; margin-bottom:var(--space-8);">
+                <div style="display:flex; justify-content:center;">
+                    <div style="position:relative; width:190px; height:190px; border-radius:50%; background:conic-gradient(${rec.color} ${pct}%, rgba(255,255,255,0.06) 0); display:flex; justify-content:center; align-items:center; box-shadow:0 12px 34px rgba(0,0,0,0.35);">
+                        <div style="width:154px; height:154px; border-radius:50%; background:var(--bg-card); display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                            <span style="font-size:3rem; font-weight:bold; color:var(--text-primary); line-height:1;">${result.total}</span>
+                            <span style="font-size:1rem; color:var(--text-muted);">${t('match.out_of_36', 'out of 36')}</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div style="font-size:var(--text-xl); font-weight:800; color:${rec.color}; margin-bottom:var(--space-3);">${rec.emoji} ${rec.level}</div>
+                    <p style="color:var(--text-secondary); line-height:1.7;">${t('match.preview_paid_desc', 'This free preview gives the headline compatibility signal. The paid PDF includes the detailed Koota interpretation, D1/D9 charts, Manglik analysis, Dasha timing, marriage yogas, Navamsa cross-analysis, remedies, and print-ready formatting.')}</p>
+                    <div style="display:flex; flex-wrap:wrap; gap:var(--space-3); margin-top:var(--space-4);">
+                        <button class="btn btn-primary" onclick="MatchingPage.openPaymentModal()">${t('match.buy_full_report', 'Buy Full Report')}</button>
+                        <button class="btn btn-outline" onclick="MatchingPage.openUnlockModal()">${t('match.already_paid', 'I already paid')}</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-2" style="gap:var(--space-6); margin-bottom:var(--space-8);">
+                <div style="background:rgba(46,204,113,0.08); border:1px solid rgba(46,204,113,0.22); border-radius:var(--radius-md); padding:var(--space-5);">
+                    <h3 style="color:#2ecc71; margin-bottom:var(--space-3);">${t('match.strengths_visible', 'Strengths visible now')}</h3>
+                    <ul style="margin:0; padding-left:18px; color:var(--text-secondary); line-height:1.7;">
+                        ${strengths.map(s => `<li>${escapeHtml(s)}</li>`).join('')}
+                    </ul>
+                </div>
+                <div style="background:rgba(201,169,89,0.08); border:1px solid rgba(201,169,89,0.28); border-radius:var(--radius-md); padding:var(--space-5);">
+                    <h3 style="color:var(--color-secondary); margin-bottom:var(--space-3);">${t('match.needs_deeper_analysis', 'Needs deeper analysis')}</h3>
+                    <ul style="margin:0; padding-left:18px; color:var(--text-secondary); line-height:1.7;">
+                        ${concerns.map(c => `<li>${escapeHtml(c)}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+
+            <div style="overflow:auto; margin-bottom:var(--space-8);">
+                <table style="width:100%; border-collapse:collapse; min-width:680px;">
+                    <thead>
+                        <tr style="border-bottom:2px solid var(--color-secondary);">
+                            <th style="padding:var(--space-3); text-align:left;">${t('match.koota', 'Koota')}</th>
+                            <th style="padding:var(--space-3); text-align:left;">${t('match.aspect', 'Aspect')}</th>
+                            <th style="padding:var(--space-3); text-align:center;">${t('match.score', 'Score')}</th>
+                            <th style="padding:var(--space-3); text-align:center;">${t('match.max', 'Max')}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${kootas.map(k => {
+                            const d = result[k];
+                            const clr = d.scored === 0 ? '#e74c3c' : (d.scored === d.max ? '#2ecc71' : '#c9a959');
+                            return `<tr style="border-bottom:1px solid var(--surface-border);">
+                                <td style="padding:var(--space-3); font-weight:bold;">${d.name}</td>
+                                <td style="padding:var(--space-3); color:var(--text-muted);">${d.desc}</td>
+                                <td style="padding:var(--space-3); text-align:center; color:${clr}; font-weight:bold;">${d.scored}</td>
+                                <td style="padding:var(--space-3); text-align:center; color:var(--text-muted);">${d.max}</td>
+                            </tr>`;
+                        }).join('')}
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="background:rgba(163,38,38,0.08); border:1px solid rgba(163,38,38,0.25); border-radius:var(--radius-md); padding:var(--space-6); display:flex; gap:var(--space-5); align-items:center; justify-content:space-between; flex-wrap:wrap;">
+                <div>
+                    <h3 style="margin:0 0 var(--space-2) 0; color:var(--text-heading);">${t('match.locked_pdf_title', 'Locked: full professional PDF')}</h3>
+                    <p style="margin:0; color:var(--text-secondary); line-height:1.7;">${t('match.locked_pdf_desc', '10 report sections, printable layout, charts, doshas, timing compatibility, remedies, and disclaimer.')}</p>
+                </div>
+                <button class="btn btn-primary" style="padding:var(--space-3) var(--space-6);" onclick="MatchingPage.openPaymentModal()">${t('match.unlock_for_price', 'Unlock for {price}').replace('{price}', PREMIUM_PRODUCT.priceLabel)}</button>
+            </div>
+        </div>`;
+
+        const resultEl = document.getElementById('matchResult');
+        resultEl.innerHTML = html;
+        resultEl.style.display = 'block';
+        setTimeout(() => {
+            resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
+
+    function openPaymentModal() {
+        if (!currentReport) {
+            Components.showToast(t('match.generate_preview_first', 'Generate a preview first.'), 'error');
+            return;
+        }
+
+        recordFunnelEvent('checkout_opened');
+        const config = getPaymentConfig();
+        const whatsappText = encodeURIComponent(`${t('match.whatsapp_buy_text', 'Namaskar, I want to buy the {product} ({price}). Report ID: {id}').replace('{product}', t('match.product_name', PREMIUM_PRODUCT.name)).replace('{price}', PREMIUM_PRODUCT.priceLabel).replace('{id}', currentReport.reportId)}`);
+        const whatsappUrl = config.whatsappNumber ? `https://wa.me/${config.whatsappNumber}?text=${whatsappText}` : '';
+
+        Components.openModal(`
+            <div style="padding: var(--space-2);">
+                <div style="color: var(--color-secondary); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: var(--space-2);">${t('match.checkout_mvp', 'Checkout MVP')}</div>
+                <h2 style="margin-bottom: var(--space-3);">${t('match.product_name', PREMIUM_PRODUCT.name)}</h2>
+                <p style="color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--space-5);">${t('match.pay_to_unlock_desc', 'Pay {price} to unlock the full PDF for report {id}. This validation version supports payment-link checkout plus manual payment reference unlock.').replace('{price}', PREMIUM_PRODUCT.priceLabel).replace('{id}', `<strong>${currentReport.reportId}</strong>`)}</p>
+                
+                <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--surface-border); border-radius: var(--radius-md); padding: var(--space-4); margin-bottom: var(--space-5);">
+                    <div style="font-size: var(--text-sm); color: var(--text-muted); margin-bottom: 4px;">${t('match.amount', 'Amount')}</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: var(--color-secondary);">${PREMIUM_PRODUCT.priceLabel}</div>
+                    <div style="font-size: var(--text-sm); color: var(--text-muted);">${t('match.diaspora_test_price', 'Diaspora test price: {price}').replace('{price}', PREMIUM_PRODUCT.altPriceLabel)}</div>
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap: var(--space-3); margin-bottom: var(--space-5);">
+                    ${config.paymentUrl ? `<button class="btn btn-primary" onclick="MatchingPage.continueToCheckout()">${t('match.continue_payment', 'Continue to secure payment')}</button>` : ''}
+                    ${whatsappUrl ? `<a class="btn btn-outline" style="text-align:center; text-decoration:none;" href="${whatsappUrl}" target="_blank" rel="noopener" onclick="MatchingPage.recordPaymentClick('whatsapp')">${t('match.order_whatsapp', 'Order on WhatsApp')}</a>` : ''}
+                    ${config.upiId ? `<div style="border:1px dashed var(--surface-border); border-radius:var(--radius-md); padding:var(--space-4); color:var(--text-secondary);">${t('match.upi_id', 'UPI ID')}: <strong style="color:var(--text-primary);">${escapeHtml(config.upiId)}</strong><br><span style="font-size:var(--text-sm); color:var(--text-muted);">${t('match.upi_note', 'Use report ID {id} in notes, then unlock with your UPI reference.').replace('{id}', currentReport.reportId)}</span></div>` : ''}
+                    ${!config.paymentUrl && !whatsappUrl && !config.upiId ? `<div style="border:1px solid rgba(231,76,60,0.35); background:rgba(231,76,60,0.08); border-radius:var(--radius-md); padding:var(--space-4); color:var(--text-secondary); line-height:1.7;">${t('match.payment_not_configured', 'Payment is not configured yet. Add a Razorpay/Paddle payment URL in PREMIUM_PRODUCT.paymentUrl inside js/pages/matching.js, or temporarily save one in this browser with localStorage.setItem.')}</div>` : ''}
+                </div>
+
+                <div style="display:flex; gap:var(--space-3); flex-wrap:wrap;">
+                    <button class="btn btn-outline" onclick="MatchingPage.openUnlockModal()">${t('match.have_paid_unlock', 'I have paid / unlock PDF')}</button>
+                    <button class="btn btn-outline" onclick="Components.closeModal()">${t('common.close', 'Close')}</button>
+                </div>
+            </div>
+        `);
+    }
+
+    function continueToCheckout() {
+        const config = getPaymentConfig();
+        if (!config.paymentUrl) {
+            Components.showToast(t('match.payment_link_missing', 'Payment link is not configured yet.'), 'error');
+            return;
+        }
+
+        recordFunnelEvent('checkout_clicked', { method: 'payment_link' });
+        window.open(config.paymentUrl, '_blank', 'noopener');
+    }
+
+    function recordPaymentClick(method) {
+        recordFunnelEvent('checkout_clicked', { method });
+    }
+
+    function openUnlockModal() {
+        if (!currentReport) {
+            Components.showToast(t('match.generate_preview_first', 'Generate a preview first.'), 'error');
+            return;
+        }
+
+        Components.openModal(`
+            <div style="padding: var(--space-2);">
+                <div style="color: var(--color-secondary); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; margin-bottom: var(--space-2);">${t('match.manual_unlock', 'Manual unlock')}</div>
+                <h2 style="margin-bottom: var(--space-3);">${t('match.unlock_full_pdf', 'Unlock full PDF')}</h2>
+                <p style="color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--space-5);">${t('match.unlock_desc', 'Enter the payment reference after you verify the payment. This is intentionally simple for the first demand test; replace it with payment webhooks after customers prove they pay.')}</p>
+                <div class="form-group">
+                    <label class="form-label" for="match-payment-ref">${t('match.payment_reference', 'Payment reference / order ID')}</label>
+                    <input id="match-payment-ref" class="form-control" placeholder="${t('match.payment_reference_placeholder', 'Example: pay_ABC123 or UPI reference')}">
+                </div>
+                <div style="display:flex; gap:var(--space-3); flex-wrap:wrap; margin-top:var(--space-4);">
+                    <button class="btn btn-primary" onclick="MatchingPage.confirmPaidUnlock()">${t('match.unlock_full_pdf_btn', 'Unlock Full PDF')}</button>
+                    <button class="btn btn-outline" onclick="Components.closeModal()">${t('gita.btn_cancel', 'Cancel')}</button>
+                </div>
+            </div>
+        `);
+    }
+
+    function confirmPaidUnlock() {
+        if (!currentReport) return;
+
+        const refInput = document.getElementById('match-payment-ref');
+        const paymentRef = refInput ? refInput.value.trim() : '';
+        if (paymentRef.length < 6) {
+            Components.showToast(t('match.valid_payment_reference', 'Please enter a valid payment reference.'), 'error');
+            return;
+        }
+
+        markReportUnlocked(currentReport.reportId, paymentRef);
+        recordFunnelEvent('report_unlocked', { paymentRef });
+        Components.closeModal();
+        renderFullReport(
+            currentReport.bName,
+            currentReport.gName,
+            currentReport.bDate,
+            currentReport.bTime,
+            currentReport.gDate,
+            currentReport.gTime,
+            currentReport.bCity,
+            currentReport.gCity,
+            currentReport.bChart,
+            currentReport.gChart,
+            currentReport.result
+        );
+        Components.showToast(t('match.unlocked_success', 'Full PDF unlocked. You can now download or print it.'), 'success');
     }
 
     function renderPlanetTable(chart) {
@@ -554,5 +886,14 @@ const MatchingPage = (() => {
         }, 100);
     }
 
-    return { render, afterRender, generateMatch };
+    return {
+        render,
+        afterRender,
+        generateMatch,
+        openPaymentModal,
+        continueToCheckout,
+        recordPaymentClick,
+        openUnlockModal,
+        confirmPaidUnlock
+    };
 })();

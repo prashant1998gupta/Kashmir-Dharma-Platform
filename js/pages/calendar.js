@@ -160,7 +160,8 @@ const CalendarPage = (() => {
                 
                 if (exactDate) {
                     // Also update the festival object so the popup shows the exact date!
-                    f.calculatedDate = exactDate.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+                    const locale = typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi' ? 'hi-IN' : 'en-IN';
+                    f.calculatedDate = exactDate.toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
                     
                     if (exactDate.getMonth() === currentMonth) {
                         const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(exactDate.getDate()).padStart(2, '0')}`;
@@ -365,13 +366,13 @@ const CalendarPage = (() => {
         let auspiciousStatus = '';
         let badgeClass = '';
         if (auspicious.score >= 5) {
-            auspiciousStatus = lang === 'hi' ? 'अति शुभ' : 'Highly Auspicious';
+            auspiciousStatus = typeof I18n !== 'undefined' ? I18n.t('calendar.highly_auspicious', 'Highly Auspicious') : 'Highly Auspicious';
             badgeClass = 'favorable';
         } else if (auspicious.score >= 2) {
-            auspiciousStatus = lang === 'hi' ? 'शुभ / सामान्य' : 'Auspicious / Neutral';
+            auspiciousStatus = typeof I18n !== 'undefined' ? I18n.t('calendar.neutral_status', 'Auspicious / Neutral') : 'Auspicious / Neutral';
             badgeClass = 'neutral';
         } else {
-            auspiciousStatus = lang === 'hi' ? 'वर्जित / अशुभ' : 'Avoid / Unfavorable';
+            auspiciousStatus = typeof I18n !== 'undefined' ? I18n.t('calendar.avoid_status', 'Avoid / Unfavorable') : 'Avoid / Unfavorable';
             badgeClass = 'unfavorable';
         }
         
@@ -384,10 +385,10 @@ const CalendarPage = (() => {
         if (events.length > 0) {
             const festival = festivals.find(f => f.name === events[0].name);
             if (festival) {
-                const viewRitualLabel = lang === 'hi' ? '🪔 पूजा विधि एवं प्रसाद' : '🪔 View Rituals & Foods';
+                const viewRitualLabel = `🪔 ${typeof I18n !== 'undefined' ? I18n.t('calendar.view_rituals', 'View Rituals & Foods') : 'View Rituals & Foods'}`;
                 const typeLabel = festival.type === 'Major Festival' ? 
-                    (lang === 'hi' ? 'प्रमुख त्योहार' : 'Major Festival') : 
-                    (lang === 'hi' ? 'उत्सव' : 'Observance');
+                    (typeof I18n !== 'undefined' ? I18n.t('calendar.major_festival', 'Major Festival') : 'Major Festival') : 
+                    (typeof I18n !== 'undefined' ? I18n.t('calendar.observance', 'Observance') : 'Observance');
                     
                 festivalHTML = `
                     <div style="margin-top: var(--space-5); padding-top: var(--space-4); border-top: 1px solid rgba(255,255,255,0.05);">
@@ -409,15 +410,15 @@ const CalendarPage = (() => {
             }
         }
         
-        const labelKoshurDate = lang === 'hi' ? 'कश्मीरी चंद्र तिथि' : 'Kashmiri Lunar Date';
-        const labelSanskritDate = lang === 'hi' ? 'वैदिक चंद्र तिथि' : 'Vedic Lunar Date';
-        const labelGregorian = lang === 'hi' ? 'ग्रेगोरियन तिथि' : 'Gregorian Date';
-        const labelVaar = lang === 'hi' ? 'वार' : 'Vaar (Weekday)';
-        const labelTithi = lang === 'hi' ? 'तिथि' : 'Tithi';
-        const labelNakshatra = lang === 'hi' ? 'नक्षत्र' : 'Nakshatra';
-        const labelRashi = lang === 'hi' ? 'चंद्र राशि' : 'Moon Rashi';
-        const labelPaksha = lang === 'hi' ? 'पक्ष' : 'Paksha';
-        const labelAuspiciousIndex = lang === 'hi' ? 'शुभ मुहूर्त सूचकांक' : 'Auspiciousness Index';
+        const labelKoshurDate = typeof I18n !== 'undefined' ? I18n.t('calendar.koshur_date', 'Kashmiri Lunar Date') : 'Kashmiri Lunar Date';
+        const labelSanskritDate = typeof I18n !== 'undefined' ? I18n.t('calendar.sanskrit_date', 'Vedic Lunar Date') : 'Vedic Lunar Date';
+        const labelGregorian = typeof I18n !== 'undefined' ? I18n.t('calendar.gregorian_date', 'Gregorian Date') : 'Gregorian Date';
+        const labelVaar = typeof I18n !== 'undefined' ? I18n.t('calendar.vaar', 'Vaar (Weekday)') : 'Vaar (Weekday)';
+        const labelTithi = typeof I18n !== 'undefined' ? I18n.t('calendar.tithi', 'Tithi') : 'Tithi';
+        const labelNakshatra = typeof I18n !== 'undefined' ? I18n.t('calendar.nakshatra', 'Nakshatra') : 'Nakshatra';
+        const labelRashi = typeof I18n !== 'undefined' ? I18n.t('calendar.rashi', 'Moon Rashi') : 'Moon Rashi';
+        const labelPaksha = typeof I18n !== 'undefined' ? I18n.t('calendar.paksha', 'Paksha') : 'Paksha';
+        const labelAuspiciousIndex = typeof I18n !== 'undefined' ? I18n.t('calendar.auspicious_index', 'Auspiciousness Index') : 'Auspiciousness Index';
         
         panel.innerHTML = `
             <div class="panchang-header">

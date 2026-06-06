@@ -55,7 +55,9 @@ The application is built using a modern, lightweight, dependency-free architectu
 - **Data Layer:** Static JSON files fetched asynchronously (`data/*.json`).
 - **Storage:** Browser `localStorage` for user preferences and heritage data (`js/utils/storage.js`).
 - **Search Engine:** Custom client-side fuzzy-matching full-text search (`js/utils/search.js`).
-- **Astrology Engine:** Custom mathematical approximations for lunar calculations (`js/utils/calendar-calc.js`).
+- **Astrology Engine:** Bundled Astronomy Engine for geocentric Sun, Moon, and planetary positions, plus a shared Panchang core for tithi, nakshatra, rashi, yoga, and karana rules (`js/lib/astronomy.js`, `js/utils/panchang-core.js`, `js/utils/calendar-calc.js`, `js/utils/astrology-calc.js`).
+
+See [`calculation_accuracy_audit.md`](calculation_accuracy_audit.md) for the current accuracy status and the production roadmap toward Swiss Ephemeris validation.
 
 ### Design System
 - **Theme:** Dark mode by default, reflecting a premium, spiritual aesthetic.

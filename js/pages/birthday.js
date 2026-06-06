@@ -35,7 +35,7 @@ const BirthdayPage = (() => {
 
                         <div class="form-group mb-4">
                             <label class="form-label" for="birthPlace">${typeof I18n !== 'undefined' ? I18n.t('birthday.place', 'Place of Birth (optional)') : 'Place of Birth (optional)'}</label>
-                            <input type="text" class="form-input" id="birthPlace" placeholder="e.g., Srinagar, Jammu, Delhi">
+                            <input type="text" class="form-input" id="birthPlace" placeholder="${typeof I18n !== 'undefined' ? I18n.t('birthday.place_placeholder', 'e.g., Srinagar, Jammu, Delhi') : 'e.g., Srinagar, Jammu, Delhi'}">
                         </div>
 
                         <div class="form-group mb-6">
@@ -52,10 +52,10 @@ const BirthdayPage = (() => {
                     ${Components.card(`
                         <h3 style="margin-bottom: var(--space-4)">📖 ${typeof I18n !== 'undefined' ? I18n.t('birthday.what_is', 'What is Janma Tithi?') : 'What is Janma Tithi?'}</h3>
                         <p style="font-size: var(--text-sm); margin-bottom: var(--space-4)">
-                            In the Hindu tradition, birthdays are often celebrated according to the <strong style="color: var(--color-secondary)">lunar calendar (Panchang)</strong> rather than the Gregorian calendar.
+                            ${typeof I18n !== 'undefined' ? I18n.t('birthday.what_is_p1', 'In the Hindu tradition, birthdays are often celebrated according to the lunar calendar (Panchang) rather than the Gregorian calendar.') : 'In the Hindu tradition, birthdays are often celebrated according to the lunar calendar (Panchang) rather than the Gregorian calendar.'}
                         </p>
                         <p style="font-size: var(--text-sm); margin-bottom: var(--space-4)">
-                            Your <strong style="color: var(--color-secondary)">Janma Tithi</strong> is the lunar day on which you were born. The Hindu birthday falls on the same Tithi each year, but the corresponding Gregorian date changes.
+                            ${typeof I18n !== 'undefined' ? I18n.t('birthday.what_is_p2', 'Your Janma Tithi is the lunar day on which you were born. The Hindu birthday falls on the same Tithi each year, but the corresponding Gregorian date changes.') : 'Your Janma Tithi is the lunar day on which you were born. The Hindu birthday falls on the same Tithi each year, but the corresponding Gregorian date changes.'}
                         </p>
                         <div class="accordion">
                             <div class="accordion-item" id="info-tithi">
@@ -65,7 +65,7 @@ const BirthdayPage = (() => {
                                 </button>
                                 <div class="accordion-body">
                                     <div class="accordion-content">
-                                        A Tithi is a lunar day — the time it takes for the Moon to gain 12° over the Sun. There are 30 Tithis in a lunar month, 15 in Shukla Paksha (waxing) and 15 in Krishna Paksha (waning).
+                                        ${typeof I18n !== 'undefined' ? I18n.t('birthday.tithi_desc', 'A Tithi is a lunar day, the time it takes for the Moon to gain 12 degrees over the Sun. There are 30 Tithis in a lunar month, 15 in Shukla Paksha and 15 in Krishna Paksha.') : 'A Tithi is a lunar day, the time it takes for the Moon to gain 12 degrees over the Sun. There are 30 Tithis in a lunar month, 15 in Shukla Paksha and 15 in Krishna Paksha.'}
                                     </div>
                                 </div>
                             </div>
@@ -76,7 +76,7 @@ const BirthdayPage = (() => {
                                 </button>
                                 <div class="accordion-body">
                                     <div class="accordion-content">
-                                        Nakshatras are 27 lunar mansions or star constellations through which the Moon travels. Your birth Nakshatra is determined by the Moon's position at the time of your birth.
+                                        ${typeof I18n !== 'undefined' ? I18n.t('birthday.nakshatra_desc', 'Nakshatras are 27 lunar mansions or star constellations through which the Moon travels. Your birth Nakshatra is determined by the Moon position at the time of your birth.') : 'Nakshatras are 27 lunar mansions or star constellations through which the Moon travels. Your birth Nakshatra is determined by the Moon position at the time of your birth.'}
                                     </div>
                                 </div>
                             </div>
@@ -87,7 +87,7 @@ const BirthdayPage = (() => {
                                 </button>
                                 <div class="accordion-body">
                                     <div class="accordion-content">
-                                        Rashi is your zodiac sign based on the Moon's position at birth (not the Sun sign used in Western astrology). There are 12 Rashis, each spanning 30° of the zodiac.
+                                        ${typeof I18n !== 'undefined' ? I18n.t('birthday.rashi_desc', 'Rashi is your zodiac sign based on the Moon position at birth, not the Sun sign used in Western astrology. There are 12 Rashis, each spanning 30 degrees of the zodiac.') : 'Rashi is your zodiac sign based on the Moon position at birth, not the Sun sign used in Western astrology. There are 12 Rashis, each spanning 30 degrees of the zodiac.'}
                                     </div>
                                 </div>
                             </div>
@@ -109,7 +109,7 @@ const BirthdayPage = (() => {
         const targetYearInput = document.getElementById('targetYear');
         
         if (!dateInput.value) {
-            Components.showToast('Please enter your date of birth', 'warning');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('birthday.enter_dob_warning', 'Please enter your date of birth') : 'Please enter your date of birth', 'warning');
             return;
         }
 
@@ -131,43 +131,43 @@ const BirthdayPage = (() => {
             <div class="reveal">
                 ${Components.ornamentalDivider('🎂')}
                 
-                <h2 style="margin-bottom: var(--space-6); text-align: center">Your Hindu Birth Details</h2>
+                <h2 style="margin-bottom: var(--space-6); text-align: center">${typeof I18n !== 'undefined' ? I18n.t('birthday.results_title', 'Your Hindu Birth Details') : 'Your Hindu Birth Details'}</h2>
 
                 <!-- Birth Details Cards -->
                 <div class="grid-4 mb-8">
                     ${Components.card(`
                         <div class="stat-card">
                             <div style="font-size: 1.5rem; margin-bottom: var(--space-2)">🌙</div>
-                            <div class="stat-value" style="font-size: var(--text-xl)">${hinduDate.tithi.name}</div>
-                            <div class="stat-label">Janma Tithi</div>
-                            <div style="font-size: var(--text-xs); color: var(--text-muted); margin-top: var(--space-2)">${hinduDate.tithi.paksha}</div>
+                            <div class="stat-value" style="font-size: var(--text-xl)">${typeof I18n !== 'undefined' ? I18n.tAstro(hinduDate.tithi.name) : hinduDate.tithi.name}</div>
+                            <div class="stat-label">${typeof I18n !== 'undefined' ? I18n.t('birthday.janma_tithi', 'Janma Tithi') : 'Janma Tithi'}</div>
+                            <div style="font-size: var(--text-xs); color: var(--text-muted); margin-top: var(--space-2)">${typeof I18n !== 'undefined' ? I18n.tAstro(hinduDate.tithi.paksha) : hinduDate.tithi.paksha}</div>
                         </div>
                     `)}
                     ${Components.card(`
                         <div class="stat-card">
                             <div style="font-size: 1.5rem; margin-bottom: var(--space-2)">⭐</div>
-                            <div class="stat-value" style="font-size: var(--text-xl)">${hinduDate.nakshatra.name}</div>
-                            <div class="stat-label">Birth Nakshatra</div>
+                            <div class="stat-value" style="font-size: var(--text-xl)">${typeof I18n !== 'undefined' ? I18n.tAstro(hinduDate.nakshatra.name) : hinduDate.nakshatra.name}</div>
+                            <div class="stat-label">${typeof I18n !== 'undefined' ? I18n.t('birthday.birth_nakshatra', 'Birth Nakshatra') : 'Birth Nakshatra'}</div>
                         </div>
                     `)}
                     ${Components.card(`
                         <div class="stat-card">
                             <div style="font-size: 1.5rem; margin-bottom: var(--space-2)">♈</div>
-                            <div class="stat-value" style="font-size: var(--text-xl)">${hinduDate.rashi.name}</div>
-                            <div class="stat-label">Moon Rashi</div>
+                            <div class="stat-value" style="font-size: var(--text-xl)">${typeof I18n !== 'undefined' ? I18n.tAstro(hinduDate.rashi.name) : hinduDate.rashi.name}</div>
+                            <div class="stat-label">${typeof I18n !== 'undefined' ? I18n.t('birthday.moon_rashi', 'Moon Rashi') : 'Moon Rashi'}</div>
                         </div>
                     `)}
                     ${Components.card(`
                         <div class="stat-card">
                             <div style="font-size: 1.5rem; margin-bottom: var(--space-2)">📅</div>
-                            <div class="stat-value" style="font-size: var(--text-xl)">${hinduDate.hinduMonth.name}</div>
-                            <div class="stat-label">Hindu Month</div>
+                            <div class="stat-value" style="font-size: var(--text-xl)">${typeof I18n !== 'undefined' ? I18n.tAstro(hinduDate.hinduMonth.name) : hinduDate.hinduMonth.name}</div>
+                            <div class="stat-label">${typeof I18n !== 'undefined' ? I18n.t('birthday.hindu_month', 'Hindu Month') : 'Hindu Month'}</div>
                         </div>
                     `)}
                 </div>
 
                 <!-- Hindu Birthday Dates -->
-                <h3 style="margin-bottom: var(--space-4)">🎂 Hindu Birthday in ${targetYear}</h3>
+                <h3 style="margin-bottom: var(--space-4)">🎂 ${typeof I18n !== 'undefined' ? I18n.t('birthday.hindu_birthday_in', 'Hindu Birthday in') : 'Hindu Birthday in'} ${targetYear}</h3>
                 ${janmaTithiDates.length > 0 ? `
                     <div class="grid-auto">
                         ${janmaTithiDates.map((jt, i) => Components.card(`
@@ -175,12 +175,12 @@ const BirthdayPage = (() => {
                                 <div style="font-size: 2rem">🎂</div>
                                 <div>
                                     <div style="font-size: var(--text-lg); font-weight: 700; color: var(--color-secondary)">
-                                        ${jt.gregorianDate.toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                                        ${jt.gregorianDate.toLocaleDateString(typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi' ? 'hi-IN' : 'en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                                     </div>
                                     <div style="font-size: var(--text-sm); color: var(--text-secondary)">
-                                        ${jt.hinduMonth.name} ${jt.tithi.paksha} ${jt.tithi.name}
+                                        ${typeof I18n !== 'undefined' ? I18n.tAstro(jt.hinduMonth.name) : jt.hinduMonth.name} ${typeof I18n !== 'undefined' ? I18n.tAstro(jt.tithi.paksha) : jt.tithi.paksha} ${typeof I18n !== 'undefined' ? I18n.tAstro(jt.tithi.name) : jt.tithi.name}
                                     </div>
-                                    ${jt.approximate ? '<span class="badge badge-primary mt-2">Approximate</span>' : ''}
+                                    ${jt.approximate ? `<span class="badge badge-primary mt-2">${typeof I18n !== 'undefined' ? I18n.t('birthday.approximate', 'Approximate') : 'Approximate'}</span>` : ''}
                                 </div>
                             </div>
                         `, { featured: i === 0 })).join('')}
@@ -188,8 +188,7 @@ const BirthdayPage = (() => {
                 ` : `
                     ${Components.card(`
                         <p style="text-align: center; color: var(--text-secondary)">
-                            Could not determine exact Hindu birthday for ${targetYear}. 
-                            Please consult with a Panchang expert for accurate calculation.
+                            ${(typeof I18n !== 'undefined' ? I18n.t('birthday.not_found', 'Could not determine exact Hindu birthday for {year}. Please consult with a Panchang expert for accurate calculation.') : 'Could not determine exact Hindu birthday for {year}. Please consult with a Panchang expert for accurate calculation.').replace('{year}', targetYear)}
                         </p>
                     `)}
                 `}
@@ -200,9 +199,7 @@ const BirthdayPage = (() => {
                         <div class="flex items-center gap-3">
                             <span style="font-size: 1.5rem">⚠️</span>
                             <p style="font-size: var(--text-sm); color: var(--text-muted); margin: 0">
-                                <strong>Note:</strong> These calculations are based on astronomical algorithms and may have slight variations 
-                                from traditional Panchang calculations. For precise results, especially for important ceremonies, 
-                                please consult with a knowledgeable Kashmiri Pandit priest or astrologer.
+                                ${typeof I18n !== 'undefined' ? I18n.t('birthday.note', '<strong>Note:</strong> These calculations are based on astronomical algorithms and may have slight variations from traditional Panchang calculations. For precise results, especially for important ceremonies, please consult with a knowledgeable Kashmiri Pandit priest or astrologer.') : '<strong>Note:</strong> These calculations are based on astronomical algorithms and may have slight variations from traditional Panchang calculations. For precise results, especially for important ceremonies, please consult with a knowledgeable Kashmiri Pandit priest or astrologer.'}
                             </p>
                         </div>
                     `, { compact: true })}
@@ -226,8 +223,8 @@ const BirthdayPage = (() => {
         if (profile) {
             document.getElementById('birthDate').value = profile.dob || '';
             document.getElementById('birthTime').value = profile.time || '';
-            document.getElementById('birthPlace').value = `Auto-filled (${profile.lat}, ${profile.lng})`;
-            Components.showToast('Profile loaded successfully!', 'success');
+            document.getElementById('birthPlace').value = `${typeof I18n !== 'undefined' ? I18n.t('kundali.auto_filled', 'Auto-filled') : 'Auto-filled'} (${profile.lat}, ${profile.lng})`;
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('profile.loaded_success', 'Profile loaded successfully!') : 'Profile loaded successfully!', 'success');
         }
     }
 

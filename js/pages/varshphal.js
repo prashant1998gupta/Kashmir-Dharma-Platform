@@ -126,7 +126,7 @@ const VarshphalPage = (() => {
         const cityName = cityInput.value;
 
         if (!date || !time || !cityName || !targetYear) {
-            Components.showToast('Please fill all fields', 'error');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('varshphal.fill_all', 'Please fill all fields') : 'Please fill all fields', 'error');
             return;
         }
 
@@ -137,14 +137,14 @@ const VarshphalPage = (() => {
         } else {
             cityObj = typeof CityDatabase !== 'undefined' ? CityDatabase.find(c => c.name.toLowerCase() === cityName.toLowerCase()) : null;
         }
-        if (!cityObj) { Components.showToast('Please select a valid city', 'error'); return; }
+        if (!cityObj) { Components.showToast(typeof I18n !== 'undefined' ? I18n.t('varshphal.invalid_city', 'Please select a valid city') : 'Please select a valid city', 'error'); return; }
 
         try {
             const result = VarshphalCalc.generateVarshphal(date, time, cityObj, targetYear);
             renderFullReport(name, date, time, cityName, targetYear, result);
         } catch (e) {
             console.error(e);
-            Components.showToast('Error generating Varshphal. Check inputs.', 'error');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('varshphal.error', 'Error generating Varshphal. Check inputs.') : 'Error generating Varshphal. Check inputs.', 'error');
         }
     }
 

@@ -176,7 +176,7 @@ const KundaliPage = (() => {
         }
         setTimeout(() => Components.initScrollReveal(), 100);
         if (typeof Astronomy === 'undefined') {
-            Components.showToast('Astronomy Engine library failed to load. Please check your internet connection.', 'error');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('kundali.astronomy_load_error', 'Astronomy Engine library failed to load. Please check your internet connection.') : 'Astronomy Engine library failed to load. Please check your internet connection.', 'error');
         }
     }
 
@@ -226,7 +226,7 @@ const KundaliPage = (() => {
 
     function generateChart() {
         if (typeof Astronomy === 'undefined') {
-            Components.showToast('Please wait for the astronomy engine to load.', 'error');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('kundali.wait_astronomy', 'Please wait for the astronomy engine to load.') : 'Please wait for the astronomy engine to load.', 'error');
             return;
         }
 
@@ -236,7 +236,7 @@ const KundaliPage = (() => {
         const cityName = document.getElementById('k-city').value;
 
         if (!name || !date || !time || !cityName) {
-            Components.showToast('Please fill all fields', 'error');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('kundali.fill_all', 'Please fill all fields') : 'Please fill all fields', 'error');
             return;
         }
 
@@ -259,19 +259,19 @@ const KundaliPage = (() => {
         }
 
         if (!cityObj) {
-            Components.showToast('Please select a valid city from the search dropdown', 'error');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('kundali.invalid_city', 'Please select a valid city from the search dropdown') : 'Please select a valid city from the search dropdown', 'error');
             return;
         }
 
         try {
             const chartData = AstroCalc.generateKundali(date, time, cityObj);
             
-            document.getElementById('res-name').textContent = `${name}'s Kundali`;
-            document.getElementById('res-details').textContent = `${date} at ${time} | ${cityName}`;
+            document.getElementById('res-name').textContent = `${name} - ${typeof I18n !== 'undefined' ? I18n.t('kundali.kundali_suffix', 'Kundali') : 'Kundali'}`;
+            document.getElementById('res-details').textContent = `${date} ${typeof I18n !== 'undefined' ? I18n.t('match.at', 'at') : 'at'} ${time} | ${cityName}`;
             
             document.getElementById('res-lagna').textContent = typeof I18n !== 'undefined' ? I18n.tAstro(chartData.lagnaName || 'Unknown') : (chartData.lagnaName || 'Unknown');
             document.getElementById('res-rashi').textContent = typeof I18n !== 'undefined' ? I18n.tAstro(chartData.moonSign || 'Unknown') : (chartData.moonSign || 'Unknown');
-            document.getElementById('res-nakshatra').textContent = chartData.moonNakshatra || 'Unknown';
+            document.getElementById('res-nakshatra').textContent = typeof I18n !== 'undefined' ? I18n.tAstro(chartData.moonNakshatra || 'Unknown') : (chartData.moonNakshatra || 'Unknown');
             
             // Populate Premium Insights
             if (typeof AstroInterpretations !== 'undefined') {
@@ -320,9 +320,9 @@ const KundaliPage = (() => {
             tbody.innerHTML = chartData.planets.map(p => `
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
                     <td style="padding: var(--space-3) var(--space-2); font-weight: bold; color: var(--color-secondary)">${p.name}</td>
-                    <td style="padding: var(--space-3) var(--space-2);">${p.rashiName}</td>
+                    <td style="padding: var(--space-3) var(--space-2);">${typeof I18n !== 'undefined' ? I18n.tAstro(p.rashiName) : p.rashiName}</td>
                     <td style="padding: var(--space-3) var(--space-2);">${p.degreeStr}</td>
-                    <td style="padding: var(--space-3) var(--space-2);">${p.nakshatra} (Pada ${p.pada})</td>
+                    <td style="padding: var(--space-3) var(--space-2);">${typeof I18n !== 'undefined' ? I18n.tAstro(p.nakshatra) : p.nakshatra} (${typeof I18n !== 'undefined' ? I18n.t('common.pada', 'Pada') : 'Pada'} ${p.pada})</td>
                     <td style="padding: var(--space-3) var(--space-2);">${p.dignity}</td>
                 </tr>
             `).join('');
@@ -332,14 +332,14 @@ const KundaliPage = (() => {
             dashaContainer.innerHTML = chartData.dashas.map(md => `
                 <details style="background: rgba(255,255,255,0.03); border: 1px solid var(--surface-border); border-radius: var(--radius-sm);">
                     <summary style="padding: var(--space-3); cursor: pointer; font-weight: bold; color: var(--color-primary); list-style: none; display: flex; justify-content: space-between;">
-                        <span>${md.lord} Mahadasha</span>
-                        <span style="font-size: var(--text-sm); color: var(--text-muted); font-weight: normal;">${md.startStr.substring(0,4)} to ${md.endStr.substring(0,4)}</span>
+                        <span>${md.lord} ${typeof I18n !== 'undefined' ? I18n.t('common.mahadasha', 'Mahadasha') : 'Mahadasha'}</span>
+                        <span style="font-size: var(--text-sm); color: var(--text-muted); font-weight: normal;">${md.startStr.substring(0,4)} ${typeof I18n !== 'undefined' ? I18n.t('common.to', 'to') : 'to'} ${md.endStr.substring(0,4)}</span>
                     </summary>
                     <div style="padding: 0 var(--space-3) var(--space-3) var(--space-3); display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-2);">
                         ${md.antardashas.map(ad => `
                             <div style="background: rgba(0,0,0,0.2); padding: var(--space-2); border-radius: var(--radius-sm); border-left: 2px solid var(--color-secondary);">
                                 <div style="font-weight: bold; font-size: var(--text-sm); color: var(--text-primary); margin-bottom: 2px;">${md.lord} - ${ad.lord}</div>
-                                <div style="font-size: var(--text-xs); color: var(--text-muted);">${ad.startStr} to ${ad.endStr}</div>
+                                <div style="font-size: var(--text-xs); color: var(--text-muted);">${ad.startStr} ${typeof I18n !== 'undefined' ? I18n.t('common.to', 'to') : 'to'} ${ad.endStr}</div>
                             </div>
                         `).join('')}
                     </div>
@@ -355,10 +355,10 @@ const KundaliPage = (() => {
                 window.scrollTo({top: y, behavior: 'smooth'});
             }, 150);
 
-            Components.showToast('Advanced Kundali Generated!', 'success');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('kundali.generated_success', 'Advanced Kundali Generated!') : 'Advanced Kundali Generated!', 'success');
         } catch (e) {
             console.error(e);
-            Components.showToast('Error generating chart. Check input data.', 'error');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('kundali.generate_error', 'Error generating chart. Check input data.') : 'Error generating chart. Check input data.', 'error');
         }
     }
 
@@ -371,14 +371,14 @@ const KundaliPage = (() => {
             document.getElementById('k-time').value = profile.time || '';
             
             // Reconstruct a mock city to fill the input
-            document.getElementById('k-city').value = `Auto-filled (${profile.lat}, ${profile.lng})`;
+            document.getElementById('k-city').value = `${typeof I18n !== 'undefined' ? I18n.t('kundali.auto_filled', 'Auto-filled') : 'Auto-filled'} (${profile.lat}, ${profile.lng})`;
             
             // Temporarily store the exact coords on the input element for generateChart to read
             document.getElementById('k-city').dataset.lat = profile.lat;
             document.getElementById('k-city').dataset.lng = profile.lng;
             document.getElementById('k-city').dataset.tz = profile.tz;
             
-            Components.showToast('Profile loaded successfully!', 'success');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('profile.loaded_success', 'Profile loaded successfully!') : 'Profile loaded successfully!', 'success');
         }
     }
 

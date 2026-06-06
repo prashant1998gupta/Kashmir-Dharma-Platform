@@ -146,7 +146,7 @@ const AudioPage = (() => {
         currentAudio = new Audio(track.src);
         currentAudio.play().catch(e => {
             console.error("Audio playback failed", e);
-            Components.showToast("Failed to play audio. Check file format.", "error");
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('audio.play_error', 'Failed to play audio. Check file format.') : 'Failed to play audio. Check file format.', "error");
         });
         
         currentPlayingId = id;

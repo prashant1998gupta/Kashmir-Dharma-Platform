@@ -6,13 +6,15 @@ const RitualsPage = (() => {
     let rituals = [];
     let activeCategory = 'all';
 
-    const categories = [
-        { id: 'all', label: typeof I18n !== 'undefined' ? I18n.t('rituals.cat_all', 'All Rituals') : 'All Rituals', icon: '📖' },
-        { id: 'Life Events', label: typeof I18n !== 'undefined' ? I18n.t('rituals.cat_life', 'Life Events') : 'Life Events', icon: '🎂' },
-        { id: 'Marriage', label: typeof I18n !== 'undefined' ? I18n.t('rituals.cat_marriage', 'Marriage') : 'Marriage', icon: '💍' },
-        { id: 'Seasonal', label: typeof I18n !== 'undefined' ? I18n.t('rituals.cat_seasonal', 'Seasonal') : 'Seasonal', icon: '🍂' },
-        { id: 'Regular Practice', label: typeof I18n !== 'undefined' ? I18n.t('rituals.cat_practice', 'Regular Practice') : 'Regular Practice', icon: '🔥' }
-    ];
+    function getCategories() {
+        return [
+            { id: 'all', label: typeof I18n !== 'undefined' ? I18n.t('rituals.cat_all', 'All Rituals') : 'All Rituals', icon: '📖' },
+            { id: 'Life Events', label: typeof I18n !== 'undefined' ? I18n.t('rituals.cat_life', 'Life Events') : 'Life Events', icon: '🎂' },
+            { id: 'Marriage', label: typeof I18n !== 'undefined' ? I18n.t('rituals.cat_marriage', 'Marriage') : 'Marriage', icon: '💍' },
+            { id: 'Seasonal', label: typeof I18n !== 'undefined' ? I18n.t('rituals.cat_seasonal', 'Seasonal') : 'Seasonal', icon: '🍂' },
+            { id: 'Regular Practice', label: typeof I18n !== 'undefined' ? I18n.t('rituals.cat_practice', 'Regular Practice') : 'Regular Practice', icon: '🔥' }
+        ];
+    }
 
     function render() {
         return `
@@ -35,7 +37,7 @@ const RitualsPage = (() => {
 
                 <!-- Category Tabs -->
                 <div class="mb-6">
-                    ${Components.tabs(categories, activeCategory, 'RitualsPage.setCategory')}
+                    ${Components.tabs(getCategories(), activeCategory, 'RitualsPage.setCategory')}
                 </div>
 
                 <!-- Rituals Grid -->
@@ -64,6 +66,7 @@ const RitualsPage = (() => {
 
         // Update tab styles
         document.querySelectorAll('.tab').forEach(tab => {
+            const categories = getCategories();
             tab.classList.toggle('active', tab.textContent.trim().includes(
                 categories.find(c => c.id === category)?.label || ''
             ));
@@ -90,7 +93,11 @@ const RitualsPage = (() => {
         if (!grid) return;
 
         if (list.length === 0) {
-            grid.innerHTML = Components.emptyState('📖', 'No rituals found', 'Try a different search or category');
+            grid.innerHTML = Components.emptyState(
+                '📖',
+                typeof I18n !== 'undefined' ? I18n.t('rituals.no_found', 'No rituals found') : 'No rituals found',
+                typeof I18n !== 'undefined' ? I18n.t('rituals.try_different', 'Try a different search or category') : 'Try a different search or category'
+            );
             return;
         }
 
@@ -141,10 +148,12 @@ const RitualsPage = (() => {
                     `).join('')}
                 </div>
 
-                <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">🔄 ${typeof I18n !== 'undefined' ? I18n.t('rituals.variations', 'Regional Variations') : 'Regional Variations'}</h4>
-                <ul style="list-style: none; margin-bottom: var(--space-6)">
-                    ${ritual.variations.map(v => `<li style="padding: var(--space-1) 0; color: var(--text-secondary)">• ${v}</li>`).join('')}
-                </ul>
+                ${ritual.variations && ritual.variations.length ? `
+                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">🔄 ${typeof I18n !== 'undefined' ? I18n.t('rituals.variations', 'Regional Variations') : 'Regional Variations'}</h4>
+                    <ul style="list-style: none; margin-bottom: var(--space-6)">
+                        ${ritual.variations.map(v => `<li style="padding: var(--space-1) 0; color: var(--text-secondary)">• ${v}</li>`).join('')}
+                    </ul>
+                ` : ''}
 
                 ${ritual.misconceptions && ritual.misconceptions.length ? `
                     <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">⚠️ ${typeof I18n !== 'undefined' ? I18n.t('rituals.misconceptions', 'Common Misconceptions') : 'Common Misconceptions'}</h4>

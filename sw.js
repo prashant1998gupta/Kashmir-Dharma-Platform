@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kashmir-dharma-v1';
+const CACHE_NAME = 'kashmir-dharma-v4';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -10,8 +10,15 @@ const ASSETS_TO_CACHE = [
     './js/components.js',
     './js/utils/storage.js',
     './js/utils/search.js',
+    './js/utils/panchang-core.js',
     './js/utils/calendar-calc.js',
+    './js/utils/match-calc.js',
+    './js/utils/varshphal-calc.js',
+    './js/utils/pdf-generator.js',
     './js/utils/profile-manager.js',
+    './js/utils/llm.js',
+    './js/utils/i18n.js',
+    './js/utils/interpretations.js',
     './js/pages/home.js',
     './js/pages/calendar.js',
     './js/pages/rituals.js',
@@ -24,7 +31,11 @@ const ASSETS_TO_CACHE = [
     './js/pages/guide.js',
     './js/pages/sharada.js',
     './js/pages/kundali.js',
+    './js/pages/matching.js',
+    './js/pages/varshphal.js',
+    './js/pages/gita.js',
     './js/utils/cities.js',
+    './js/utils/city-api.js',
     './js/utils/astrology-calc.js',
     './js/lib/astronomy.js',
     './data/festivals.json',

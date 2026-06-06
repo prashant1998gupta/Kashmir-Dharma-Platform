@@ -64,10 +64,24 @@ const CalendarCalc = (() => {
                day + B - 1524.5;
     }
 
+    function jdToDate(jd) {
+        return new Date((jd - 2440587.5) * 86400000);
+    }
+
+    function getMeanLahiriAyanamsa(jd) {
+        const date = jdToDate(jd);
+        if (typeof AstroCalc !== 'undefined' && typeof AstroCalc.getAyanamsa === 'function') {
+            return AstroCalc.getAyanamsa(date);
+        }
+
+        const yearsSinceJ2000 = (date.getTime() - Date.UTC(2000, 0, 1, 12, 0, 0)) / (86400000 * 365.24219052);
+        return (23 + (51 / 60) + (11 / 3600)) + (yearsSinceJ2000 * (50.290966 / 3600));
+    }
+
     /**
-     * Get Sun longitude in degrees for a given JD
+     * Fallback Sun longitude in degrees for a given JD.
      */
-    function getSunLongitude(jd) {
+    function getApproxSunLongitude(jd) {
         const T = (jd - 2451545.0) / 36525.0;
         let L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
         let M = 357.52911 + 35999.05029 * T - 0.0001537 * T * T;
@@ -81,7 +95,7 @@ const CalendarCalc = (() => {
         if (sunLong < 0) sunLong += 360;
 
         // Convert to Sidereal (Lahiri Ayanamsa)
-        const ayanamsa = 23.85 + (T * 1.397);
+        const ayanamsa = getMeanLahiriAyanamsa(jd);
         sunLong = (sunLong - ayanamsa) % 360;
         if (sunLong < 0) sunLong += 360;
 
@@ -89,9 +103,9 @@ const CalendarCalc = (() => {
     }
 
     /**
-     * Get Moon longitude in degrees for a given JD
+     * Fallback Moon longitude in degrees for a given JD.
      */
-    function getMoonLongitude(jd) {
+    function getApproxMoonLongitude(jd) {
         const T = (jd - 2451545.0) / 36525.0;
         let Lp = 218.3165 + 481267.8813 * T;
         let D = 297.8502 + 445267.1115 * T;
@@ -115,11 +129,43 @@ const CalendarCalc = (() => {
         if (moonLong < 0) moonLong += 360;
 
         // Convert to Sidereal (Lahiri Ayanamsa)
-        const ayanamsa = 23.85 + (T * 1.397);
+        const ayanamsa = getMeanLahiriAyanamsa(jd);
         moonLong = (moonLong - ayanamsa) % 360;
         if (moonLong < 0) moonLong += 360;
 
         return moonLong;
+    }
+
+    function getSiderealLongitude(body, jd, fallbackFn) {
+        if (typeof AstroCalc !== 'undefined' && typeof AstroCalc.getPlanetLongitude === 'function' && typeof Astronomy !== 'undefined') {
+            try {
+                const date = jdToDate(jd);
+                const tropicalLongitude = AstroCalc.getPlanetLongitude(body, date);
+                const ayanamsa = AstroCalc.getAyanamsa(date);
+                const normalized = typeof PanchangCore !== 'undefined'
+                    ? PanchangCore.normalizeDegrees(tropicalLongitude - ayanamsa)
+                    : ((tropicalLongitude - ayanamsa) % 360 + 360) % 360;
+                return normalized;
+            } catch (error) {
+                console.warn(`Falling back to approximate ${body} longitude`, error);
+            }
+        }
+
+        return fallbackFn(jd);
+    }
+
+    /**
+     * Get sidereal Sun longitude in degrees for a given JD.
+     */
+    function getSunLongitude(jd) {
+        return getSiderealLongitude('Sun', jd, getApproxSunLongitude);
+    }
+
+    /**
+     * Get sidereal Moon longitude in degrees for a given JD.
+     */
+    function getMoonLongitude(jd) {
+        return getSiderealLongitude('Moon', jd, getApproxMoonLongitude);
     }
 
     /**
@@ -129,11 +175,16 @@ const CalendarCalc = (() => {
     function calculateTithi(jd) {
         const sunLong = getSunLongitude(jd);
         const moonLong = getMoonLongitude(jd);
+        if (typeof PanchangCore !== 'undefined') {
+            return PanchangCore.getTithiFromLongitudes(sunLong, moonLong);
+        }
+
         let diff = moonLong - sunLong;
         if (diff < 0) diff += 360;
-        const tithiIndex = Math.floor(diff / 12);
+        const tithiIndex = Math.min(29, Math.floor(diff / 12));
         return {
             index: tithiIndex,
+            number: (tithiIndex % 15) + 1,
             name: TITHIS[tithiIndex],
             paksha: tithiIndex < 15 ? PAKSHA[0] : PAKSHA[1],
             pakshaIndex: tithiIndex < 15 ? 0 : 1
@@ -146,7 +197,11 @@ const CalendarCalc = (() => {
      */
     function calculateNakshatra(jd) {
         const moonLong = getMoonLongitude(jd);
-        const nakshatraIndex = Math.floor(moonLong / (360 / 27));
+        if (typeof PanchangCore !== 'undefined') {
+            return PanchangCore.getNakshatraFromMoon(moonLong);
+        }
+
+        const nakshatraIndex = Math.min(26, Math.floor(moonLong / (360 / 27)));
         return {
             index: nakshatraIndex,
             name: NAKSHATRAS[nakshatraIndex]
@@ -158,7 +213,11 @@ const CalendarCalc = (() => {
      */
     function calculateRashi(jd) {
         const moonLong = getMoonLongitude(jd);
-        const rashiIndex = Math.floor(moonLong / 30);
+        if (typeof PanchangCore !== 'undefined') {
+            return PanchangCore.getRashiFromLongitude(moonLong);
+        }
+
+        const rashiIndex = Math.min(11, Math.floor(moonLong / 30));
         return {
             index: rashiIndex,
             name: RASHIS[rashiIndex]
@@ -178,24 +237,69 @@ const CalendarCalc = (() => {
         };
     }
 
+    function calculateYoga(jd) {
+        const sunLong = getSunLongitude(jd);
+        const moonLong = getMoonLongitude(jd);
+        if (typeof PanchangCore !== 'undefined') {
+            return PanchangCore.getYogaFromLongitudes(sunLong, moonLong);
+        }
+
+        return {
+            index: 0,
+            number: 1,
+            name: 'Vishkumbha'
+        };
+    }
+
+    function calculateKarana(jd) {
+        const sunLong = getSunLongitude(jd);
+        const moonLong = getMoonLongitude(jd);
+        if (typeof PanchangCore !== 'undefined') {
+            return PanchangCore.getKaranaFromLongitudes(sunLong, moonLong);
+        }
+
+        return {
+            index: 0,
+            number: 1,
+            name: 'Kimstughna'
+        };
+    }
+
     /**
      * Complete Hindu calendar info for a Gregorian date
      */
     function getHinduDate(year, month, day, hour = 12, minute = 0) {
         const dayFraction = (hour + minute / 60) / 24;
         const jd = gregorianToJD(year, month, day) + dayFraction;
-        
-        const tithi = calculateTithi(jd);
-        const nakshatra = calculateNakshatra(jd);
-        const rashi = calculateRashi(jd);
-        const hinduMonth = calculateHinduMonth(jd);
+        const sunLongitude = getSunLongitude(jd);
+        const moonLongitude = getMoonLongitude(jd);
+        const monthIndex = (Math.floor(sunLongitude / 30) + 1) % 12;
+
+        const panchang = typeof PanchangCore !== 'undefined'
+            ? PanchangCore.getPanchangFromLongitudes(sunLongitude, moonLongitude)
+            : null;
+
+        const tithi = panchang ? panchang.tithi : calculateTithi(jd);
+        const nakshatra = panchang ? panchang.nakshatra : calculateNakshatra(jd);
+        const rashi = panchang ? panchang.rashi : calculateRashi(jd);
+        const yoga = panchang ? panchang.yoga : calculateYoga(jd);
+        const karana = panchang ? panchang.karana : calculateKarana(jd);
+        const hinduMonth = {
+            index: monthIndex,
+            name: HINDU_MONTHS[monthIndex]
+        };
 
         return {
             tithi,
             nakshatra,
             rashi,
             hinduMonth,
-            jd
+            yoga,
+            karana,
+            sunLongitude,
+            moonLongitude,
+            jd,
+            calculationMode: typeof Astronomy !== 'undefined' ? 'Astronomy Engine + mean Lahiri ayanamsa' : 'Fallback approximate solar/lunar series'
         };
     }
 
@@ -613,6 +717,13 @@ const CalendarCalc = (() => {
         isAuspicious,
         findAuspiciousDates,
         findFestivalDate,
+        calculateTithi,
+        calculateNakshatra,
+        calculateRashi,
+        calculateYoga,
+        calculateKarana,
+        getSunLongitude,
+        getMoonLongitude,
         HINDU_MONTHS,
         TITHIS,
         NAKSHATRAS,

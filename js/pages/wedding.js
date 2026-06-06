@@ -75,7 +75,7 @@ const WeddingPage = (() => {
                 ${weddingData.traditional_songs.map(s => Components.card(`
                     <h4 style="margin-bottom: var(--space-2)">🎵 ${s.name}</h4>
                     <p style="font-size: var(--text-sm); margin-bottom: var(--space-2)">${s.description}</p>
-                    <span class="text-muted" style="font-size: var(--text-xs)">When: ${s.when}</span>
+                    <span class="text-muted" style="font-size: var(--text-xs)">${typeof I18n !== 'undefined' ? I18n.t('wedding.when', 'When:') : 'When:'} ${s.when}</span>
                 `)).join('')}
             </div>
 
@@ -106,41 +106,41 @@ const WeddingPage = (() => {
                 <h2 style="margin-bottom: var(--space-2)">${ceremony.name}</h2>
                 ${ceremony.day ? `<span class="badge badge-secondary mb-4" style="display:inline-block">${ceremony.day}</span>` : ''}
                 
-                ${ceremony.audioUrl ? Components.audioPlayer(ceremony.audioUrl, 'Listen to Vanvun / Chant', ceremony.audioSubtitle || 'Traditional Kashmiri Wedding Song') : ''}
+                ${ceremony.audioUrl ? Components.audioPlayer(ceremony.audioUrl, typeof I18n !== 'undefined' ? I18n.t('wedding.listen', 'Listen to Vanvun / Chant') : 'Listen to Vanvun / Chant', ceremony.audioSubtitle || (typeof I18n !== 'undefined' ? I18n.t('wedding.audio_subtitle', 'Traditional Kashmiri Wedding Song') : 'Traditional Kashmiri Wedding Song')) : ''}
 
                 <p style="margin: var(--space-4) 0">${ceremony.description}</p>
 
                 ${ceremony.significance ? `
-                    <h4 style="margin-bottom: var(--space-2); color: var(--color-secondary)">🕉️ Significance</h4>
+                    <h4 style="margin-bottom: var(--space-2); color: var(--color-secondary)">🕉️ ${typeof I18n !== 'undefined' ? I18n.t('wedding.significance', 'Significance') : 'Significance'}</h4>
                     <p style="margin-bottom: var(--space-6)">${ceremony.significance}</p>
                 ` : ''}
 
                 ${ceremony.steps && ceremony.steps.length ? `
-                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">📋 Steps</h4>
+                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">📋 ${typeof I18n !== 'undefined' ? I18n.t('wedding.steps', 'Steps') : 'Steps'}</h4>
                     <ol style="list-style: decimal; padding-left: var(--space-6); margin-bottom: var(--space-6)">
                         ${ceremony.steps.map(s => `<li style="padding: var(--space-2) 0; color: var(--text-secondary)">${s}</li>`).join('')}
                     </ol>
                 ` : ''}
 
                 ${ceremony.materials && ceremony.materials.length ? `
-                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">📦 Materials Needed</h4>
+                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">📦 ${typeof I18n !== 'undefined' ? I18n.t('wedding.materials', 'Materials Needed') : 'Materials Needed'}</h4>
                     ${Components.checklist(ceremony.materials, `wedding-${id}`)}
                     <div style="margin-bottom: var(--space-6)"></div>
                 ` : ''}
 
                 ${ceremony.responsibilities ? `
-                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">👪 Family Responsibilities</h4>
+                    <h4 style="margin-bottom: var(--space-3); color: var(--color-secondary)">👪 ${typeof I18n !== 'undefined' ? I18n.t('wedding.responsibilities', 'Family Responsibilities') : 'Family Responsibilities'}</h4>
                     <div class="grid-2" style="gap: var(--space-3)">
                         ${ceremony.responsibilities.bride_family ? Components.card(`
-                            <h5 style="color: var(--color-secondary); margin-bottom: var(--space-2)">Bride's Family</h5>
+                            <h5 style="color: var(--color-secondary); margin-bottom: var(--space-2)">${typeof I18n !== 'undefined' ? I18n.t('wedding.bride_family', "Bride's Family") : "Bride's Family"}</h5>
                             <p style="font-size: var(--text-sm)">${ceremony.responsibilities.bride_family}</p>
                         `, { compact: true }) : ''}
                         ${ceremony.responsibilities.groom_family ? Components.card(`
-                            <h5 style="color: var(--color-secondary); margin-bottom: var(--space-2)">Groom's Family</h5>
+                            <h5 style="color: var(--color-secondary); margin-bottom: var(--space-2)">${typeof I18n !== 'undefined' ? I18n.t('wedding.groom_family', "Groom's Family") : "Groom's Family"}</h5>
                             <p style="font-size: var(--text-sm)">${ceremony.responsibilities.groom_family}</p>
                         `, { compact: true }) : ''}
                         ${ceremony.responsibilities.both ? Components.card(`
-                            <h5 style="color: var(--color-secondary); margin-bottom: var(--space-2)">Both Families</h5>
+                            <h5 style="color: var(--color-secondary); margin-bottom: var(--space-2)">${typeof I18n !== 'undefined' ? I18n.t('wedding.both_families', 'Both Families') : 'Both Families'}</h5>
                             <p style="font-size: var(--text-sm)">${ceremony.responsibilities.both}</p>
                         `, { compact: true }) : ''}
                     </div>

@@ -6,13 +6,15 @@ const ArchivePage = (() => {
     let articles = [];
     let activeCategory = 'all';
 
-    const categories = [
-        { id: 'all', label: typeof I18n !== 'undefined' ? I18n.t('archive.cat_all', 'All') : 'All', icon: '📚' },
-        { id: 'History', label: typeof I18n !== 'undefined' ? I18n.t('archive.cat_history', 'History') : 'History', icon: '📜' },
-        { id: 'Teachings', label: typeof I18n !== 'undefined' ? I18n.t('archive.cat_teachings', 'Teachings') : 'Teachings', icon: '🕉️' },
-        { id: 'Culture', label: typeof I18n !== 'undefined' ? I18n.t('archive.cat_culture', 'Culture') : 'Culture', icon: '🎭' },
-        { id: 'Temples', label: typeof I18n !== 'undefined' ? I18n.t('archive.cat_temples', 'Temples') : 'Temples', icon: '🛕' }
-    ];
+    function getCategories() {
+        return [
+            { id: 'all', label: typeof I18n !== 'undefined' ? I18n.t('archive.cat_all', 'All') : 'All', icon: '📚' },
+            { id: 'History', label: typeof I18n !== 'undefined' ? I18n.t('archive.cat_history', 'History') : 'History', icon: '📜' },
+            { id: 'Teachings', label: typeof I18n !== 'undefined' ? I18n.t('archive.cat_teachings', 'Teachings') : 'Teachings', icon: '🕉️' },
+            { id: 'Culture', label: typeof I18n !== 'undefined' ? I18n.t('archive.cat_culture', 'Culture') : 'Culture', icon: '🎭' },
+            { id: 'Temples', label: typeof I18n !== 'undefined' ? I18n.t('archive.cat_temples', 'Temples') : 'Temples', icon: '🛕' }
+        ];
+    }
 
     function render() {
         return `
@@ -32,7 +34,7 @@ const ArchivePage = (() => {
                     ${Components.searchBar(typeof I18n !== 'undefined' ? I18n.t('archive.search', 'Search articles...') : 'Search articles...', 'ArchivePage.filterArticles', 'archiveSearch')}
                 </div>
 
-                ${Components.tabs(categories, activeCategory, 'ArchivePage.setCategory')}
+                ${Components.tabs(getCategories(), activeCategory, 'ArchivePage.setCategory')}
 
                 <div id="archiveGrid" class="grid-auto">
                     <div class="skeleton skeleton-card"></div>
@@ -58,6 +60,7 @@ const ArchivePage = (() => {
         renderArticles(filtered);
 
         document.querySelectorAll('.tab').forEach(tab => {
+            const categories = getCategories();
             const cat = categories.find(c => tab.textContent.trim().includes(c.label));
             tab.classList.toggle('active', cat && cat.id === category);
         });
@@ -84,7 +87,11 @@ const ArchivePage = (() => {
         if (!grid) return;
 
         if (list.length === 0) {
-            grid.innerHTML = Components.emptyState('📚', 'No articles found', 'Try a different search or category');
+            grid.innerHTML = Components.emptyState(
+                '📚',
+                typeof I18n !== 'undefined' ? I18n.t('archive.no_articles', 'No articles found') : 'No articles found',
+                typeof I18n !== 'undefined' ? I18n.t('archive.try_different', 'Try a different search or category') : 'Try a different search or category'
+            );
             return;
         }
 
@@ -95,7 +102,7 @@ const ArchivePage = (() => {
                     ${Components.badge(article.category, 'secondary')}
                     <button class="btn btn-ghost btn-sm" 
                             onclick="event.stopPropagation(); ArchivePage.toggleBookmark('${article.id}')"
-                            title="${isBookmarked ? 'Remove bookmark' : 'Bookmark'}">
+                            title="${isBookmarked ? (typeof I18n !== 'undefined' ? I18n.t('archive.remove_bookmark', 'Remove bookmark') : 'Remove bookmark') : (typeof I18n !== 'undefined' ? I18n.t('archive.bookmark', 'Bookmark') : 'Bookmark')}">
                         ${isBookmarked ? '⭐' : '☆'}
                     </button>
                 </div>
@@ -164,12 +171,12 @@ const ArchivePage = (() => {
     function toggleBookmark(id) {
         if (Storage.isBookmarked(id)) {
             Storage.removeBookmark(id);
-            Components.showToast('Bookmark removed', 'warning');
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('archive.bookmark_removed', 'Bookmark removed') : 'Bookmark removed', 'warning');
         } else {
             const article = articles.find(a => a.id === id);
             if (article) {
                 Storage.addBookmark({ id: article.id, title: article.title, type: 'article' });
-                Components.showToast('Article bookmarked!', 'success');
+                Components.showToast(typeof I18n !== 'undefined' ? I18n.t('archive.bookmarked', 'Article bookmarked!') : 'Article bookmarked!', 'success');
             }
         }
         // Re-render
