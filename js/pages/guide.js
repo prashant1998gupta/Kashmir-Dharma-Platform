@@ -86,7 +86,7 @@ const GuidePage = (() => {
                                             { label: 'Zyeth Atham', q: 'What is Zyeth Atham?' },
                                             { label: 'Shraddha', q: 'Shraddha rituals' }
                                         ];
-                                        return topics.map(t => `<span class="tag" onclick="GuidePage.askQuestion('${t.q.replace(/'/g, "\\\\'")}')">${t.label}</span>`).join('\\n                                    ');
+                                        return topics.map(t => `<span class="tag" onclick="GuidePage.askQuestion('${t.q.replace(/'/g, "\\\\'")}')">${t.label}</span>`).join('');
                                     })()}
                                 </div>
                             `)}

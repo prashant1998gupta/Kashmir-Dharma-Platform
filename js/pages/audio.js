@@ -5,41 +5,43 @@
 const AudioPage = (() => {
     
     // Placeholder audio data
-    const audioData = [
-        {
-            id: 'm1',
-            title: 'Maha Mrityunjaya Mantra',
-            category: 'mantras',
-            description: 'The great death-conquering mantra dedicated to Lord Shiva.',
-            duration: '0:30',
-            // Placeholder base64 for a simple chime (a valid MP3 should replace this later)
-            src: 'data:audio/mp3;base64,//NExAAAAANIAAAAAExBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq' 
-        },
-        {
-            id: 'm2',
-            title: 'Gayatri Mantra',
-            category: 'mantras',
-            description: 'Universal prayer for enlightenment and wisdom.',
-            duration: '0:45',
-            src: 'data:audio/mp3;base64,//NExAAAAANIAAAAAExBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq'
-        },
-        {
-            id: 'w1',
-            title: 'Devgon Wanwun',
-            category: 'wanwun',
-            description: 'Traditional folk singing during the Devgon ceremony of a Kashmiri wedding.',
-            duration: '1:15',
-            src: 'data:audio/mp3;base64,//NExAAAAANIAAAAAExBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq'
-        },
-        {
-            id: 'w2',
-            title: 'Maenziraat Wanwun',
-            category: 'wanwun',
-            description: 'Joyous songs sung during the Mehndi/Maenziraat night.',
-            duration: '2:00',
-            src: 'data:audio/mp3;base64,//NExAAAAANIAAAAAExBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq'
-        }
-    ];
+    function getAudioData() {
+        const isHi = typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi';
+        return [
+            {
+                id: 'm1',
+                title: isHi ? 'महा मृत्युंजय मंत्र' : 'Maha Mrityunjaya Mantra',
+                category: 'mantras',
+                description: isHi ? 'भगवान शिव को समर्पित महान मृत्यु-विजेता मंत्र।' : 'The great death-conquering mantra dedicated to Lord Shiva.',
+                duration: '0:30',
+                src: 'data:audio/mp3;base64,//NExAAAAANIAAAAAExBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq' 
+            },
+            {
+                id: 'm2',
+                title: isHi ? 'गायत्री मंत्र' : 'Gayatri Mantra',
+                category: 'mantras',
+                description: isHi ? 'ज्ञान और प्रकाश के लिए सार्वभौमिक प्रार्थना।' : 'Universal prayer for enlightenment and wisdom.',
+                duration: '0:45',
+                src: 'data:audio/mp3;base64,//NExAAAAANIAAAAAExBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq'
+            },
+            {
+                id: 'w1',
+                title: isHi ? 'देवगोन वनवुन' : 'Devgon Wanwun',
+                category: 'wanwun',
+                description: isHi ? 'कश्मीरी विवाह के देवगोन समारोह के दौरान गाया जाने वाला पारंपरिक लोकगीत।' : 'Traditional folk singing during the Devgon ceremony of a Kashmiri wedding.',
+                duration: '1:15',
+                src: 'data:audio/mp3;base64,//NExAAAAANIAAAAAExBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq'
+            },
+            {
+                id: 'w2',
+                title: isHi ? 'मैन्ज़ीरात वनवुन' : 'Maenziraat Wanwun',
+                category: 'wanwun',
+                description: isHi ? 'मेहंदी/मैन्ज़ीरात की रात में गाए जाने वाले आनंदमय गीत।' : 'Joyous songs sung during the Mehndi/Maenziraat night.',
+                duration: '2:00',
+                src: 'data:audio/mp3;base64,//NExAAAAANIAAAAAExBTUUzLjEwMKqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq'
+            }
+        ];
+    }
 
     let currentAudio = null;
     let currentPlayingId = null;
@@ -65,7 +67,7 @@ const AudioPage = (() => {
                             <span style="font-size: 1.5rem">🕉️</span> ${typeof I18n !== 'undefined' ? I18n.t('audio.mantras', 'Mantras & Stotras') : 'Mantras & Stotras'}
                         </h3>
                         <div style="display: flex; flex-direction: column; gap: var(--space-4);">
-                            ${audioData.filter(a => a.category === 'mantras').map(renderAudioCard).join('')}
+                            ${getAudioData().filter(a => a.category === 'mantras').map(renderAudioCard).join('')}
                         </div>
                     </div>
 
@@ -75,7 +77,7 @@ const AudioPage = (() => {
                             <span style="font-size: 1.5rem">🎵</span> ${typeof I18n !== 'undefined' ? I18n.t('audio.wanwun', 'Traditional Wanwun') : 'Traditional Wanwun'}
                         </h3>
                         <div style="display: flex; flex-direction: column; gap: var(--space-4);">
-                            ${audioData.filter(a => a.category === 'wanwun').map(renderAudioCard).join('')}
+                            ${getAudioData().filter(a => a.category === 'wanwun').map(renderAudioCard).join('')}
                         </div>
                     </div>
                 </div>
@@ -116,7 +118,7 @@ const AudioPage = (() => {
     }
 
     function togglePlay(id) {
-        const track = audioData.find(a => a.id === id);
+        const track = getAudioData().find(a => a.id === id);
         if (!track) return;
 
         const btn = document.getElementById(`play-btn-${id}`);
