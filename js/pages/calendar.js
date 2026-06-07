@@ -230,8 +230,13 @@ const CalendarPage = (() => {
                 </div>
 
                 <div class="flex gap-2 flex-wrap mb-6">
-                    ${Components.badge(festival.type || 'Festival', 'primary')}
-                    ${festival.month ? Components.badge(festival.month, 'secondary') : ''}
+                    ${Components.badge(
+                        festival.type === 'Major Festival' ? 
+                            (typeof I18n !== 'undefined' ? I18n.t('calendar.major_festival', 'Major Festival') : 'Major Festival') : 
+                            (typeof I18n !== 'undefined' ? I18n.t('calendar.festival', festival.type || 'Festival') : festival.type || 'Festival'), 
+                        'primary'
+                    )}
+                    ${festival.month ? Components.badge(typeof I18n !== 'undefined' ? I18n.tAstro(festival.month) : festival.month, 'secondary') : ''}
                 </div>
 
                 <p style="margin-bottom: var(--space-6)">${festival.description}</p>
