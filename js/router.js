@@ -49,6 +49,14 @@ const Router = (() => {
         // Update active nav link
         updateActiveNav(hash);
 
+        // Gita AI is an immersive full-screen surface, not part of the standard app shell.
+        if (hash === 'gita' && currentPage && currentPage !== 'gita') {
+            sessionStorage.setItem('kdp_last_non_gita_route', currentPage);
+        } else if (hash !== 'gita') {
+            sessionStorage.setItem('kdp_last_non_gita_route', hash);
+        }
+        document.body.classList.toggle('gita-immersive-route', hash === 'gita');
+
         // Close mobile sidebar
         closeMobileSidebar();
 
@@ -62,21 +70,28 @@ const Router = (() => {
     function renderPage(route, hash) {
         const container = document.getElementById('pageContainer');
         if (!container) return;
+        const isGitaImmersive = hash === 'gita';
 
         // Exit animation
         container.style.opacity = '0';
-        container.style.transform = 'translateY(10px)';
+        container.style.transform = isGitaImmersive ? 'none' : 'translateY(10px)';
 
         setTimeout(() => {
             currentPage = hash;
             container.innerHTML = route.page.render();
             
             // Enter animation
-            requestAnimationFrame(() => {
-                container.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+            if (isGitaImmersive) {
+                container.style.transition = isGitaImmersive ? 'opacity 0.25s ease' : 'opacity 0.4s ease, transform 0.4s ease';
                 container.style.opacity = '1';
-                container.style.transform = 'translateY(0)';
-            });
+                container.style.transform = isGitaImmersive ? 'none' : 'translateY(0)';
+            } else {
+                requestAnimationFrame(() => {
+                    container.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                    container.style.opacity = '1';
+                    container.style.transform = 'translateY(0)';
+                });
+            }
 
             // Call afterRender for data loading
             if (route.page.afterRender) {
@@ -89,7 +104,7 @@ const Router = (() => {
             }
 
             // Scroll to top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: isGitaImmersive ? 'auto' : 'smooth' });
         }, 150);
     }
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kashmir-dharma-v4';
+const CACHE_NAME = 'kashmir-dharma-v9';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -16,6 +16,7 @@ const ASSETS_TO_CACHE = [
     './js/utils/varshphal-calc.js',
     './js/utils/pdf-generator.js',
     './js/utils/profile-manager.js',
+    './js/utils/gita-verses.js',
     './js/utils/llm.js',
     './js/utils/i18n.js',
     './js/utils/interpretations.js',

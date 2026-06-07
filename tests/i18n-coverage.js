@@ -23,7 +23,7 @@ function collectUsedKeys() {
     SCAN_FILES.forEach(file => {
         const source = read(file);
         for (const match of source.matchAll(keyPattern)) {
-            if (!match[1].endsWith('.')) {
+            if (!match[1].endsWith('.') && !match[1].endsWith('_')) {
                 used.add(match[1]);
             }
         }
