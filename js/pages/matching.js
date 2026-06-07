@@ -375,8 +375,8 @@ const MatchingPage = (() => {
                             const d = result[k];
                             const clr = d.scored === 0 ? '#e74c3c' : (d.scored === d.max ? '#2ecc71' : '#c9a959');
                             return `<tr style="border-bottom:1px solid var(--surface-border);">
-                                <td style="padding:var(--space-3); font-weight:bold;">${d.name}</td>
-                                <td style="padding:var(--space-3); color:var(--text-muted);">${d.desc}</td>
+                                <td style="padding:var(--space-3); font-weight:bold;">${typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi' ? (d.nameHindi || d.name) : d.name}</td>
+                                <td style="padding:var(--space-3); color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.koota_desc_'+d.name.replace(/\\s+/g,''), d.desc) : d.desc}</td>
                                 <td style="padding:var(--space-3); text-align:center; color:${clr}; font-weight:bold;">${d.scored}</td>
                                 <td style="padding:var(--space-3); text-align:center; color:var(--text-muted);">${d.max}</td>
                             </tr>`;
@@ -513,11 +513,11 @@ const MatchingPage = (() => {
                 <th style="padding:var(--space-2);">Planet</th><th style="padding:var(--space-2);">Sign</th><th style="padding:var(--space-2);">Degree</th><th style="padding:var(--space-2);">Nakshatra</th><th style="padding:var(--space-2);">Dignity</th>
             </tr></thead><tbody>
             ${chart.planets.map(p => `<tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-                <td style="padding:var(--space-2); font-weight:bold; color:var(--color-secondary);">${p.name}</td>
-                <td style="padding:var(--space-2);">${p.rashiName}</td>
+                <td style="padding:var(--space-2); font-weight:bold; color:var(--color-secondary);">${typeof I18n !== 'undefined' ? I18n.tAstro(p.name) : p.name}</td>
+                <td style="padding:var(--space-2);">${typeof I18n !== 'undefined' ? I18n.tAstro(p.rashiName) : p.rashiName}</td>
                 <td style="padding:var(--space-2);">${p.degreeStr}</td>
-                <td style="padding:var(--space-2);">${p.nakshatra} (Pada ${p.pada})</td>
-                <td style="padding:var(--space-2);">${p.dignity}</td>
+                <td style="padding:var(--space-2);">${typeof I18n !== 'undefined' ? I18n.tAstro(p.nakshatra) : p.nakshatra} (Pada ${p.pada})</td>
+                <td style="padding:var(--space-2);">${typeof I18n !== 'undefined' ? I18n.tAstro(p.dignity) : p.dignity}</td>
             </tr>`).join('')}
             </tbody></table>`;
     }
@@ -620,19 +620,19 @@ const MatchingPage = (() => {
                 <table style="width:100%; border-collapse:collapse; margin-bottom:var(--space-4);">
                     <tr style="border-bottom:1px solid var(--surface-border);">
                         <td style="padding:var(--space-3); color:var(--text-muted); width:40%;">${typeof I18n !== 'undefined' ? I18n.t('match.boy_moon_sign', "Boy's Moon Sign (Rashi)") : "Boy's Moon Sign (Rashi)"}</td>
-                        <td style="padding:var(--space-3); font-weight:bold; color:var(--color-primary);">${result.boyRashiName}</td>
+                        <td style="padding:var(--space-3); font-weight:bold; color:var(--color-primary);">${typeof I18n !== 'undefined' ? I18n.tAstro(result.boyRashiName) : result.boyRashiName}</td>
                     </tr>
                     <tr style="border-bottom:1px solid var(--surface-border);">
                         <td style="padding:var(--space-3); color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.boy_nakshatra', "Boy's Nakshatra") : "Boy's Nakshatra"}</td>
-                        <td style="padding:var(--space-3); font-weight:bold;">${result.boyNakshatraName}</td>
+                        <td style="padding:var(--space-3); font-weight:bold;">${typeof I18n !== 'undefined' ? I18n.tAstro(result.boyNakshatraName) : result.boyNakshatraName}</td>
                     </tr>
                     <tr style="border-bottom:1px solid var(--surface-border);">
                         <td style="padding:var(--space-3); color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.girl_moon_sign', "Girl's Moon Sign (Rashi)") : "Girl's Moon Sign (Rashi)"}</td>
-                        <td style="padding:var(--space-3); font-weight:bold; color:var(--color-secondary);">${result.girlRashiName}</td>
+                        <td style="padding:var(--space-3); font-weight:bold; color:var(--color-secondary);">${typeof I18n !== 'undefined' ? I18n.tAstro(result.girlRashiName) : result.girlRashiName}</td>
                     </tr>
                     <tr style="border-bottom:1px solid var(--surface-border);">
                         <td style="padding:var(--space-3); color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.girl_nakshatra', "Girl's Nakshatra") : "Girl's Nakshatra"}</td>
-                        <td style="padding:var(--space-3); font-weight:bold;">${result.girlNakshatraName}</td>
+                        <td style="padding:var(--space-3); font-weight:bold;">${typeof I18n !== 'undefined' ? I18n.tAstro(result.girlNakshatraName) : result.girlNakshatraName}</td>
                     </tr>
                     <tr>
                         <td style="padding:var(--space-3); color:var(--text-muted);">Compatibility Verdict</td>
@@ -650,9 +650,9 @@ const MatchingPage = (() => {
                     <tr style="border-bottom:1px solid var(--surface-border);"><td style="padding:var(--space-2); color:var(--text-muted);">Date of Birth</td><td style="padding:var(--space-2);">${bDate}</td></tr>
                     <tr style="border-bottom:1px solid var(--surface-border);"><td style="padding:var(--space-2); color:var(--text-muted);">Time of Birth</td><td style="padding:var(--space-2);">${bTime}</td></tr>
                     <tr style="border-bottom:1px solid var(--surface-border);"><td style="padding:var(--space-2); color:var(--text-muted);">Place of Birth</td><td style="padding:var(--space-2);">${bCity.name}</td></tr>
-                    <tr style="border-bottom:1px solid var(--surface-border);"><td style="padding:var(--space-2); color:var(--text-muted);">Lagna (Ascendant)</td><td style="padding:var(--space-2); font-weight:bold; color:var(--color-primary);">${bChart.lagnaName}</td></tr>
-                    <tr style="border-bottom:1px solid var(--surface-border);"><td style="padding:var(--space-2); color:var(--text-muted);">Moon Sign (Rashi)</td><td style="padding:var(--space-2); font-weight:bold;">${bChart.moonSign}</td></tr>
-                    <tr><td style="padding:var(--space-2); color:var(--text-muted);">Moon Nakshatra</td><td style="padding:var(--space-2); font-weight:bold;">${bChart.moonNakshatra}</td></tr>
+                    <tr style="border-bottom:1px solid var(--surface-border);"><td style="padding:var(--space-2); color:var(--text-muted);">Lagna (Ascendant)</td><td style="padding:var(--space-2); font-weight:bold; color:var(--color-primary);">${typeof I18n !== 'undefined' ? I18n.tAstro(bChart.lagnaName) : bChart.lagnaName}</td></tr>
+                    <tr style="border-bottom:1px solid var(--surface-border);"><td style="padding:var(--space-2); color:var(--text-muted);">Moon Sign (Rashi)</td><td style="padding:var(--space-2); font-weight:bold;">${typeof I18n !== 'undefined' ? I18n.tAstro(bChart.moonSign) : bChart.moonSign}</td></tr>
+                    <tr><td style="padding:var(--space-2); color:var(--text-muted);">Moon Nakshatra</td><td style="padding:var(--space-2); font-weight:bold;">${typeof I18n !== 'undefined' ? I18n.tAstro(bChart.moonNakshatra) : bChart.moonNakshatra}</td></tr>
                 </table>
                 <div class="grid-2" style="gap:var(--space-6); margin-bottom:var(--space-6);">
                     <div class="print-avoid-break"><h3 style="text-align:center; margin-bottom:var(--space-3);">${bName}'s Lagna Chart (D1)</h3><div style="max-width:350px; margin:0 auto;">${drawChartSVG(bChart.houses, bChart.lagnaRashi)}</div></div>
@@ -705,10 +705,10 @@ const MatchingPage = (() => {
                         const d = result[k];
                         const clr = d.scored === 0 ? 'var(--error-color, #e74c3c)' : (d.scored === d.max ? 'var(--success-color, #2ecc71)' : 'var(--color-primary)');
                         return `<tr style="border-bottom:1px solid var(--surface-border);">
-                            <td style="padding:var(--space-3); font-weight:bold;">${d.name} <span style="font-size:0.8em; color:var(--text-muted);">(${d.nameHindi})</span></td>
-                            <td style="padding:var(--space-3); font-size:var(--text-sm); color:var(--text-muted);">${d.desc}</td>
-                            <td style="padding:var(--space-3); text-align:center;">${d.boyValue || '—'}</td>
-                            <td style="padding:var(--space-3); text-align:center;">${d.girlValue || '—'}</td>
+                            <td style="padding:var(--space-3); font-weight:bold;">${typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi' ? (d.nameHindi || d.name) : d.name}</td>
+                            <td style="padding:var(--space-3); font-size:var(--text-sm); color:var(--text-muted);">${typeof I18n !== 'undefined' ? I18n.t('match.koota_desc_'+d.name.replace(/\\s+/g,''), d.desc) : d.desc}</td>
+                            <td style="padding:var(--space-3); text-align:center;">${d.boyValue ? (typeof I18n !== 'undefined' ? I18n.tAstro(d.boyValue) : d.boyValue) : '—'}</td>
+                            <td style="padding:var(--space-3); text-align:center;">${d.girlValue ? (typeof I18n !== 'undefined' ? I18n.tAstro(d.girlValue) : d.girlValue) : '—'}</td>
                             <td style="padding:var(--space-3); text-align:center; font-weight:bold; color:${clr}; font-size:1.1em;">${d.scored}</td>
                             <td style="padding:var(--space-3); text-align:center; color:var(--text-muted);">${d.max}</td>
                         </tr>`;
@@ -730,16 +730,16 @@ const MatchingPage = (() => {
                     <div class="koota-card-print print-avoid-break" style="background:rgba(255,255,255,0.03); border-radius:var(--radius-md); padding:var(--space-5); margin-bottom:var(--space-5); border-left:4px solid ${clr};">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-3);">
                             <div>
-                                <span style="font-weight:bold; font-size:1.1em; color:var(--text-primary);">${d.name}</span>
-                                <span style="color:var(--text-muted); margin-left:var(--space-2);">(${d.nameHindi})</span>
-                                <span style="color:var(--text-muted); margin-left:var(--space-2); font-size:var(--text-sm);">— ${d.desc}</span>
+                                <span style="font-weight:bold; font-size:1.1em; color:var(--text-primary);">${typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi' ? (d.nameHindi || d.name) : d.name}</span>
+                                ${typeof I18n !== 'undefined' && I18n.getLanguage() !== 'hi' ? `<span style="color:var(--text-muted); margin-left:var(--space-2);">(${d.nameHindi})</span>` : ''}
+                                <span style="color:var(--text-muted); margin-left:var(--space-2); font-size:var(--text-sm);">— ${typeof I18n !== 'undefined' ? I18n.t('match.koota_desc_'+d.name.replace(/\\s+/g,''), d.desc) : d.desc}</span>
                             </div>
                             <div style="font-size:1.4em; font-weight:bold; color:${clr};">${d.scored} <span style="font-size:0.6em; color:var(--text-muted); font-weight:normal;">/ ${d.max}</span></div>
                         </div>
                         <div style="background:rgba(255,255,255,0.05); border-radius:var(--radius-full); height:8px; margin-bottom:var(--space-3); overflow:hidden;">
                             <div style="width:${barPct}%; height:100%; background:${clr}; border-radius:var(--radius-full); transition:width 0.6s;"></div>
                         </div>
-                        <p style="color:var(--text-secondary); line-height:1.7; font-size:var(--text-sm);">${d.interpretation}</p>
+                        <p style="color:var(--text-secondary); line-height:1.7; font-size:var(--text-sm);">${typeof I18n !== 'undefined' ? I18n.tAstro(d.interpretation) : d.interpretation}</p>
                     </div>`;
                 }).join('')}
             </div>

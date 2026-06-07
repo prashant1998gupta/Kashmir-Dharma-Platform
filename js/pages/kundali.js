@@ -181,7 +181,7 @@ const KundaliPage = (() => {
     }
 
     function drawChartSVG(houses, lagnaSign) {
-        const p = (h) => (houses[h] && houses[h].length > 0) ? houses[h].join(' ') : '';
+        const p = (h) => (houses[h] && houses[h].length > 0) ? houses[h].map(pl => typeof I18n !== 'undefined' ? I18n.tAstro(pl) : pl).join(' ') : '';
         const rashiNum = (h) => ((lagnaSign - 1 + h - 1) % 12) + 1;
         
         return `
@@ -298,8 +298,8 @@ const KundaliPage = (() => {
             const doshaContainer = document.getElementById('dosha-container');
             doshaContainer.innerHTML = chartData.doshas.map(d => `
                 <div style="background: rgba(${d.severe ? '163,38,38' : '46,92,58'}, 0.1); border: 1px solid rgba(${d.severe ? '163,38,38' : '46,92,58'}, 0.3); border-radius: var(--radius-sm); padding: var(--space-4);">
-                    <div style="font-weight: bold; color: var(--text-primary); margin-bottom: var(--space-2);">${d.name}</div>
-                    <div style="font-size: var(--text-sm); color: var(--text-secondary);">${d.desc}</div>
+                    <div style="font-weight: bold; color: var(--text-primary); margin-bottom: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('dosha.'+d.name.replace(/\\s+/g,''), d.name) : d.name}</div>
+                    <div style="font-size: var(--text-sm); color: var(--text-secondary);">${typeof I18n !== 'undefined' ? I18n.t('dosha.'+d.name.replace(/\\s+/g,'')+'_desc', d.desc) : d.desc}</div>
                 </div>
             `).join('');
             
@@ -319,11 +319,11 @@ const KundaliPage = (() => {
             const tbody = document.getElementById('planetary-table-body');
             tbody.innerHTML = chartData.planets.map(p => `
                 <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                    <td style="padding: var(--space-3) var(--space-2); font-weight: bold; color: var(--color-secondary)">${p.name}</td>
+                    <td style="padding: var(--space-3) var(--space-2); font-weight: bold; color: var(--color-secondary)">${typeof I18n !== 'undefined' ? I18n.tAstro(p.name) : p.name}</td>
                     <td style="padding: var(--space-3) var(--space-2);">${typeof I18n !== 'undefined' ? I18n.tAstro(p.rashiName) : p.rashiName}</td>
                     <td style="padding: var(--space-3) var(--space-2);">${p.degreeStr}</td>
                     <td style="padding: var(--space-3) var(--space-2);">${typeof I18n !== 'undefined' ? I18n.tAstro(p.nakshatra) : p.nakshatra} (${typeof I18n !== 'undefined' ? I18n.t('common.pada', 'Pada') : 'Pada'} ${p.pada})</td>
-                    <td style="padding: var(--space-3) var(--space-2);">${p.dignity}</td>
+                    <td style="padding: var(--space-3) var(--space-2);">${typeof I18n !== 'undefined' ? I18n.tAstro(p.dignity) : p.dignity}</td>
                 </tr>
             `).join('');
 
@@ -332,13 +332,13 @@ const KundaliPage = (() => {
             dashaContainer.innerHTML = chartData.dashas.map(md => `
                 <details style="background: rgba(255,255,255,0.03); border: 1px solid var(--surface-border); border-radius: var(--radius-sm);">
                     <summary style="padding: var(--space-3); cursor: pointer; font-weight: bold; color: var(--color-primary); list-style: none; display: flex; justify-content: space-between;">
-                        <span>${md.lord} ${typeof I18n !== 'undefined' ? I18n.t('common.mahadasha', 'Mahadasha') : 'Mahadasha'}</span>
+                        <span>${typeof I18n !== 'undefined' ? I18n.tAstro(md.lord) : md.lord} ${typeof I18n !== 'undefined' ? I18n.t('common.mahadasha', 'Mahadasha') : 'Mahadasha'}</span>
                         <span style="font-size: var(--text-sm); color: var(--text-muted); font-weight: normal;">${md.startStr.substring(0,4)} ${typeof I18n !== 'undefined' ? I18n.t('common.to', 'to') : 'to'} ${md.endStr.substring(0,4)}</span>
                     </summary>
                     <div style="padding: 0 var(--space-3) var(--space-3) var(--space-3); display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--space-2);">
                         ${md.antardashas.map(ad => `
                             <div style="background: rgba(0,0,0,0.2); padding: var(--space-2); border-radius: var(--radius-sm); border-left: 2px solid var(--color-secondary);">
-                                <div style="font-weight: bold; font-size: var(--text-sm); color: var(--text-primary); margin-bottom: 2px;">${md.lord} - ${ad.lord}</div>
+                                <div style="font-weight: bold; font-size: var(--text-sm); color: var(--text-primary); margin-bottom: 2px;">${typeof I18n !== 'undefined' ? I18n.tAstro(md.lord) : md.lord} - ${typeof I18n !== 'undefined' ? I18n.tAstro(ad.lord) : ad.lord}</div>
                                 <div style="font-size: var(--text-xs); color: var(--text-muted);">${ad.startStr} ${typeof I18n !== 'undefined' ? I18n.t('common.to', 'to') : 'to'} ${ad.endStr}</div>
                             </div>
                         `).join('')}
