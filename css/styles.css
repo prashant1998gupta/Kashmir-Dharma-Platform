@@ -703,6 +703,12 @@ a:hover {
     font-size: var(--text-xs);
 }
 
+.btn-xs {
+    padding: var(--space-1) var(--space-3);
+    font-size: 0.75rem;
+    border-radius: var(--radius-full);
+}
+
 .btn-lg {
     padding: var(--space-4) var(--space-8);
     font-size: var(--text-base);
@@ -830,7 +836,7 @@ a:hover {
     gap: var(--space-2);
 }
 
-/* Typing Indicator for AI Chat */
+/* Typing Indicator for Chat */
 .typing-indicator {
     display: inline-flex;
     align-items: center;
@@ -2508,7 +2514,7 @@ a:hover {
 
 
 /* ============================================
-   GITA AI COMPANION ENHANCEMENTS
+   GITA WISDOM GUIDE ENHANCEMENTS
    ============================================ */
 
 .bg-divine {
@@ -3032,6 +3038,92 @@ body.gita-immersive-route .page-container {
     box-shadow: 0 12px 26px rgba(142, 31, 29, 0.28);
 }
 
+.gita-welcome-prompts,
+.gita-bubble-actions,
+.gita-suggestions,
+.gita-related-sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.gita-welcome-prompts,
+.gita-source-panel,
+.gita-bubble-actions {
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+.gita-source-panel {
+    display: grid;
+    gap: var(--space-2);
+}
+
+.gita-source-title {
+    color: var(--color-secondary);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.gita-source-card,
+.gita-source-chip {
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    background: rgba(212, 175, 55, 0.06);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition-base);
+}
+
+.gita-source-card {
+    display: grid;
+    gap: var(--space-1);
+    width: 100%;
+    padding: var(--space-3);
+    border-radius: var(--radius-sm);
+    text-align: left;
+}
+
+.gita-source-card span,
+.gita-source-chip {
+    font-size: var(--text-xs);
+    font-weight: 800;
+}
+
+.gita-source-card strong {
+    color: var(--text-primary);
+    font-size: var(--text-sm);
+    line-height: 1.6;
+}
+
+.gita-source-chip {
+    min-height: 30px;
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-full);
+}
+
+.gita-source-card:hover,
+.gita-source-chip:hover {
+    border-color: rgba(212, 175, 55, 0.48);
+    background: rgba(212, 175, 55, 0.12);
+    color: var(--text-heading);
+}
+
+.gita-bubble-actions .btn {
+    min-height: 30px;
+    color: var(--text-secondary);
+    border-color: rgba(212, 175, 55, 0.22);
+    background: rgba(255, 250, 240, 0.035);
+}
+
+.gita-bubble-actions .btn:hover {
+    color: var(--text-heading);
+    border-color: rgba(212, 175, 55, 0.48);
+    background: rgba(212, 175, 55, 0.1);
+}
+
 .gita-prompt-strip {
     padding: var(--space-3) var(--space-6) var(--space-4);
     border-top: 1px solid rgba(212, 175, 55, 0.12);
@@ -3242,6 +3334,28 @@ body.gita-immersive-route .page-container {
     background: linear-gradient(135deg, #B8322F, #8F201D);
     border-color: rgba(143, 32, 29, 0.18);
     color: #FFF9EE;
+}
+
+:root[data-theme="light"] body.gita-immersive-route .gita-welcome-prompts,
+:root[data-theme="light"] body.gita-immersive-route .gita-source-panel,
+:root[data-theme="light"] body.gita-immersive-route .gita-bubble-actions {
+    border-top-color: rgba(176, 141, 46, 0.18);
+}
+
+:root[data-theme="light"] body.gita-immersive-route .gita-source-card,
+:root[data-theme="light"] body.gita-immersive-route .gita-source-chip,
+:root[data-theme="light"] body.gita-immersive-route .gita-bubble-actions .btn {
+    background: rgba(255, 255, 255, 0.72);
+    border-color: rgba(176, 141, 46, 0.26);
+    color: var(--text-secondary);
+}
+
+:root[data-theme="light"] body.gita-immersive-route .gita-source-card:hover,
+:root[data-theme="light"] body.gita-immersive-route .gita-source-chip:hover,
+:root[data-theme="light"] body.gita-immersive-route .gita-bubble-actions .btn:hover {
+    background: rgba(176, 141, 46, 0.1);
+    border-color: rgba(176, 141, 46, 0.48);
+    color: var(--text-heading);
 }
 
 :root[data-theme="light"] body.gita-immersive-route .gita-prompt-strip {

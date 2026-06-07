@@ -18,7 +18,7 @@ const Router = (() => {
         'audio': { page: AudioPage, title: 'Audio Library' },
         'guide': { page: GuidePage, title: 'Knowledge Guide' },
         'sharada': { page: SharadaPage, title: 'Learn Sharada Script' },
-        'gita': { page: GitaPage, title: 'Gita AI Companion' }
+        'gita': { page: GitaPage, title: 'Gita Wisdom Guide' }
     };
 
     let currentPage = null;
@@ -49,7 +49,7 @@ const Router = (() => {
         // Update active nav link
         updateActiveNav(hash);
 
-        // Gita AI is an immersive full-screen surface, not part of the standard app shell.
+        // Gita is an immersive full-screen surface, not part of the standard app shell.
         if (hash === 'gita' && currentPage && currentPage !== 'gita') {
             sessionStorage.setItem('kdp_last_non_gita_route', currentPage);
         } else if (hash !== 'gita') {

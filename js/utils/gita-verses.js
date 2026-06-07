@@ -1,6 +1,6 @@
 /* ============================================
    Bhagavad Gita Verse Library
-   Local grounding for Gita AI guidance
+   Local grounding for Gita guidance
    ============================================ */
 
 const GitaVerseLibrary = (() => {

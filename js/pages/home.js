@@ -66,7 +66,7 @@ const HomePage = (() => {
                 <section class="mb-8 reveal">
                     ${Components.sectionHeader((typeof I18n !== 'undefined') ? I18n.t('home.quick_tools') : 'Quick Tools', (typeof I18n !== 'undefined') ? I18n.t('home.quick_tools_desc') : 'Access your spiritual utilities')}
                     <div class="grid-3 stagger-children">
-                        ${Components.featureCard('🦚', (typeof I18n !== 'undefined') ? I18n.t('nav.gita') : 'Gita AI Companion', (typeof I18n !== 'undefined') ? I18n.t('home.card_gita_desc', 'Open a full-screen Bhagavad Gita guidance companion') : 'Open a full-screen Bhagavad Gita guidance companion', '#gita')}
+                        ${Components.featureCard('🦚', (typeof I18n !== 'undefined') ? I18n.t('nav.gita') : 'Gita Wisdom Guide', (typeof I18n !== 'undefined') ? I18n.t('home.card_gita_desc', 'Open a full-screen Bhagavad Gita guidance companion') : 'Open a full-screen Bhagavad Gita guidance companion', '#gita')}
                         ${Components.featureCard('📅', (typeof I18n !== 'undefined') ? I18n.t('nav.calendar') : 'Festival Calendar', (typeof I18n !== 'undefined') ? I18n.t('home.card_cal_desc') : 'Explore Kashmiri Pandit festivals', '#calendar')}
                         ${Components.featureCard('🌌', (typeof I18n !== 'undefined') ? I18n.t('nav.kundali') : 'Kundali Generator', (typeof I18n !== 'undefined') ? I18n.t('home.card_kundali_desc') : 'Generate your Vedic Birth Chart', '#kundali')}
                         ${Components.featureCard('🌟', (typeof I18n !== 'undefined') ? I18n.t('nav.muhurat') : 'Muhurat Finder', (typeof I18n !== 'undefined') ? I18n.t('home.card_muhurat_desc') : 'Identify auspicious dates & timings', '#muhurat')}
@@ -128,7 +128,7 @@ const HomePage = (() => {
                         <div class="home-gita-launch-row">
                             <a href="#gita" class="home-gita-launch">
                                 <span>🦚</span>
-                                <span>${typeof I18n !== 'undefined' ? I18n.t('home.open_gita_ai', 'Open Gita AI') : 'Open Gita AI'}</span>
+                                <span>${typeof I18n !== 'undefined' ? I18n.t('home.open_gita_ai', 'Open Gita Guide') : 'Open Gita Guide'}</span>
                             </a>
                         </div>
                     </div>

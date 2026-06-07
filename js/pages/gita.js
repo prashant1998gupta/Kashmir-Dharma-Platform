@@ -1,6 +1,6 @@
 /* ============================================
-   Gita AI Companion
-   Verse-grounded guidance, BYOK AI, reflections
+   Gita Wisdom Guide
+   Verse-grounded guidance, optional Gemini key, reflections
    ============================================ */
 
 const GitaPage = (() => {
@@ -83,6 +83,10 @@ const GitaPage = (() => {
         return language ? language.label : 'English';
     }
 
+    function isLocalLanguageSupported(language = getAnswerLanguage()) {
+        return language === 'en' || language === 'hi';
+    }
+
     function getDailyVerse() {
         return typeof GitaVerseLibrary !== 'undefined' ? GitaVerseLibrary.getDailyVerse() : null;
     }
@@ -101,11 +105,11 @@ const GitaPage = (() => {
                     </button>
                     <div class="gita-title-block">
                         <div class="gita-kicker">${t('gita.kicker', 'Bhagavad Gita guidance')}</div>
-                        <h1>${t('gita.title', 'Gita AI Companion')}</h1>
+                        <h1>${t('gita.title', 'Gita Wisdom Guide')}</h1>
                         <p>${t('gita.subtitle', 'Seek wisdom from the Bhagavad Gita')}</p>
                     </div>
                     <div class="gita-hero-actions">
-                        <span class="gita-status ${hasApiKey ? 'online' : 'local'}">${hasApiKey ? t('gita.ai_ready', 'AI ready') : t('gita.local_ready', 'Local verse mode')}</span>
+                        <span class="gita-status ${hasApiKey ? 'online' : 'local'}">${hasApiKey ? t('gita.ai_ready', 'Enhanced guidance') : t('gita.local_ready', 'Local verse mode')}</span>
                         <label class="gita-language-select-wrap" aria-label="${t('gita.answer_language', 'Answer language')}">
                             <select id="gitaAnswerLanguage" class="gita-language-select" onchange="GitaPage.setAnswerLanguage(this.value)">
                                 ${answerLanguages.map(language => `
@@ -154,7 +158,7 @@ const GitaPage = (() => {
 
                         <div class="gita-panel-section gita-grounding-note">
                             <strong>${t('gita.grounded_title', 'Grounded by scripture')}</strong>
-                            <span>${t('gita.grounded_desc', '{count} curated Gita anchors guide local fallback and AI context.').replace('{count}', verseCount)}</span>
+                            <span>${t('gita.grounded_desc', '{count} curated Gita verses guide every answer.').replace('{count}', verseCount)}</span>
                         </div>
                     </aside>
 
@@ -163,10 +167,10 @@ const GitaPage = (() => {
                             ${renderWelcomeBubble()}
                         </div>
 
-                        <div class="gita-input-area" style="padding-top: var(--space-4);">
+                        <div class="gita-input-area">
                             <div class="chat-input-container">
                                 <input type="text" class="form-control" id="gitaChatInput"
-                                       placeholder="${t('gita.input_placeholder', 'Ask Krishna for guidance...')}"
+                                       placeholder="${t('gita.input_placeholder', 'Ask for Gita guidance...')}"
                                        onkeypress="if(event.key==='Enter') GitaPage.sendMessage()">
                                 <button class="btn btn-outline gita-voice-btn" onclick="GitaPage.startVoiceInput()" id="gitaVoiceBtn" aria-label="${t('gita.voice_input', 'Voice input')}" type="button">
                                     <span>🎙</span>
@@ -175,21 +179,21 @@ const GitaPage = (() => {
                                     <span>➤</span>
                                 </button>
                             </div>
-                            <div class="gita-disclaimer">${t('gita.disclaimer', 'AI responses are generated based on the Bhagavad Gita. Requires a Gemini API Key.')}</div>
+                            <div class="gita-disclaimer">${t('gita.disclaimer', 'Guidance is grounded in curated Gita verses. For deeper spiritual matters, consult a trusted guru.')}</div>
                         </div>
                     </section>
                 </div>
 
                 <div id="gitaApiModal" class="modal-overlay" style="display: none; align-items: center; justify-content: center; z-index: 1000;">
                     <div class="card card-glass gita-settings-modal">
-                        <h2>${t('gita.modal_title', 'AI Settings')}</h2>
-                        <p>${t('gita.modal_desc', 'To use the Gita AI Companion, you need a free Google Gemini API Key. Your key is stored securely in your browser local storage and is never sent to our servers.')}</p>
+                        <h2>${t('gita.modal_title', 'Guidance Settings')}</h2>
+                        <p>${t('gita.modal_desc', 'Add your own free Google Gemini key for richer, multi-language guidance. Your key is stored only in this browser and is never sent to our servers.')}</p>
                         <div class="form-group">
-                            <label class="form-label">${t('gita.modal_label', 'Gemini API Key')}</label>
+                            <label class="form-label">${t('gita.modal_label', 'Gemini key')}</label>
                             <input type="password" id="gitaApiKeyInput" class="form-control" placeholder="AIzaSy...">
                         </div>
                         <div class="gita-modal-footnote">
-                            <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">${t('gita.modal_link', 'Get a free Gemini API Key here')}</a>
+                            <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener">${t('gita.modal_link', 'Get a free Gemini key here')}</a>
                             <span>${t('gita.local_mode_note', 'Without a key, the page still gives local verse-grounded guidance.')}</span>
                         </div>
                         <div class="gita-modal-actions">
@@ -220,8 +224,8 @@ const GitaPage = (() => {
         return `
             <div class="chat-bubble assistant divine-bubble">
                 <strong>${t('gita.welcome_title', 'Radhe Radhe!')}</strong><br><br>
-                ${t('gita.welcome_desc', 'I am your AI companion inspired by the teachings of Lord Krishna in the Bhagavad Gita.')}<br>
-                ${t('gita.welcome_prompt', 'Tell me, what troubles your mind today? How can I guide you towards peace and clarity?')}
+                ${t('gita.welcome_desc', 'This companion is grounded in the teachings of Lord Krishna in the Bhagavad Gita.')}<br>
+                ${t('gita.welcome_prompt', 'Share what is on your mind. The answer will be guided by Gita wisdom and practical reflection.')}
                 
                 <div class="gita-welcome-prompts mt-4">
                     ${promptKeys.map(item => `
@@ -257,6 +261,9 @@ const GitaPage = (() => {
         selectedAnswerLanguage = answerLanguages.some(item => item.code === language) ? language : 'en';
         localStorage.setItem(ANSWER_LANGUAGE_KEY, selectedAnswerLanguage);
         Components.showToast(t('gita.language_saved', 'Answer language updated'), 'success');
+        if (typeof LLM !== 'undefined' && !LLM.hasApiKey() && !isLocalLanguageSupported(selectedAnswerLanguage)) {
+            Components.showToast(t('gita.local_language_needs_key', 'This language needs a Gemini key. Local mode supports English and Hindi.'), 'warning', 4500);
+        }
     }
 
     function toggleMenu() {
@@ -274,8 +281,8 @@ const GitaPage = (() => {
         closeMenu();
         Components.openModal(`
             <div class="gita-info-modal">
-                <h2>${t('gita.about_title', 'About Gita AI')}</h2>
-                <p>${t('gita.about_p1', 'Gita AI is a scripture-grounded guidance companion for reflection, study, sadhana, and decision clarity.')}</p>
+                <h2>${t('gita.about_title', 'About Gita Wisdom Guide')}</h2>
+                <p>${t('gita.about_p1', 'Gita Wisdom Guide is a scripture-grounded companion for reflection, study, sadhana, and decision clarity.')}</p>
                 <p>${t('gita.about_p2', 'It uses curated Bhagavad Gita anchors for local answers, and can use your own Gemini API key for richer responses when you choose to add one.')}</p>
                 <p>${t('gita.about_p3', 'This tool is for spiritual reflection and learning. For medical, legal, safety, or serious mental health concerns, please seek qualified human support.')}</p>
             </div>
@@ -447,7 +454,13 @@ const GitaPage = (() => {
 
         try {
             if (!LLM.hasApiKey()) {
-                Components.showToast(t('gita.local_mode_toast', 'Answering from local Gita verse mode. Add an API key for richer AI guidance.'), 'info');
+                const messageKey = isLocalLanguageSupported()
+                    ? 'gita.local_mode_toast'
+                    : 'gita.local_language_needs_key';
+                const fallback = isLocalLanguageSupported()
+                    ? 'Answering from local Gita verse mode. Add a Gemini key for richer guidance.'
+                    : 'This language needs a Gemini key. Local mode supports English and Hindi.';
+                Components.showToast(t(messageKey, fallback), 'info', 4500);
             }
 
             let finalResponse = await LLM.generateKrishnaResponse(message, chatHistory, {
@@ -457,7 +470,7 @@ const GitaPage = (() => {
                 verseContext
             });
 
-            renderAssistantResponse(message, finalResponse, typingId);
+            renderAssistantResponse(message, finalResponse, typingId, verseContext);
         } catch (error) {
             console.error(error);
             const fallback = LLM.generateLocalResponse(message, {
@@ -466,12 +479,12 @@ const GitaPage = (() => {
                 language: getAnswerLanguage(),
                 verseContext
             });
-            Components.showToast(t('gita.ai_fallback', 'AI service was unavailable, so I used local Gita verse guidance.'), 'warning');
-            renderAssistantResponse(message, fallback, typingId);
+            Components.showToast(t('gita.ai_fallback', 'Enhanced guidance was unavailable, so I used local Gita verse guidance.'), 'warning');
+            renderAssistantResponse(message, fallback, typingId, verseContext);
         }
     }
 
-    function renderAssistantResponse(userMessage, rawResponse, typingId) {
+    function renderAssistantResponse(userMessage, rawResponse, typingId, verseContext = []) {
         let { answer, suggestions } = extractSuggestions(rawResponse);
         answer = escapeHtml(answer);
 
@@ -492,12 +505,15 @@ const GitaPage = (() => {
             lastExchange = {
                 question: userMessage,
                 answer,
+                sources: verseContext.map(formatSourceForStorage),
                 mode: selectedMode,
                 focus: selectedFocus,
+                language: getAnswerLanguage(),
                 createdAt: new Date().toISOString()
             };
             setBusy(false);
             updateActionButtons();
+            renderSourceCards(verseContext, bubble);
             renderSuggestions(suggestions, bubble);
         }
 
@@ -522,27 +538,19 @@ const GitaPage = (() => {
         if (!bubble) return;
         
         const actionRow = document.createElement('div');
-        actionRow.className = 'gita-bubble-actions mt-3';
-        actionRow.style.display = 'flex';
-        actionRow.style.flexWrap = 'wrap';
-        actionRow.style.gap = '8px';
-        actionRow.style.borderTop = '1px solid rgba(212, 175, 55, 0.15)';
-        actionRow.style.paddingTop = '12px';
+        actionRow.className = 'gita-bubble-actions';
 
         actionRow.innerHTML = `
-            <button class="btn btn-outline btn-xs" onclick="GitaPage.copyLastAnswer()"><span style="font-size: 1.1em; margin-right: 4px;">📋</span> ${t('gita.copy_answer', 'Copy')}</button>
-            <button class="btn btn-outline btn-xs" onclick="GitaPage.saveLastReflection()"><span style="font-size: 1.1em; margin-right: 4px;">🔖</span> ${t('gita.save_reflection', 'Save')}</button>
-            <button class="btn btn-outline btn-xs" onclick="GitaPage.shareLastAnswer()"><span style="font-size: 1.1em; margin-right: 4px;">📤</span> ${t('gita.share', 'Share')}</button>
-            <button class="btn btn-outline btn-xs" onclick="GitaPage.retryLastQuestion()"><span style="font-size: 1.1em; margin-right: 4px;">🔄</span> ${t('gita.retry', 'Retry')}</button>
+            <button class="btn btn-outline btn-xs" onclick="GitaPage.copyLastAnswer()">📋 ${t('gita.copy_answer', 'Copy')}</button>
+            <button class="btn btn-outline btn-xs" onclick="GitaPage.saveLastReflection()">🔖 ${t('gita.save_reflection', 'Save')}</button>
+            <button class="btn btn-outline btn-xs" onclick="GitaPage.shareLastAnswer()">📤 ${t('gita.share', 'Share')}</button>
+            <button class="btn btn-outline btn-xs" onclick="GitaPage.retryLastQuestion()">↻ ${t('gita.retry', 'Retry')}</button>
         `;
         bubble.appendChild(actionRow);
 
         if (suggestions.length > 0) {
             const suggContainer = document.createElement('div');
-            suggContainer.className = 'gita-suggestions mt-2';
-            suggContainer.style.display = 'flex';
-            suggContainer.style.flexWrap = 'wrap';
-            suggContainer.style.gap = '8px';
+            suggContainer.className = 'gita-suggestions';
 
             suggestions.slice(0, 3).forEach(suggestion => {
                 const btn = document.createElement('button');
@@ -555,6 +563,41 @@ const GitaPage = (() => {
         }
         
         scrollChatToBottom();
+    }
+
+    function renderSourceCards(sources, bubble) {
+        if (!bubble || !sources.length || typeof GitaVerseLibrary === 'undefined') return;
+        const sourceWrap = document.createElement('div');
+        sourceWrap.className = 'gita-source-panel';
+
+        const primary = sources[0];
+        const others = sources.slice(1, 3);
+        sourceWrap.innerHTML = `
+            <div class="gita-source-title">${t('gita.source_title', 'Gita source')}</div>
+            <button class="gita-source-card primary" onclick="GitaPage.ask('${escapeAttribute(t('gita.source_deeper_prompt', 'Explain this verse more deeply: Bhagavad Gita {ref}').replace('{ref}', primary.id))}')" type="button">
+                <span>${t('gita.chapter', 'Chapter')} ${GitaVerseLibrary.formatReference(primary)}</span>
+                <strong>${escapeHtml(GitaVerseLibrary.textFor(primary, 'meaning', getLanguage()))}</strong>
+            </button>
+            ${others.length ? `
+                <div class="gita-related-sources">
+                    ${others.map(verse => `
+                        <button class="gita-source-chip" onclick="GitaPage.ask('${escapeAttribute(t('gita.source_deeper_prompt', 'Explain this verse more deeply: Bhagavad Gita {ref}').replace('{ref}', verse.id))}')" type="button">
+                            BG ${escapeHtml(GitaVerseLibrary.formatReference(verse))}
+                        </button>
+                    `).join('')}
+                </div>
+            ` : ''}
+        `;
+        bubble.appendChild(sourceWrap);
+    }
+
+    function formatSourceForStorage(verse) {
+        if (!verse || typeof GitaVerseLibrary === 'undefined') return null;
+        return {
+            id: verse.id,
+            reference: GitaVerseLibrary.formatReference(verse),
+            meaning: GitaVerseLibrary.textFor(verse, 'meaning', getLanguage())
+        };
     }
 
     function extractSuggestions(response) {
@@ -644,7 +687,7 @@ const GitaPage = (() => {
 
         if (navigator.share) {
             navigator.share({
-                title: t('gita.title', 'Gita AI Companion'),
+                title: t('gita.title', 'Gita Wisdom Guide'),
                 text: shareText
             }).catch(() => {});
             return;

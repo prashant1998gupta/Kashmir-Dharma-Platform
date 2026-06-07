@@ -1,5 +1,5 @@
 /* ============================================
-   LLM Integration (Gita AI)
+   LLM Integration (Gita Wisdom Guide)
    BYOK Gemini calls plus local verse-grounded fallback
    ============================================ */
 
@@ -79,7 +79,7 @@ const LLM = (() => {
         const mode = options.mode || 'guidance';
         const modeInstruction = MODE_INSTRUCTIONS[mode] || MODE_INSTRUCTIONS.guidance;
 
-        return `You are Gita AI, a respectful spiritual guidance assistant inspired by Sri Krishna's teachings in the Bhagavad Gita.
+        return `You are a respectful Bhagavad Gita guidance companion inspired by Sri Krishna's teachings.
 
 Important identity and safety:
 - Do not claim to be the literal deity, a priest, doctor, therapist, or emergency service.
@@ -199,7 +199,7 @@ Response style:
         });
 
         if (!response.ok) {
-            let errMsg = 'Failed to fetch response from AI';
+            let errMsg = 'Failed to fetch guidance response';
             try {
                 const errorData = await response.json();
                 errMsg = errorData.error?.message || errMsg;
@@ -220,29 +220,36 @@ Response style:
         return /\b(suicide|kill myself|end my life|self harm|hurt myself|मरना|आत्महत्या|खुद को नुकसान)\b/i.test(message);
     }
 
+    function localLanguageNotice(language) {
+        if (language === 'en' || language === 'hi') return '';
+        return '**Language note**\nLocal verse mode currently supports full answers in English and Hindi. Add your Gemini API key to receive answers in the selected language.\n\n';
+    }
+
     function generateLocalResponse(userMessage, options = {}) {
         const language = options.language || (typeof I18n !== 'undefined' ? I18n.getLanguage() : 'en');
+        const localLanguage = language === 'hi' ? 'hi' : 'en';
+        const languageNotice = localLanguageNotice(language);
         const mode = options.mode || 'guidance';
         const verses = getVerseContext(userMessage, options);
         const verse = verses[0] || (typeof GitaVerseLibrary !== 'undefined' ? GitaVerseLibrary.getDailyVerse() : null);
 
         if (!verse || typeof GitaVerseLibrary === 'undefined') {
-            return language === 'hi'
+            return localLanguage === 'hi'
                 ? 'मैं अभी स्थानीय श्लोक संदर्भ नहीं पढ़ पा रहा हूँ। कृपया बाद में पुनः प्रयास करें।<suggestions>कर्म योग क्या है? | मन को शांत कैसे करूँ? | धर्म कैसे समझूँ?</suggestions>'
-                : 'I cannot read the local verse context right now. Please try again in a moment.<suggestions>What is karma yoga? | How do I calm my mind? | How do I understand dharma?</suggestions>';
+                : `${languageNotice}I cannot read the local verse context right now. Please try again in a moment.<suggestions>What is karma yoga? | How do I calm my mind? | How do I understand dharma?</suggestions>`;
         }
 
         const reference = GitaVerseLibrary.formatReference(verse);
-        const meaning = GitaVerseLibrary.textFor(verse, 'meaning', language);
-        const practice = GitaVerseLibrary.textFor(verse, 'practice', language);
+        const meaning = GitaVerseLibrary.textFor(verse, 'meaning', localLanguage);
+        const practice = GitaVerseLibrary.textFor(verse, 'practice', localLanguage);
 
         if (isCrisisMessage(userMessage)) {
-            return language === 'hi'
+            return localLanguage === 'hi'
                 ? `**पहले सुरक्षा**\n\nयदि आप स्वयं को नुकसान पहुँचाने के बारे में सोच रहे हैं, तो अभी किसी भरोसेमंद व्यक्ति, स्थानीय आपातकालीन सेवा, या मानसिक स्वास्थ्य सहायता से संपर्क करें। अकेले मत रहें।\n\n**गीता आधार: अध्याय ${reference}**\n\n${verse.sanskrit}\n\n${meaning}\n\n**अभी का छोटा कदम**\n${practice}\n\n<suggestions>मैं अभी सुरक्षित रहने के लिए क्या करूँ? | मन को स्थिर कैसे करूँ? | किससे बात करूँ?</suggestions>`
-                : `**Safety first**\n\nIf you are thinking about harming yourself, please contact a trusted person, local emergency services, or a mental health crisis line now. Do not stay alone with this.\n\n**Gita Anchor: Chapter ${reference}**\n\n${verse.sanskrit}\n\n${meaning}\n\n**One small step now**\n${practice}\n\n<suggestions>What can I do to stay safe right now? | How do I steady my mind? | Who should I talk to?</suggestions>`;
+                : `${languageNotice}**Safety first**\n\nIf you are thinking about harming yourself, please contact a trusted person, local emergency services, or a mental health crisis line now. Do not stay alone with this.\n\n**Gita Anchor: Chapter ${reference}**\n\n${verse.sanskrit}\n\n${meaning}\n\n**One small step now**\n${practice}\n\n<suggestions>What can I do to stay safe right now? | How do I steady my mind? | Who should I talk to?</suggestions>`;
         }
 
-        if (language === 'hi') {
+        if (localLanguage === 'hi') {
             const modeLead = mode === 'study'
                 ? 'इस श्लोक को समझने का सरल तरीका यह है:'
                 : mode === 'sadhana'
@@ -262,7 +269,7 @@ Response style:
                     ? 'For this decision, move attention from the result back to dharma:'
                     : 'Krishna’s teaching brings you back to action, balance, and trust:';
 
-        return `**Guidance**\n${modeLead} do the next right action without making your peace depend entirely on the outcome.\n\n**Gita Anchor: Chapter ${reference}**\n\n${verse.sanskrit}\n\n${meaning}\n\n**Practice for today**\n${practice}\n\n**Reflection**\nIf I release some anxiety about the result, what is the most dharmic next step available now?\n\n<suggestions>How do I practice karma yoga? | How can I calm my mind? | What is my dharma in this situation?</suggestions>`;
+        return `${languageNotice}**Guidance**\n${modeLead} do the next right action without making your peace depend entirely on the outcome.\n\n**Gita Anchor: Chapter ${reference}**\n\n${verse.sanskrit}\n\n${meaning}\n\n**Practice for today**\n${practice}\n\n**Reflection**\nIf I release some anxiety about the result, what is the most dharmic next step available now?\n\n<suggestions>How do I practice karma yoga? | How can I calm my mind? | What is my dharma in this situation?</suggestions>`;
     }
 
     return {
