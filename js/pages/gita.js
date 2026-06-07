@@ -163,21 +163,7 @@ const GitaPage = (() => {
                             ${renderWelcomeBubble()}
                         </div>
 
-                        <div id="gitaQuickPrompts" class="gita-prompt-strip">
-                            ${promptKeys.map(item => `
-                                <button class="gita-prompt-chip" onclick="GitaPage.askPrompt('${item.prompt}')" type="button">${t(item.label, item.label)}</button>
-                            `).join('')}
-                        </div>
-
-                        <div class="gita-chat-actions">
-                            <button class="btn btn-outline btn-sm" onclick="GitaPage.copyLastAnswer()" id="gitaCopyBtn" disabled>${t('gita.copy_answer', 'Copy answer')}</button>
-                            <button class="btn btn-outline btn-sm" onclick="GitaPage.saveLastReflection()" id="gitaSaveBtn" disabled>${t('gita.save_reflection', 'Save reflection')}</button>
-                            <button class="btn btn-outline btn-sm" onclick="GitaPage.retryLastQuestion()" id="gitaRetryBtn" disabled>${t('gita.retry', 'Retry')}</button>
-                            <button class="btn btn-outline btn-sm" onclick="GitaPage.shareLastAnswer()" id="gitaShareBtn" disabled>${t('gita.share', 'Share')}</button>
-                            <button class="btn btn-outline btn-sm" onclick="GitaPage.clearChat()">${t('gita.clear_chat', 'Clear')}</button>
-                        </div>
-
-                        <div class="gita-input-area">
+                        <div class="gita-input-area" style="padding-top: var(--space-4);">
                             <div class="chat-input-container">
                                 <input type="text" class="form-control" id="gitaChatInput"
                                        placeholder="${t('gita.input_placeholder', 'Ask Krishna for guidance...')}"
@@ -236,6 +222,12 @@ const GitaPage = (() => {
                 <strong>${t('gita.welcome_title', 'Radhe Radhe!')}</strong><br><br>
                 ${t('gita.welcome_desc', 'I am your AI companion inspired by the teachings of Lord Krishna in the Bhagavad Gita.')}<br>
                 ${t('gita.welcome_prompt', 'Tell me, what troubles your mind today? How can I guide you towards peace and clarity?')}
+                
+                <div class="gita-welcome-prompts mt-4">
+                    ${promptKeys.map(item => `
+                        <button class="gita-prompt-chip" onclick="GitaPage.askPrompt('${item.prompt}')" type="button">${t(item.label, item.label)}</button>
+                    `).join('')}
+                </div>
             </div>
         `;
     }
@@ -527,18 +519,41 @@ const GitaPage = (() => {
     }
 
     function renderSuggestions(suggestions, bubble) {
-        if (!suggestions.length || !bubble) return;
-        const suggContainer = document.createElement('div');
-        suggContainer.className = 'gita-suggestions';
+        if (!bubble) return;
+        
+        const actionRow = document.createElement('div');
+        actionRow.className = 'gita-bubble-actions mt-3';
+        actionRow.style.display = 'flex';
+        actionRow.style.flexWrap = 'wrap';
+        actionRow.style.gap = '8px';
+        actionRow.style.borderTop = '1px solid rgba(212, 175, 55, 0.15)';
+        actionRow.style.paddingTop = '12px';
 
-        suggestions.slice(0, 3).forEach(suggestion => {
-            const btn = document.createElement('button');
-            btn.className = 'suggestion-chip';
-            btn.innerText = suggestion;
-            btn.onclick = () => GitaPage.ask(suggestion);
-            suggContainer.appendChild(btn);
-        });
-        bubble.appendChild(suggContainer);
+        actionRow.innerHTML = `
+            <button class="btn btn-outline btn-xs" onclick="GitaPage.copyLastAnswer()"><span style="font-size: 1.1em; margin-right: 4px;">📋</span> ${t('gita.copy_answer', 'Copy')}</button>
+            <button class="btn btn-outline btn-xs" onclick="GitaPage.saveLastReflection()"><span style="font-size: 1.1em; margin-right: 4px;">🔖</span> ${t('gita.save_reflection', 'Save')}</button>
+            <button class="btn btn-outline btn-xs" onclick="GitaPage.shareLastAnswer()"><span style="font-size: 1.1em; margin-right: 4px;">📤</span> ${t('gita.share', 'Share')}</button>
+            <button class="btn btn-outline btn-xs" onclick="GitaPage.retryLastQuestion()"><span style="font-size: 1.1em; margin-right: 4px;">🔄</span> ${t('gita.retry', 'Retry')}</button>
+        `;
+        bubble.appendChild(actionRow);
+
+        if (suggestions.length > 0) {
+            const suggContainer = document.createElement('div');
+            suggContainer.className = 'gita-suggestions mt-2';
+            suggContainer.style.display = 'flex';
+            suggContainer.style.flexWrap = 'wrap';
+            suggContainer.style.gap = '8px';
+
+            suggestions.slice(0, 3).forEach(suggestion => {
+                const btn = document.createElement('button');
+                btn.className = 'suggestion-chip btn btn-outline btn-sm';
+                btn.innerText = suggestion;
+                btn.onclick = () => GitaPage.ask(suggestion);
+                suggContainer.appendChild(btn);
+            });
+            bubble.appendChild(suggContainer);
+        }
+        
         scrollChatToBottom();
     }
 
@@ -594,14 +609,7 @@ const GitaPage = (() => {
     }
 
     function updateActionButtons() {
-        const copyBtn = document.getElementById('gitaCopyBtn');
-        const saveBtn = document.getElementById('gitaSaveBtn');
-        const retryBtn = document.getElementById('gitaRetryBtn');
-        const shareBtn = document.getElementById('gitaShareBtn');
-        if (copyBtn) copyBtn.disabled = !lastExchange;
-        if (saveBtn) saveBtn.disabled = !lastExchange;
-        if (retryBtn) retryBtn.disabled = !lastExchange;
-        if (shareBtn) shareBtn.disabled = !lastExchange;
+        // Obsolete, actions are now rendered directly inside bubbles.
     }
 
     function copyLastAnswer() {
@@ -657,15 +665,15 @@ const GitaPage = (() => {
             ? reflections.map(item => `
                 <div class="gita-journal-item">
                     <div class="gita-journal-date">${new Date(item.createdAt).toLocaleString(getLanguage() === 'hi' ? 'hi-IN' : 'en-IN')}</div>
-                    <strong>${escapeHtml(item.question)}</strong>
-                    <p>${stripHtml(formatMarkdown(item.answer)).slice(0, 360)}${item.answer.length > 360 ? '...' : ''}</p>
+                    <div class="gita-journal-question"><strong>Q: ${escapeHtml(item.question)}</strong></div>
+                    <div class="gita-reflection-body">${formatMarkdown(item.answer)}</div>
                 </div>
             `).join('')
-            : `<p class="text-muted">${t('gita.no_reflections', 'No saved reflections yet.')}</p>`;
+            : `<p class="text-muted" style="text-align: center; padding: 2rem 0;">${t('gita.no_reflections', 'No saved reflections yet.')}</p>`;
 
         Components.openModal(`
-            <div style="padding: var(--space-2);">
-                <h2 style="margin-bottom: var(--space-4);">${t('gita.reflections', 'Reflections')}</h2>
+            <div class="gita-journal-container">
+                <h2 style="margin-bottom: var(--space-4); border-bottom: 1px solid rgba(212, 175, 55, 0.2); padding-bottom: 12px;">${t('gita.reflections', 'Reflections')}</h2>
                 <div class="gita-journal-list">${body}</div>
             </div>
         `);
