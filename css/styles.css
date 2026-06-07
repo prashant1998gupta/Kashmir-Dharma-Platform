@@ -2727,6 +2727,76 @@ body.gita-immersive-route .page-container {
     flex: 0 0 auto;
 }
 
+.gita-language-select-wrap {
+    display: inline-flex;
+    align-items: center;
+}
+
+.gita-language-select {
+    min-height: 32px;
+    max-width: 112px;
+    padding: 0 28px 0 var(--space-3);
+    border: 1px solid rgba(212, 175, 55, 0.28);
+    border-radius: var(--radius-full);
+    background: rgba(255, 250, 240, 0.035);
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    outline: none;
+}
+
+.gita-language-select:focus {
+    border-color: rgba(212, 175, 55, 0.58);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
+}
+
+.gita-menu-wrap {
+    position: relative;
+    display: inline-flex;
+}
+
+.gita-menu-trigger {
+    width: 34px;
+    padding: 0;
+}
+
+.gita-more-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: var(--z-modal);
+    min-width: 168px;
+    padding: var(--space-2);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md);
+    background: var(--bg-glass-strong);
+    box-shadow: var(--surface-shadow);
+}
+
+.gita-more-menu[hidden] {
+    display: none;
+}
+
+.gita-more-menu button {
+    width: 100%;
+    min-height: 36px;
+    padding: 0 var(--space-3);
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+}
+
+.gita-more-menu button:hover {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--text-heading);
+}
+
 .gita-status {
     display: inline-flex;
     align-items: center;
@@ -3045,6 +3115,24 @@ body.gita-immersive-route .page-container {
     flex: 0 0 52px;
 }
 
+.gita-voice-btn {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    padding: 0;
+    flex: 0 0 52px;
+    color: var(--text-secondary);
+    border-color: rgba(212, 175, 55, 0.28);
+    background: rgba(255, 250, 240, 0.04);
+}
+
+.gita-voice-btn:hover,
+.gita-voice-btn.active {
+    color: var(--text-heading);
+    border-color: rgba(212, 175, 55, 0.55);
+    background: rgba(212, 175, 55, 0.12);
+}
+
 .gita-disclaimer {
     text-align: center;
     font-size: 11px;
@@ -3168,7 +3256,9 @@ body.gita-immersive-route .page-container {
 
 :root[data-theme="light"] body.gita-immersive-route .gita-chat-actions .btn,
 :root[data-theme="light"] body.gita-immersive-route .gita-hero-actions .btn,
-:root[data-theme="light"] body.gita-immersive-route .gita-back-btn {
+:root[data-theme="light"] body.gita-immersive-route .gita-back-btn,
+:root[data-theme="light"] body.gita-immersive-route .gita-language-select,
+:root[data-theme="light"] body.gita-immersive-route .gita-voice-btn {
     background: rgba(255, 255, 255, 0.72);
     color: var(--text-secondary);
     border-color: rgba(176, 141, 46, 0.34);
@@ -3176,10 +3266,17 @@ body.gita-immersive-route .page-container {
 
 :root[data-theme="light"] body.gita-immersive-route .gita-chat-actions .btn:not(:disabled):hover,
 :root[data-theme="light"] body.gita-immersive-route .gita-hero-actions .btn:hover,
-:root[data-theme="light"] body.gita-immersive-route .gita-back-btn:hover {
+:root[data-theme="light"] body.gita-immersive-route .gita-back-btn:hover,
+:root[data-theme="light"] body.gita-immersive-route .gita-voice-btn:hover,
+:root[data-theme="light"] body.gita-immersive-route .gita-voice-btn.active {
     background: rgba(176, 141, 46, 0.12);
     color: var(--text-heading);
     border-color: rgba(176, 141, 46, 0.58);
+}
+
+:root[data-theme="light"] body.gita-immersive-route .gita-more-menu {
+    background: rgba(255, 252, 246, 0.98);
+    box-shadow: 0 18px 42px rgba(89, 60, 28, 0.12);
 }
 
 :root[data-theme="light"] body.gita-immersive-route .gita-input-area {
@@ -3207,6 +3304,54 @@ body.gita-immersive-route .page-container {
     max-width: 560px;
     width: min(92vw, 560px);
     padding: var(--space-6);
+}
+
+.gita-info-modal {
+    max-width: 680px;
+    width: min(92vw, 680px);
+    padding: var(--space-2);
+}
+
+.gita-info-modal h2 {
+    color: var(--color-primary);
+    margin-bottom: var(--space-4);
+}
+
+.gita-info-modal p,
+.gita-info-list {
+    color: var(--text-secondary);
+    line-height: 1.75;
+}
+
+.gita-info-list {
+    display: grid;
+    gap: var(--space-3);
+    padding-left: var(--space-5);
+}
+
+.gita-support-modal {
+    text-align: center;
+}
+
+.gita-support-qr {
+    width: min(280px, 72vw);
+    aspect-ratio: 1;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--surface-border);
+    background: #fff;
+    padding: var(--space-2);
+    margin: var(--space-4) auto;
+}
+
+.gita-link-button {
+    border: 0;
+    background: transparent;
+    color: var(--color-secondary);
+    font: inherit;
+    font-weight: 800;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .gita-settings-modal h2 {
@@ -3347,10 +3492,30 @@ body.gita-immersive-route .page-container {
         gap: var(--space-1);
     }
 
+    .gita-language-select {
+        max-width: 78px;
+        min-height: 34px;
+        padding-left: var(--space-2);
+        font-size: 0.72rem;
+    }
+
     .gita-hero-actions .btn {
         min-height: 34px;
         padding: 0 var(--space-2);
         font-size: 0.72rem;
+    }
+
+    .gita-hero-actions > .btn:not(.gita-menu-trigger) {
+        display: none;
+    }
+
+    .gita-menu-trigger {
+        width: 34px;
+    }
+
+    .gita-more-menu {
+        right: 0;
+        min-width: 150px;
     }
 
     .gita-side-panel,
@@ -3408,6 +3573,12 @@ body.gita-immersive-route .page-container {
     }
 
     .gita-send-btn {
+        width: 48px;
+        height: 48px;
+        flex-basis: 48px;
+    }
+
+    .gita-voice-btn {
         width: 48px;
         height: 48px;
         flex-basis: 48px;

@@ -5,11 +5,39 @@
 
 const GitaPage = (() => {
     const REFLECTIONS_KEY = 'kdp_gita_reflections';
+    const ANSWER_LANGUAGE_KEY = 'kdp_gita_answer_language';
+    const SUPPORT_CONFIG = {
+        upiId: '',
+        paymentLink: '',
+        qrImage: '',
+        email: ''
+    };
     let chatHistory = [];
     let isTyping = false;
     let selectedMode = 'guidance';
     let selectedFocus = 'duty';
+    let selectedAnswerLanguage = localStorage.getItem(ANSWER_LANGUAGE_KEY) || null;
     let lastExchange = null;
+    let recognitionInstance = null;
+
+    const answerLanguages = [
+        { code: 'en', label: 'English', speech: 'en-IN' },
+        { code: 'hi', label: 'हिंदी', speech: 'hi-IN' },
+        { code: 'sa', label: 'संस्कृत', speech: 'hi-IN' },
+        { code: 'bn', label: 'বাংলা', speech: 'bn-IN' },
+        { code: 'gu', label: 'ગુજરાતી', speech: 'gu-IN' },
+        { code: 'kn', label: 'ಕನ್ನಡ', speech: 'kn-IN' },
+        { code: 'ml', label: 'മലയാളം', speech: 'ml-IN' },
+        { code: 'mr', label: 'मराठी', speech: 'mr-IN' },
+        { code: 'or', label: 'ଓଡ଼ିଆ', speech: 'or-IN' },
+        { code: 'pa', label: 'ਪੰਜਾਬੀ', speech: 'pa-IN' },
+        { code: 'ta', label: 'தமிழ்', speech: 'ta-IN' },
+        { code: 'te', label: 'తెలుగు', speech: 'te-IN' },
+        { code: 'as', label: 'অসমীয়া', speech: 'as-IN' },
+        { code: 'bho', label: 'भोजपुरी', speech: 'hi-IN' },
+        { code: 'mai', label: 'मैथिली', speech: 'hi-IN' },
+        { code: 'ne', label: 'नेपाली', speech: 'ne-NP' }
+    ];
 
     const modes = [
         { id: 'guidance', label: 'gita.mode_guidance', desc: 'gita.mode_guidance_desc' },
@@ -43,6 +71,18 @@ const GitaPage = (() => {
         return typeof I18n !== 'undefined' ? I18n.getLanguage() : 'en';
     }
 
+    function getAnswerLanguage() {
+        if (!selectedAnswerLanguage) {
+            selectedAnswerLanguage = getLanguage();
+        }
+        return selectedAnswerLanguage;
+    }
+
+    function getAnswerLanguageLabel() {
+        const language = answerLanguages.find(item => item.code === getAnswerLanguage());
+        return language ? language.label : 'English';
+    }
+
     function getDailyVerse() {
         return typeof GitaVerseLibrary !== 'undefined' ? GitaVerseLibrary.getDailyVerse() : null;
     }
@@ -66,8 +106,23 @@ const GitaPage = (() => {
                     </div>
                     <div class="gita-hero-actions">
                         <span class="gita-status ${hasApiKey ? 'online' : 'local'}">${hasApiKey ? t('gita.ai_ready', 'AI ready') : t('gita.local_ready', 'Local verse mode')}</span>
+                        <label class="gita-language-select-wrap" aria-label="${t('gita.answer_language', 'Answer language')}">
+                            <select id="gitaAnswerLanguage" class="gita-language-select" onchange="GitaPage.setAnswerLanguage(this.value)">
+                                ${answerLanguages.map(language => `
+                                    <option value="${language.code}" ${getAnswerLanguage() === language.code ? 'selected' : ''}>${language.label}</option>
+                                `).join('')}
+                            </select>
+                        </label>
                         <button class="btn btn-outline btn-sm" onclick="GitaPage.openJournalModal()">${t('gita.reflections', 'Reflections')}</button>
                         <button class="btn btn-outline btn-sm" onclick="GitaPage.openSettingsModal()">${t('gita.settings', 'Settings')}</button>
+                        <div class="gita-menu-wrap">
+                            <button class="btn btn-outline btn-sm gita-menu-trigger" onclick="GitaPage.toggleMenu()" aria-label="${t('gita.more_menu', 'More options')}" type="button">☰</button>
+                            <div id="gitaMoreMenu" class="gita-more-menu" hidden>
+                                <button onclick="GitaPage.openAboutModal()" type="button">${t('gita.about', 'About')}</button>
+                                <button onclick="GitaPage.openPrivacyModal()" type="button">${t('gita.privacy', 'Privacy')}</button>
+                                <button onclick="GitaPage.openSupportModal()" type="button">${t('gita.support', 'Support')}</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -117,6 +172,8 @@ const GitaPage = (() => {
                         <div class="gita-chat-actions">
                             <button class="btn btn-outline btn-sm" onclick="GitaPage.copyLastAnswer()" id="gitaCopyBtn" disabled>${t('gita.copy_answer', 'Copy answer')}</button>
                             <button class="btn btn-outline btn-sm" onclick="GitaPage.saveLastReflection()" id="gitaSaveBtn" disabled>${t('gita.save_reflection', 'Save reflection')}</button>
+                            <button class="btn btn-outline btn-sm" onclick="GitaPage.retryLastQuestion()" id="gitaRetryBtn" disabled>${t('gita.retry', 'Retry')}</button>
+                            <button class="btn btn-outline btn-sm" onclick="GitaPage.shareLastAnswer()" id="gitaShareBtn" disabled>${t('gita.share', 'Share')}</button>
                             <button class="btn btn-outline btn-sm" onclick="GitaPage.clearChat()">${t('gita.clear_chat', 'Clear')}</button>
                         </div>
 
@@ -125,6 +182,9 @@ const GitaPage = (() => {
                                 <input type="text" class="form-control" id="gitaChatInput"
                                        placeholder="${t('gita.input_placeholder', 'Ask Krishna for guidance...')}"
                                        onkeypress="if(event.key==='Enter') GitaPage.sendMessage()">
+                                <button class="btn btn-outline gita-voice-btn" onclick="GitaPage.startVoiceInput()" id="gitaVoiceBtn" aria-label="${t('gita.voice_input', 'Voice input')}" type="button">
+                                    <span>🎙</span>
+                                </button>
                                 <button class="btn btn-primary gita-send-btn" onclick="GitaPage.sendMessage()" id="gitaSendBtn" aria-label="${t('gita.send', 'Send')}">
                                     <span>➤</span>
                                 </button>
@@ -201,6 +261,78 @@ const GitaPage = (() => {
         if (target) target.classList.add('active');
     }
 
+    function setAnswerLanguage(language) {
+        selectedAnswerLanguage = answerLanguages.some(item => item.code === language) ? language : 'en';
+        localStorage.setItem(ANSWER_LANGUAGE_KEY, selectedAnswerLanguage);
+        Components.showToast(t('gita.language_saved', 'Answer language updated'), 'success');
+    }
+
+    function toggleMenu() {
+        const menu = document.getElementById('gitaMoreMenu');
+        if (!menu) return;
+        menu.hidden = !menu.hidden;
+    }
+
+    function closeMenu() {
+        const menu = document.getElementById('gitaMoreMenu');
+        if (menu) menu.hidden = true;
+    }
+
+    function openAboutModal() {
+        closeMenu();
+        Components.openModal(`
+            <div class="gita-info-modal">
+                <h2>${t('gita.about_title', 'About Gita AI')}</h2>
+                <p>${t('gita.about_p1', 'Gita AI is a scripture-grounded guidance companion for reflection, study, sadhana, and decision clarity.')}</p>
+                <p>${t('gita.about_p2', 'It uses curated Bhagavad Gita anchors for local answers, and can use your own Gemini API key for richer responses when you choose to add one.')}</p>
+                <p>${t('gita.about_p3', 'This tool is for spiritual reflection and learning. For medical, legal, safety, or serious mental health concerns, please seek qualified human support.')}</p>
+            </div>
+        `);
+    }
+
+    function openPrivacyModal() {
+        closeMenu();
+        Components.openModal(`
+            <div class="gita-info-modal">
+                <h2>${t('gita.privacy_title', 'Privacy')}</h2>
+                <ul class="gita-info-list">
+                    <li>${t('gita.privacy_p1', 'Your Gemini API key, saved reflections, and Gita preferences are stored in this browser local storage.')}</li>
+                    <li>${t('gita.privacy_p2', 'In local verse mode, answers are generated in the browser from the curated verse library.')}</li>
+                    <li>${t('gita.privacy_p3', 'When you use a Gemini API key, your question and selected verse context are sent to Google Gemini to generate the answer.')}</li>
+                    <li>${t('gita.privacy_p4', 'Do not enter highly sensitive personal, medical, legal, financial, or emergency information into the chat.')}</li>
+                </ul>
+            </div>
+        `);
+    }
+
+    function openSupportModal() {
+        closeMenu();
+        const hasSupport = SUPPORT_CONFIG.upiId || SUPPORT_CONFIG.paymentLink || SUPPORT_CONFIG.qrImage || SUPPORT_CONFIG.email;
+        const supportBody = hasSupport
+            ? `
+                ${SUPPORT_CONFIG.qrImage ? `<img class="gita-support-qr" src="${SUPPORT_CONFIG.qrImage}" alt="${t('gita.support_qr_alt', 'Support QR code')}">` : ''}
+                ${SUPPORT_CONFIG.upiId ? `<p><strong>${t('gita.support_upi', 'UPI ID')}:</strong> <button class="gita-link-button" onclick="GitaPage.copySupportText('${escapeAttribute(SUPPORT_CONFIG.upiId)}')" type="button">${escapeHtml(SUPPORT_CONFIG.upiId)}</button></p>` : ''}
+                ${SUPPORT_CONFIG.paymentLink ? `<p><a href="${escapeAttribute(SUPPORT_CONFIG.paymentLink)}" target="_blank" rel="noopener">${t('gita.support_payment_link', 'Open support link')}</a></p>` : ''}
+                ${SUPPORT_CONFIG.email ? `<p><a href="mailto:${escapeAttribute(SUPPORT_CONFIG.email)}">${escapeHtml(SUPPORT_CONFIG.email)}</a></p>` : ''}
+            `
+            : `<p>${t('gita.support_not_configured', 'Support details are not configured yet. Add your own payment link, UPI ID, or QR asset before launch.')}</p>`;
+
+        Components.openModal(`
+            <div class="gita-info-modal gita-support-modal">
+                <h2>${t('gita.support_title', 'Support this project')}</h2>
+                <p>${t('gita.support_desc', 'If this companion helps your spiritual practice, you can support its maintenance and future improvements.')}</p>
+                ${supportBody}
+            </div>
+        `);
+    }
+
+    function copySupportText(value) {
+        if (!value || !navigator.clipboard) return;
+        navigator.clipboard.writeText(value)
+            .then(() => Components.showToast(t('gita.copied', 'Copied'), 'success'))
+            .catch(() => Components.showToast(t('gita.copy_failed', 'Could not copy'), 'error'));
+    }
+
     function openSettingsModal() {
         const modal = document.getElementById('gitaApiModal');
         const input = document.getElementById('gitaApiKeyInput');
@@ -257,6 +389,49 @@ const GitaPage = (() => {
         }
     }
 
+    function startVoiceInput() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const input = document.getElementById('gitaChatInput');
+        const voiceBtn = document.getElementById('gitaVoiceBtn');
+
+        if (!SpeechRecognition || !input) {
+            Components.showToast(t('gita.voice_unsupported', 'Voice input is not supported in this browser.'), 'warning');
+            return;
+        }
+
+        if (recognitionInstance) {
+            recognitionInstance.stop();
+            recognitionInstance = null;
+            if (voiceBtn) voiceBtn.classList.remove('active');
+            return;
+        }
+
+        const language = answerLanguages.find(item => item.code === getAnswerLanguage()) || answerLanguages[0];
+        const recognition = new SpeechRecognition();
+        recognition.lang = language.speech;
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+        recognitionInstance = recognition;
+        if (voiceBtn) voiceBtn.classList.add('active');
+
+        recognition.onresult = (event) => {
+            const transcript = event.results?.[0]?.[0]?.transcript || '';
+            input.value = transcript.trim();
+            input.focus();
+        };
+
+        recognition.onerror = () => {
+            Components.showToast(t('gita.voice_failed', 'Could not hear clearly. Please try again.'), 'warning');
+        };
+
+        recognition.onend = () => {
+            recognitionInstance = null;
+            if (voiceBtn) voiceBtn.classList.remove('active');
+        };
+
+        recognition.start();
+    }
+
     async function sendMessage() {
         if (isTyping || typeof LLM === 'undefined') return;
 
@@ -286,7 +461,7 @@ const GitaPage = (() => {
             let finalResponse = await LLM.generateKrishnaResponse(message, chatHistory, {
                 mode: selectedMode,
                 focus: selectedFocus,
-                language: getLanguage(),
+                language: getAnswerLanguage(),
                 verseContext
             });
 
@@ -296,7 +471,7 @@ const GitaPage = (() => {
             const fallback = LLM.generateLocalResponse(message, {
                 mode: selectedMode,
                 focus: selectedFocus,
-                language: getLanguage(),
+                language: getAnswerLanguage(),
                 verseContext
             });
             Components.showToast(t('gita.ai_fallback', 'AI service was unavailable, so I used local Gita verse guidance.'), 'warning');
@@ -421,8 +596,12 @@ const GitaPage = (() => {
     function updateActionButtons() {
         const copyBtn = document.getElementById('gitaCopyBtn');
         const saveBtn = document.getElementById('gitaSaveBtn');
+        const retryBtn = document.getElementById('gitaRetryBtn');
+        const shareBtn = document.getElementById('gitaShareBtn');
         if (copyBtn) copyBtn.disabled = !lastExchange;
         if (saveBtn) saveBtn.disabled = !lastExchange;
+        if (retryBtn) retryBtn.disabled = !lastExchange;
+        if (shareBtn) shareBtn.disabled = !lastExchange;
     }
 
     function copyLastAnswer() {
@@ -443,6 +622,33 @@ const GitaPage = (() => {
         reflections.unshift(lastExchange);
         localStorage.setItem(REFLECTIONS_KEY, JSON.stringify(reflections.slice(0, 30)));
         Components.showToast(t('gita.reflection_saved', 'Reflection saved'), 'success');
+    }
+
+    function retryLastQuestion() {
+        if (!lastExchange || isTyping) return;
+        ask(lastExchange.question);
+    }
+
+    function shareLastAnswer() {
+        if (!lastExchange) return;
+        const plainAnswer = stripHtml(formatMarkdown(lastExchange.answer));
+        const shareText = `${t('gita.share_question', 'Question')}: ${lastExchange.question}\n\n${plainAnswer}`;
+
+        if (navigator.share) {
+            navigator.share({
+                title: t('gita.title', 'Gita AI Companion'),
+                text: shareText
+            }).catch(() => {});
+            return;
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(shareText)
+                .then(() => Components.showToast(t('gita.share_copied', 'Share text copied'), 'success'))
+                .catch(() => Components.showToast(t('gita.copy_failed', 'Could not copy answer'), 'error'));
+        } else {
+            Components.showToast(t('gita.share_unavailable', 'Sharing is not available in this browser'), 'warning');
+        }
     }
 
     function openJournalModal() {
@@ -502,6 +708,10 @@ const GitaPage = (() => {
             .replace(/'/g, '&#039;');
     }
 
+    function escapeAttribute(value) {
+        return escapeHtml(value).replace(/`/g, '&#096;');
+    }
+
     function stripHtml(value) {
         const div = document.createElement('div');
         div.innerHTML = value;
@@ -523,14 +733,23 @@ const GitaPage = (() => {
         ask,
         askPrompt,
         askDailyVerse,
+        startVoiceInput,
         setMode,
         setFocus,
+        setAnswerLanguage,
+        toggleMenu,
+        openAboutModal,
+        openPrivacyModal,
+        openSupportModal,
+        copySupportText,
         openSettingsModal,
         closeSettingsModal,
         saveApiKey,
         clearApiKey,
         copyLastAnswer,
         saveLastReflection,
+        retryLastQuestion,
+        shareLastAnswer,
         openJournalModal,
         clearChat,
         goBack

@@ -31,9 +31,34 @@ const I18n = (() => {
             'nav.loading': 'Loading sacred knowledge...',
             
             // Home Page
-            'home.mantra': 'Om Namah Shivaya',
-            'home.mantra_highlight': 'Har Har Mahadev',
-            'home.mantra_meaning': 'May the divine grace of Lord Shiva bring peace, wisdom, and strength to your spiritual journey.',
+            'home.mantra_surya': 'Om Suryaya Namaha',
+            'home.mantra_surya_highlight': 'Radiant Sun',
+            'home.mantra_surya_meaning': 'May the Sun God illuminate your path with vitality, health, and cosmic energy.',
+            
+            'home.mantra_shiva': 'Om Namah Shivaya',
+            'home.mantra_shiva_highlight': 'Har Har Mahadev',
+            'home.mantra_shiva_meaning': 'May the divine grace of Lord Shiva bring peace, wisdom, and strength to your spiritual journey.',
+
+            'home.mantra_hanuman': 'Om Hanumate Namaha',
+            'home.mantra_hanuman_highlight': 'Jai Shri Ram',
+            'home.mantra_hanuman_meaning': 'May Lord Hanuman bless you with boundless courage, devotion, and unwavering strength.',
+
+            'home.mantra_ganesha': 'Om Gam Ganapataye Namaha',
+            'home.mantra_ganesha_highlight': 'Vighnaharta',
+            'home.mantra_ganesha_meaning': 'May Lord Ganesha remove all obstacles and bless your endeavors with auspicious beginnings.',
+
+            'home.mantra_vishnu': 'Om Namo Bhagavate Vasudevaya',
+            'home.mantra_vishnu_highlight': 'Hari Om',
+            'home.mantra_vishnu_meaning': 'May Lord Vishnu sustain your life with cosmic harmony, truth, and spiritual preservation.',
+
+            'home.mantra_durga': 'Om Dum Durgayei Namaha',
+            'home.mantra_durga_highlight': 'Jai Mata Di',
+            'home.mantra_durga_meaning': 'May the divine mother grant you invincible courage, compassion, and spiritual triumph.',
+
+            'home.mantra_shani': 'Om Sham Shanaischaraya Namaha',
+            'home.mantra_shani_highlight': 'Karmic Balance',
+            'home.mantra_shani_meaning': 'May Lord Shani bless you with righteous discipline, justice, and profound patience.',
+
             'home.presence_title': 'Today\'s Presence',
             'home.highlights_title': 'Highlights',
             'home.cosmic_title': 'Current Cosmic Energy',
@@ -325,7 +350,36 @@ const I18n = (() => {
             'gita.copied': 'Answer copied',
             'gita.copy_failed': 'Could not copy answer',
             'gita.reflection_saved': 'Reflection saved',
-            'gita.no_reflections': 'No saved reflections yet.'
+            'gita.no_reflections': 'No saved reflections yet.',
+            'gita.answer_language': 'Answer language',
+            'gita.more_menu': 'More options',
+            'gita.about': 'About',
+            'gita.privacy': 'Privacy',
+            'gita.support': 'Support',
+            'gita.retry': 'Retry',
+            'gita.share': 'Share',
+            'gita.voice_input': 'Voice input',
+            'gita.language_saved': 'Answer language updated',
+            'gita.about_title': 'About Gita AI',
+            'gita.about_p1': 'Gita AI is a scripture-grounded guidance companion for reflection, study, sadhana, and decision clarity.',
+            'gita.about_p2': 'It uses curated Bhagavad Gita anchors for local answers, and can use your own Gemini API key for richer responses when you choose to add one.',
+            'gita.about_p3': 'This tool is for spiritual reflection and learning. For medical, legal, safety, or serious mental health concerns, please seek qualified human support.',
+            'gita.privacy_title': 'Privacy',
+            'gita.privacy_p1': 'Your Gemini API key, saved reflections, and Gita preferences are stored in this browser local storage.',
+            'gita.privacy_p2': 'In local verse mode, answers are generated in the browser from the curated verse library.',
+            'gita.privacy_p3': 'When you use a Gemini API key, your question and selected verse context are sent to Google Gemini to generate the answer.',
+            'gita.privacy_p4': 'Do not enter highly sensitive personal, medical, legal, financial, or emergency information into the chat.',
+            'gita.support_qr_alt': 'Support QR code',
+            'gita.support_upi': 'UPI ID',
+            'gita.support_payment_link': 'Open support link',
+            'gita.support_not_configured': 'Support details are not configured yet. Add your own payment link, UPI ID, or QR asset before launch.',
+            'gita.support_title': 'Support this project',
+            'gita.support_desc': 'If this companion helps your spiritual practice, you can support its maintenance and future improvements.',
+            'gita.voice_unsupported': 'Voice input is not supported in this browser.',
+            'gita.voice_failed': 'Could not hear clearly. Please try again.',
+            'gita.share_question': 'Question',
+            'gita.share_copied': 'Share text copied',
+            'gita.share_unavailable': 'Sharing is not available in this browser'
         },
         hi: {
             // Navigation
@@ -352,9 +406,33 @@ const I18n = (() => {
             'nav.loading': 'पवित्र ज्ञान लोड हो रहा है...',
             
             // Home Page
-            'home.mantra': 'ॐ नमः शिवाय',
-            'home.mantra_highlight': 'हर हर महादेव',
-            'home.mantra_meaning': 'भगवान शिव की दिव्य कृपा आपकी आध्यात्मिक यात्रा में शांति, ज्ञान और शक्ति लाए।',
+            'home.mantra_surya': 'ॐ सूर्याय नमः',
+            'home.mantra_surya_highlight': 'तेजस्वी सूर्य',
+            'home.mantra_surya_meaning': 'सूर्य देव आपके मार्ग को ऊर्जा, स्वास्थ्य और लौकिक शक्ति से रोशन करें।',
+            
+            'home.mantra_shiva': 'ॐ नमः शिवाय',
+            'home.mantra_shiva_highlight': 'हर हर महादेव',
+            'home.mantra_shiva_meaning': 'भगवान शिव की दिव्य कृपा आपकी आध्यात्मिक यात्रा में शांति, ज्ञान और शक्ति लाए।',
+
+            'home.mantra_hanuman': 'ॐ हनुमंते नमः',
+            'home.mantra_hanuman_highlight': 'जय श्री राम',
+            'home.mantra_hanuman_meaning': 'भगवान हनुमान आपको असीम साहस, भक्ति और अटूट शक्ति का आशीर्वाद दें।',
+
+            'home.mantra_ganesha': 'ॐ गं गणपतये नमः',
+            'home.mantra_ganesha_highlight': 'विघ्नहर्ता',
+            'home.mantra_ganesha_meaning': 'भगवान गणेश सभी बाधाओं को दूर करें और शुभ शुरुआत के साथ आपके कार्यों को आशीर्वाद दें।',
+
+            'home.mantra_vishnu': 'ॐ नमो भगवते वासुदेवाय',
+            'home.mantra_vishnu_highlight': 'हरि ओम',
+            'home.mantra_vishnu_meaning': 'भगवान विष्णु लौकिक सद्भाव, सत्य और आध्यात्मिक संरक्षण के साथ आपके जीवन को बनाए रखें।',
+
+            'home.mantra_durga': 'ॐ दुं दुर्गायै नमः',
+            'home.mantra_durga_highlight': 'जय माता दी',
+            'home.mantra_durga_meaning': 'दिव्य माता आपको अजेय साहस, करुणा और आध्यात्मिक विजय प्रदान करें।',
+
+            'home.mantra_shani': 'ॐ शं शनैश्चराय नमः',
+            'home.mantra_shani_highlight': 'कर्म संतुलन',
+            'home.mantra_shani_meaning': 'भगवान शनि आपको धार्मिक अनुशासन, न्याय और असीम धैर्य का आशीर्वाद दें।',
             'home.presence_title': 'आज की उपस्थिति',
             'home.highlights_title': 'मुख्य आकर्षण',
             'home.cosmic_title': 'वर्तमान ब्रह्मांडीय ऊर्जा',
@@ -808,7 +886,36 @@ const I18n = (() => {
             'gita.copied': 'उत्तर कॉपी हुआ',
             'gita.copy_failed': 'उत्तर कॉपी नहीं हो सका',
             'gita.reflection_saved': 'चिंतन सहेजा गया',
-            'gita.no_reflections': 'अभी कोई चिंतन सहेजा नहीं गया।'
+            'gita.no_reflections': 'अभी कोई चिंतन सहेजा नहीं गया।',
+            'gita.answer_language': 'उत्तर की भाषा',
+            'gita.more_menu': 'अधिक विकल्प',
+            'gita.about': 'परिचय',
+            'gita.privacy': 'गोपनीयता',
+            'gita.support': 'सहयोग',
+            'gita.retry': 'फिर प्रयास',
+            'gita.share': 'साझा करें',
+            'gita.voice_input': 'आवाज़ से लिखें',
+            'gita.language_saved': 'उत्तर की भाषा अपडेट हुई',
+            'gita.about_title': 'गीता एआई के बारे में',
+            'gita.about_p1': 'गीता एआई चिंतन, अध्ययन, साधना और निर्णय स्पष्टता के लिए शास्त्र-आधारित मार्गदर्शन साथी है।',
+            'gita.about_p2': 'यह स्थानीय उत्तरों के लिए चयनित भगवद गीता आधारों का उपयोग करता है, और आपकी अपनी Gemini API कुंजी जोड़ने पर अधिक समृद्ध उत्तर दे सकता है।',
+            'gita.about_p3': 'यह साधन आध्यात्मिक चिंतन और सीखने के लिए है। चिकित्सा, कानूनी, सुरक्षा या गंभीर मानसिक स्वास्थ्य विषयों के लिए योग्य मानव सहायता लें।',
+            'gita.privacy_title': 'गोपनीयता',
+            'gita.privacy_p1': 'आपकी Gemini API कुंजी, सहेजे गए चिंतन और गीता प्राथमिकताएं इसी ब्राउज़र के स्थानीय संग्रहण में रहती हैं।',
+            'gita.privacy_p2': 'स्थानीय श्लोक मोड में उत्तर ब्राउज़र में चयनित श्लोक संग्रह से बनाए जाते हैं।',
+            'gita.privacy_p3': 'Gemini API कुंजी का उपयोग करने पर आपका प्रश्न और चयनित श्लोक संदर्भ उत्तर बनाने के लिए Google Gemini को भेजे जाते हैं।',
+            'gita.privacy_p4': 'चैट में अत्यधिक संवेदनशील व्यक्तिगत, चिकित्सा, कानूनी, वित्तीय या आपातकालीन जानकारी न डालें।',
+            'gita.support_qr_alt': 'सहयोग QR कोड',
+            'gita.support_upi': 'UPI ID',
+            'gita.support_payment_link': 'सहयोग लिंक खोलें',
+            'gita.support_not_configured': 'सहयोग विवरण अभी कॉन्फ़िगर नहीं हैं। लॉन्च से पहले अपना भुगतान लिंक, UPI ID या QR एसेट जोड़ें।',
+            'gita.support_title': 'इस प्रोजेक्ट को सहयोग दें',
+            'gita.support_desc': 'यदि यह साथी आपकी आध्यात्मिक साधना में मदद करता है, तो आप इसके रखरखाव और भविष्य के सुधारों में सहयोग कर सकते हैं।',
+            'gita.voice_unsupported': 'इस ब्राउज़र में आवाज़ इनपुट समर्थित नहीं है।',
+            'gita.voice_failed': 'स्पष्ट सुनाई नहीं दिया। कृपया फिर प्रयास करें।',
+            'gita.share_question': 'प्रश्न',
+            'gita.share_copied': 'साझा करने का पाठ कॉपी हुआ',
+            'gita.share_unavailable': 'इस ब्राउज़र में साझा करना उपलब्ध नहीं है'
         }
     };
 

@@ -36,7 +36,25 @@ const LLM = (() => {
     }
 
     function getLanguageName(language) {
-        return language === 'hi' ? 'Hindi in Devanagari' : 'English';
+        const names = {
+            en: 'English',
+            hi: 'Hindi in Devanagari',
+            sa: 'Sanskrit in Devanagari',
+            bn: 'Bengali',
+            gu: 'Gujarati',
+            kn: 'Kannada',
+            ml: 'Malayalam',
+            mr: 'Marathi',
+            or: 'Odia',
+            pa: 'Punjabi in Gurmukhi',
+            ta: 'Tamil',
+            te: 'Telugu',
+            as: 'Assamese',
+            bho: 'Bhojpuri in Devanagari',
+            mai: 'Maithili in Devanagari',
+            ne: 'Nepali in Devanagari'
+        };
+        return names[language] || 'English';
     }
 
     function getVerseContext(userMessage, options = {}) {

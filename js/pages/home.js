@@ -232,7 +232,110 @@ const HomePage = (() => {
                 </div>
             `;
 
-            // 4. Render Cosmic Energy
+            // 4. Update Day-Wise God Image and Mantra
+            const dayOfWeek = new Date().getDay();
+            const godsConfig = [
+                {
+                    key: 'surya',
+                    img: 'img/inspiration/surya.png',
+                    name: 'Lord Surya',
+                    mantraKey: 'home.mantra_surya',
+                    mantraDefault: 'Om Suryaya Namaha',
+                    highlightKey: 'home.mantra_surya_highlight',
+                    highlightDefault: 'Radiant Sun',
+                    meaningKey: 'home.mantra_surya_meaning',
+                    meaningDefault: 'May the Sun God illuminate your path with vitality, health, and cosmic energy.'
+                },
+                {
+                    key: 'shiva',
+                    img: 'img/inspiration/shiva.png',
+                    name: 'Lord Shiva',
+                    mantraKey: 'home.mantra_shiva',
+                    mantraDefault: 'Om Namah Shivaya',
+                    highlightKey: 'home.mantra_shiva_highlight',
+                    highlightDefault: 'Har Har Mahadev',
+                    meaningKey: 'home.mantra_shiva_meaning',
+                    meaningDefault: 'May the divine grace of Lord Shiva bring peace, wisdom, and strength to your spiritual journey.'
+                },
+                {
+                    key: 'hanuman',
+                    img: 'img/inspiration/hanuman.png',
+                    name: 'Lord Hanuman',
+                    mantraKey: 'home.mantra_hanuman',
+                    mantraDefault: 'Om Hanumate Namaha',
+                    highlightKey: 'home.mantra_hanuman_highlight',
+                    highlightDefault: 'Jai Shri Ram',
+                    meaningKey: 'home.mantra_hanuman_meaning',
+                    meaningDefault: 'May Lord Hanuman bless you with boundless courage, devotion, and unwavering strength.'
+                },
+                {
+                    key: 'ganesha',
+                    img: 'img/inspiration/ganesha.png',
+                    name: 'Lord Ganesha',
+                    mantraKey: 'home.mantra_ganesha',
+                    mantraDefault: 'Om Gam Ganapataye Namaha',
+                    highlightKey: 'home.mantra_ganesha_highlight',
+                    highlightDefault: 'Vighnaharta',
+                    meaningKey: 'home.mantra_ganesha_meaning',
+                    meaningDefault: 'May Lord Ganesha remove all obstacles and bless your endeavors with auspicious beginnings.'
+                },
+                {
+                    key: 'vishnu',
+                    img: 'img/inspiration/vishnu.png',
+                    name: 'Lord Vishnu',
+                    mantraKey: 'home.mantra_vishnu',
+                    mantraDefault: 'Om Namo Bhagavate Vasudevaya',
+                    highlightKey: 'home.mantra_vishnu_highlight',
+                    highlightDefault: 'Hari Om',
+                    meaningKey: 'home.mantra_vishnu_meaning',
+                    meaningDefault: 'May Lord Vishnu sustain your life with cosmic harmony, truth, and spiritual preservation.'
+                },
+                {
+                    key: 'durga',
+                    img: 'img/inspiration/durga.png',
+                    name: 'Goddess Durga',
+                    mantraKey: 'home.mantra_durga',
+                    mantraDefault: 'Om Dum Durgayei Namaha',
+                    highlightKey: 'home.mantra_durga_highlight',
+                    highlightDefault: 'Jai Mata Di',
+                    meaningKey: 'home.mantra_durga_meaning',
+                    meaningDefault: 'May the divine mother grant you invincible courage, compassion, and spiritual triumph.'
+                },
+                {
+                    key: 'shani',
+                    img: 'img/inspiration/shani.png',
+                    name: 'Lord Shani',
+                    mantraKey: 'home.mantra_shani',
+                    mantraDefault: 'Om Sham Shanaischaraya Namaha',
+                    highlightKey: 'home.mantra_shani_highlight',
+                    highlightDefault: 'Karmic Balance',
+                    meaningKey: 'home.mantra_shani_meaning',
+                    meaningDefault: 'May Lord Shani bless you with righteous discipline, justice, and profound patience.'
+                }
+            ];
+
+            const todayGod = godsConfig[dayOfWeek];
+            
+            const imgEl = document.querySelector('.inspiration-image-frame img');
+            const mantraEl = document.querySelector('.inspiration-mantra');
+            const meaningEl = document.querySelector('.inspiration-meaning');
+
+            if (imgEl) {
+                imgEl.src = todayGod.img;
+                imgEl.alt = todayGod.name;
+            }
+            if (mantraEl) {
+                const tMantra = typeof I18n !== 'undefined' ? I18n.t(todayGod.mantraKey, todayGod.mantraDefault) : todayGod.mantraDefault;
+                const tHighlight = typeof I18n !== 'undefined' ? I18n.t(todayGod.highlightKey, todayGod.highlightDefault) : todayGod.highlightDefault;
+                mantraEl.innerHTML = `<span data-i18n="${todayGod.mantraKey}">${tMantra}</span> <br><span class="highlight" data-i18n="${todayGod.highlightKey}">${tHighlight}</span>`;
+                mantraEl.removeAttribute('data-i18n'); // Remove from parent so translatePage() doesn't flatten it
+            }
+            if (meaningEl) {
+                meaningEl.setAttribute('data-i18n', todayGod.meaningKey);
+                meaningEl.innerText = typeof I18n !== 'undefined' ? I18n.t(todayGod.meaningKey, todayGod.meaningDefault) : todayGod.meaningDefault;
+            }
+
+            // 5. Render Cosmic Energy
             const cosmicContainer = document.getElementById('homeCosmicEnergyWidget');
             if (cosmicContainer) {
                 const rashiName = hinduDate.rashi.name || '';
