@@ -182,6 +182,21 @@ const SearchEngine = (() => {
      * Get suggested questions based on the knowledge base
      */
     function getSuggestedQuestions() {
+        const isHindi = (typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi');
+        if (isHindi) {
+            return [
+                "नवरेह क्या है?",
+                "हेराथ कब मनाया जाता है?",
+                "ज़्येठ अठम के लिए क्या तैयारी करनी चाहिए?",
+                "देवगोन का क्या महत्व है?",
+                "कश्मीरी पंडित विवाह में कौन से अनुष्ठान होते हैं?",
+                "यज्ञोपवीत संस्कार क्या है?",
+                "हवन कैसे किया जाता है?",
+                "खेत्सीमावस क्या है?",
+                "पन त्योहार में कौन से भोजन तैयार किए जाते हैं?",
+                "श्राद्ध का क्या महत्व है?"
+            ];
+        }
         return [
             "What is Navreh?",
             "When is Herath celebrated?",
@@ -202,9 +217,10 @@ const SearchEngine = (() => {
     function getAnswer(question) {
         const results = search(question, 5);
         
+        const isHi = (typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi');
         if (results.length === 0) {
             return {
-                text: "I couldn't find specific information about that in our knowledge base. This could be because the topic hasn't been documented yet, or try rephrasing your question. For authentic guidance, we recommend consulting with a Kashmiri Pandit scholar.",
+                text: isHi ? "हमारे ज्ञान संग्रह में इसके बारे में विशिष्ट जानकारी नहीं मिली। संभव है कि यह विषय अभी तक प्रलेखित नहीं किया गया हो, या अपना प्रश्न दोबारा लिखें। प्रामाणिक मार्गदर्शन के लिए कश्मीरी पंडित विद्वान से परामर्श करें।" : "I couldn't find specific information about that in our knowledge base. This could be because the topic hasn't been documented yet, or try rephrasing your question. For authentic guidance, we recommend consulting with a Kashmiri Pandit scholar.",
                 sources: [],
                 suggestions: getSuggestedQuestions().slice(0, 3)
             };
@@ -216,17 +232,17 @@ const SearchEngine = (() => {
         if (topResult.type === 'festival') {
             const f = topResult.data;
             answerText = `**${f.name}**\n\n${f.description}\n\n`;
-            if (f.historicalSignificance) answerText += `**Historical Significance:** ${f.historicalSignificance}\n\n`;
-            if (f.spiritualSignificance) answerText += `**Spiritual Significance:** ${f.spiritualSignificance}\n\n`;
-            if (f.date) answerText += `**When:** ${f.date}\n\n`;
+            if (f.historicalSignificance) answerText += `**${isHi ? 'ऐतिहासिक महत्व' : 'Historical Significance'}:** ${f.historicalSignificance}\n\n`;
+            if (f.spiritualSignificance) answerText += `**${isHi ? 'आध्यात्मिक महत्व' : 'Spiritual Significance'}:** ${f.spiritualSignificance}\n\n`;
+            if (f.date) answerText += `**${isHi ? 'कब' : 'When'}:** ${f.date}\n\n`;
         } else if (topResult.type === 'ritual') {
             const r = topResult.data;
             answerText = `**${r.name}**\n\n${r.description || r.purpose}\n\n`;
-            if (r.significance) answerText += `**Significance:** ${r.significance}\n\n`;
+            if (r.significance) answerText += `**${isHi ? 'महत्व' : 'Significance'}:** ${r.significance}\n\n`;
         } else if (topResult.type === 'wedding') {
             const c = topResult.data;
             answerText = `**${c.name}**\n\n${c.description}\n\n`;
-            if (c.significance) answerText += `**Significance:** ${c.significance}\n\n`;
+            if (c.significance) answerText += `**${isHi ? 'महत्व' : 'Significance'}:** ${c.significance}\n\n`;
         } else if (topResult.type === 'article') {
             const a = topResult.data;
             answerText = `**${a.title}**\n\n${a.excerpt || a.content}\n\n`;

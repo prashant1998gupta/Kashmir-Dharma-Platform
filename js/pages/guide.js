@@ -57,18 +57,37 @@ const GuidePage = (() => {
                             ${Components.card(`
                                 <h3 style="margin-bottom: var(--space-4)">🔍 ${typeof I18n !== 'undefined' ? I18n.t('guide.quick_topics', 'Quick Topics') : 'Quick Topics'}</h3>
                                 <div class="tag-group">
-                                    <span class="tag" onclick="GuidePage.askQuestion('What is Navreh?')">Navreh</span>
-                                    <span class="tag" onclick="GuidePage.askQuestion('What is Herath?')">Herath</span>
-                                    <span class="tag" onclick="GuidePage.askQuestion('What is Devgon?')">Devgon</span>
-                                    <span class="tag" onclick="GuidePage.askQuestion('Kashmiri Pandit wedding rituals')">Wedding</span>
-                                    <span class="tag" onclick="GuidePage.askQuestion('What is Yagnopavit?')">Yagnopavit</span>
-                                    <span class="tag" onclick="GuidePage.askQuestion('How to perform Havan?')">Havan</span>
-                                    <span class="tag" onclick="GuidePage.askQuestion('Kashmir Shaivism')">Kashmir Shaivism</span>
-                                    <span class="tag" onclick="GuidePage.askQuestion('Who is Lal Ded?')">Lal Ded</span>
-                                    <span class="tag" onclick="GuidePage.askQuestion('Kashmiri Pandit cuisine')">Cuisine</span>
-                                    <span class="tag" onclick="GuidePage.askQuestion('Sacred temples of Kashmir')">Temples</span>
-                                    <span class="tag" onclick="GuidePage.askQuestion('What is Zyeth Atham?')">Zyeth Atham</span>
-                                    <span class="tag" onclick="GuidePage.askQuestion('Shraddha rituals')">Shraddha</span>
+                                    ${(() => {
+                                        const isHi = (typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi');
+                                        const topics = isHi ? [
+                                            { label: 'नवरेह', q: 'नवरेह क्या है?' },
+                                            { label: 'हेराथ', q: 'हेराथ क्या है?' },
+                                            { label: 'देवगोन', q: 'देवगोन क्या है?' },
+                                            { label: 'विवाह', q: 'कश्मीरी पंडित विवाह अनुष्ठान' },
+                                            { label: 'यज्ञोपवीत', q: 'यज्ञोपवीत क्या है?' },
+                                            { label: 'हवन', q: 'हवन कैसे किया जाता है?' },
+                                            { label: 'कश्मीर शैवदर्शन', q: 'कश्मीर शैवदर्शन' },
+                                            { label: 'लल देद', q: 'लल देद कौन हैं?' },
+                                            { label: 'व्यंजन', q: 'कश्मीरी पंडित व्यंजन' },
+                                            { label: 'मंदिर', q: 'कश्मीर के पवित्र मंदिर' },
+                                            { label: 'ज़्येठ अठम', q: 'ज़्येठ अठम क्या है?' },
+                                            { label: 'श्राद्ध', q: 'श्राद्ध अनुष्ठान' }
+                                        ] : [
+                                            { label: 'Navreh', q: 'What is Navreh?' },
+                                            { label: 'Herath', q: 'What is Herath?' },
+                                            { label: 'Devgon', q: 'What is Devgon?' },
+                                            { label: 'Wedding', q: 'Kashmiri Pandit wedding rituals' },
+                                            { label: 'Yagnopavit', q: 'What is Yagnopavit?' },
+                                            { label: 'Havan', q: 'How to perform Havan?' },
+                                            { label: 'Kashmir Shaivism', q: 'Kashmir Shaivism' },
+                                            { label: 'Lal Ded', q: 'Who is Lal Ded?' },
+                                            { label: 'Cuisine', q: 'Kashmiri Pandit cuisine' },
+                                            { label: 'Temples', q: 'Sacred temples of Kashmir' },
+                                            { label: 'Zyeth Atham', q: 'What is Zyeth Atham?' },
+                                            { label: 'Shraddha', q: 'Shraddha rituals' }
+                                        ];
+                                        return topics.map(t => `<span class="tag" onclick="GuidePage.askQuestion('${t.q.replace(/'/g, "\\\\'")}')">${t.label}</span>`).join('\\n                                    ');
+                                    })()}
                                 </div>
                             `)}
                         </div>

@@ -20,23 +20,49 @@ const App = (() => {
     }
 
     /**
-     * Load data from JSON files with caching
+     * Load data from JSON files with caching.
+     * Tries language-specific file first (e.g., data/hi/rituals.json), falls back to data/rituals.json.
      */
     async function loadData(name) {
-        if (dataCache[name]) {
-            return dataCache[name];
+        const lang = (typeof I18n !== 'undefined') ? I18n.getLanguage() : 'en';
+        const cacheKey = `${lang}:${name}`;
+
+        if (dataCache[cacheKey]) {
+            return dataCache[cacheKey];
         }
 
         try {
+            // Try localized version first (if not English)
+            if (lang !== 'en') {
+                try {
+                    const localizedResponse = await fetch(`data/${lang}/${name}.json`);
+                    if (localizedResponse.ok) {
+                        const data = await localizedResponse.json();
+                        dataCache[cacheKey] = data;
+                        return data;
+                    }
+                } catch (e) {
+                    // Localized file not found, fall through to default
+                }
+            }
+
+            // Fall back to default English data
             const response = await fetch(`data/${name}.json`);
             if (!response.ok) throw new Error(`Failed to load ${name}`);
             const data = await response.json();
-            dataCache[name] = data;
+            dataCache[cacheKey] = data;
             return data;
         } catch (error) {
             console.error(`Error loading data/${name}.json:`, error);
             return null;
         }
+    }
+
+    /**
+     * Clear the data cache (called when language changes)
+     */
+    function clearDataCache() {
+        Object.keys(dataCache).forEach(key => delete dataCache[key]);
     }
 
     /**
@@ -133,7 +159,7 @@ const App = (() => {
         }
     }
 
-    return { init, loadData, toggleTheme };
+    return { init, loadData, toggleTheme, clearDataCache };
 })();
 
 // Boot the application when DOM is ready

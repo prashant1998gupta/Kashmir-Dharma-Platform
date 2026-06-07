@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculation Smoke Test</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            margin: 24px;
+            line-height: 1.5;
+        }
+
+        pre {
+            background: #111;
+            color: #f5f5f5;
+            padding: 16px;
+            overflow: auto;
+        }
+
+        .pass {
+            color: #127a3a;
+            font-weight: 700;
+        }
+
+        .fail {
+            color: #b00020;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculation Smoke Test</h1>
+    <p id="status">Running...</p>
+    <pre id="output"></pre>
+
+    <script src="../js/lib/astronomy.js"></script>
+    <script src="../js/utils/cities.js"></script>
+    <script src="../js/utils/panchang-core.js"></script>
+    <script src="../js/utils/astrology-calc.js"></script>
+    <script src="../js/utils/calendar-calc.js"></script>
+    <script>
+        (() => {
+            const city = CityDatabase.find(c => c.name === 'Chandigarh, India');
+            const chart = AstroCalc.generateKundali('1990-05-15', '10:30', city);
+            const hinduDate = CalendarCalc.getHinduDate(2026, 6, 6, 12, 0);
+
+            const checks = [
+                {
+                    name: 'PanchangCore is loaded',
+                    pass: typeof PanchangCore !== 'undefined'
+                },
+                {
+                    name: 'Kundali tithi has a real name',
+                    pass: chart.panchang.tithi && !/Tithi \d+/.test(chart.panchang.tithi)
+                },
+                {
+                    name: 'Kundali yoga has a real name',
+                    pass: chart.panchang.yoga && !/^Yoga #/.test(chart.panchang.yoga)
+                },
+                {
+                    name: 'Kundali karana has a real name',
+                    pass: chart.panchang.karana && !/^Karana #/.test(chart.panchang.karana)
+                },
+                {
+                    name: 'Calendar exposes yoga and karana',
+                    pass: Boolean(hinduDate.yoga.name && hinduDate.karana.name)
+                },
+                {
+                    name: 'Calendar exposes nakshatra pada',
+                    pass: hinduDate.nakshatra.pada >= 1 && hinduDate.nakshatra.pada <= 4
+                }
+            ];
+
+            const passed = checks.every(check => check.pass);
+            document.body.dataset.status = passed ? 'pass' : 'fail';
+            document.getElementById('status').className = passed ? 'pass' : 'fail';
+            document.getElementById('status').textContent = passed ? 'PASS' : 'FAIL';
+            document.getElementById('output').textContent = JSON.stringify({
+                checks,
+                sampleKundali: {
+                    ayanamsa: chart.details.ayanamsa,
+                    calculationMode: chart.details.calculationMode,
+                    panchang: chart.panchang,
+                    moonNakshatra: chart.moonNakshatra
+                },
+                sampleCalendar: {
+                    tithi: hinduDate.tithi,
+                    nakshatra: hinduDate.nakshatra,
+                    rashi: hinduDate.rashi,
+                    yoga: hinduDate.yoga,
+                    karana: hinduDate.karana,
+                    calculationMode: hinduDate.calculationMode
+                }
+            }, null, 2);
+        })();
+    </script>
+</body>
+</html>

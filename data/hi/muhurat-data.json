@@ -1,0 +1,86 @@
+{
+    "eventTypes": [
+        { "id": "vehicle", "name": "वाहन खरीद", "icon": "🚗", "description": "नई कार, बाइक या वाहन खरीदना" },
+        { "id": "gold", "name": "सोना खरीद", "icon": "✨", "description": "सोने के आभूषण या गहने खरीदना" },
+        { "id": "business", "name": "व्यापार शुरू करना", "icon": "💼", "description": "नया व्यापार उद्यम शुरू करना" },
+        { "id": "job", "name": "नई नौकरी", "icon": "🏢", "description": "नई नौकरी या करियर शुरू करना" },
+        { "id": "housewarming", "name": "गृह प्रवेश", "icon": "🏡", "description": "नए घर में प्रवेश करना" },
+        { "id": "travel", "name": "यात्रा", "icon": "✈️", "description": "महत्वपूर्ण यात्राएं" },
+        { "id": "property", "name": "संपत्ति खरीद", "icon": "🏗️", "description": "भूमि या संपत्ति खरीदना" },
+        { "id": "education", "name": "शिक्षा", "icon": "📚", "description": "स्कूल, कॉलेज या कोर्स शुरू करना" },
+        { "id": "marriage", "name": "विवाह कार्यक्रम", "icon": "💒", "description": "विवाह संबंधित कार्यक्रम और संस्कार" }
+    ],
+    "generalGuidelines": [
+        "महत्वपूर्ण जीवन निर्णयों के लिए हमेशा ज्ञानी विद्वान या पुरोहित से परामर्श करें",
+        "ये पारंपरिक पंचांग सिद्धांतों पर आधारित सामान्य दिशा-निर्देश हैं",
+        "व्यक्तिगत कुंडली विशिष्ट तिथियों की उपयुक्तता को प्रभावित कर सकती है",
+        "शुक्ल पक्ष (बढ़ता चंद्रमा) नई शुरुआत के लिए सामान्यतः पसंद किया जाता है",
+        "प्रमुख कार्यों के लिए अमावस्या (नवचंद्र) और विशिष्ट अशुभ दिनों से बचें"
+    ],
+    "dayRecommendations": {
+        "vehicle": {
+            "goodDays": ["Monday", "Wednesday", "Thursday", "Friday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi", "Trayodashi"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Navami", "Chaturdashi", "Amavasya"],
+            "notes": "गुरुवार (गुरुवार) और शुक्रवार (शुक्रवार) वाहन खरीद के लिए विशेष रूप से अनुकूल माने जाते हैं।"
+        },
+        "gold": {
+            "goodDays": ["Monday", "Wednesday", "Thursday", "Friday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi", "Purnima"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Chaturdashi", "Amavasya"],
+            "notes": "अक्षय तृतीया सोना खरीदने का सबसे शुभ दिन माना जाता है। धनतेरस भी अत्यधिक अनुकूल है।"
+        },
+        "business": {
+            "goodDays": ["Monday", "Wednesday", "Thursday", "Friday"],
+            "avoidDays": ["Tuesday", "Saturday", "Sunday"],
+            "preferredTithis": ["Pratipada", "Dwitiya", "Tritiya", "Panchami", "Dashami", "Ekadashi", "Purnima"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Navami", "Chaturdashi", "Amavasya"],
+            "notes": "गुरुवार व्यापार उद्यमों के लिए विशेष रूप से शुभ माना जाता है क्योंकि यह बृहस्पति — धन और ज्ञान के ग्रह — द्वारा शासित है।"
+        },
+        "job": {
+            "goodDays": ["Monday", "Wednesday", "Thursday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Chaturdashi", "Amavasya"],
+            "notes": "गुरुवार या सोमवार को नई नौकरी शुरू करना पारंपरिक रूप से शुभ माना जाता है।"
+        },
+        "housewarming": {
+            "goodDays": ["Monday", "Wednesday", "Thursday", "Friday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi", "Purnima"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Chaturdashi", "Amavasya"],
+            "notes": "गृह प्रवेश के लिए नक्षत्र भी बहुत महत्वपूर्ण है। रोहिणी, मृगशिरा, उत्तराफाल्गुनी, हस्त और उत्तराषाढ़ा शुभ माने जाते हैं।"
+        },
+        "travel": {
+            "goodDays": ["Monday", "Wednesday", "Thursday", "Friday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Navami", "Chaturdashi", "Amavasya"],
+            "notes": "पारंपरिक मार्गदर्शन में यात्रा की दिशा भी महत्व रखती है। विशिष्ट यात्रा मुहूर्त के लिए विद्वान से परामर्श करें।"
+        },
+        "property": {
+            "goodDays": ["Monday", "Wednesday", "Thursday", "Friday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi", "Purnima"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Chaturdashi", "Amavasya"],
+            "notes": "संपत्ति के सौदे आदर्श रूप से शुक्ल पक्ष में करने चाहिए। रोहिणी, उत्तराफाल्गुनी और उत्तराषाढ़ा नक्षत्र अनुकूल हैं।"
+        },
+        "education": {
+            "goodDays": ["Monday", "Wednesday", "Thursday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Pratipada", "Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Chaturdashi", "Amavasya"],
+            "notes": "गुरुवार (बृहस्पति/गुरु का दिन — देवताओं के गुरु) शैक्षिक शुरुआत के लिए सबसे शुभ माना जाता है। वसंत पंचमी पारंपरिक रूप से शिक्षा आरंभ का सबसे शुभ दिन है।"
+        },
+        "marriage": {
+            "goodDays": ["Monday", "Wednesday", "Thursday", "Friday"],
+            "avoidDays": ["Tuesday", "Saturday"],
+            "preferredTithis": ["Dwitiya", "Tritiya", "Panchami", "Saptami", "Dashami", "Ekadashi", "Trayodashi"],
+            "avoidTithis": ["Chaturthi", "Ashtami", "Navami", "Chaturdashi", "Amavasya", "Purnima"],
+            "notes": "विवाह मुहूर्त के लिए दोनों कुंडलियों का विस्तृत विश्लेषण आवश्यक है। विशिष्ट महीने और नक्षत्र पसंद किए जाते हैं। विवाह तिथियों के लिए हमेशा योग्य ज्योतिष विद्वान से परामर्श करें।"
+        }
+    },
+    "disclaimer": "यह जानकारी सामान्य पारंपरिक पंचांग दिशा-निर्देशों पर आधारित है। महत्वपूर्ण जीवन निर्णयों के लिए, कृपया योग्य कश्मीरी पंडित विद्वान या पुरोहित से परामर्श करें जो आपकी विशिष्ट परिस्थितियों और कुंडली के आधार पर व्यक्तिगत मार्गदर्शन दे सकें। यह प्लेटफॉर्म विशेषज्ञ परामर्श का विकल्प नहीं है।"
+}

@@ -1543,6 +1543,11 @@ const I18n = (() => {
             document.documentElement.lang = langCode;
             translatePage();
             
+            // Clear data cache so pages reload data in the new language
+            if (typeof App !== 'undefined' && App.clearDataCache) {
+                App.clearDataCache();
+            }
+            
             // Trigger a router re-render so dynamically generated JS components update
             window.dispatchEvent(new Event('hashchange'));
         }

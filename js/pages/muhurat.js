@@ -6,6 +6,14 @@ const MuhuratPage = (() => {
     let muhuratData = null;
     let selectedEvent = null;
 
+    const dayNameHi = {
+        'Monday': 'सोमवार', 'Tuesday': 'मंगलवार', 'Wednesday': 'बुधवार',
+        'Thursday': 'गुरुवार', 'Friday': 'शुक्रवार', 'Saturday': 'शनिवार', 'Sunday': 'रविवार'
+    };
+    function tDay(d) {
+        return (typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi') ? (dayNameHi[d] || d) : d;
+    }
+
     function render() {
         return `
             <div class="page-enter">
@@ -242,13 +250,13 @@ const MuhuratPage = (() => {
                             <div>
                                 <span class="text-muted" style="font-size: var(--text-xs)">${typeof I18n !== 'undefined' ? I18n.t('muhurat.favorable_days', 'FAVORABLE DAYS') : 'FAVORABLE DAYS'}</span>
                                 <div class="tag-group mt-2">
-                                    ${eventRecs.goodDays.map(d => `<span class="tag active">${d}</span>`).join('')}
+                                    ${eventRecs.goodDays.map(d => `<span class="tag active">${tDay(d)}</span>`).join('')}
                                 </div>
                             </div>
                             <div>
                                 <span class="text-muted" style="font-size: var(--text-xs)">${typeof I18n !== 'undefined' ? I18n.t('muhurat.avoid', 'AVOID') : 'AVOID'}</span>
                                 <div class="tag-group mt-2">
-                                    ${eventRecs.avoidDays.map(d => `<span class="tag" style="border-color: rgba(139,26,26,0.3); color: var(--color-primary-light)">${d}</span>`).join('')}
+                                    ${eventRecs.avoidDays.map(d => `<span class="tag" style="border-color: rgba(139,26,26,0.3); color: var(--color-primary-light)">${tDay(d)}</span>`).join('')}
                                 </div>
                             </div>
                         </div>
@@ -267,15 +275,15 @@ const MuhuratPage = (() => {
                                                 ${ad.date.getDate()}
                                             </div>
                                             <div style="font-size: var(--text-xs); color: var(--text-muted)">
-                                                ${ad.date.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' })}
+                                                ${ad.date.toLocaleDateString((typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi') ? 'hi-IN' : 'en-IN', { month: 'short', year: 'numeric' })}
                                             </div>
                                         </div>
                                         <div>
                                             <div style="font-weight: 600; margin-bottom: var(--space-1)">
-                                                ${ad.dayOfWeek}, ${ad.date.toLocaleDateString('en-IN', { month: 'long', day: 'numeric', year: 'numeric' })}
+                                                ${tDay(ad.dayOfWeek)}, ${ad.date.toLocaleDateString((typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi') ? 'hi-IN' : 'en-IN', { month: 'long', day: 'numeric', year: 'numeric' })}
                                             </div>
                                             <div style="font-size: var(--text-sm); color: var(--text-secondary)">
-                                                ${ad.tithi.name} (${ad.tithi.pakshaIndex === 0 ? 'Shukla' : 'Krishna'}) · ${ad.nakshatra.name}
+                                                ${ad.tithi.name} (${ad.tithi.pakshaIndex === 0 ? ((typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi') ? 'शुक्ल' : 'Shukla') : ((typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi') ? 'कृष्ण' : 'Krishna')}) · ${ad.nakshatra.name}
                                             </div>
                                         </div>
                                     </div>
@@ -284,7 +292,7 @@ const MuhuratPage = (() => {
                                             <div style="font-size: var(--text-sm); color: var(--color-secondary); font-weight: 600">
                                                 ${Math.round(ad.score)}/${ad.maxScore}
                                             </div>
-                                            ${Components.badge(ad.score >= (ad.maxScore * 0.75) ? 'Highly Favorable' : 'Favorable', ad.score >= (ad.maxScore * 0.75) ? 'accent' : 'secondary')}
+                                            ${Components.badge(ad.score >= (ad.maxScore * 0.75) ? ((typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi') ? 'अत्यंत अनुकूल' : 'Highly Favorable') : ((typeof I18n !== 'undefined' && I18n.getLanguage() === 'hi') ? 'अनुकूल' : 'Favorable'), ad.score >= (ad.maxScore * 0.75) ? 'accent' : 'secondary')}
                                         </div>
                                         ${ad.personalCompat ? `
                                             <div style="font-size: 10px; color: ${ad.personalCompat.tara.isGood ? 'var(--color-secondary)' : 'var(--text-muted)'}; text-transform: uppercase; font-weight: bold; margin-top: 4px;">
