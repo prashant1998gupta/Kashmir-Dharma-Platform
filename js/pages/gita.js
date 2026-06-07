@@ -6,11 +6,17 @@
 const GitaPage = (() => {
     const REFLECTIONS_KEY = 'kdp_gita_reflections';
     const ANSWER_LANGUAGE_KEY = 'kdp_gita_answer_language';
+    // Add your real support links before launch.
+    // Example: upiId: 'yourname@upi', qrImage: 'img/support/upi-qr.png'
     const SUPPORT_CONFIG = {
         upiId: '',
         paymentLink: '',
         qrImage: '',
-        email: ''
+        email: '',
+        socialLinks: [
+            { id: 'x', label: 'X', url: '' },
+            { id: 'instagram', label: 'Instagram', url: '' }
+        ]
     };
     let chatHistory = [];
     let isTyping = false;
@@ -306,23 +312,79 @@ const GitaPage = (() => {
 
     function openSupportModal() {
         closeMenu();
-        const hasSupport = SUPPORT_CONFIG.upiId || SUPPORT_CONFIG.paymentLink || SUPPORT_CONFIG.qrImage || SUPPORT_CONFIG.email;
+        const socialLinks = getActiveSocialLinks();
+        const upiLink = getUpiPaymentLink();
+        const hasSupport = hasSupportDetails();
+        const supportPromise = `
+            <div class="gita-support-promise">
+                <span>${t('gita.support_promise_1', 'Keeps the guide free')}</span>
+                <span>${t('gita.support_promise_2', 'Supports verse curation')}</span>
+                <span>${t('gita.support_promise_3', 'Helps add languages')}</span>
+            </div>
+        `;
+        const socialBody = socialLinks.length
+            ? `
+                <div class="gita-support-socials">
+                    <span>${t('gita.follow_us', 'Follow us')}</span>
+                    ${socialLinks.map(link => `
+                        <a href="${escapeAttribute(link.url)}" target="_blank" rel="noopener" aria-label="${escapeAttribute(link.label)}">${escapeHtml(link.label)}</a>
+                    `).join('')}
+                </div>
+            `
+            : '';
         const supportBody = hasSupport
             ? `
-                ${SUPPORT_CONFIG.qrImage ? `<img class="gita-support-qr" src="${SUPPORT_CONFIG.qrImage}" alt="${t('gita.support_qr_alt', 'Support QR code')}">` : ''}
-                ${SUPPORT_CONFIG.upiId ? `<p><strong>${t('gita.support_upi', 'UPI ID')}:</strong> <button class="gita-link-button" onclick="GitaPage.copySupportText('${escapeAttribute(SUPPORT_CONFIG.upiId)}')" type="button">${escapeHtml(SUPPORT_CONFIG.upiId)}</button></p>` : ''}
-                ${SUPPORT_CONFIG.paymentLink ? `<p><a href="${escapeAttribute(SUPPORT_CONFIG.paymentLink)}" target="_blank" rel="noopener">${t('gita.support_payment_link', 'Open support link')}</a></p>` : ''}
-                ${SUPPORT_CONFIG.email ? `<p><a href="mailto:${escapeAttribute(SUPPORT_CONFIG.email)}">${escapeHtml(SUPPORT_CONFIG.email)}</a></p>` : ''}
+                <div class="gita-support-pay-card ${SUPPORT_CONFIG.qrImage ? '' : 'no-qr'}">
+                    ${SUPPORT_CONFIG.qrImage ? `
+                        <div class="gita-support-qr-wrap">
+                            <span>${t('gita.support_scan_label', 'Scan to support')}</span>
+                            <img class="gita-support-qr" src="${escapeAttribute(SUPPORT_CONFIG.qrImage)}" alt="${t('gita.support_qr_alt', 'Support QR code')}">
+                        </div>
+                    ` : ''}
+                    <div class="gita-support-payment-copy">
+                        <strong>${t('gita.support_modal_headline', 'Keep this Gita guide free for every seeker')}</strong>
+                        <p>${t('gita.support_modal_desc', 'Your contribution supports maintenance, more scripture-grounded answers, and better Indian-language guidance.')}</p>
+                        <div class="gita-support-actions">
+                            ${upiLink ? `<a class="btn btn-primary" href="${escapeAttribute(upiLink)}">${t('gita.support_open_upi', 'Open UPI app')}</a>` : ''}
+                            ${SUPPORT_CONFIG.paymentLink ? `<a class="btn btn-outline" href="${escapeAttribute(SUPPORT_CONFIG.paymentLink)}" target="_blank" rel="noopener">${t('gita.support_payment_link', 'Open support link')}</a>` : ''}
+                        </div>
+                        ${SUPPORT_CONFIG.upiId ? `<p class="gita-support-upi"><strong>${t('gita.support_upi', 'UPI ID')}:</strong> <button class="gita-link-button" onclick="GitaPage.copySupportText('${escapeAttribute(SUPPORT_CONFIG.upiId)}')" type="button">${escapeHtml(SUPPORT_CONFIG.upiId)}</button></p>` : ''}
+                        ${SUPPORT_CONFIG.email ? `<p><a href="mailto:${escapeAttribute(SUPPORT_CONFIG.email)}">${escapeHtml(SUPPORT_CONFIG.email)}</a></p>` : ''}
+                    </div>
+                </div>
             `
-            : `<p>${t('gita.support_not_configured', 'Support details are not configured yet. Add your own payment link, UPI ID, or QR asset before launch.')}</p>`;
+            : `<div class="gita-support-empty">
+                    <strong>${t('gita.support_setup_title', 'Donation setup needed')}</strong>
+                    <span>${t('gita.support_not_configured', 'Support details are not configured yet. Add your own payment link, UPI ID, or QR asset before launch.')}</span>
+               </div>`;
 
         Components.openModal(`
             <div class="gita-info-modal gita-support-modal">
-                <h2>${t('gita.support_title', 'Support this project')}</h2>
-                <p>${t('gita.support_desc', 'If this companion helps your spiritual practice, you can support its maintenance and future improvements.')}</p>
+                <div class="gita-support-modal-head">
+                    <span>${t('gita.support_kicker', 'Community supported')}</span>
+                    <h2>${t('gita.support_title', 'Support this seva')}</h2>
+                    <p>${t('gita.support_desc', 'If this companion helps your spiritual practice, your support keeps it alive, free, and improving for other seekers.')}</p>
+                </div>
+                ${supportPromise}
+                ${socialBody}
                 ${supportBody}
             </div>
         `);
+    }
+
+    function getActiveSocialLinks() {
+        return (SUPPORT_CONFIG.socialLinks || []).filter(link => link.url);
+    }
+
+    function hasSupportDetails() {
+        return Boolean(SUPPORT_CONFIG.upiId || SUPPORT_CONFIG.paymentLink || SUPPORT_CONFIG.qrImage || SUPPORT_CONFIG.email);
+    }
+
+    function getUpiPaymentLink() {
+        if (!SUPPORT_CONFIG.upiId) return '';
+        const payee = encodeURIComponent(SUPPORT_CONFIG.upiId);
+        const name = encodeURIComponent('Kashmir Dharma Companion');
+        return `upi://pay?pa=${payee}&pn=${name}&cu=INR`;
     }
 
     function copySupportText(value) {
@@ -536,15 +598,24 @@ const GitaPage = (() => {
 
     function renderSuggestions(suggestions, bubble) {
         if (!bubble) return;
+        renderCommunitySupport(bubble);
         
         const actionRow = document.createElement('div');
         actionRow.className = 'gita-bubble-actions';
+        const copyLabel = t('gita.copy_answer', 'Copy answer');
+        const saveLabel = t('gita.save_reflection', 'Save reflection');
+        const shareLabel = t('gita.share', 'Share');
+        const retryLabel = t('gita.retry', 'Retry');
+        const copyText = t('gita.action_copy', 'Copy');
+        const saveText = t('gita.action_save', 'Save');
+        const shareText = t('gita.action_share', 'Share');
+        const retryText = t('gita.action_retry', 'Retry');
 
         actionRow.innerHTML = `
-            <button class="btn btn-outline btn-xs" onclick="GitaPage.copyLastAnswer()">📋 ${t('gita.copy_answer', 'Copy')}</button>
-            <button class="btn btn-outline btn-xs" onclick="GitaPage.saveLastReflection()">🔖 ${t('gita.save_reflection', 'Save')}</button>
-            <button class="btn btn-outline btn-xs" onclick="GitaPage.shareLastAnswer()">📤 ${t('gita.share', 'Share')}</button>
-            <button class="btn btn-outline btn-xs" onclick="GitaPage.retryLastQuestion()">↻ ${t('gita.retry', 'Retry')}</button>
+            <button class="gita-action-btn" onclick="GitaPage.copyLastAnswer()" aria-label="${escapeAttribute(copyLabel)}" title="${escapeAttribute(copyLabel)}" type="button"><span class="gita-action-icon" aria-hidden="true">📋</span><span class="gita-action-label">${copyText}</span></button>
+            <button class="gita-action-btn" onclick="GitaPage.saveLastReflection()" aria-label="${escapeAttribute(saveLabel)}" title="${escapeAttribute(saveLabel)}" type="button"><span class="gita-action-icon" aria-hidden="true">🔖</span><span class="gita-action-label">${saveText}</span></button>
+            <button class="gita-action-btn" onclick="GitaPage.shareLastAnswer()" aria-label="${escapeAttribute(shareLabel)}" title="${escapeAttribute(shareLabel)}" type="button"><span class="gita-action-icon" aria-hidden="true">↗</span><span class="gita-action-label">${shareText}</span></button>
+            <button class="gita-action-btn" onclick="GitaPage.retryLastQuestion()" aria-label="${escapeAttribute(retryLabel)}" title="${escapeAttribute(retryLabel)}" type="button"><span class="gita-action-icon" aria-hidden="true">↻</span><span class="gita-action-label">${retryText}</span></button>
         `;
         bubble.appendChild(actionRow);
 
@@ -554,7 +625,7 @@ const GitaPage = (() => {
 
             suggestions.slice(0, 3).forEach(suggestion => {
                 const btn = document.createElement('button');
-                btn.className = 'suggestion-chip btn btn-outline btn-sm';
+                btn.className = 'suggestion-chip gita-followup-chip';
                 btn.innerText = suggestion;
                 btn.onclick = () => GitaPage.ask(suggestion);
                 suggContainer.appendChild(btn);
@@ -563,6 +634,37 @@ const GitaPage = (() => {
         }
         
         scrollChatToBottom();
+    }
+
+    function renderCommunitySupport(bubble) {
+        const socialLinks = getActiveSocialLinks();
+        if (!bubble) return;
+
+        const wrap = document.createElement('div');
+        wrap.className = 'gita-support-card';
+        const followHtml = socialLinks.length
+            ? `
+                <div class="gita-support-card-socials">
+                    <span>${t('gita.follow_us', 'Follow us')}</span>
+                    ${socialLinks.map(link => `
+                        <a class="gita-social-link" href="${escapeAttribute(link.url)}" target="_blank" rel="noopener" aria-label="${escapeAttribute(link.label)}">${escapeHtml(link.label)}</a>
+                    `).join('')}
+                </div>
+            `
+            : '';
+
+        wrap.innerHTML = `
+            <div class="gita-support-card-copy">
+                <span>${t('gita.support_kicker', 'Community supported')}</span>
+                <strong>${t('gita.support_card_title', 'Keep Gita Wisdom Guide free')}</strong>
+                <p>${t('gita.support_card_desc', 'Support verse curation, translations, and maintenance for every seeker.')}</p>
+            </div>
+            <div class="gita-support-card-actions">
+                <button class="btn btn-primary btn-sm" onclick="GitaPage.openSupportModal()" type="button">${t('gita.support_cta', 'Support this seva')}</button>
+                ${followHtml}
+            </div>
+        `;
+        bubble.appendChild(wrap);
     }
 
     function renderSourceCards(sources, bubble) {
