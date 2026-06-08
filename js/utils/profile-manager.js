@@ -158,20 +158,30 @@ const ProfileManager = (() => {
                                 <label class="form-label">${t('profile.tob_optional', 'Time of Birth (Optional)')}</label>
                                 <input type="time" id="profTime" class="form-input" style="width:100%; color-scheme: dark;">
                             </div>
-                            <div class="grid-2">
-                                <div class="form-group">
-                                    <label class="form-label">${t('profile.latitude', 'Latitude')}</label>
-                                    <input type="number" step="0.0001" id="profLat" class="form-input" value="34.0837" required style="width:100%">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">${t('profile.longitude', 'Longitude')}</label>
-                                    <input type="number" step="0.0001" id="profLng" class="form-input" value="74.7973" required style="width:100%">
-                                </div>
+                            <div class="form-group" style="position: relative;">
+                                <label class="form-label">${t('profile.birth_city', 'Birth City / Location')}</label>
+                                <input type="text" class="form-input" id="profCity" placeholder="${t('profile.search_city', 'Search city (e.g. Srinagar)...')}" autocomplete="off" style="width:100%">
+                                <div id="profCityResults" class="autocomplete-results" style="display: none;"></div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">${t('profile.timezone', 'Timezone Offset (Hours from UTC)')}</label>
-                                <input type="number" step="0.5" id="profTz" class="form-input" value="5.5" required style="width:100%">
-                            </div>
+                            <details style="margin-bottom: var(--space-4); font-size: var(--text-sm);">
+                                <summary style="color: var(--text-muted); cursor: pointer; padding: 4px 0;">${t('profile.advanced_location', 'Advanced: Manual Coordinates')}</summary>
+                                <div style="padding-top: var(--space-2);">
+                                    <div class="grid-2">
+                                        <div class="form-group">
+                                            <label class="form-label">${t('profile.latitude', 'Latitude')}</label>
+                                            <input type="number" step="0.0001" id="profLat" class="form-input" value="34.0837" required style="width:100%">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label">${t('profile.longitude', 'Longitude')}</label>
+                                            <input type="number" step="0.0001" id="profLng" class="form-input" value="74.7973" required style="width:100%">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">${t('profile.timezone', 'Timezone Offset (Hours from UTC)')}</label>
+                                        <input type="number" step="0.5" id="profTz" class="form-input" value="5.5" required style="width:100%">
+                                    </div>
+                                </div>
+                            </details>
                             <button type="submit" class="btn btn-primary" style="width: 100%;">${t('profile.save', 'Save Profile')}</button>
                         </form>
                     </div>
@@ -206,6 +216,7 @@ const ProfileManager = (() => {
         const container = document.getElementById('modalBody');
         if (container) {
             container.innerHTML = renderManagerUI();
+            initModalInteractivity();
         }
         
         refreshSelectors();
@@ -222,14 +233,37 @@ const ProfileManager = (() => {
             const container = document.getElementById('modalBody');
             if (container) {
                 container.innerHTML = renderManagerUI();
+                initModalInteractivity();
             }
             refreshSelectors();
         }
     }
 
+    function initModalInteractivity() {
+        setTimeout(() => {
+            if (typeof CityAPI !== 'undefined') {
+                CityAPI.initCityAutocomplete('profCity', 'profCityResults');
+                const cityInput = document.getElementById('profCity');
+                if (cityInput) {
+                    cityInput.addEventListener('change', () => {
+                        if (cityInput.dataset.lat) {
+                            document.getElementById('profLat').value = parseFloat(cityInput.dataset.lat).toFixed(4);
+                            document.getElementById('profLng').value = parseFloat(cityInput.dataset.lon).toFixed(4);
+                            const dob = document.getElementById('profDob').value;
+                            if (cityInput.dataset.tzStr) {
+                                document.getElementById('profTz').value = CityAPI.getTzOffset(cityInput.dataset.tzStr, dob);
+                            }
+                        }
+                    });
+                }
+            }
+        }, 100);
+    }
+
     function openManagerModal() {
         if (typeof Components !== 'undefined' && Components.openModal) {
             Components.openModal(renderManagerUI());
+            initModalInteractivity();
             
             // Close mobile sidebar if open
             const sidebar = document.getElementById('sidebar');

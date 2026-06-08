@@ -127,6 +127,7 @@ const CityAPI = (() => {
                         input.dataset.lon = city.lon;
                         input.dataset.tzStr = city.tzStr;
                         resultsBox.style.display = 'none';
+                        input.dispatchEvent(new Event('change'));
                     });
 
                     resultsBox.appendChild(li);
