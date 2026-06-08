@@ -59,6 +59,7 @@ const MatchingPage = (() => {
                     <!-- Boy's Details -->
                     <div class="card card-glass" style="padding: var(--space-6); overflow: visible;">
                         <h3 style="color: var(--color-primary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('match.boy_details', "Boy's Details") : "Boy's Details"}</h3>
+                        ${ProfileManager.renderProfileSelector('boyProfileSelect', 'MatchingPage.loadBoyProfile')}
                         <div class="form-group">
                             <label class="form-label" for="boy-name">${typeof I18n !== 'undefined' ? I18n.t('match.name', 'Name') : 'Name'}</label>
                             <input type="text" id="boy-name" class="form-control" placeholder="${typeof I18n !== 'undefined' ? I18n.t('match.enter_name', 'Enter name') : 'Enter name'}">
@@ -83,6 +84,7 @@ const MatchingPage = (() => {
                     <!-- Girl's Details -->
                     <div class="card card-glass" style="padding: var(--space-6); overflow: visible;">
                         <h3 style="color: var(--color-secondary); margin-bottom: var(--space-4); border-bottom: 1px solid var(--surface-border); padding-bottom: var(--space-2);">${typeof I18n !== 'undefined' ? I18n.t('match.girl_details', "Girl's Details") : "Girl's Details"}</h3>
+                        ${ProfileManager.renderProfileSelector('girlProfileSelect', 'MatchingPage.loadGirlProfile')}
                         <div class="form-group">
                             <label class="form-label" for="girl-name">${typeof I18n !== 'undefined' ? I18n.t('match.name', 'Name') : 'Name'}</label>
                             <input type="text" id="girl-name" class="form-control" placeholder="${typeof I18n !== 'undefined' ? I18n.t('match.enter_name', 'Enter name') : 'Enter name'}">
@@ -167,9 +169,11 @@ const MatchingPage = (() => {
         const el = document.getElementById(inputId);
         const name = el.value;
         if (el.dataset.lat) {
+            const tzOffset = el.dataset.tz ? parseFloat(el.dataset.tz) :
+                (typeof CityAPI !== 'undefined' && el.dataset.tzStr ? CityAPI.getTzOffset(el.dataset.tzStr, `${dateVal}T${timeVal}:00`) : 5.5);
             return {
-                name, lat: parseFloat(el.dataset.lat), lon: parseFloat(el.dataset.lon),
-                tz: typeof CityAPI !== 'undefined' ? CityAPI.getTzOffset(el.dataset.tzStr, `${dateVal}T${timeVal}:00`) : 5.5
+                name, lat: parseFloat(el.dataset.lat), lon: parseFloat(el.dataset.lon || el.dataset.lng),
+                tz: tzOffset
             };
         }
         return typeof CityDatabase !== 'undefined' ? CityDatabase.find(c => c.name.toLowerCase() === name.toLowerCase()) : null;
@@ -886,6 +890,40 @@ const MatchingPage = (() => {
         }, 100);
     }
 
+    function loadBoyProfile(id) {
+        if (!id) return;
+        const profile = ProfileManager.getProfileById(id);
+        if (profile) {
+            document.getElementById('boy-name').value = profile.name || '';
+            document.getElementById('boy-date').value = profile.dob || '';
+            document.getElementById('boy-time').value = profile.time || '';
+            
+            document.getElementById('boy-city').value = profile.cityName || `${typeof I18n !== 'undefined' ? I18n.t('kundali.auto_filled', 'Auto-filled') : 'Auto-filled'} (${profile.lat}, ${profile.lng})`;
+            document.getElementById('boy-city').dataset.lat = profile.lat;
+            document.getElementById('boy-city').dataset.lng = profile.lng;
+            document.getElementById('boy-city').dataset.tz = profile.tz;
+            
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('profile.loaded_success', 'Profile loaded successfully!') : 'Profile loaded successfully!', 'success');
+        }
+    }
+
+    function loadGirlProfile(id) {
+        if (!id) return;
+        const profile = ProfileManager.getProfileById(id);
+        if (profile) {
+            document.getElementById('girl-name').value = profile.name || '';
+            document.getElementById('girl-date').value = profile.dob || '';
+            document.getElementById('girl-time').value = profile.time || '';
+            
+            document.getElementById('girl-city').value = profile.cityName || `${typeof I18n !== 'undefined' ? I18n.t('kundali.auto_filled', 'Auto-filled') : 'Auto-filled'} (${profile.lat}, ${profile.lng})`;
+            document.getElementById('girl-city').dataset.lat = profile.lat;
+            document.getElementById('girl-city').dataset.lng = profile.lng;
+            document.getElementById('girl-city').dataset.tz = profile.tz;
+            
+            Components.showToast(typeof I18n !== 'undefined' ? I18n.t('profile.loaded_success', 'Profile loaded successfully!') : 'Profile loaded successfully!', 'success');
+        }
+    }
+
     return {
         render,
         afterRender,
@@ -894,6 +932,8 @@ const MatchingPage = (() => {
         continueToCheckout,
         recordPaymentClick,
         openUnlockModal,
-        confirmPaidUnlock
+        confirmPaidUnlock,
+        loadBoyProfile,
+        loadGirlProfile
     };
 })();
