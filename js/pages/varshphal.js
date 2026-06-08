@@ -19,6 +19,7 @@ const VarshphalPage = (() => {
                 )}
 
                 <div class="card card-glass" style="padding: var(--space-6); max-width: 800px; margin: 0 auto var(--space-8) auto; overflow: visible;">
+                    ${ProfileManager.renderProfileSelector('varshphalProfile', 'VarshphalPage.onProfileSelect')}
                     <div class="grid-2">
                         <div class="form-group">
                             <label class="form-label" for="v-name">${typeof I18n !== 'undefined' ? I18n.t('varshphal.name', 'Name') : 'Name'}</label>
@@ -132,8 +133,10 @@ const VarshphalPage = (() => {
 
         let cityObj;
         if (cityInput.dataset.lat) {
-            cityObj = { name: cityName, lat: parseFloat(cityInput.dataset.lat), lon: parseFloat(cityInput.dataset.lon),
-                tz: typeof CityAPI !== 'undefined' ? CityAPI.getTzOffset(cityInput.dataset.tzStr, `${date}T${time}:00`) : 5.5 };
+            const tzOffset = cityInput.dataset.tz ? parseFloat(cityInput.dataset.tz) :
+                (typeof CityAPI !== 'undefined' && cityInput.dataset.tzStr ? CityAPI.getTzOffset(cityInput.dataset.tzStr, `${date}T${time}:00`) : 5.5);
+            cityObj = { name: cityName, lat: parseFloat(cityInput.dataset.lat), lon: parseFloat(cityInput.dataset.lon || cityInput.dataset.lng),
+                tz: tzOffset };
         } else {
             cityObj = typeof CityDatabase !== 'undefined' ? CityDatabase.find(c => c.name.toLowerCase() === cityName.toLowerCase()) : null;
         }
@@ -413,5 +416,28 @@ const VarshphalPage = (() => {
         }, 100);
     }
 
-    return { render, afterRender, generateVarshphal };
+    function onProfileSelect(profileId) {
+        if (!profileId) return;
+        if (typeof ProfileManager !== 'undefined') {
+            const profile = ProfileManager.getProfileById(profileId);
+            if (profile) {
+                document.getElementById('v-name').value = profile.name || '';
+                document.getElementById('v-date').value = profile.dob || '';
+                document.getElementById('v-time').value = profile.time || '';
+                
+                if (profile.cityName) {
+                    const cityInput = document.getElementById('v-city');
+                    if (cityInput) {
+                        cityInput.value = profile.cityName;
+                        cityInput.dataset.lat = profile.lat;
+                        cityInput.dataset.lon = profile.lng;
+                        cityInput.dataset.tz = profile.tz;
+                    }
+                }
+                Components.showToast(typeof I18n !== 'undefined' ? I18n.t('profile.loaded_success', 'Profile loaded successfully!') : 'Profile loaded successfully!', 'success');
+            }
+        }
+    }
+
+    return { render, afterRender, generateVarshphal, onProfileSelect };
 })();
