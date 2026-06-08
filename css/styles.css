@@ -4078,3 +4078,77 @@ body.gita-immersive-route .page-container {
         flex-basis: 48px;
     }
 }
+
+/* =========================================
+   GLOBAL MOBILE RESPONSIVENESS
+   ========================================= */
+@media (max-width: 768px) {
+    /* Header & Navigation */
+    .mobile-header {
+        display: flex;
+    }
+    
+    .sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+        box-shadow: 4px 0 20px rgba(0,0,0,0.5);
+    }
+    
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        z-index: calc(var(--z-sidebar) - 1);
+    }
+    
+    .sidebar-overlay.active {
+        display: block;
+    }
+    
+    .page-content {
+        margin-left: 0 !important;
+        padding: calc(60px + var(--space-4)) var(--space-4) var(--space-8) var(--space-4) !important;
+    }
+
+    /* Grids */
+    .grid-2, .grid-3, .grid-4, .grid-auto {
+        grid-template-columns: 1fr !important;
+        gap: var(--space-4);
+    }
+
+    /* Cards */
+    .card, .card-glass {
+        padding: var(--space-4) !important;
+    }
+
+    /* Typography */
+    h1, .section-title {
+        font-size: var(--text-2xl) !important;
+    }
+    h2 { font-size: var(--text-xl) !important; }
+    h3 { font-size: var(--text-lg) !important; }
+
+    /* Tables & Forms */
+    .panchang-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    
+    .form-group {
+        margin-bottom: var(--space-3);
+    }
+    
+    /* Specific overrides for forms */
+    .card-glass > .grid-2 {
+        display: flex;
+        flex-direction: column;
+    }
+}
