@@ -45,8 +45,21 @@ const MuhuratPage = (() => {
         });
     }
 
-    function onProfileSelect(profile) {
-        // Handled dynamically when findMuhurat is called
+    function onProfileSelect(profileId) {
+        if (!profileId) return;
+        if (typeof ProfileManager !== 'undefined') {
+            const profile = ProfileManager.getProfileById(profileId);
+            if (profile && profile.cityName) {
+                const cityInput = document.getElementById('m-city');
+                if (cityInput) {
+                    cityInput.value = profile.cityName;
+                    cityInput.dataset.lat = profile.lat;
+                    cityInput.dataset.lon = profile.lng;
+                    cityInput.dataset.tz = profile.tz;
+                    Components.showToast(typeof I18n !== 'undefined' ? I18n.t('profile.loaded_success', 'Profile loaded successfully!') : 'Profile loaded successfully!', 'success');
+                }
+            }
+        }
     }
 
     function renderContent() {
@@ -207,7 +220,7 @@ const MuhuratPage = (() => {
                 cityObj = {
                     name: cityName,
                     lat: parseFloat(cityInput.dataset.lat),
-                    lon: parseFloat(cityInput.dataset.lon)
+                    lon: parseFloat(cityInput.dataset.lon || cityInput.dataset.lng)
                 };
             } else if (typeof CityDatabase !== 'undefined') {
                 cityObj = CityDatabase.find(c => c.name.toLowerCase() === cityName.toLowerCase());
@@ -217,7 +230,7 @@ const MuhuratPage = (() => {
         const profileId = document.getElementById('muhuratProfile')?.value;
         let userProfile = null;
         if (profileId && typeof ProfileManager !== 'undefined') {
-            userProfile = ProfileManager.getProfile(profileId);
+            userProfile = ProfileManager.getProfileById(profileId);
         }
 
         // Get event-specific recommendations
@@ -355,7 +368,7 @@ const MuhuratPage = (() => {
         }, 150);
     }
 
-    return { render, afterRender, selectEvent, findMuhurat };
+    return { render, afterRender, selectEvent, findMuhurat, onProfileSelect };
 })();
 
 window.MuhuratPage = MuhuratPage;
