@@ -67,7 +67,7 @@ const ProfileManager = (() => {
         const profiles = getProfiles();
         if (profiles.length === 0) {
             return `
-                <div style="margin-top: var(--space-2);">
+                <div id="${selectId}_wrapper" data-handler="${onchangeHandler}" style="margin-top: var(--space-2);">
                     <button class="btn btn-outline" onclick="ProfileManager.openManagerModal()" style="width: 100%; border-style: dashed;">
                         ${t('profile.add_family', '+ Add a Family Profile')}
                     </button>
@@ -77,7 +77,7 @@ const ProfileManager = (() => {
         
         const options = profiles.map(p => `<option value="${p.id}">${p.name}</option>`).join('');
         return `
-            <div class="profile-selector" style="margin-bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-2);">
+            <div id="${selectId}_wrapper" data-handler="${onchangeHandler}" class="profile-selector" style="margin-bottom: var(--space-4); display: flex; align-items: center; gap: var(--space-2);">
                 <label for="${selectId}" style="color: var(--text-secondary); font-weight: 500;">${t('profile.load_saved', 'Load Saved Profile:')}</label>
                 <select id="${selectId}" class="form-select" onchange="${onchangeHandler}(this.value)" style="flex: 1;">
                     <option value="">${t('profile.select_profile', '-- Select a Profile --')}</option>
@@ -85,6 +85,24 @@ const ProfileManager = (() => {
                 </select>
             </div>
         `;
+    }
+
+    function refreshSelectors() {
+        document.querySelectorAll('[id$="_wrapper"]').forEach(wrapper => {
+            if (wrapper.id.endsWith('_wrapper') && wrapper.dataset.handler) {
+                const selectId = wrapper.id.replace('_wrapper', '');
+                const handler = wrapper.dataset.handler;
+                const select = wrapper.querySelector('select');
+                const val = select ? select.value : '';
+                
+                wrapper.outerHTML = renderProfileSelector(selectId, handler);
+                
+                const newSelect = document.getElementById(selectId);
+                if (newSelect && val) {
+                    newSelect.value = val;
+                }
+            }
+        });
     }
 
     /**
@@ -190,6 +208,8 @@ const ProfileManager = (() => {
             container.innerHTML = renderManagerUI();
         }
         
+        refreshSelectors();
+        
         if (window.Components && Components.showToast) {
             Components.showToast(t('profile.save_success', 'Profile saved successfully'), "success");
         }
@@ -203,6 +223,7 @@ const ProfileManager = (() => {
             if (container) {
                 container.innerHTML = renderManagerUI();
             }
+            refreshSelectors();
         }
     }
 
