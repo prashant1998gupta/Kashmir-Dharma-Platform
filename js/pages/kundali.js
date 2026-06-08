@@ -244,13 +244,14 @@ const KundaliPage = (() => {
         const cityInput = document.getElementById('k-city');
         
         if (cityInput.dataset.lat) {
-            const tzOffset = typeof CityAPI !== 'undefined' ? 
-                CityAPI.getTzOffset(cityInput.dataset.tzStr, `${date}T${time}:00`) : 5.5;
+            const tzOffset = cityInput.dataset.tz ? parseFloat(cityInput.dataset.tz) :
+                (typeof CityAPI !== 'undefined' && cityInput.dataset.tzStr ? 
+                    CityAPI.getTzOffset(cityInput.dataset.tzStr, `${date}T${time}:00`) : 5.5);
                 
             cityObj = {
                 name: cityName,
                 lat: parseFloat(cityInput.dataset.lat),
-                lon: parseFloat(cityInput.dataset.lon),
+                lon: parseFloat(cityInput.dataset.lon || cityInput.dataset.lng),
                 tz: tzOffset
             };
         } else {
