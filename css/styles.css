@@ -1766,6 +1766,14 @@ a:hover {
     .calendar-event {
         font-size: 8px;
         padding: 2px 4px;
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .calendar-event::before {
+        margin-right: 3px;
+        vertical-align: baseline;
     }
 
     .tabs {
