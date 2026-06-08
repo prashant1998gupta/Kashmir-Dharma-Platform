@@ -371,7 +371,7 @@ const KundaliPage = (() => {
             document.getElementById('k-time').value = profile.time || '';
             
             // Reconstruct a mock city to fill the input
-            document.getElementById('k-city').value = `${typeof I18n !== 'undefined' ? I18n.t('kundali.auto_filled', 'Auto-filled') : 'Auto-filled'} (${profile.lat}, ${profile.lng})`;
+            document.getElementById('k-city').value = profile.cityName || `${typeof I18n !== 'undefined' ? I18n.t('kundali.auto_filled', 'Auto-filled') : 'Auto-filled'} (${profile.lat}, ${profile.lng})`;
             
             // Temporarily store the exact coords on the input element for generateChart to read
             document.getElementById('k-city').dataset.lat = profile.lat;

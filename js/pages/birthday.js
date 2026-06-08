@@ -223,7 +223,7 @@ const BirthdayPage = (() => {
         if (profile) {
             document.getElementById('birthDate').value = profile.dob || '';
             document.getElementById('birthTime').value = profile.time || '';
-            document.getElementById('birthPlace').value = `${typeof I18n !== 'undefined' ? I18n.t('kundali.auto_filled', 'Auto-filled') : 'Auto-filled'} (${profile.lat}, ${profile.lng})`;
+            document.getElementById('birthPlace').value = profile.cityName || `${typeof I18n !== 'undefined' ? I18n.t('kundali.auto_filled', 'Auto-filled') : 'Auto-filled'} (${profile.lat}, ${profile.lng})`;
             Components.showToast(typeof I18n !== 'undefined' ? I18n.t('profile.loaded_success', 'Profile loaded successfully!') : 'Profile loaded successfully!', 'success');
         }
     }

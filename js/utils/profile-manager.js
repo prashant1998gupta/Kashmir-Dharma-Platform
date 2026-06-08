@@ -204,6 +204,7 @@ const ProfileManager = (() => {
             name: document.getElementById('profName').value,
             dob: document.getElementById('profDob').value,
             time: document.getElementById('profTime').value,
+            cityName: document.getElementById('profCity') ? document.getElementById('profCity').value : '',
             lat: parseFloat(document.getElementById('profLat').value),
             lng: parseFloat(document.getElementById('profLng').value),
             tz: parseFloat(document.getElementById('profTz').value)
