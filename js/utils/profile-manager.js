@@ -24,7 +24,7 @@ const ProfileManager = (() => {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(profiles));
         } catch (e) {
             console.error("Error saving profiles to localStorage", e);
-            if (window.Components && Components.showToast) Components.showToast(t('profile.storage_error', 'Storage error. Profiles may not be saved.'), "error");
+            if (typeof Components !== 'undefined' && Components.showToast) Components.showToast(t('profile.storage_error', 'Storage error. Profiles may not be saved.'), "error");
         }
     }
 
@@ -210,7 +210,7 @@ const ProfileManager = (() => {
         
         refreshSelectors();
         
-        if (window.Components && Components.showToast) {
+        if (typeof Components !== 'undefined' && Components.showToast) {
             Components.showToast(t('profile.save_success', 'Profile saved successfully'), "success");
         }
     }
@@ -228,8 +228,14 @@ const ProfileManager = (() => {
     }
 
     function openManagerModal() {
-        if (window.Components && Components.openModal) {
+        if (typeof Components !== 'undefined' && Components.openModal) {
             Components.openModal(renderManagerUI());
+            
+            // Close mobile sidebar if open
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar) sidebar.classList.remove('open');
+            if (overlay) overlay.classList.remove('active');
         }
     }
 
