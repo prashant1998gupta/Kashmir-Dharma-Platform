@@ -373,6 +373,28 @@ const CalendarCalc = (() => {
     }
 
     /**
+     * Calculate Brahma Muhurat (96 minutes before sunrise, lasting 48 minutes)
+     */
+    function calculateBrahmaMuhurat(sunrise) {
+        if (!sunrise) return null;
+        const brahmaStart = new Date(sunrise.getTime() - (96 * 60000));
+        const brahmaEnd = new Date(sunrise.getTime() - (48 * 60000));
+        return { start: brahmaStart, end: brahmaEnd };
+    }
+
+    /**
+     * Calculate Abhijit Muhurat (midday +/- 24 minutes)
+     */
+    function calculateAbhijitMuhurat(sunrise, sunset) {
+        if (!sunrise || !sunset) return null;
+        const daylightMs = sunset.getTime() - sunrise.getTime();
+        const midday = new Date(sunrise.getTime() + (daylightMs / 2));
+        const abhijitStart = new Date(midday.getTime() - (24 * 60000));
+        const abhijitEnd = new Date(midday.getTime() + (24 * 60000));
+        return { start: abhijitStart, end: abhijitEnd };
+    }
+
+    /**
      * Calculate Rahu Kalam based on day of week and exact Sunrise/Sunset
      */
     function calculateRahuKalam(sunrise, sunset, dayOfWeek) {
@@ -724,6 +746,10 @@ const CalendarCalc = (() => {
         calculateKarana,
         getSunLongitude,
         getMoonLongitude,
+        calculateSunriseSunset,
+        calculateBrahmaMuhurat,
+        calculateAbhijitMuhurat,
+        calculateRahuKalam,
         HINDU_MONTHS,
         TITHIS,
         NAKSHATRAS,

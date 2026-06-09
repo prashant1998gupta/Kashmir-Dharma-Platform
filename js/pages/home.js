@@ -60,6 +60,18 @@ const HomePage = (() => {
                     </div>
                 </section>
 
+                <section id="homeDailyWisdomWidget" class="mb-8 reveal">
+                    <h2 class="dharma-section-title" data-i18n="home.wisdom.title">${typeof I18n !== 'undefined' ? I18n.t('home.wisdom.title', 'Daily Wisdom') : 'Daily Wisdom'}</h2>
+                    <div class="grid-2 mt-4" style="gap: var(--space-4);">
+                        <div class="presence-glass-card" id="homeGitaWidget" style="padding: var(--space-5); display: flex; flex-direction: column; justify-content: center;">
+                            <div class="skeleton" style="height: 100px; width: 100%;"></div>
+                        </div>
+                        <div class="presence-glass-card" id="homeSubhashitaWidget" style="padding: var(--space-5); display: flex; flex-direction: column; justify-content: center;">
+                            <div class="skeleton" style="height: 100px; width: 100%;"></div>
+                        </div>
+                    </div>
+                </section>
+
                 ${Components.ornamentalDivider('❖')}
 
                 <!-- Quick Actions Grid -->
@@ -214,20 +226,77 @@ const HomePage = (() => {
             const rashiBaseNameWidget = rawRashi.split(' (')[0];
             const displayRashi = typeof I18n !== 'undefined' ? I18n.t(`astro.rashi.${rashiBaseNameWidget}`, rawRashi) : rawRashi;
 
+            const tYoga = typeof I18n !== 'undefined' ? I18n.t('home.panchang.yoga', 'Yoga') : 'Yoga';
+            const tKarana = typeof I18n !== 'undefined' ? I18n.t('home.panchang.karana', 'Karana') : 'Karana';
+            const tBrahma = typeof I18n !== 'undefined' ? I18n.t('home.panchang.brahma', 'Brahma Muhurat') : 'Brahma Muhurat';
+            const tAbhijit = typeof I18n !== 'undefined' ? I18n.t('home.panchang.abhijit', 'Abhijit Muhurat') : 'Abhijit Muhurat';
+            const tRahu = typeof I18n !== 'undefined' ? I18n.t('home.panchang.rahu', 'Rahu Kaal') : 'Rahu Kaal';
+
+            const rawYoga = hinduDate.yoga ? hinduDate.yoga.name : 'Unknown';
+            const displayYoga = typeof I18n !== 'undefined' ? I18n.t(`astro.yoga.${rawYoga}`, rawYoga) : rawYoga;
+            
+            const rawKarana = hinduDate.karana ? hinduDate.karana.name : 'Unknown';
+            const displayKarana = typeof I18n !== 'undefined' ? I18n.t(`astro.karana.${rawKarana}`, rawKarana) : rawKarana;
+
+            // We calculate default timings for Srinagar for the dashboard. It will update async if geolocation is allowed.
+            const srinagarLat = 34.0837;
+            const srinagarLon = 74.7973;
+            let brahmaStr = '-- : --';
+            let abhijitStr = '-- : --';
+            let rahuStr = '-- : --';
+            
+            if (typeof CalendarCalc !== 'undefined' && CalendarCalc.calculateSunriseSunset) {
+                const sunData = CalendarCalc.calculateSunriseSunset(now, srinagarLat, srinagarLon);
+                if (sunData && sunData.sunrise && sunData.sunset) {
+                    const brahma = CalendarCalc.calculateBrahmaMuhurat(sunData.sunrise);
+                    const abhijit = CalendarCalc.calculateAbhijitMuhurat(sunData.sunrise, sunData.sunset);
+                    const rahu = CalendarCalc.calculateRahuKalam(sunData.sunrise, sunData.sunset, now.getDay());
+                    
+                    const formatTime = (d) => d ? d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '--';
+                    if (brahma) brahmaStr = `${formatTime(brahma.start)} - ${formatTime(brahma.end)}`;
+                    if (abhijit) abhijitStr = `${formatTime(abhijit.start)} - ${formatTime(abhijit.end)}`;
+                    if (rahu) rahuStr = `${formatTime(rahu.start)} - ${formatTime(rahu.end)}`;
+                }
+            }
+
             presenceContainer.innerHTML = `
                 <h2 class="dharma-section-title" data-i18n="home.presence_title">${typeof I18n !== 'undefined' ? I18n.t('home.presence_title') : 'Today\'s Presence'}</h2>
-                <div class="presence-glass-card mt-4">
-                    <div class="presence-item">
-                        <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">🌙</span> ${tTithi}</div>
-                        <div class="presence-item-value" style="color: var(--color-secondary);">${displayTithi}</div>
+                <div class="presence-glass-card mt-4" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+                    <div class="panchang-col">
+                        <div class="presence-item">
+                            <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">🌙</span> ${tTithi}</div>
+                            <div class="presence-item-value" style="color: var(--color-secondary);">${displayTithi}</div>
+                        </div>
+                        <div class="presence-item">
+                            <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">✨</span> ${tNakshatra}</div>
+                            <div class="presence-item-value">${displayNakshatra}</div>
+                        </div>
+                        <div class="presence-item">
+                            <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">♋</span> ${tRashi}</div>
+                            <div class="presence-item-value">${displayRashi}</div>
+                        </div>
+                        <div class="presence-item">
+                            <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">🧘</span> ${tYoga}</div>
+                            <div class="presence-item-value">${displayYoga}</div>
+                        </div>
+                        <div class="presence-item">
+                            <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">🙌</span> ${tKarana}</div>
+                            <div class="presence-item-value">${displayKarana}</div>
+                        </div>
                     </div>
-                    <div class="presence-item">
-                        <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">✨</span> ${tNakshatra}</div>
-                        <div class="presence-item-value">${displayNakshatra}</div>
-                    </div>
-                    <div class="presence-item">
-                        <div class="presence-item-label"><span style="font-size: 1.2rem; margin-right: 4px;">♋</span> ${tRashi}</div>
-                        <div class="presence-item-value">${displayRashi}</div>
+                    <div class="panchang-col muhurat-col" style="border-left: 1px solid rgba(255,255,255,0.1); padding-left: var(--space-4);">
+                        <div class="presence-item">
+                            <div class="presence-item-label" style="color: var(--color-success);"><span style="font-size: 1.2rem; margin-right: 4px;">🌅</span> ${tBrahma}</div>
+                            <div class="presence-item-value" id="dashBrahma" style="font-size: 0.9rem;">${brahmaStr}</div>
+                        </div>
+                        <div class="presence-item mt-3">
+                            <div class="presence-item-label" style="color: var(--color-success);"><span style="font-size: 1.2rem; margin-right: 4px;">☀️</span> ${tAbhijit}</div>
+                            <div class="presence-item-value" id="dashAbhijit" style="font-size: 0.9rem;">${abhijitStr}</div>
+                        </div>
+                        <div class="presence-item mt-3">
+                            <div class="presence-item-label" style="color: var(--color-error);"><span style="font-size: 1.2rem; margin-right: 4px;">🌑</span> ${tRahu}</div>
+                            <div class="presence-item-value" id="dashRahu" style="font-size: 0.9rem;">${rahuStr}</div>
+                        </div>
                     </div>
                 </div>
             `;
@@ -244,7 +313,11 @@ const HomePage = (() => {
                     highlightKey: 'home.mantra_surya_highlight',
                     highlightDefault: 'Radiant Sun',
                     meaningKey: 'home.mantra_surya_meaning',
-                    meaningDefault: 'May the Sun God illuminate your path with vitality, health, and cosmic energy.'
+                    meaningDefault: 'May the Sun God illuminate your path with vitality, health, and cosmic energy.',
+                    loreKey: 'home.lore.surya',
+                    loreDefault: 'Sunday is ruled by the Sun, the source of all life and consciousness. It is a day to cultivate inner strength, health, and a luminous aura.',
+                    sadhanaKey: 'home.sadhana.surya',
+                    sadhanaDefault: 'Sadhana: Offer water (Arghya) to the Sun at sunrise, and chant the Gayatri Mantra 11 times.'
                 },
                 {
                     key: 'shiva',
@@ -255,7 +328,11 @@ const HomePage = (() => {
                     highlightKey: 'home.mantra_shiva_highlight',
                     highlightDefault: 'Har Har Mahadev',
                     meaningKey: 'home.mantra_shiva_meaning',
-                    meaningDefault: 'May the divine grace of Lord Shiva bring peace, wisdom, and strength to your spiritual journey.'
+                    meaningDefault: 'May the divine grace of Lord Shiva bring peace, wisdom, and strength to your spiritual journey.',
+                    loreKey: 'home.lore.shiva',
+                    loreDefault: 'Monday is ruled by the Moon and dedicated to Lord Shiva, the master of asceticism and inner peace. It brings emotional calmness.',
+                    sadhanaKey: 'home.sadhana.shiva',
+                    sadhanaDefault: 'Sadhana: Offer milk or water to the Shivling, or silently chant "Om Namah Shivaya" for 5 minutes.'
                 },
                 {
                     key: 'hanuman',
@@ -266,7 +343,11 @@ const HomePage = (() => {
                     highlightKey: 'home.mantra_hanuman_highlight',
                     highlightDefault: 'Jai Shri Ram',
                     meaningKey: 'home.mantra_hanuman_meaning',
-                    meaningDefault: 'May Lord Hanuman bless you with boundless courage, devotion, and unwavering strength.'
+                    meaningDefault: 'May Lord Hanuman bless you with boundless courage, devotion, and unwavering strength.',
+                    loreKey: 'home.lore.hanuman',
+                    loreDefault: 'Tuesday is ruled by Mars, governed by Lord Hanuman. It is a day of immense physical and mental energy, perfect for overcoming fears.',
+                    sadhanaKey: 'home.sadhana.hanuman',
+                    sadhanaDefault: 'Sadhana: Recite the Hanuman Chalisa. Face challenges head-on today without avoidance.'
                 },
                 {
                     key: 'ganesha',
@@ -277,7 +358,11 @@ const HomePage = (() => {
                     highlightKey: 'home.mantra_ganesha_highlight',
                     highlightDefault: 'Vighnaharta',
                     meaningKey: 'home.mantra_ganesha_meaning',
-                    meaningDefault: 'May Lord Ganesha remove all obstacles and bless your endeavors with auspicious beginnings.'
+                    meaningDefault: 'May Lord Ganesha remove all obstacles and bless your endeavors with auspicious beginnings.',
+                    loreKey: 'home.lore.ganesha',
+                    loreDefault: 'Wednesday is ruled by Mercury. Worshipping Lord Ganesha today sharpens the intellect, removes obstacles in learning, and brings good fortune.',
+                    sadhanaKey: 'home.sadhana.ganesha',
+                    sadhanaDefault: 'Sadhana: Offer Durva grass if possible, and mentally pray for the removal of unseen mental blocks.'
                 },
                 {
                     key: 'vishnu',
@@ -288,7 +373,11 @@ const HomePage = (() => {
                     highlightKey: 'home.mantra_vishnu_highlight',
                     highlightDefault: 'Hari Om',
                     meaningKey: 'home.mantra_vishnu_meaning',
-                    meaningDefault: 'May Lord Vishnu sustain your life with cosmic harmony, truth, and spiritual preservation.'
+                    meaningDefault: 'May Lord Vishnu sustain your life with cosmic harmony, truth, and spiritual preservation.',
+                    loreKey: 'home.lore.vishnu',
+                    loreDefault: 'Thursday is ruled by Jupiter (Guru), the planet of wisdom. Lord Vishnu sustains the universe through dharma and cosmic harmony.',
+                    sadhanaKey: 'home.sadhana.vishnu',
+                    sadhanaDefault: 'Sadhana: Express deep gratitude for your life’s blessings. Chant "Om Namo Bhagavate Vasudevaya".'
                 },
                 {
                     key: 'durga',
@@ -299,7 +388,11 @@ const HomePage = (() => {
                     highlightKey: 'home.mantra_durga_highlight',
                     highlightDefault: 'Jai Mata Di',
                     meaningKey: 'home.mantra_durga_meaning',
-                    meaningDefault: 'May the divine mother grant you invincible courage, compassion, and spiritual triumph.'
+                    meaningDefault: 'May the divine mother grant you invincible courage, compassion, and spiritual triumph.',
+                    loreKey: 'home.lore.durga',
+                    loreDefault: 'Friday is ruled by Venus. The Divine Mother embodies supreme compassion and fierce protection. It is a day of beauty, art, and motherly love.',
+                    sadhanaKey: 'home.sadhana.durga',
+                    sadhanaDefault: 'Sadhana: Perform an act of kindness for a woman or mother-figure in your life.'
                 },
                 {
                     key: 'shani',
@@ -310,7 +403,11 @@ const HomePage = (() => {
                     highlightKey: 'home.mantra_shani_highlight',
                     highlightDefault: 'Karmic Balance',
                     meaningKey: 'home.mantra_shani_meaning',
-                    meaningDefault: 'May Lord Shani bless you with righteous discipline, justice, and profound patience.'
+                    meaningDefault: 'May Lord Shani bless you with righteous discipline, justice, and profound patience.',
+                    loreKey: 'home.lore.shani',
+                    loreDefault: 'Saturday is ruled by Saturn, the planet of karma and discipline. Lord Shani teaches patience, hard work, and justice.',
+                    sadhanaKey: 'home.sadhana.shani',
+                    sadhanaDefault: 'Sadhana: Practice fasting, silence, or donate food/clothes to the needy. Avoid anger today.'
                 }
             ];
 
@@ -333,6 +430,51 @@ const HomePage = (() => {
             if (meaningEl) {
                 meaningEl.setAttribute('data-i18n', todayGod.meaningKey);
                 meaningEl.innerText = typeof I18n !== 'undefined' ? I18n.t(todayGod.meaningKey, todayGod.meaningDefault) : todayGod.meaningDefault;
+                
+                // Add lore and sadhana
+                let loreHtml = `<div class="mt-4" style="font-size: 0.95rem; opacity: 0.9;" data-i18n="${todayGod.loreKey}">${typeof I18n !== 'undefined' ? I18n.t(todayGod.loreKey, todayGod.loreDefault) : todayGod.loreDefault}</div>`;
+                let sadhanaHtml = `<div class="mt-3" style="font-weight: 600; color: var(--color-primary-light);" data-i18n="${todayGod.sadhanaKey}">${typeof I18n !== 'undefined' ? I18n.t(todayGod.sadhanaKey, todayGod.sadhanaDefault) : todayGod.sadhanaDefault}</div>`;
+                
+                // Check if they already exist, if not append them
+                let loreContainer = meaningEl.parentElement.querySelector('.daily-lore-container');
+                if (!loreContainer) {
+                    loreContainer = document.createElement('div');
+                    loreContainer.className = 'daily-lore-container';
+                    meaningEl.parentElement.appendChild(loreContainer);
+                }
+                loreContainer.innerHTML = loreHtml + sadhanaHtml;
+            }
+
+            // 5. Render Daily Wisdom
+            const gitaWidget = document.getElementById('homeGitaWidget');
+            const subWidget = document.getElementById('homeSubhashitaWidget');
+            
+            if (gitaWidget) {
+                const gitaKey = `home.gita.day${dayOfWeek}`;
+                const gitaSkKey = `${gitaKey}_sk`;
+                const gitaText = typeof I18n !== 'undefined' ? I18n.t(gitaKey, 'Gita Verse') : 'Gita Verse';
+                const gitaSkText = typeof I18n !== 'undefined' ? I18n.t(gitaSkKey, '') : '';
+                const gitaTitle = typeof I18n !== 'undefined' ? I18n.t('home.wisdom.shloka', 'Gita Verse of the Day') : 'Gita Verse of the Day';
+                
+                gitaWidget.innerHTML = `
+                    <h3 style="font-size: 1.1rem; margin-bottom: var(--space-3); color: var(--color-primary-light);" data-i18n="home.wisdom.shloka">${gitaTitle}</h3>
+                    <div style="font-size: 1.2rem; font-weight: 600; color: var(--color-secondary); margin-bottom: var(--space-2); line-height: 1.5; font-family: 'Sanskrit Text', serif;" data-i18n="${gitaSkKey}">${gitaSkText}</div>
+                    <div style="font-size: 0.95rem; line-height: 1.6; opacity: 0.9;" data-i18n="${gitaKey}">${gitaText}</div>
+                `;
+            }
+
+            if (subWidget) {
+                const subKey = `home.sub.day${dayOfWeek}`;
+                const subSkKey = `${subKey}_sk`;
+                const subText = typeof I18n !== 'undefined' ? I18n.t(subKey, 'Ancient Proverb') : 'Ancient Proverb';
+                const subSkText = typeof I18n !== 'undefined' ? I18n.t(subSkKey, '') : '';
+                const subTitle = typeof I18n !== 'undefined' ? I18n.t('home.wisdom.subhashita', 'Subhashitam') : 'Subhashitam';
+                
+                subWidget.innerHTML = `
+                    <h3 style="font-size: 1.1rem; margin-bottom: var(--space-3); color: var(--color-primary-light);" data-i18n="home.wisdom.subhashita">${subTitle}</h3>
+                    <div style="font-size: 1.2rem; font-weight: 600; color: var(--color-secondary); margin-bottom: var(--space-2); line-height: 1.5; font-family: 'Sanskrit Text', serif;" data-i18n="${subSkKey}">${subSkText}</div>
+                    <div style="font-size: 0.95rem; line-height: 1.6; opacity: 0.9;" data-i18n="${subKey}">${subText}</div>
+                `;
             }
 
             // 5. Render Cosmic Energy
