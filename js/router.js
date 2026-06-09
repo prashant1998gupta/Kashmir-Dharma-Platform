@@ -50,13 +50,14 @@ const Router = (() => {
         // Update active nav link
         updateActiveNav(hash);
 
-        // Gita is an immersive full-screen surface, not part of the standard app shell.
-        if (hash === 'gita' && currentPage && currentPage !== 'gita') {
+        // Gita and Rashiphal are immersive full-screen surfaces
+        if ((hash === 'gita' || hash === 'rashiphal') && currentPage && currentPage !== 'gita' && currentPage !== 'rashiphal') {
             sessionStorage.setItem('kdp_last_non_gita_route', currentPage);
-        } else if (hash !== 'gita') {
+        } else if (hash !== 'gita' && hash !== 'rashiphal') {
             sessionStorage.setItem('kdp_last_non_gita_route', hash);
         }
         document.body.classList.toggle('gita-immersive-route', hash === 'gita');
+        document.body.classList.toggle('rashiphal-immersive-route', hash === 'rashiphal');
 
         // Close mobile sidebar
         closeMobileSidebar();

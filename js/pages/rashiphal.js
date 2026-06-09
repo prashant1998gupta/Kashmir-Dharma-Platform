@@ -113,6 +113,8 @@ const RashiphalPage = (() => {
 
     let currentZodiacId = 'aries';
     let resizeHandler = null;
+    let autoRotateInterval = null;
+    let isUserInteracted = false;
 
     function render() {
         const copy = getCopy();
@@ -141,7 +143,7 @@ const RashiphalPage = (() => {
                             </div>
                             <div class="orbital-ring" id="orbital-ring">
                                 ${ZODIACS.map(z => `
-                                    <button class="zodiac-node" type="button" data-id="${z.id}" data-angle="${z.angle}" onclick="RashiphalPage.selectZodiac('${z.id}')" aria-label="${copy.selectSign} ${copy.signs[z.id]}" aria-pressed="false">
+                                    <button class="zodiac-node" type="button" data-id="${z.id}" data-angle="${z.angle}" onclick="RashiphalPage.selectZodiac('${z.id}', { userClick: true })" aria-label="${copy.selectSign} ${copy.signs[z.id]}" aria-pressed="false">
                                         <span class="zodiac-icon" aria-hidden="true">${z.icon}</span>
                                         <span class="zodiac-label">${copy.signs[z.id]}</span>
                                     </button>
@@ -188,8 +190,8 @@ const RashiphalPage = (() => {
                             </div>
 
                             <div class="horoscope-actions">
-                                <button class="horoscope-primary-btn" type="button">${copy.readFull}</button>
-                                <button class="horoscope-secondary-btn" type="button">${copy.compatibility}</button>
+                                <button class="horoscope-primary-btn" type="button" onclick="Components.showToast(typeof I18n !== 'undefined' ? I18n.t('rashiphal.coming_soon', 'Detailed forecast coming soon!') : 'Detailed forecast coming soon!', 'info')">${copy.readFull}</button>
+                                <button class="horoscope-secondary-btn" type="button" onclick="Router.navigate('matching')">${copy.compatibility}</button>
                             </div>
                         </div>
                     </div>
@@ -216,7 +218,28 @@ const RashiphalPage = (() => {
             dateEl.textContent = new Date().toLocaleDateString(getDateLocale(), { month: 'short', day: 'numeric', year: 'numeric' });
         }
 
-        selectZodiac(currentZodiacId);
+        isUserInteracted = false;
+        selectZodiac(currentZodiacId, { auto: true });
+        
+        // Start auto-rotation after 1 second
+        setTimeout(startAutoRotate, 1000);
+    }
+
+    function startAutoRotate() {
+        if (isUserInteracted) return;
+        
+        clearInterval(autoRotateInterval);
+        
+        autoRotateInterval = setInterval(() => {
+            if (isUserInteracted || !document.getElementById('orbital-ring')) {
+                clearInterval(autoRotateInterval);
+                return;
+            }
+            
+            let currentIndex = ZODIACS.findIndex(z => z.id === currentZodiacId);
+            currentIndex = (currentIndex + 1) % ZODIACS.length;
+            selectZodiac(ZODIACS[currentIndex].id, { keepRotating: false, auto: true });
+        }, 2800);
     }
 
     function debounce(fn, wait) {
@@ -329,6 +352,11 @@ const RashiphalPage = (() => {
     }
 
     function selectZodiac(id, options = {}) {
+        if (options.userClick) {
+            isUserInteracted = true;
+            clearInterval(autoRotateInterval);
+        }
+        
         currentZodiacId = id;
         const ring = document.getElementById('orbital-ring');
         const sunIcon = document.getElementById('sun-icon');
