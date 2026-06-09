@@ -81,6 +81,7 @@ const HomePage = (() => {
                         ${Components.featureCard('🦚', (typeof I18n !== 'undefined') ? I18n.t('nav.gita') : 'Gita Wisdom Guide', (typeof I18n !== 'undefined') ? I18n.t('home.card_gita_desc', 'Open a full-screen Bhagavad Gita guidance companion') : 'Open a full-screen Bhagavad Gita guidance companion', '#gita')}
                         ${Components.featureCard('📅', (typeof I18n !== 'undefined') ? I18n.t('nav.calendar') : 'Festival Calendar', (typeof I18n !== 'undefined') ? I18n.t('home.card_cal_desc') : 'Explore Kashmiri Pandit festivals', '#calendar')}
                         ${Components.featureCard('🌌', (typeof I18n !== 'undefined') ? I18n.t('nav.kundali') : 'Kundali Generator', (typeof I18n !== 'undefined') ? I18n.t('home.card_kundali_desc') : 'Generate your Vedic Birth Chart', '#kundali')}
+                        ${Components.featureCard('🔮', (typeof I18n !== 'undefined') ? I18n.t('nav.rashiphal') : 'Daily Horoscope', (typeof I18n !== 'undefined') ? I18n.t('home.card_rashiphal_desc') : 'Read your daily astrological insights', '#rashiphal')}
                         ${Components.featureCard('🌟', (typeof I18n !== 'undefined') ? I18n.t('nav.muhurat') : 'Muhurat Finder', (typeof I18n !== 'undefined') ? I18n.t('home.card_muhurat_desc') : 'Identify auspicious dates & timings', '#muhurat')}
                     </div>
                 </section>

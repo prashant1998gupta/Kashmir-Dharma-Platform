@@ -11,6 +11,7 @@ const Router = (() => {
         'birthday': { page: BirthdayPage, title: 'Janma Tithi' },
         'kundali': { page: KundaliPage, title: 'Kundali Generator' },
         'matching': { page: MatchingPage, title: 'Kundali Matching' },
+        'rashiphal': { page: RashiphalPage, title: 'Daily Horoscope' },
         'muhurat': { page: MuhuratPage, title: 'Muhurat Finder' },
         'varshphal': { page: VarshphalPage, title: 'Annual Varshphal' },
         'heritage': { page: HeritagePage, title: 'Family Heritage' },
