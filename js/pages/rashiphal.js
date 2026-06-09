@@ -3,238 +3,287 @@
    ============================================ */
 
 const RashiphalPage = (() => {
-    
     const ZODIACS = [
-        { id: 'aries', name: 'Aries', icon: '♈', angle: 0 },
-        { id: 'taurus', name: 'Taurus', icon: '♉', angle: 30 },
-        { id: 'gemini', name: 'Gemini', icon: '♊', angle: 60 },
-        { id: 'cancer', name: 'Cancer', icon: '♋', angle: 90 },
-        { id: 'leo', name: 'Leo', icon: '♌', angle: 120 },
-        { id: 'virgo', name: 'Virgo', icon: '♍', angle: 150 },
-        { id: 'libra', name: 'Libra', icon: '♎', angle: 180 },
-        { id: 'scorpio', name: 'Scorpio', icon: '♏', angle: 210 },
-        { id: 'sagittarius', name: 'Sagittarius', icon: '♐', angle: 240 },
-        { id: 'capricorn', name: 'Capricorn', icon: '♑', angle: 270 },
-        { id: 'aquarius', name: 'Aquarius', icon: '♒', angle: 300 },
-        { id: 'pisces', name: 'Pisces', icon: '♓', angle: 330 }
+        { id: 'aries', name: 'Aries', icon: '\u2648', angle: 0 },
+        { id: 'taurus', name: 'Taurus', icon: '\u2649', angle: 30 },
+        { id: 'gemini', name: 'Gemini', icon: '\u264A', angle: 60 },
+        { id: 'cancer', name: 'Cancer', icon: '\u264B', angle: 90 },
+        { id: 'leo', name: 'Leo', icon: '\u264C', angle: 120 },
+        { id: 'virgo', name: 'Virgo', icon: '\u264D', angle: 150 },
+        { id: 'libra', name: 'Libra', icon: '\u264E', angle: 180 },
+        { id: 'scorpio', name: 'Scorpio', icon: '\u264F', angle: 210 },
+        { id: 'sagittarius', name: 'Sagittarius', icon: '\u2650', angle: 240 },
+        { id: 'capricorn', name: 'Capricorn', icon: '\u2651', angle: 270 },
+        { id: 'aquarius', name: 'Aquarius', icon: '\u2652', angle: 300 },
+        { id: 'pisces', name: 'Pisces', icon: '\u2653', angle: 330 }
     ];
 
-    let currentZodiacId = null;
+    let currentZodiacId = 'aries';
+    let resizeHandler = null;
 
     function render() {
         return `
-            <div class="page-enter" style="background: radial-gradient(circle at 30% 60%, #3d582f 0%, #4a2825 50%, #111 100%); color: #fff; min-height: calc(100vh - 80px); margin: -var(--space-6); padding: var(--space-6); border-radius: var(--radius-lg); position: relative; overflow: hidden;">
-                <!-- Decorative stars -->
-                <div style="position: absolute; top: 10%; left: 10%; width: 2px; height: 2px; background: white; border-radius: 50%; opacity: 0.8; box-shadow: 0 0 10px white;"></div>
-                <div style="position: absolute; top: 30%; right: 20%; width: 2px; height: 2px; background: white; border-radius: 50%; opacity: 0.6;"></div>
-                <div style="position: absolute; bottom: 20%; left: 30%; width: 2px; height: 2px; background: white; border-radius: 50%; opacity: 0.9; box-shadow: 0 0 5px white;"></div>
-                <div style="position: absolute; top: 60%; right: 5%; width: 2px; height: 2px; background: white; border-radius: 50%; opacity: 0.5;"></div>
+            <section class="rashiphal-page page-enter">
+                <div class="rashiphal-star rashiphal-star-1" aria-hidden="true"></div>
+                <div class="rashiphal-star rashiphal-star-2" aria-hidden="true"></div>
+                <div class="rashiphal-star rashiphal-star-3" aria-hidden="true"></div>
+                <div class="rashiphal-star rashiphal-star-4" aria-hidden="true"></div>
 
                 ${Components.breadcrumb([
                     { label: typeof I18n !== 'undefined' ? I18n.t('nav.home', 'Home') : 'Home', href: '#home' },
                     { label: typeof I18n !== 'undefined' ? I18n.t('nav.rashiphal', 'Daily Horoscope') : 'Daily Horoscope' }
                 ])}
 
-                <div style="text-align: center; margin-bottom: var(--space-8); position: relative; z-index: 2;">
-                    <h1 style="font-size: 3rem; margin-bottom: var(--space-2); color: #fff;">Pick your sign. Read your day.</h1>
-                    <p style="color: rgba(255,255,255,0.7); font-size: 1.1rem;">Twelve signs, one rotation. Click yours to lock the wheel.</p>
-                </div>
+                <header class="rashiphal-header">
+                    <h1>Pick your sign. Read your day.</h1>
+                    <p>Twelve signs, one rotation. Click yours to lock the wheel.</p>
+                </header>
 
-                <div class="grid-2" style="align-items: center; gap: var(--space-8);">
-                    
-                    <!-- Left: Interactive Wheel -->
-                    <div style="position: relative; width: 100%; height: 500px; display: flex; justify-content: center; align-items: center; overflow: visible;">
+                <div class="rashiphal-layout">
+                    <div class="rashiphal-wheel-wrap">
                         <div class="zodiac-wheel-container">
                             <div class="sun-center">
-                                <div class="sun-center-icon" id="sun-icon">☀️</div>
+                                <div class="sun-center-icon" id="sun-icon" aria-hidden="true">\u2600\uFE0F</div>
                             </div>
                             <div class="orbital-ring rotating" id="orbital-ring">
                                 ${ZODIACS.map(z => `
-                                    <div class="zodiac-node" data-id="${z.id}" data-angle="${z.angle}" onclick="RashiphalPage.selectZodiac('${z.id}')">
-                                        <div class="zodiac-icon">${z.icon}</div>
-                                        <div class="zodiac-label">${z.name}</div>
-                                    </div>
+                                    <button class="zodiac-node" type="button" data-id="${z.id}" data-angle="${z.angle}" onclick="RashiphalPage.selectZodiac('${z.id}')" aria-label="Select ${z.name}" aria-pressed="false">
+                                        <span class="zodiac-icon" aria-hidden="true">${z.icon}</span>
+                                        <span class="zodiac-label">${z.name}</span>
+                                    </button>
                                 `).join('')}
                             </div>
                         </div>
                     </div>
 
-                    <!-- Right: Horoscope Details -->
-                    <div id="horoscope-details-container" style="opacity: 1; transform: translateX(0); transition: all 0.5s ease;">
+                    <div id="horoscope-details-container" class="horoscope-details-container">
                         <div class="horoscope-panel">
-                            <div style="text-transform: uppercase; letter-spacing: 2px; color: #ff6b6b; font-size: 0.8rem; margin-bottom: var(--space-2);">
-                                DAILY HOROSCOPE • <span id="h-date"></span>
+                            <div class="horoscope-kicker">
+                                Daily Horoscope <span aria-hidden="true">&bull;</span> <span id="h-date"></span>
                             </div>
-                            <h2 id="h-title" style="font-size: 3.5rem; margin-bottom: var(--space-4); display: flex; align-items: center; gap: 15px; color: #fff;">
-                                Sign Name <span id="h-emoji"></span>
+                            <h2 id="h-title" class="horoscope-title">
+                                Aries <span id="h-emoji" aria-hidden="true">\u2648</span>
                             </h2>
-                            
+
                             <div class="horoscope-stats">
                                 <div class="h-stat-box">
                                     <div class="h-stat-label">Mood</div>
-                                    <div class="h-stat-value" id="h-mood">Happy</div>
+                                    <div class="h-stat-value" id="h-mood">Focused</div>
                                 </div>
                                 <div class="h-stat-box">
                                     <div class="h-stat-label">Love</div>
-                                    <div class="h-stat-value h-stars">★★★★☆</div>
+                                    <div class="h-stat-value h-stars" id="h-love"></div>
                                 </div>
                                 <div class="h-stat-box">
                                     <div class="h-stat-label">Career</div>
-                                    <div class="h-stat-value h-stars">★★★★★</div>
+                                    <div class="h-stat-value h-stars" id="h-career"></div>
                                 </div>
                                 <div class="h-stat-box">
                                     <div class="h-stat-label">Money</div>
-                                    <div class="h-stat-value h-stars">★★★☆☆</div>
+                                    <div class="h-stat-value h-stars" id="h-money"></div>
                                 </div>
                             </div>
 
-                            <p id="h-desc" style="font-size: 1.1rem; line-height: 1.6; color: rgba(255,255,255,0.8); margin-bottom: var(--space-6);">
+                            <p id="h-desc" class="horoscope-desc">
                                 Select a sign to reveal your daily astrological insights.
                             </p>
 
-                            <div style="display: flex; gap: var(--space-4); align-items: center; font-size: 0.9rem; margin-bottom: var(--space-6);">
-                                <div><span style="color: rgba(255,255,255,0.6)">Lucky number:</span> <strong id="h-number" style="color: #fff">9</strong></div>
-                                <div><span style="color: rgba(255,255,255,0.6)">Lucky color:</span> <strong id="h-color" style="color: #fff">Red</strong> <span id="h-color-dot" style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: red; vertical-align: middle; margin-left: 4px;"></span></div>
+                            <div class="horoscope-lucky-row">
+                                <div><span>Lucky number:</span> <strong id="h-number">9</strong></div>
+                                <div><span>Lucky color:</span> <strong id="h-color">Red</strong> <span id="h-color-dot" class="h-color-dot"></span></div>
                             </div>
 
-                            <div style="display: flex; gap: var(--space-4); align-items: center;">
-                                <button style="background: #FFD700; color: #000; font-weight: bold; padding: 12px 24px; border-radius: 30px; border: none; cursor: pointer; font-size: 0.95rem; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Read full forecast</button>
-                                <button style="background: transparent; color: #fff; font-weight: 500; padding: 12px 24px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; font-size: 0.95rem; transition: background 0.2s ease;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">Compatibility &rarr;</button>
+                            <div class="horoscope-actions">
+                                <button class="horoscope-primary-btn" type="button">Read full forecast</button>
+                                <button class="horoscope-secondary-btn" type="button">Compatibility &rarr;</button>
                             </div>
                         </div>
                     </div>
-
                 </div>
-            </div>
+            </section>
         `;
     }
 
     function afterRender() {
+        if (resizeHandler) {
+            window.removeEventListener('resize', resizeHandler);
+        }
+
+        resizeHandler = debounce(() => {
+            positionNodes();
+            rotateToSelected(false);
+        }, 120);
+        window.addEventListener('resize', resizeHandler);
+
         positionNodes();
-        
-        // Set today's date
+
         const dateEl = document.getElementById('h-date');
         if (dateEl) {
             dateEl.textContent = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         }
-        
-        // Show default horoscope (Aries) without locking the wheel
-        updatePanelData('aries', 'Aries', '♈');
+
+        selectZodiac(currentZodiacId);
     }
 
-    function updatePanelData(id, name, icon) {
+    function debounce(fn, wait) {
+        let timeoutId;
+        return (...args) => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => fn(...args), wait);
+        };
+    }
+
+    function getZodiac(id) {
+        return ZODIACS.find(z => z.id === id) || ZODIACS[0];
+    }
+
+    function updatePanelData(id) {
+        const zodiac = getZodiac(id);
         const data = generateHoroscopeData(id);
-        document.getElementById('h-title').innerHTML = `${name} <span style="font-size: 2.5rem;">${icon}</span>`;
-        document.getElementById('h-mood').textContent = data.mood;
-        document.getElementById('h-desc').textContent = data.desc;
-        document.getElementById('h-number').textContent = data.number;
-        document.getElementById('h-color').textContent = data.colorName;
-        document.getElementById('h-color-dot').style.background = data.colorHex;
+        const titleEl = document.getElementById('h-title');
+        const emojiEl = document.getElementById('h-emoji');
+        const sunEl = document.querySelector('.sun-center');
+        const colorDot = document.getElementById('h-color-dot');
+
+        if (titleEl) {
+            titleEl.firstChild.nodeValue = `${zodiac.name} `;
+        }
+        if (emojiEl) emojiEl.textContent = zodiac.icon;
+
+        setText('h-mood', data.mood);
+        setText('h-love', renderStars(data.love));
+        setText('h-career', renderStars(data.career));
+        setText('h-money', renderStars(data.money));
+        setText('h-desc', data.desc);
+        setText('h-number', data.number);
+        setText('h-color', data.colorName);
+
+        if (colorDot) colorDot.style.background = data.colorHex;
+        if (sunEl) {
+            sunEl.style.background = data.colorHex;
+            sunEl.style.boxShadow = `0 0 60px ${data.glow}, inset 0 0 20px rgba(255,255,255,0.28)`;
+        }
+
+        return data;
+    }
+
+    function setText(id, value) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+    }
+
+    function renderStars(value) {
+        return `${'\u2605'.repeat(value)}${'\u2606'.repeat(5 - value)}`;
     }
 
     function positionNodes() {
         const ring = document.getElementById('orbital-ring');
         if (!ring) return;
 
-        // Radius of the circle (half of the container width approx)
-        const radius = 200; // Fixed radius for a 500px container to leave margin
+        const ringRect = ring.getBoundingClientRect();
+        const radius = Math.max(96, (Math.min(ringRect.width, ringRect.height) / 2) - 30);
         const nodes = ring.querySelectorAll('.zodiac-node');
-        
+
         nodes.forEach(node => {
             const angleDeg = parseFloat(node.getAttribute('data-angle'));
-            const angleRad = (angleDeg - 90) * (Math.PI / 180); // -90 so 0 starts at top
-            
+            const angleRad = (angleDeg - 90) * (Math.PI / 180);
             const x = Math.cos(angleRad) * radius;
             const y = Math.sin(angleRad) * radius;
-            
-            // Position it from the center (50% 50%)
+
             node.style.left = `calc(50% + ${x}px)`;
             node.style.top = `calc(50% + ${y}px)`;
-            
-            // Counter-rotate the inner icon/label so it stays upright
-            // Initially 0 since ring is not rotated
-            node.style.transform = `rotate(0deg)`;
         });
     }
 
-    // Dummy deterministic data generation based on date and sign
     function generateHoroscopeData(zodiacId) {
-        const hash = (zodiacId.charCodeAt(0) + new Date().getDate()) % 5;
-        const moods = ['Energetic 🔥', 'Calm 🌊', 'Creative ✨', 'Bored 😑', 'Focused 🎯'];
-        const colors = ['#FF4500', '#4169E1', '#FFD700', '#32CD32', '#8A2BE2'];
-        const colorNames = ['Ruby Red', 'Royal Blue', 'Golden Yellow', 'Emerald Green', 'Mystic Purple'];
-        
+        const today = new Date();
+        const daySeed = today.getDate() + today.getMonth() + today.getFullYear();
+        const hash = (zodiacId.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0) + daySeed) % 5;
+        const moods = ['Energetic', 'Calm', 'Creative', 'Reflective', 'Focused'];
+        const palette = [
+            { hex: '#FF6B4A', glow: 'rgba(255, 107, 74, 0.48)', name: 'Ruby Red' },
+            { hex: '#4169E1', glow: 'rgba(65, 105, 225, 0.48)', name: 'Royal Blue' },
+            { hex: '#FFD166', glow: 'rgba(255, 209, 102, 0.42)', name: 'Golden Yellow' },
+            { hex: '#45B36B', glow: 'rgba(69, 179, 107, 0.46)', name: 'Emerald Green' },
+            { hex: '#8E5CF0', glow: 'rgba(142, 92, 240, 0.48)', name: 'Mystic Purple' }
+        ];
+
         const descriptions = {
-            aries: "Your fiery energy is at its peak today. Channel it into a creative project or take the lead on a tough assignment.",
-            taurus: "Patience is your greatest virtue today. Take things slow, enjoy a good meal, and let the universe bring things to you.",
-            gemini: "Sparkling conversations could bring back romance or an exciting new friendship to you today. Keep your mind open.",
-            cancer: "Your intuition is practically a superpower right now. Trust your gut feelings regarding a family matter.",
-            leo: "The spotlight is naturally drawn to you. It's a great day to present an idea or simply enjoy the attention.",
-            virgo: "Focus on the details. Organizing your space or your thoughts will lead to a surprising breakthrough this afternoon.",
-            libra: "Balance is key. You might need to mediate a dispute between friends or find harmony in your own conflicting desires.",
-            scorpio: "Your intensity is magnetic today. Dive deep into research or a passion project; surface-level interactions won't satisfy you.",
-            sagittarius: "Adventure is calling! Even if you can't travel, explore a new philosophy, book, or cuisine today.",
-            capricorn: "Hard work is paying off. You might receive recognition or hit a milestone in your long-term goals.",
-            aquarius: "Your innovative ideas are flowing. Don't be afraid to share an unconventional solution to a stubborn problem.",
-            pisces: "Your dreams are vivid and meaningful. Pay attention to your subconscious, as it's trying to guide your waking decisions."
+            aries: 'Your fiery energy is at its peak today. Channel it into a creative project or take the lead on a tough assignment.',
+            taurus: 'Patience is your greatest strength today. Move steadily, enjoy simple comforts, and let delayed answers arrive naturally.',
+            gemini: 'Sparkling conversations can open an unexpected door. Keep your mind open, but verify details before committing.',
+            cancer: 'Your intuition is especially sharp right now. Trust your instincts around home, family, and emotional decisions.',
+            leo: 'The spotlight is drawn toward you. Present an idea, share your warmth, and let confidence guide the room.',
+            virgo: 'Small improvements matter today. Organizing your space or your notes can lead to a useful afternoon breakthrough.',
+            libra: 'Balance is the assignment. Mediate carefully, protect your own peace, and choose harmony without avoiding truth.',
+            scorpio: 'Your focus is magnetic. Dive into research, a passion project, or a private goal that needs sustained attention.',
+            sagittarius: 'Adventure is calling in a practical way. Try a new subject, route, cuisine, or conversation that widens your view.',
+            capricorn: 'Consistent effort is paying off. A milestone, useful recognition, or clearer plan may surface before evening.',
+            aquarius: 'Your unconventional thinking is useful today. Share the idea that seems unusual; it may solve a stubborn problem.',
+            pisces: 'Your inner world is active and meaningful. Give dreams, memories, and quiet signals room to guide your choices.'
         };
 
         return {
             mood: moods[hash],
-            desc: descriptions[zodiacId] || descriptions['aries'],
-            number: (hash * 3 + 7) % 100,
-            colorName: colorNames[hash],
-            colorHex: colors[hash]
+            love: Math.max(3, ((hash + 2) % 5) + 1),
+            career: Math.max(3, ((hash + 3) % 5) + 1),
+            money: Math.max(2, ((hash + 1) % 5) + 1),
+            desc: descriptions[zodiacId] || descriptions.aries,
+            number: ((hash + 3) * 7) % 99 || 9,
+            colorName: palette[hash].name,
+            colorHex: palette[hash].hex,
+            glow: palette[hash].glow
         };
     }
 
-    function selectZodiac(id) {
+    function selectZodiac(id, options = {}) {
+        currentZodiacId = id;
         const ring = document.getElementById('orbital-ring');
-        const nodes = ring.querySelectorAll('.zodiac-node');
         const sunIcon = document.getElementById('sun-icon');
-        const detailsContainer = document.getElementById('horoscope-details-container');
-        
-        // Stop the ambient rotation
-        ring.classList.remove('rotating');
-        
-        let targetAngle = 0;
-        let selectedName = '';
-        let selectedIcon = '';
+        if (!ring) return;
+
+        const zodiac = getZodiac(id);
+        const nodes = ring.querySelectorAll('.zodiac-node');
+
+        if (!options.keepRotating) {
+            ring.classList.remove('rotating');
+        }
 
         nodes.forEach(node => {
-            node.classList.remove('active');
-            if (node.getAttribute('data-id') === id) {
-                node.classList.add('active');
-                targetAngle = parseFloat(node.getAttribute('data-angle'));
-                selectedName = node.querySelector('.zodiac-label').textContent;
-                selectedIcon = node.querySelector('.zodiac-icon').textContent;
-            }
+            const isActive = node.getAttribute('data-id') === id;
+            node.classList.toggle('active', isActive);
+            node.setAttribute('aria-pressed', String(isActive));
         });
 
-        // We want the selected node to be at the TOP (which is intuitively where we focus).
-        // Since the node was placed at `targetAngle` (where 0 is top), we need to rotate the ring by `-targetAngle`.
-        // However, to make it spin naturally and consistently, we calculate the shortest rotation path or just set it.
+        updatePanelData(id);
+        if (sunIcon) sunIcon.textContent = zodiac.icon;
+        rotateToSelected(!options.keepRotating);
+    }
+
+    function rotateToSelected(animate = true) {
+        const ring = document.getElementById('orbital-ring');
+        if (!ring) return;
+
+        const selectedNode = ring.querySelector(`.zodiac-node[data-id="${currentZodiacId}"]`);
+        if (!selectedNode) return;
+
+        const targetAngle = parseFloat(selectedNode.getAttribute('data-angle'));
         const rotateDeg = -targetAngle;
-        
-        // Rotate the ring
+        const nodes = ring.querySelectorAll('.zodiac-node');
+
+        ring.style.transition = animate ? '' : 'none';
         ring.style.transform = `rotate(${rotateDeg}deg)`;
-        
-        // Counter-rotate all nodes so they stay completely upright
+
         nodes.forEach(node => {
-            node.style.transform = `rotate(${-rotateDeg}deg) scale(${node.classList.contains('active') ? '1.3' : '1'})`;
+            const scale = node.classList.contains('active') ? 1.24 : 1;
+            node.style.transform = `rotate(${-rotateDeg}deg) scale(${scale})`;
         });
 
-        // Update center sun icon
-        sunIcon.textContent = selectedIcon;
-        // Match center sun background color loosely to the sign hash or use Astrotalk's green
-        document.querySelector('.sun-center').style.background = data.colorHex;
-
-        // Fetch data and update panel
-        updatePanelData(id, selectedName, selectedIcon);
-
-        // Show panel
-        detailsContainer.style.opacity = '1';
-        detailsContainer.style.transform = 'translateX(0)';
+        if (!animate) {
+            requestAnimationFrame(() => {
+                ring.style.transition = '';
+            });
+        }
     }
 
     return {
@@ -244,5 +293,4 @@ const RashiphalPage = (() => {
     };
 })();
 
-// Attach to global window
 window.RashiphalPage = RashiphalPage;
