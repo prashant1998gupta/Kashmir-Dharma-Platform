@@ -422,6 +422,9 @@ a:hover {
     border: none;
     cursor: pointer;
     padding: var(--space-2);
+    z-index: 9999;
+    position: relative;
+    pointer-events: auto;
 }
 
 .hamburger-line {

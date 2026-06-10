@@ -74,10 +74,24 @@ const App = (() => {
         const overlay = document.getElementById('sidebarOverlay');
 
         if (toggle) {
-            toggle.addEventListener('click', () => {
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Mobile menu toggle clicked!');
+                
                 toggle.classList.toggle('active');
-                sidebar.classList.toggle('open');
-                overlay.classList.toggle('active');
+                if (sidebar) {
+                    sidebar.classList.toggle('open');
+                    // Force transform just in case CSS fails
+                    if (sidebar.classList.contains('open')) {
+                        sidebar.style.setProperty('transform', 'translateX(0)', 'important');
+                        sidebar.style.setProperty('visibility', 'visible', 'important');
+                    } else {
+                        sidebar.style.removeProperty('transform');
+                        sidebar.style.removeProperty('visibility');
+                    }
+                }
+                if (overlay) overlay.classList.toggle('active');
             });
         }
 
