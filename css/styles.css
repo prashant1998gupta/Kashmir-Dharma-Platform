@@ -4025,9 +4025,7 @@ body.gita-immersive-route .page-container {
     }
 
     .gita-side-panel {
-        max-height: 120px;
-        padding-top: var(--space-3);
-        padding-bottom: var(--space-3);
+        display: none;
     }
 
     .gita-prompt-strip {
