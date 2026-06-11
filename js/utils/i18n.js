@@ -82,7 +82,7 @@ const I18n = (() => {
             // Kashmiri Calendar Page
             'kcalendar.title': 'Kashmiri Calendar',
             'kcalendar.desc': 'Daily Kashmiri tithi, sankranti, panchak, and festival data from 2020-2027.',
-            'kcalendar.source_note': 'Source: 2020-2026 data from KashmiriCalendar app assets; 2026-27 verified against Kashmiri Hindu Calendar 2026-27 based on Vijayshwar Punchang.',
+            'kcalendar.source_note': 'Source: 2020-2026 data from KashmiriCalendar app assets; 2026-27 imported from Kashmiri Hindu Calendar 2026-27 based on Vijayshwar Punchang.',
             'kcalendar.loading': 'Loading calendar data...',
             'kcalendar.select_date': 'Select a date to view details.',
             'kcalendar.selected_details': 'Selected date details',
@@ -562,7 +562,7 @@ const I18n = (() => {
             'nav.kashmiri_calendar': 'कश्मीरी कैलेंडर',
             'kcalendar.title': 'कश्मीरी कैलेंडर',
             'kcalendar.desc': '2020-2027 तक की दैनिक कश्मीरी तिथि, संक्रांति, पंचक और पर्व जानकारी।',
-            'kcalendar.source_note': 'स्रोत: 2020-2026 डेटा KashmiriCalendar ऐप assets से; 2026-27 डेटा Vijayshwar Punchang आधारित Kashmiri Hindu Calendar 2026-27 से सत्यापित।',
+            'kcalendar.source_note': 'स्रोत: 2020-2026 डेटा KashmiriCalendar ऐप assets से; 2026-27 डेटा Vijayshwar Punchang आधारित Kashmiri Hindu Calendar 2026-27 से लिया गया।',
             'kcalendar.loading': 'कैलेंडर डेटा लोड हो रहा है...',
             'kcalendar.select_date': 'विवरण देखने के लिए कोई तिथि चुनें।',
             'kcalendar.selected_details': 'चयनित तिथि विवरण',

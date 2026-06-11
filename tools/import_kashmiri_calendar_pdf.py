@@ -290,7 +290,7 @@ def main() -> None:
     range_rows_by_key = {}
 
     with pdfplumber.open(pdf_path) as pdf:
-        for page_index in range(2, 15):
+        for page_index in range(1, 15):
             page = pdf.pages[page_index]
             text = page.extract_text(x_tolerance=1, y_tolerance=3) or ""
             first_line = text.splitlines()[0]

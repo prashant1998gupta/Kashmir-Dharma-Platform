@@ -1,5 +1,135 @@
 [
   {
+    "date": "01-03-2026",
+    "events": "Triyodashi"
+  },
+  {
+    "date": "02-03-2026",
+    "events": "Chaturdashi"
+  },
+  {
+    "date": "03-03-2026",
+    "events": "Holi, Poornima",
+    "imp": "1"
+  },
+  {
+    "date": "04-03-2026",
+    "events": "Okdoh"
+  },
+  {
+    "date": "05-03-2026",
+    "events": "Dwitya"
+  },
+  {
+    "date": "06-03-2026",
+    "events": "Tritya"
+  },
+  {
+    "date": "07-03-2026",
+    "events": "Choram"
+  },
+  {
+    "date": "08-03-2026",
+    "events": "Paancham"
+  },
+  {
+    "date": "09-03-2026",
+    "events": "Shishthi"
+  },
+  {
+    "date": "10-03-2026",
+    "events": "Satam"
+  },
+  {
+    "date": "11-03-2026",
+    "events": "Ashtami",
+    "imp": "1"
+  },
+  {
+    "date": "12-03-2026",
+    "events": "Navum"
+  },
+  {
+    "date": "13-03-2026",
+    "events": "Thaal Barun, Dhashmi"
+  },
+  {
+    "date": "14-03-2026",
+    "events": "Sonth, Dhashmi"
+  },
+  {
+    "date": "15-03-2026",
+    "events": "Sankranti, Ekadashi",
+    "imp": "1"
+  },
+  {
+    "date": "16-03-2026",
+    "events": "Dwadashi"
+  },
+  {
+    "date": "17-03-2026",
+    "events": "Triyodashi"
+  },
+  {
+    "date": "18-03-2026",
+    "events": "Thaal Barun, Chaturdashi"
+  },
+  {
+    "date": "19-03-2026",
+    "events": "Navreh, Navratra Starts, Amavasya",
+    "imp": "2"
+  },
+  {
+    "date": "20-03-2026",
+    "events": "Dwitya"
+  },
+  {
+    "date": "21-03-2026",
+    "events": "Zang Triya, Tritya"
+  },
+  {
+    "date": "22-03-2026",
+    "events": "Choram"
+  },
+  {
+    "date": "23-03-2026",
+    "events": "Paancham"
+  },
+  {
+    "date": "24-03-2026",
+    "events": "Shishthi"
+  },
+  {
+    "date": "25-03-2026",
+    "events": "Satam"
+  },
+  {
+    "date": "26-03-2026",
+    "events": "Ram Navmi, Durga Ashtami",
+    "imp": "1"
+  },
+  {
+    "date": "27-03-2026",
+    "events": "Navum"
+  },
+  {
+    "date": "28-03-2026",
+    "events": "Dhashmi"
+  },
+  {
+    "date": "29-03-2026",
+    "events": "Ekadashi",
+    "imp": "1"
+  },
+  {
+    "date": "30-03-2026",
+    "events": "Dwadashi"
+  },
+  {
+    "date": "31-03-2026",
+    "events": "Triyodashi"
+  },
+  {
     "date": "01-04-2026",
     "events": "Chaturdashi"
   },

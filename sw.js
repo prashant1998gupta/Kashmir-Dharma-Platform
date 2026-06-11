@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kashmir-dharma-v22';
+const CACHE_NAME = 'kashmir-dharma-v23';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',

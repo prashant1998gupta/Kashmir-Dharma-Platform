@@ -30,7 +30,7 @@ const KashmiriCalendarPage = (() => {
         const next = t('calendar.next', 'Next');
         const loading = t('kcalendar.loading', 'Loading calendar data...');
         const selectDate = t('kcalendar.select_date', 'Select a date to view details.');
-        const sourceNote = t('kcalendar.source_note', 'Source: 2020-2026 data from KashmiriCalendar app assets; 2026-27 verified against Kashmiri Hindu Calendar 2026-27 based on Vijayshwar Punchang.');
+        const sourceNote = t('kcalendar.source_note', 'Source: 2020-2026 data from KashmiriCalendar app assets; 2026-27 imported from Kashmiri Hindu Calendar 2026-27 based on Vijayshwar Punchang.');
         const rangesTitle = t('kcalendar.month_ranges', 'Month & Paksha Ranges');
         const eventsTitle = t('kcalendar.important_events', 'Important Events');
         const searchPlaceholder = t('kcalendar.search', 'Search Kashmiri calendar events...');
