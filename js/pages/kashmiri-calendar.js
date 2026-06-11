@@ -5,8 +5,6 @@
 const KashmiriCalendarPage = (() => {
     const DAILY_FILES = ['20_21', '21_22', '22_23', '23_24', '24_25', '25_26', '26_27'];
     const MONTH_FILES = ['22_23', '23_24', '24_25', '25_26', '26_27'];
-    const SOURCE_NOTE = 'Source: 2020-2026 data from KashmiriCalendar app assets; 2026-27 verified against Kashmiri Hindu Calendar 2026-27 based on Vijayshwar Punchang.';
-
     let dailyEvents = [];
     let monthRanges = [];
     let currentYear = new Date().getFullYear();
@@ -20,49 +18,65 @@ const KashmiriCalendarPage = (() => {
 
     const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+    function t(key, fallback) {
+        return typeof I18n !== 'undefined' ? I18n.t(key, fallback) : fallback;
+    }
+
     function render() {
+        const title = t('kcalendar.title', 'Kashmiri Calendar');
+        const desc = t('kcalendar.desc', 'Daily Kashmiri tithi, sankranti, panchak, and festival data from 2020-2027.');
+        const home = t('nav.home', 'Home');
+        const previous = t('calendar.previous', 'Previous');
+        const next = t('calendar.next', 'Next');
+        const loading = t('kcalendar.loading', 'Loading calendar data...');
+        const selectDate = t('kcalendar.select_date', 'Select a date to view details.');
+        const sourceNote = t('kcalendar.source_note', 'Source: 2020-2026 data from KashmiriCalendar app assets; 2026-27 verified against Kashmiri Hindu Calendar 2026-27 based on Vijayshwar Punchang.');
+        const rangesTitle = t('kcalendar.month_ranges', 'Month & Paksha Ranges');
+        const eventsTitle = t('kcalendar.important_events', 'Important Events');
+        const searchPlaceholder = t('kcalendar.search', 'Search Kashmiri calendar events...');
+
         return `
             <div class="page-enter kashmiri-calendar-page">
                 ${Components.breadcrumb([
-                    { label: 'Home', href: '#home' },
-                    { label: 'Kashmiri Calendar' }
+                    { label: home, href: '#home' },
+                    { label: title }
                 ])}
 
                 ${Components.sectionHeader(
-                    'Kashmiri Calendar',
-                    'Daily Kashmiri tithi, sankranti, panchak, and festival data from 2020-2027.',
+                    title,
+                    desc,
                     { h1: true }
                 )}
 
                 <div class="kcal-toolbar">
-                    <button class="btn btn-ghost" onclick="KashmiriCalendarPage.changeMonth(-1)">Previous</button>
+                    <button class="btn btn-ghost" onclick="KashmiriCalendarPage.changeMonth(-1)">${previous}</button>
                     <div>
                         <h3 id="kcalMonthTitle" class="kcal-month-title">Loading...</h3>
-                        <p class="kcal-range-note">${SOURCE_NOTE}</p>
+                        <p class="kcal-range-note">${sourceNote}</p>
                     </div>
-                    <button class="btn btn-ghost" onclick="KashmiriCalendarPage.changeMonth(1)">Next</button>
+                    <button class="btn btn-ghost" onclick="KashmiriCalendarPage.changeMonth(1)">${next}</button>
                 </div>
 
                 <div class="kcal-layout">
-                    <section class="kcal-calendar-shell" aria-label="Kashmiri calendar month">
-                        <div id="kcalGrid" class="kcal-loading">Loading calendar data...</div>
+                    <section class="kcal-calendar-shell" aria-label="${title}">
+                        <div id="kcalGrid" class="kcal-loading">${loading}</div>
                     </section>
 
-                    <aside class="kcal-side-panel" aria-label="Selected date details">
-                        <div id="kcalDayDetails" class="kcal-loading">Select a date to view details.</div>
+                    <aside class="kcal-side-panel" aria-label="${t('kcalendar.selected_details', 'Selected date details')}">
+                        <div id="kcalDayDetails" class="kcal-loading">${selectDate}</div>
                     </aside>
                 </div>
 
                 <div class="kcal-section-row">
                     <section class="card">
-                        <h3 class="kcal-panel-title">Month & Paksha Ranges</h3>
+                        <h3 class="kcal-panel-title">${rangesTitle}</h3>
                         <div id="kcalMonthRanges" class="kcal-range-list"></div>
                     </section>
 
                     <section class="card">
-                        <h3 class="kcal-panel-title">Important Events</h3>
+                        <h3 class="kcal-panel-title">${eventsTitle}</h3>
                         <div class="mb-4">
-                            ${Components.searchBar('Search Kashmiri calendar events...', 'KashmiriCalendarPage.filterEvents', 'kcalSearchInput')}
+                            ${Components.searchBar(searchPlaceholder, 'KashmiriCalendarPage.filterEvents', 'kcalSearchInput')}
                         </div>
                         <div id="kcalEventsList" class="kcal-event-list"></div>
                     </section>
@@ -166,7 +180,10 @@ const KashmiriCalendarPage = (() => {
 
     function renderCalendar() {
         const title = document.getElementById('kcalMonthTitle');
-        if (title) title.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+        if (title) {
+            const translatedMonth = t(`month.${currentMonth}`, monthNames[currentMonth]);
+            title.textContent = `${translatedMonth} ${currentYear}`;
+        }
 
         const grid = document.getElementById('kcalGrid');
         if (!grid) return;
@@ -176,8 +193,8 @@ const KashmiriCalendarPage = (() => {
         const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
         let html = '<div class="kcal-grid">';
 
-        dayNames.forEach(day => {
-            html += `<div class="kcal-header-cell">${day}</div>`;
+        dayNames.forEach((day, index) => {
+            html += `<div class="kcal-header-cell">${t(`day.${index}`, day)}</div>`;
         });
 
         for (let i = firstDay - 1; i >= 0; i--) {
@@ -221,7 +238,11 @@ const KashmiriCalendarPage = (() => {
 
         const row = findDay(dateStr);
         if (!row) {
-            panel.innerHTML = Components.emptyState('KC', 'No data for this date', `Available data range: ${getDataRangeText()}.`);
+            panel.innerHTML = Components.emptyState(
+                'KC',
+                t('kcalendar.no_data', 'No data for this date'),
+                `${t('kcalendar.available_range', 'Available data range')}: ${getDataRangeText()}.`
+            );
             return;
         }
 
@@ -240,12 +261,12 @@ const KashmiriCalendarPage = (() => {
             </div>
             ${specialEvents.length ? `
                 <div class="kcal-detail-block">
-                    <h4>Events</h4>
+                    <h4>${t('kcalendar.events', 'Events')}</h4>
                     ${specialEvents.map(event => `<div class="kcal-detail-event">${event}</div>`).join('')}
                 </div>
             ` : ''}
             <div class="kcal-detail-block">
-                <h4>Full Day Entry</h4>
+                <h4>${t('kcalendar.full_day_entry', 'Full Day Entry')}</h4>
                 <p>${row.events}</p>
             </div>
         `;
@@ -265,9 +286,13 @@ const KashmiriCalendarPage = (() => {
         list.innerHTML = visible.map(range => `
             <div class="kcal-range-item ${range.monthName === 'Panchak' ? 'panchak' : ''}">
                 <div class="kcal-range-name">${range.monthName}</div>
-                <div class="kcal-range-dates">${range.startDate} to ${range.endDate}</div>
+                <div class="kcal-range-dates">${range.startDate} ${t('kcalendar.to', 'to')} ${range.endDate}</div>
             </div>
-        `).join('') || Components.emptyState('KC', 'No ranges', 'No month or panchak ranges for this view.');
+        `).join('') || Components.emptyState(
+            'KC',
+            t('kcalendar.no_ranges', 'No ranges'),
+            t('kcalendar.no_ranges_desc', 'No month or panchak ranges for this view.')
+        );
     }
 
     function getImportantEvents() {
@@ -286,7 +311,11 @@ const KashmiriCalendarPage = (() => {
                 <span class="kcal-list-date">${row.date}</span>
                 <span class="kcal-list-name">${row.events}</span>
             </button>
-        `).join('') || Components.emptyState('KC', 'No events found', 'Try a different search term.');
+        `).join('') || Components.emptyState(
+            'KC',
+            t('kcalendar.no_events', 'No events found'),
+            t('kcalendar.try_different', 'Try a different search term.')
+        );
     }
 
     function filterEvents(query) {
@@ -309,7 +338,7 @@ const KashmiriCalendarPage = (() => {
         const minMonth = new Date(getDataStart().getFullYear(), getDataStart().getMonth(), 1);
         const maxMonth = new Date(getDataEnd().getFullYear(), getDataEnd().getMonth(), 1);
         if (next < minMonth || next > maxMonth) {
-            Components.showToast(`No Kashmiri calendar data outside ${getDataRangeText()}.`, 'warning');
+            Components.showToast(`${t('kcalendar.outside_range', 'No Kashmiri calendar data outside')} ${getDataRangeText()}.`, 'warning');
             return;
         }
 
