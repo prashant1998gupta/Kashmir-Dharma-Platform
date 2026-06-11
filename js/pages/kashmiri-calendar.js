@@ -50,12 +50,12 @@ const KashmiriCalendarPage = (() => {
 
                 <div class="kcal-toolbar">
                     <button class="btn btn-ghost" onclick="KashmiriCalendarPage.changeMonth(-1)">${previous}</button>
-                    <div>
+                    <div class="kcal-toolbar-title">
                         <h3 id="kcalMonthTitle" class="kcal-month-title">Loading...</h3>
-                        <p class="kcal-range-note">${sourceNote}</p>
                     </div>
                     <button class="btn btn-ghost" onclick="KashmiriCalendarPage.changeMonth(1)">${next}</button>
                 </div>
+                <p class="kcal-range-note">${sourceNote}</p>
 
                 <div class="kcal-layout">
                     <section class="kcal-calendar-shell" aria-label="${title}">
@@ -68,12 +68,12 @@ const KashmiriCalendarPage = (() => {
                 </div>
 
                 <div class="kcal-section-row">
-                    <section class="card">
+                    <section class="kcal-panel">
                         <h3 class="kcal-panel-title">${rangesTitle}</h3>
                         <div id="kcalMonthRanges" class="kcal-range-list"></div>
                     </section>
 
-                    <section class="card">
+                    <section class="kcal-panel">
                         <h3 class="kcal-panel-title">${eventsTitle}</h3>
                         <div class="mb-4">
                             ${Components.searchBar(searchPlaceholder, 'KashmiriCalendarPage.filterEvents', 'kcalSearchInput')}
