@@ -107,6 +107,283 @@
     --z-toast: 400;
 }
 
+/* =========================================
+   KASHMIRI CALENDAR PAGE
+   ========================================= */
+.kashmiri-calendar-page {
+    --kcal-border: rgba(255, 255, 255, 0.1);
+}
+
+.kcal-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-6);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-lg);
+    background: var(--bg-card);
+}
+
+.kcal-month-title {
+    margin: 0;
+    text-align: center;
+    color: var(--color-secondary);
+    font-family: var(--font-heading);
+}
+
+.kcal-range-note {
+    margin: var(--space-1) 0 0;
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+    text-align: center;
+}
+
+.kcal-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: var(--space-6);
+    align-items: start;
+    margin-bottom: var(--space-8);
+}
+
+.kcal-calendar-shell,
+.kcal-side-panel {
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-xl);
+    background: var(--bg-card);
+    overflow: hidden;
+}
+
+.kcal-side-panel {
+    padding: var(--space-5);
+    position: sticky;
+    top: var(--space-6);
+}
+
+.kcal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.kcal-header-cell {
+    padding: var(--space-3);
+    border-right: 1px solid var(--kcal-border);
+    border-bottom: 1px solid var(--kcal-border);
+    color: var(--color-secondary);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.kcal-header-cell:nth-child(7) {
+    border-right: 0;
+}
+
+.kcal-cell {
+    min-height: 118px;
+    padding: var(--space-3);
+    border: 0;
+    border-right: 1px solid var(--kcal-border);
+    border-bottom: 1px solid var(--kcal-border);
+    background: transparent;
+    color: var(--text-primary);
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: var(--transition-base);
+}
+
+.kcal-cell:nth-child(7n) {
+    border-right: 0;
+}
+
+.kcal-cell:hover:not(.disabled),
+.kcal-cell.selected {
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.kcal-cell.today .kcal-date-number {
+    background: var(--color-primary);
+    color: white;
+}
+
+.kcal-cell.disabled,
+.kcal-cell.other-month {
+    color: var(--text-muted);
+    opacity: 0.45;
+    cursor: default;
+}
+
+.kcal-date-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.kcal-tithi {
+    color: var(--color-secondary);
+    font-size: var(--text-sm);
+    font-weight: 700;
+}
+
+.kcal-special {
+    display: block;
+    width: 100%;
+    padding: 3px 6px;
+    border-radius: var(--radius-sm);
+    background: rgba(139, 26, 26, 0.18);
+    color: var(--text-primary);
+    font-size: 11px;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+}
+
+.kcal-loading {
+    padding: var(--space-8);
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.kcal-detail-date {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-2);
+}
+
+.kcal-detail-title {
+    margin: 0 0 var(--space-4);
+    color: var(--color-secondary);
+}
+
+.kcal-detail-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-5);
+}
+
+.kcal-detail-block {
+    border-top: 1px solid var(--surface-border);
+    padding-top: var(--space-4);
+    margin-top: var(--space-4);
+}
+
+.kcal-detail-block h4,
+.kcal-panel-title {
+    margin: 0 0 var(--space-3);
+    color: var(--text-heading);
+}
+
+.kcal-detail-block p {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.kcal-detail-event {
+    padding: var(--space-2) var(--space-3);
+    margin-bottom: var(--space-2);
+    border-radius: var(--radius-sm);
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--text-primary);
+}
+
+.kcal-section-row {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+    gap: var(--space-6);
+}
+
+.kcal-range-list,
+.kcal-event-list {
+    display: grid;
+    gap: var(--space-3);
+    max-height: 520px;
+    overflow: auto;
+    padding-right: var(--space-2);
+}
+
+.kcal-range-item,
+.kcal-list-event {
+    padding: var(--space-3);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-md);
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.kcal-range-item.panchak {
+    border-color: rgba(212, 175, 55, 0.35);
+}
+
+.kcal-range-name,
+.kcal-list-date {
+    color: var(--color-secondary);
+    font-weight: 700;
+}
+
+.kcal-range-dates {
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    margin-top: 2px;
+}
+
+.kcal-list-event {
+    width: 100%;
+    color: var(--text-primary);
+    text-align: left;
+    cursor: pointer;
+}
+
+.kcal-list-event:hover {
+    border-color: rgba(212, 175, 55, 0.4);
+    background: rgba(212, 175, 55, 0.08);
+}
+
+.kcal-list-date {
+    display: block;
+    font-size: var(--text-xs);
+    margin-bottom: 4px;
+}
+
+.kcal-list-name {
+    display: block;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+@media (max-width: 1024px) {
+    .kcal-layout,
+    .kcal-section-row {
+        grid-template-columns: 1fr;
+    }
+
+    .kcal-side-panel {
+        position: static;
+    }
+}
+
+@media (max-width: 768px) {
+    .kcal-toolbar {
+        flex-direction: column;
+    }
+
+    .kcal-grid {
+        min-width: 760px;
+    }
+
+    .kcal-calendar-shell {
+        overflow-x: auto;
+    }
+}
+
 /* --- Light Theme Overrides --- */
 :root[data-theme="light"] {
     /* Background - Pearl White & Ivory */
@@ -2859,11 +3136,11 @@ body.gita-immersive-route .page-container {
 .gita-chat-shell {
     border: 1px solid rgba(212, 175, 55, 0.24);
     background:
-        linear-gradient(180deg, rgba(24, 22, 18, 0.96), rgba(13, 12, 10, 0.96)),
+        linear-gradient(180deg, rgba(28, 23, 20, 0.97), rgba(18, 15, 12, 0.97)),
         radial-gradient(circle at top left, rgba(212, 175, 55, 0.08), transparent 30%);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     box-shadow: 0 20px 46px rgba(0, 0, 0, 0.45);
 }
 
@@ -3015,10 +3292,10 @@ body.gita-immersive-route .page-container {
     padding: var(--space-6);
     display: flex;
     flex-direction: column;
-    gap: var(--space-4);
+    gap: var(--space-5);
     background:
-        radial-gradient(circle at 16% 0%, rgba(212, 175, 55, 0.08), transparent 32%),
-        radial-gradient(circle at 100% 70%, rgba(163, 38, 38, 0.09), transparent 28%);
+        radial-gradient(circle at 16% 0%, rgba(212, 175, 55, 0.06), transparent 32%),
+        radial-gradient(circle at 100% 70%, rgba(163, 38, 38, 0.06), transparent 28%);
     scrollbar-color: rgba(212, 175, 55, 0.46) rgba(255, 250, 240, 0.08);
 }
 
@@ -3029,24 +3306,27 @@ body.gita-immersive-route .page-container {
 
 .gita-ai-page .chat-bubble.assistant.divine-bubble {
     background:
-        linear-gradient(135deg, rgba(255, 250, 240, 0.085), rgba(212, 175, 55, 0.045)),
-        rgba(14, 13, 11, 0.92);
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    border-left: 3px solid var(--color-secondary);
+        linear-gradient(135deg, rgba(255, 250, 240, 0.07), rgba(212, 175, 55, 0.035)),
+        rgba(28, 23, 20, 0.94);
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    border-left: 4px solid rgba(212, 175, 55, 0.7);
     color: var(--text-primary);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.26);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    padding: var(--space-5);
 }
 
 .gita-ai-page .chat-bubble.assistant.divine-bubble strong {
-    color: var(--text-heading);
+    color: var(--color-secondary);
 }
 
 .gita-ai-page .chat-bubble.user.modern-bubble {
-    max-width: min(560px, 70%);
-    background: linear-gradient(135deg, rgba(200, 58, 52, 0.92), rgba(142, 31, 29, 0.9));
-    border: 1px solid rgba(255, 250, 240, 0.16);
+    max-width: min(560px, 75%);
+    background: linear-gradient(135deg, #D4871A, #B8720F);
+    border: 1px solid rgba(255, 250, 240, 0.2);
     color: #FFF9EE;
-    box-shadow: 0 12px 26px rgba(142, 31, 29, 0.28);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 22px rgba(180, 115, 15, 0.3);
 }
 
 .gita-welcome-prompts,
@@ -3337,8 +3617,8 @@ body.gita-immersive-route .page-container {
 
 .gita-input-area {
     padding: var(--space-4) var(--space-6);
-    background: rgba(7, 6, 5, 0.86);
-    border-top: 1px solid rgba(212, 175, 55, 0.24);
+    background: rgba(18, 15, 12, 0.92);
+    border-top: 1px solid rgba(212, 175, 55, 0.18);
     flex: 0 0 auto;
 }
 
@@ -3353,46 +3633,58 @@ body.gita-immersive-route .page-container {
     flex: 1;
     border-radius: var(--radius-full);
     padding: var(--space-3) var(--space-5);
-    background: rgba(255, 250, 240, 0.075);
-    border: 1px solid rgba(212, 175, 55, 0.28);
+    background: rgba(255, 250, 240, 0.065);
+    border: 1px solid rgba(212, 175, 55, 0.22);
     color: var(--text-primary);
+    transition: var(--transition-base);
 }
 
 .gita-input-area .form-control::placeholder {
-    color: rgba(211, 198, 178, 0.7);
+    color: rgba(211, 198, 178, 0.55);
+    font-style: italic;
 }
 
 .gita-input-area .form-control:focus {
     background: rgba(255, 250, 240, 0.1);
-    border-color: rgba(212, 175, 55, 0.58);
-    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
+    border-color: rgba(212, 175, 55, 0.55);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1), 0 4px 16px rgba(212, 175, 55, 0.08);
 }
 
 .gita-send-btn {
-    width: 52px;
-    height: 52px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 0 0 52px;
+    flex: 0 0 48px;
+    background: linear-gradient(135deg, #D4871A, #B8720F) !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(180, 115, 15, 0.35);
+    transition: var(--transition-base);
+}
+
+.gita-send-btn:hover {
+    box-shadow: 0 6px 20px rgba(180, 115, 15, 0.5);
+    transform: scale(1.05);
 }
 
 .gita-voice-btn {
-    width: 52px;
-    height: 52px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     padding: 0;
-    flex: 0 0 52px;
+    flex: 0 0 48px;
     color: var(--text-secondary);
-    border-color: rgba(212, 175, 55, 0.28);
+    border-color: rgba(212, 175, 55, 0.22);
     background: rgba(255, 250, 240, 0.04);
+    transition: var(--transition-base);
 }
 
 .gita-voice-btn:hover,
 .gita-voice-btn.active {
-    color: var(--text-heading);
+    color: #D4871A;
     border-color: rgba(212, 175, 55, 0.55);
     background: rgba(212, 175, 55, 0.12);
 }
@@ -3411,29 +3703,29 @@ body.gita-immersive-route .page-container {
 :root[data-theme="light"] body.gita-immersive-route {
     color-scheme: light;
     background:
-        radial-gradient(circle at 14% 10%, rgba(163, 38, 38, 0.08), transparent 30%),
-        radial-gradient(circle at 86% 12%, rgba(46, 92, 58, 0.08), transparent 30%),
-        linear-gradient(135deg, #FFFDF8 0%, #F7F1E7 50%, #F1E8DA 100%);
-    --bg-primary: #FFFDF8;
-    --bg-secondary: #F7F1E7;
-    --bg-tertiary: #EFE4D3;
-    --bg-card: rgba(255, 255, 255, 0.72);
-    --bg-card-hover: rgba(255, 255, 255, 0.9);
-    --bg-glass: rgba(255, 252, 246, 0.9);
+        radial-gradient(circle at 14% 10%, rgba(212, 135, 26, 0.06), transparent 35%),
+        radial-gradient(circle at 86% 80%, rgba(212, 135, 26, 0.04), transparent 35%),
+        linear-gradient(180deg, #FFFBF5 0%, #FFF5E8 40%, #FDEBD0 100%);
+    --bg-primary: #FFFBF5;
+    --bg-secondary: #FFF5E8;
+    --bg-tertiary: #FDEBD0;
+    --bg-card: rgba(255, 255, 255, 0.78);
+    --bg-card-hover: rgba(255, 255, 255, 0.92);
+    --bg-glass: rgba(255, 252, 246, 0.92);
     --bg-glass-strong: rgba(255, 252, 246, 0.98);
-    --bg-input: rgba(255, 255, 255, 0.86);
+    --bg-input: rgba(255, 255, 255, 0.88);
     --bg-input-focus: #FFFFFF;
-    --surface-border: rgba(176, 141, 46, 0.34);
-    --surface-border-hover: rgba(176, 141, 46, 0.56);
-    --surface-shadow: 0 18px 46px rgba(84, 58, 24, 0.12);
-    --text-primary: #211C15;
-    --text-secondary: #554B3F;
-    --text-muted: #827363;
-    --text-heading: #120F0B;
-    --color-primary: #A32626;
-    --color-primary-dark: #761918;
-    --color-secondary: #A9861B;
-    --color-secondary-dark: #765B12;
+    --surface-border: rgba(195, 140, 40, 0.3);
+    --surface-border-hover: rgba(195, 140, 40, 0.52);
+    --surface-shadow: 0 18px 46px rgba(120, 80, 20, 0.1);
+    --text-primary: #2D2318;
+    --text-secondary: #5C4D3C;
+    --text-muted: #8C7A66;
+    --text-heading: #1A1410;
+    --color-primary: #C47A12;
+    --color-primary-dark: #9A5F0C;
+    --color-secondary: #C47A12;
+    --color-secondary-dark: #9A5F0C;
 }
 
 :root[data-theme="light"] body.gita-immersive-route .main-content {
@@ -3453,10 +3745,13 @@ body.gita-immersive-route .page-container {
 :root[data-theme="light"] body.gita-immersive-route .gita-side-panel,
 :root[data-theme="light"] body.gita-immersive-route .gita-chat-shell {
     background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(250, 245, 236, 0.94)),
-        radial-gradient(circle at top left, rgba(176, 141, 46, 0.09), transparent 30%);
-    box-shadow: 0 20px 46px rgba(81, 57, 28, 0.13);
-    scrollbar-color: rgba(176, 141, 46, 0.52) rgba(176, 141, 46, 0.12);
+        linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 248, 235, 0.88));
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-color: rgba(195, 140, 40, 0.2);
+    box-shadow: 0 12px 40px rgba(120, 80, 20, 0.08);
+    border-radius: var(--radius-lg);
+    scrollbar-color: rgba(195, 140, 40, 0.42) rgba(195, 140, 40, 0.1);
 }
 
 :root[data-theme="light"] body.gita-immersive-route .gita-daily-card {
@@ -3493,19 +3788,20 @@ body.gita-immersive-route .page-container {
 }
 
 :root[data-theme="light"] body.gita-immersive-route .chat-bubble.assistant.divine-bubble {
-    background:
-        linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(251, 244, 230, 0.9)),
-        rgba(255, 255, 255, 0.8);
-    border-color: rgba(176, 141, 46, 0.36);
-    border-left-color: var(--color-secondary);
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(195, 140, 40, 0.2);
+    border-left: 4px solid rgba(196, 122, 18, 0.7);
     color: var(--text-primary);
-    box-shadow: 0 12px 28px rgba(85, 58, 26, 0.12);
+    box-shadow: 0 6px 22px rgba(120, 80, 20, 0.08);
 }
 
 :root[data-theme="light"] body.gita-immersive-route .chat-bubble.user.modern-bubble {
-    background: linear-gradient(135deg, #B8322F, #8F201D);
-    border-color: rgba(143, 32, 29, 0.18);
-    color: #FFF9EE;
+    background: linear-gradient(135deg, #D4871A, #C07010);
+    border-color: rgba(196, 122, 18, 0.2);
+    color: #FFFBF5;
+    box-shadow: 0 6px 20px rgba(196, 122, 18, 0.25);
 }
 
 :root[data-theme="light"] body.gita-immersive-route .gita-welcome-prompts,
@@ -3595,24 +3891,32 @@ body.gita-immersive-route .page-container {
 }
 
 :root[data-theme="light"] body.gita-immersive-route .gita-input-area {
-    background: rgba(255, 252, 246, 0.92);
-    border-top-color: rgba(176, 141, 46, 0.26);
+    background: rgba(255, 252, 246, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top-color: rgba(195, 140, 40, 0.18);
 }
 
 :root[data-theme="light"] body.gita-immersive-route .gita-input-area .form-control {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: rgba(176, 141, 46, 0.34);
+    background: rgba(255, 255, 255, 0.92);
+    border-color: rgba(195, 140, 40, 0.25);
     color: var(--text-primary);
 }
 
 :root[data-theme="light"] body.gita-immersive-route .gita-input-area .form-control::placeholder {
-    color: rgba(85, 75, 63, 0.64);
+    color: rgba(92, 77, 60, 0.5);
+    font-style: italic;
 }
 
 :root[data-theme="light"] body.gita-immersive-route .gita-input-area .form-control:focus {
     background: #FFFFFF;
-    border-color: rgba(176, 141, 46, 0.6);
-    box-shadow: 0 0 0 3px rgba(176, 141, 46, 0.14);
+    border-color: rgba(196, 122, 18, 0.55);
+    box-shadow: 0 0 0 3px rgba(196, 122, 18, 0.1), 0 4px 16px rgba(196, 122, 18, 0.06);
+}
+
+:root[data-theme="light"] body.gita-immersive-route .gita-send-btn {
+    background: linear-gradient(135deg, #D4871A, #C07010) !important;
+    box-shadow: 0 4px 14px rgba(196, 122, 18, 0.3);
 }
 
 .gita-settings-modal {
@@ -4026,6 +4330,43 @@ body.gita-immersive-route .page-container {
 
     .gita-side-panel {
         display: none;
+    }
+
+    .gita-ai-page .chat-bubble {
+        max-width: 95%;
+    }
+
+    .gita-ai-page .chat-bubble.user.modern-bubble {
+        max-width: 85%;
+    }
+
+    .gita-welcome-prompts {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: var(--space-2);
+        padding-bottom: var(--space-2);
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .gita-welcome-prompts::-webkit-scrollbar {
+        display: none;
+    }
+
+    .gita-welcome-prompts .gita-prompt-chip {
+        white-space: nowrap;
+        flex: 0 0 auto;
+    }
+
+    .gita-input-area {
+        padding: var(--space-3) var(--space-4);
+    }
+
+    .gita-send-btn,
+    .gita-voice-btn {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
     }
 
     .gita-prompt-strip {

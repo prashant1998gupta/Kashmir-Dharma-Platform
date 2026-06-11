@@ -6,6 +6,7 @@ const Router = (() => {
     const routes = {
         'home': { page: HomePage, title: 'Home' },
         'calendar': { page: CalendarPage, title: 'Festival Calendar' },
+        'kashmiri-calendar': { page: KashmiriCalendarPage, title: 'Kashmiri Calendar' },
         'rituals': { page: RitualsPage, title: 'Ritual Library' },
         'wedding': { page: WeddingPage, title: 'Wedding Guide' },
         'birthday': { page: BirthdayPage, title: 'Janma Tithi' },

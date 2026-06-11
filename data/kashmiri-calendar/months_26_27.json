@@ -1,0 +1,203 @@
+[
+  {
+    "startDate": "19-03-2026",
+    "endDate": "02-04-2026",
+    "monthName": "Chaitra Shukla Paksha"
+  },
+  {
+    "startDate": "03-04-2026",
+    "endDate": "17-04-2026",
+    "monthName": "Vaisakha Krishna Paksha"
+  },
+  {
+    "startDate": "12-04-2026",
+    "endDate": "17-04-2026",
+    "monthName": "Panchak",
+    "imp": "2"
+  },
+  {
+    "startDate": "18-04-2026",
+    "endDate": "01-05-2026",
+    "monthName": "Vaisakha Shukla Paksha"
+  },
+  {
+    "startDate": "02-05-2026",
+    "endDate": "16-05-2026",
+    "monthName": "Zyeth Krishna Paksha"
+  },
+  {
+    "startDate": "10-05-2026",
+    "endDate": "14-05-2026",
+    "monthName": "Panchak",
+    "imp": "2"
+  },
+  {
+    "startDate": "17-05-2026",
+    "endDate": "31-05-2026",
+    "monthName": "Adhik-Zyeth Shukla Paksha"
+  },
+  {
+    "startDate": "01-06-2026",
+    "endDate": "15-06-2026",
+    "monthName": "Adhik-Zyeth Krishna Paksha"
+  },
+  {
+    "startDate": "06-06-2026",
+    "endDate": "11-06-2026",
+    "monthName": "Panchak",
+    "imp": "2"
+  },
+  {
+    "startDate": "16-06-2026",
+    "endDate": "29-06-2026",
+    "monthName": "Zyeth Shukla Paksha"
+  },
+  {
+    "startDate": "30-06-2026",
+    "endDate": "14-07-2026",
+    "monthName": "Aashaad Krishna Paksha"
+  },
+  {
+    "startDate": "03-07-2026",
+    "endDate": "08-07-2026",
+    "monthName": "Panchak",
+    "imp": "2"
+  },
+  {
+    "startDate": "15-07-2026",
+    "endDate": "29-07-2026",
+    "monthName": "Aashaad Shukla Paksha"
+  },
+  {
+    "startDate": "30-07-2026",
+    "endDate": "12-08-2026",
+    "monthName": "Shravan Krishna Paksha"
+  },
+  {
+    "startDate": "13-08-2026",
+    "endDate": "28-08-2026",
+    "monthName": "Shravan Shukla Paksha"
+  },
+  {
+    "startDate": "29-08-2026",
+    "endDate": "11-09-2026",
+    "monthName": "Bhadra Krishna Paksha"
+  },
+  {
+    "startDate": "12-09-2026",
+    "endDate": "26-09-2026",
+    "monthName": "Bhadra Shukla Paksha"
+  },
+  {
+    "startDate": "23-09-2026",
+    "endDate": "28-09-2026",
+    "monthName": "Panchak",
+    "imp": "2"
+  },
+  {
+    "startDate": "27-09-2026",
+    "endDate": "10-10-2026",
+    "monthName": "Ashwin Krishna Paksha"
+  },
+  {
+    "startDate": "11-10-2026",
+    "endDate": "26-10-2026",
+    "monthName": "Ashwin Shukla Paksha"
+  },
+  {
+    "startDate": "27-10-2026",
+    "endDate": "09-11-2026",
+    "monthName": "Kartik Krishna Paksha"
+  },
+  {
+    "startDate": "10-11-2026",
+    "endDate": "24-11-2026",
+    "monthName": "Kartik Shukla Paksha"
+  },
+  {
+    "startDate": "17-11-2026",
+    "endDate": "22-11-2026",
+    "monthName": "Panchak",
+    "imp": "2"
+  },
+  {
+    "startDate": "25-11-2026",
+    "endDate": "08-12-2026",
+    "monthName": "Maarg Krishna Paksha"
+  },
+  {
+    "startDate": "09-12-2026",
+    "endDate": "23-12-2026",
+    "monthName": "Maarg Shukla Paksha"
+  },
+  {
+    "startDate": "14-12-2026",
+    "endDate": "19-12-2026",
+    "monthName": "Panchak",
+    "imp": "2"
+  },
+  {
+    "startDate": "24-12-2026",
+    "endDate": "07-01-2027",
+    "monthName": "Poh Krishna Paksha"
+  },
+  {
+    "startDate": "08-01-2027",
+    "endDate": "22-01-2027",
+    "monthName": "Poh Shukla Paksha"
+  },
+  {
+    "startDate": "10-01-2027",
+    "endDate": "15-01-2027",
+    "monthName": "Panchak",
+    "imp": "2"
+  },
+  {
+    "startDate": "23-01-2027",
+    "endDate": "06-02-2027",
+    "monthName": "Maagh Krishna Paksha"
+  },
+  {
+    "startDate": "07-02-2027",
+    "endDate": "20-02-2027",
+    "monthName": "Maagh Shukla Paksha"
+  },
+  {
+    "startDate": "07-02-2027",
+    "endDate": "11-02-2027",
+    "monthName": "Panchak",
+    "imp": "2"
+  },
+  {
+    "startDate": "21-02-2027",
+    "endDate": "08-03-2027",
+    "monthName": "Phalgun Krishna Paksha"
+  },
+  {
+    "startDate": "06-03-2027",
+    "endDate": "11-03-2027",
+    "monthName": "Panchak",
+    "imp": "2"
+  },
+  {
+    "startDate": "09-03-2027",
+    "endDate": "22-03-2027",
+    "monthName": "Phalgun Shukla Paksha"
+  },
+  {
+    "startDate": "23-03-2027",
+    "endDate": "06-04-2027",
+    "monthName": "Chaitra Krishna Paksha"
+  },
+  {
+    "startDate": "02-04-2027",
+    "endDate": "07-04-2027",
+    "monthName": "Panchak",
+    "imp": "2"
+  },
+  {
+    "startDate": "07-04-2027",
+    "endDate": "20-04-2027",
+    "monthName": "Chaitra Shukla Paksha"
+  }
+]

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kashmir-dharma-v18';
+const CACHE_NAME = 'kashmir-dharma-v20';
 const ASSETS_TO_CACHE = [
     './',
     './index.html',
@@ -22,6 +22,7 @@ const ASSETS_TO_CACHE = [
     './js/utils/interpretations.js',
     './js/pages/home.js',
     './js/pages/calendar.js',
+    './js/pages/kashmiri-calendar.js',
     './js/pages/rituals.js',
     './js/pages/wedding.js',
     './js/pages/birthday.js',
@@ -45,6 +46,18 @@ const ASSETS_TO_CACHE = [
     './data/archive.json',
     './data/muhurat-data.json',
     './data/sharada.json',
+    './data/kashmiri-calendar/20_21.json',
+    './data/kashmiri-calendar/21_22.json',
+    './data/kashmiri-calendar/22_23.json',
+    './data/kashmiri-calendar/23_24.json',
+    './data/kashmiri-calendar/24_25.json',
+    './data/kashmiri-calendar/25_26.json',
+    './data/kashmiri-calendar/26_27.json',
+    './data/kashmiri-calendar/months_22_23.json',
+    './data/kashmiri-calendar/months_23_24.json',
+    './data/kashmiri-calendar/months_24_25.json',
+    './data/kashmiri-calendar/months_25_26.json',
+    './data/kashmiri-calendar/months_26_27.json',
     './assets/icons/icon.svg'
 ];
 

@@ -10,6 +10,7 @@ const I18n = (() => {
             // Navigation
             'nav.home': 'Home',
             'nav.calendar': 'Festival Calendar',
+            'nav.kashmiri_calendar': 'Kashmiri Calendar',
             'nav.rituals': 'Ritual Library',
             'nav.wedding': 'Wedding Guide',
             'nav.tithi': 'Janma Tithi',
