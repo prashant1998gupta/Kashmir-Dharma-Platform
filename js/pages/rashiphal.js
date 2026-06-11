@@ -139,12 +139,59 @@ const RashiphalPage = (() => {
                     <div class="rashiphal-wheel-wrap">
                         <div class="zodiac-wheel-container">
                             <div class="sun-center">
-                                <div class="sun-center-icon" id="sun-icon" aria-hidden="true">\u2600\uFE0F</div>
+                                <div class="sun-center-glow" id="sun-icon" aria-hidden="true"></div>
                             </div>
+                            <!-- Astrological Inner System SVG Overlay -->
+                            <svg class="astral-svg-overlay" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <defs>
+                                    <filter id="glow">
+                                        <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+                                        <feMerge>
+                                            <feMergeNode in="coloredBlur"/>
+                                            <feMergeNode in="SourceGraphic"/>
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                                <!-- Inner rings -->
+                                <circle cx="250" cy="250" r="100" class="astral-ring" />
+                                <circle cx="250" cy="250" r="160" class="astral-ring astral-ring-dashed" />
+                                <circle cx="250" cy="250" r="220" class="astral-ring" />
+
+                                <!-- Constellation 1 (Green/Blue) -->
+                                <g class="astral-constellation c-green">
+                                    <polyline points="330,130 360,130 370,180 340,200 340,160" />
+                                    <circle cx="330" cy="130" r="2.5" />
+                                    <circle cx="360" cy="130" r="2.5" />
+                                    <circle cx="370" cy="180" r="2.5" />
+                                    <circle cx="340" cy="200" r="4" filter="url(#glow)" fill="#68e096" />
+                                    <circle cx="340" cy="160" r="2.5" />
+                                </g>
+
+                                <!-- Constellation 2 (Yellow/Orange) -->
+                                <g class="astral-constellation c-orange">
+                                    <polyline points="130,260 170,280 180,240 210,230 220,180" />
+                                    <circle cx="130" cy="260" r="2.5" />
+                                    <circle cx="170" cy="280" r="2.5" />
+                                    <circle cx="180" cy="240" r="4" filter="url(#glow)" fill="#FFB057" />
+                                    <circle cx="210" cy="230" r="2.5" />
+                                    <circle cx="220" cy="180" r="2.5" />
+                                </g>
+
+                                <!-- Constellation 3 (Pink/Purple) -->
+                                <g class="astral-constellation c-pink">
+                                    <polyline points="230,370 260,380 270,340" />
+                                    <circle cx="230" cy="370" r="4" filter="url(#glow)" fill="#FF7496" />
+                                    <circle cx="260" cy="380" r="2.5" />
+                                    <circle cx="270" cy="340" r="2.5" />
+                                </g>
+                                
+                                <!-- Floating Planet -->
+                                <circle cx="300" cy="110" r="6" filter="url(#glow)" fill="#FFDF73" />
+                            </svg>
                             <div class="orbital-ring" id="orbital-ring">
                                 ${ZODIACS.map(z => `
                                     <button class="zodiac-node" type="button" data-id="${z.id}" data-angle="${z.angle}" onclick="RashiphalPage.selectZodiac('${z.id}', { userClick: true })" aria-label="${copy.selectSign} ${copy.signs[z.id]}" aria-pressed="false">
-                                        <span class="zodiac-icon" aria-hidden="true">${z.icon}</span>
+                                        <span class="zodiac-icon" aria-hidden="true">${z.icon}&#xFE0E;</span>
                                         <span class="zodiac-label">${copy.signs[z.id]}</span>
                                     </button>
                                 `).join('')}
@@ -289,10 +336,6 @@ const RashiphalPage = (() => {
         setText('h-color', data.colorName);
 
         if (colorDot) colorDot.style.background = data.colorHex;
-        if (sunEl) {
-            sunEl.style.background = data.colorHex;
-            sunEl.style.boxShadow = `0 0 60px ${data.glow}, inset 0 0 20px rgba(255,255,255,0.28)`;
-        }
 
         return data;
     }
@@ -376,7 +419,6 @@ const RashiphalPage = (() => {
         });
 
         updatePanelData(id);
-        if (sunIcon) sunIcon.textContent = zodiac.icon;
         rotateToSelected(!options.keepRotating);
     }
 
