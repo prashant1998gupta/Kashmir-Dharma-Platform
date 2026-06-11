@@ -189,12 +189,19 @@ const RashiphalPage = (() => {
                                 <circle cx="300" cy="110" r="6" filter="url(#glow)" fill="#FFDF73" />
                             </svg>
                             <div class="orbital-ring" id="orbital-ring">
-                                ${ZODIACS.map(z => `
-                                    <button class="zodiac-node" type="button" data-id="${z.id}" data-angle="${z.angle}" onclick="RashiphalPage.selectZodiac('${z.id}', { userClick: true })" aria-label="${copy.selectSign} ${copy.signs[z.id]}" aria-pressed="false">
-                                        <span class="zodiac-icon" aria-hidden="true">${z.icon}&#xFE0E;</span>
-                                        <span class="zodiac-label">${copy.signs[z.id]}</span>
-                                    </button>
-                                `).join('')}
+                                <svg class="orbital-glyphs-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+                                    ${ZODIACS.map(z => {
+                                        const r = 230;
+                                        const rad = (z.angle - 90) * Math.PI / 180;
+                                        const cx = 250 + r * Math.cos(rad);
+                                        const cy = 250 + r * Math.sin(rad);
+                                        return `
+                                            <g class="zodiac-glyph-group" data-id="${z.id}" data-angle="${z.angle}" onclick="RashiphalPage.selectZodiac('${z.id}', { userClick: true })" style="cursor:pointer">
+                                                <circle cx="${cx}" cy="${cy}" r="20" fill="transparent" class="zodiac-hit-area" />
+                                                <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" class="zodiac-svg-icon">${z.icon}\uFE0E</text>
+                                            </g>`;
+                                    }).join('')}
+                                </svg>
                             </div>
                         </div>
                     </div>
@@ -350,22 +357,8 @@ const RashiphalPage = (() => {
     }
 
     function positionNodes() {
-        const ring = document.getElementById('orbital-ring');
-        if (!ring) return;
-
-        const ringRect = ring.getBoundingClientRect();
-        const radius = Math.max(96, (Math.min(ringRect.width, ringRect.height) / 2) - 30);
-        const nodes = ring.querySelectorAll('.zodiac-node');
-
-        nodes.forEach(node => {
-            const angleDeg = parseFloat(node.getAttribute('data-angle'));
-            const angleRad = (angleDeg - 90) * (Math.PI / 180);
-            const x = Math.cos(angleRad) * radius;
-            const y = Math.sin(angleRad) * radius;
-
-            node.style.left = `calc(50% + ${x}px)`;
-            node.style.top = `calc(50% + ${y}px)`;
-        });
+        // SVG glyphs are positioned at render time via viewBox coordinates.
+        // This function is kept as a no-op for backward compatibility.
     }
 
     function generateHoroscopeData(zodiacId) {
@@ -402,20 +395,18 @@ const RashiphalPage = (() => {
         
         currentZodiacId = id;
         const ring = document.getElementById('orbital-ring');
-        const sunIcon = document.getElementById('sun-icon');
         if (!ring) return;
 
         const zodiac = getZodiac(id);
-        const nodes = ring.querySelectorAll('.zodiac-node');
+        const groups = ring.querySelectorAll('.zodiac-glyph-group');
 
         if (!options.keepRotating) {
             ring.classList.remove('rotating');
         }
 
-        nodes.forEach(node => {
-            const isActive = node.getAttribute('data-id') === id;
-            node.classList.toggle('active', isActive);
-            node.setAttribute('aria-pressed', String(isActive));
+        groups.forEach(g => {
+            const isActive = g.getAttribute('data-id') === id;
+            g.classList.toggle('active', isActive);
         });
 
         updatePanelData(id);
@@ -426,24 +417,26 @@ const RashiphalPage = (() => {
         const ring = document.getElementById('orbital-ring');
         if (!ring) return;
 
-        const selectedNode = ring.querySelector(`.zodiac-node[data-id="${currentZodiacId}"]`);
-        if (!selectedNode) return;
+        const selectedGroup = ring.querySelector(`.zodiac-glyph-group[data-id="${currentZodiacId}"]`);
+        if (!selectedGroup) return;
 
-        const targetAngle = parseFloat(selectedNode.getAttribute('data-angle'));
+        const targetAngle = parseFloat(selectedGroup.getAttribute('data-angle'));
         const rotateDeg = -targetAngle;
-        const nodes = ring.querySelectorAll('.zodiac-node');
 
         ring.style.transition = animate ? '' : 'none';
         ring.style.transform = `rotate(${rotateDeg}deg)`;
 
-        nodes.forEach(node => {
-            const scale = node.classList.contains('active') ? 1.24 : 1;
-            node.style.transform = `rotate(${-rotateDeg}deg) scale(${scale})`;
-        });
+        // Counter-rotate the SVG so glyphs stay upright
+        const glyphsSvg = ring.querySelector('.orbital-glyphs-svg');
+        if (glyphsSvg) {
+            glyphsSvg.style.transition = animate ? 'transform 0.85s cubic-bezier(0.34, 1.56, 0.64, 1)' : 'none';
+            glyphsSvg.style.transform = `rotate(${-rotateDeg}deg)`;
+        }
 
         if (!animate) {
             requestAnimationFrame(() => {
                 ring.style.transition = '';
+                if (glyphsSvg) glyphsSvg.style.transition = '';
             });
         }
     }
