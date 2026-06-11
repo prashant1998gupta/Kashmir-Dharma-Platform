@@ -4,18 +4,18 @@
 
 const RashiphalPage = (() => {
     const ZODIACS = [
-        { id: 'aries', name: 'Aries', icon: '\u2648', angle: 0 },
-        { id: 'taurus', name: 'Taurus', icon: '\u2649', angle: 30 },
-        { id: 'gemini', name: 'Gemini', icon: '\u264A', angle: 60 },
-        { id: 'cancer', name: 'Cancer', icon: '\u264B', angle: 90 },
-        { id: 'leo', name: 'Leo', icon: '\u264C', angle: 120 },
-        { id: 'virgo', name: 'Virgo', icon: '\u264D', angle: 150 },
-        { id: 'libra', name: 'Libra', icon: '\u264E', angle: 180 },
-        { id: 'scorpio', name: 'Scorpio', icon: '\u264F', angle: 210 },
-        { id: 'sagittarius', name: 'Sagittarius', icon: '\u2650', angle: 240 },
-        { id: 'capricorn', name: 'Capricorn', icon: '\u2651', angle: 270 },
-        { id: 'aquarius', name: 'Aquarius', icon: '\u2652', angle: 300 },
-        { id: 'pisces', name: 'Pisces', icon: '\u2653', angle: 330 }
+        { id: 'aries', name: 'Aries', icon: '\u2648', angle: 0, element: 'fire', dateEn: 'Mar 21 - Apr 19', dateHi: '21 मार्च - 19 अप्रैल' },
+        { id: 'taurus', name: 'Taurus', icon: '\u2649', angle: 30, element: 'earth', dateEn: 'Apr 20 - May 20', dateHi: '20 अप्रैल - 20 मई' },
+        { id: 'gemini', name: 'Gemini', icon: '\u264A', angle: 60, element: 'air', dateEn: 'May 21 - Jun 20', dateHi: '21 मई - 20 जून' },
+        { id: 'cancer', name: 'Cancer', icon: '\u264B', angle: 90, element: 'water', dateEn: 'Jun 21 - Jul 22', dateHi: '21 जून - 22 जुलाई' },
+        { id: 'leo', name: 'Leo', icon: '\u264C', angle: 120, element: 'fire', dateEn: 'Jul 23 - Aug 22', dateHi: '23 जुलाई - 22 अगस्त' },
+        { id: 'virgo', name: 'Virgo', icon: '\u264D', angle: 150, element: 'earth', dateEn: 'Aug 23 - Sep 22', dateHi: '23 अगस्त - 22 सितंबर' },
+        { id: 'libra', name: 'Libra', icon: '\u264E', angle: 180, element: 'air', dateEn: 'Sep 23 - Oct 22', dateHi: '23 सितंबर - 22 अक्टूबर' },
+        { id: 'scorpio', name: 'Scorpio', icon: '\u264F', angle: 210, element: 'water', dateEn: 'Oct 23 - Nov 21', dateHi: '23 अक्टूबर - 21 नवंबर' },
+        { id: 'sagittarius', name: 'Sagittarius', icon: '\u2650', angle: 240, element: 'fire', dateEn: 'Nov 22 - Dec 21', dateHi: '22 नवंबर - 21 दिसंबर' },
+        { id: 'capricorn', name: 'Capricorn', icon: '\u2651', angle: 270, element: 'earth', dateEn: 'Dec 22 - Jan 19', dateHi: '22 दिसंबर - 19 जनवरी' },
+        { id: 'aquarius', name: 'Aquarius', icon: '\u2652', angle: 300, element: 'air', dateEn: 'Jan 20 - Feb 18', dateHi: '20 जनवरी - 18 फरवरी' },
+        { id: 'pisces', name: 'Pisces', icon: '\u2653', angle: 330, element: 'water', dateEn: 'Feb 19 - Mar 20', dateHi: '19 फरवरी - 20 मार्च' }
     ];
 
     const COPY = {
@@ -47,7 +47,13 @@ const RashiphalPage = (() => {
                 aquarius: 'Aquarius',
                 pisces: 'Pisces'
             },
-            moods: ['Energetic', 'Calm', 'Creative', 'Reflective', 'Focused'],
+            elements: {
+                fire: 'FIRE',
+                earth: 'EARTH',
+                air: 'AIR',
+                water: 'WATER'
+            },
+            moods: ['Proud', 'Happy', 'Nervous', 'Romantic', 'Sleepy'],
             colors: ['Ruby Red', 'Royal Blue', 'Golden Yellow', 'Emerald Green', 'Mystic Purple'],
             descriptions: {
                 aries: 'Your fiery energy is at its peak today. Channel it into a creative project or take the lead on a tough assignment.',
@@ -92,8 +98,14 @@ const RashiphalPage = (() => {
                 aquarius: '\u0915\u0941\u0902\u092D',
                 pisces: '\u092E\u0940\u0928'
             },
-            moods: ['\u090A\u0930\u094D\u091C\u093E\u0935\u093E\u0928', '\u0936\u093E\u0902\u0924', '\u0930\u091A\u0928\u093E\u0924\u094D\u092E\u0915', '\u091A\u093F\u0902\u0924\u0928\u0936\u0940\u0932', '\u0915\u0947\u0902\u0926\u094D\u0930\u093F\u0924'],
-            colors: ['\u0930\u0942\u092C\u0940 \u0932\u093E\u0932', '\u0930\u0949\u092F\u0932 \u0928\u0940\u0932\u093E', '\u0938\u0941\u0928\u0939\u0930\u093E \u092A\u0940\u0932\u093E', '\u092A\u0928\u094D\u0928\u093E \u0939\u0930\u093E', '\u0930\u0939\u0938\u094D\u092F\u092E\u092F \u092C\u0948\u0902\u0917\u0928\u0940'],
+            elements: {
+                fire: '\u0905\u0917\u094D\u0928\u093F \u0924\u0924\u094D\u0935',
+                earth: '\u092A\u094D\u0930\u094D\u0925\u094D\u0935\u0940 \u0924\u0924\u094D\u0935',
+                air: '\u0935\u093E\u092F\u0941 \u0924\u0924\u094D\u0935',
+                water: '\u091C\u0932 \u0924\u0924\u094D\u0935'
+            },
+            moods: ['\u0917\u0930\u094D\u0935\u093F\u0924', '\u0916\u0941\u0936', '\u091A\u093F\u0902\u0924\u093F\u0924', '\u0930\u094D\u092E\u093E\u0902\u091F\u093F\u0915', '\u0905\u0932\u0938\u093E\u092F\u093E'],
+            colors: ['\u0930\u0942\u092C\u0940 \u0932\u093E\u0932', '\u0930\u0949\u092F\u0932 \u0928\u0940\u0932\u093E', '\u0938\u0941\u0928\u0939\u0930\u093E \u092A\u0940\u0932\u093E', '\u092A\u0928\u094D\u0928\u093E \u0939\u0930\u093E', '\u0930\u0939\u0938\u094D\u092F\u092E\u092F \u092C\u0948\u0902\u0917\u0928\u094D\u092F\u093E'],
             descriptions: {
                 aries: '\u0906\u091C \u0906\u092A\u0915\u0940 \u090A\u0930\u094D\u091C\u093E \u092E\u091C\u092C\u0942\u0924 \u0939\u0948. \u0907\u0938\u0947 \u0930\u091A\u0928\u093E\u0924\u094D\u092E\u0915 \u0915\u093E\u092E \u092F\u093E \u0915\u093F\u0938\u0940 \u0915\u0920\u093F\u0928 \u091C\u093C\u093F\u092E\u094D\u092E\u0947\u0926\u093E\u0930\u0940 \u092E\u0947\u0902 \u0932\u0917\u093E\u090F\u0902.',
                 taurus: '\u0906\u091C \u0927\u0948\u0930\u094D\u092F \u0906\u092A\u0915\u0940 \u0938\u092C\u0938\u0947 \u092C\u0921\u093C\u0940 \u0936\u0915\u094D\u0924\u093F \u0939\u0948. \u0927\u0940\u0930\u0947 \u091A\u0932\u0947\u0902 \u0914\u0930 \u0909\u0924\u094D\u0924\u0930\u094B\u0902 \u0915\u094B \u0938\u094D\u0935\u093E\u092D\u093E\u0935\u093F\u0915 \u0930\u0942\u092A \u0938\u0947 \u0906\u0928\u0947 \u0926\u0947\u0902.',
@@ -159,12 +171,11 @@ const RashiphalPage = (() => {
 
                     <div id="horoscope-details-container" class="horoscope-details-container">
                         <div class="horoscope-panel">
-                            <div class="horoscope-kicker">
-                                ${copy.kicker} <span aria-hidden="true">&bull;</span> <span id="h-date"></span>
-                            </div>
+                            <div class="horoscope-kicker" id="h-element-date"></div>
                             <h2 id="h-title" class="horoscope-title">
-                                ${copy.signs.aries} <span id="h-emoji" aria-hidden="true">\u2648</span>
+                                ${copy.signs.aries} <span id="h-emoji-pic" aria-hidden="true"></span>
                             </h2>
+                            <div class="horoscope-subtitle" id="h-subtitle">today</div>
 
                             <div class="horoscope-stats">
                                 <div class="h-stat-box">
@@ -271,19 +282,45 @@ const RashiphalPage = (() => {
         return getLanguage() === 'hi' ? 'hi-IN' : 'en-US';
     }
 
+    const MOOD_EMOJIS = {
+        'Proud': '😌',
+        'Happy': '😅',
+        'Nervous': '😒',
+        'Romantic': '😍',
+        'Sleepy': '😴',
+        '\u0917\u0930\u094d\u0935\u093f\u0924': '😌',
+        '\u0916\u0941\u0936': '😅',
+        '\u091a\u093f\u0902\u0924\u093f\u0924': '😒',
+        '\u0930\u094d\u092e\u093e\u0902\u091f\u093f\u0915': '😍',
+        '\u0905\u0932\u0938\u093e\u092f\u093e': '😴'
+    };
+
     function updatePanelData(id) {
         const zodiac = getZodiac(id);
         const copy = getCopy();
         const data = generateHoroscopeData(id);
         const titleEl = document.getElementById('h-title');
-        const emojiEl = document.getElementById('h-emoji');
-        const sunEl = document.querySelector('.sun-center');
+        const kickerEl = document.getElementById('h-element-date');
+        const subtitleEl = document.getElementById('h-subtitle');
         const colorDot = document.getElementById('h-color-dot');
 
-        if (titleEl) {
-            titleEl.firstChild.nodeValue = `${copy.signs[zodiac.id]} `;
+        if (kickerEl) {
+            const elName = copy.elements[zodiac.element] || zodiac.element.toUpperCase();
+            const dateRange = getLanguage() === 'hi' ? zodiac.dateHi : zodiac.dateEn;
+            kickerEl.textContent = `${elName} • ${dateRange}`;
+            
+            const elementColors = { fire: '#FF5722', earth: '#4CAF50', air: '#E91E63', water: '#2196F3' };
+            kickerEl.style.color = elementColors[zodiac.element] || '#FFFFFF';
         }
-        if (emojiEl) emojiEl.textContent = zodiac.icon;
+
+        if (titleEl) {
+            const moodEmoji = MOOD_EMOJIS[data.mood] || '';
+            titleEl.innerHTML = `${copy.signs[zodiac.id]} <span id="h-emoji-pic" aria-hidden="true" style="font-size: 0.85em; margin-left: 6px; vertical-align: middle;">${moodEmoji}</span>`;
+        }
+
+        if (subtitleEl) {
+            subtitleEl.textContent = getLanguage() === 'hi' ? 'आज' : 'today';
+        }
 
         setText('h-mood', data.mood);
         setText('h-love', renderStars(data.love));
@@ -375,6 +412,38 @@ const RashiphalPage = (() => {
             node.classList.toggle('active', isActive);
             node.setAttribute('aria-pressed', String(isActive));
         });
+
+        // Set active colors on container based on element
+        const elementProps = {
+            fire: {
+                color: '#FF5722',
+                bg: 'radial-gradient(circle at 35% 35%, #FF8A65 0%, #FF5722 60%, #D84315 100%)',
+                shadow: '0 0 40px rgba(255, 87, 34, 0.6), 0 0 80px rgba(255, 87, 34, 0.2)'
+            },
+            earth: {
+                color: '#4CAF50',
+                bg: 'radial-gradient(circle at 35% 35%, #81C784 0%, #4CAF50 60%, #2E7D32 100%)',
+                shadow: '0 0 40px rgba(76, 175, 80, 0.6), 0 0 80px rgba(76, 175, 80, 0.2)'
+            },
+            air: {
+                color: '#E91E63',
+                bg: 'radial-gradient(circle at 35% 35%, #F06292 0%, #E91E63 60%, #AD1457 100%)',
+                shadow: '0 0 40px rgba(233, 30, 99, 0.6), 0 0 80px rgba(233, 30, 99, 0.2)'
+            },
+            water: {
+                color: '#2196F3',
+                bg: 'radial-gradient(circle at 35% 35%, #64B5F6 0%, #2196F3 60%, #1565C0 100%)',
+                shadow: '0 0 40px rgba(33, 150, 243, 0.6), 0 0 80px rgba(33, 150, 243, 0.2)'
+            }
+        };
+
+        const props = elementProps[zodiac.element] || elementProps.fire;
+        const wheelContainer = document.querySelector('.zodiac-wheel-container');
+        if (wheelContainer) {
+            wheelContainer.style.setProperty('--active-color', props.color);
+            wheelContainer.style.setProperty('--active-bg', props.bg);
+            wheelContainer.style.setProperty('--active-shadow', props.shadow);
+        }
 
         // Update center icon to show selected sign
         if (sunIcon) sunIcon.textContent = zodiac.icon;
